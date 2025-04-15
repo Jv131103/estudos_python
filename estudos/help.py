@@ -1,4 +1,4 @@
-# Quer uma ajuda para entender uma método, classe ou função?
+# Quer uma ajuda para entender um método, classe ou função?
 # Está desesperado por ajuda, e ao mesmo tempo com preguição de olhar na net.
 # Simples. O python, como ama facilitar a vida dos DEVS têm uma função especial.
 # Essa, muito útil para ler documentações e verificar ações, este meus amigos, é o help.
