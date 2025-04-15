@@ -4,9 +4,7 @@
 # Essa, muito útil para ler documentações e verificar ações, este meus amigos, é o help.
 
 help()
-
 help(print)
-
 help(input)
 
 # Quer saber quais são os nomes reservados do python? Veja abaixo quais são eles:
