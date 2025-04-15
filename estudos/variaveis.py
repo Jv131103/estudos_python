@@ -28,8 +28,8 @@ numero1 = 2
 numero2 = 1
 
 numero_troca = numero2      # 1
-numero2 = numero1           # 2
-numero1 = numero_troca      # 1
+numero2 = numero1           # numero2 = 2
+numero1 = numero_troca      # numero1 = 1
 
 # Também pode com o python realizar um swap mais moderno e belo
 x = 3
@@ -40,6 +40,7 @@ x, y, z = z, y, x   # x = 2, y = 2, z = 3
 
 # Variáveis podem recber inputs de entrada
 nome = input("Digite seu nome: ")  # Por padrão a saída será em formato STRING
+um_Valor = input()  # Definimos um input vazio
 
 # Nomeação de variáveis (identificadores)
 # Devem começar com letra ou underscore (_), não podem começar com número.
@@ -74,3 +75,8 @@ print(x)
 x, y = 1, 23
 print("X:", x)
 print("y:", y)
+
+# Podemos remover variáveis e suas referências na memória:
+nao_quero_isso = "dihçi"
+del nao_quero_isso
+# print(nao_quero_isso)  # Gerará um ero, pois essa referência não existe mais

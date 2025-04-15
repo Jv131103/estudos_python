@@ -60,6 +60,11 @@ print(int(n))  # 3
 texto = "3,14".replace(",", ".")
 print(float(texto))  # 3.14
 
+# PS: podemos deifini inputs vazios com essas formatações de entrada
+# EX:
+x = int(input())  # Aqui definimos um input vazio que vai pedir um número
+print(x)
+
 # --- ATENÇÃO! ---
 # Nem toda conversão é possível!
 # texto = "abc"
@@ -80,6 +85,7 @@ print(int("2a", 16))     # 42 (hexadecimal → inteiro)
 # Unicode e ASCII são padrões de codificação de caracteres, ou seja, eles definem uma maneira
 # de representar caracteres (como letras, números, símbolos) em números, permitindo que
 # computadores e sistemas os entendam e os processem.
+# Caso queiram analisar as tabelas, acessem os arquivos unicode.py e ascii.py
 
 print(ord("A"))  # 65  → código numérico da letra
 print(chr(66))   # 'B' → caractere correspondente
