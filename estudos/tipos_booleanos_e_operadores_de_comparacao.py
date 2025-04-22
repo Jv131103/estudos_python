@@ -8,6 +8,25 @@ b = False
 
 print(type(a))  # <class 'bool'>
 
+# Podemos também definir variáveis de opção ou de execução:
+nome = input("Digite seu nome: ") or "Anônimo"
+
+modo_debug = False
+modo_teste = True
+
+modo_ativo = modo_debug or modo_teste
+print("Modo ativo:", modo_ativo)
+
+x = 'olá' and 'mundo'
+print(x)  # 'mundo' (ambos são "True")
+
+x = '' and 'mundo'
+print(x)  # '' (string vazia é False)
+
+idade = 18
+eh_de_maior = idade >= 18  # Valida e já retorna o boolean correspondente
+print(eh_de_maior)  # True
+
 # Operações que retornam Booleanos:
 # Comparações:
 # Operadores de Comparação:
@@ -201,3 +220,26 @@ permissoes |= PERMISSAO_LER   # liga a permissão de leitura
 permissoes &= ~PERMISSAO_LER  # desliga a permissão de leitura
 
 print(permissoes)
+
+# Podemos fazer comparções com strings
+# Ele lê por ordem alfabética, mas por trás dos panos ele lê
+# segundo seus enderços na tabela ASCII:
+print(f"a {ord('a')} > A {ord('A')}? {'a' > 'A'}")  # True
+
+nome1 = "Fausto"
+nome2 = "Maria"
+print(nome1 == nome2)  # False
+
+# Tecnicamente aqui ele percorre letra e por letra e verifica sua maioridade
+print(nome1 <= nome2)  # True
+
+# Uma representação simples, não é a mais eficiente, mas é para se ter uma análise
+# Veja mais sobre o for em estrutura_repeticao_for.py
+for i in range(len(nome1)):  # Pego do maior para realizar a leitura
+    print(f"Letras: nome1({nome1})={nome1[i]} | nome2({nome2})={nome2[i]}")
+    if ord(nome1[i]) <= ord(nome2[i]):
+        print(
+            f"SIM: {nome1[i]}({ord(nome1[i])})",
+            f"é menor ou igual a {nome2[i]}({ord(nome2[i])})"
+        )
+        break
