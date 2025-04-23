@@ -8,7 +8,7 @@
 
 # Tradução:
 # if ---> se
-# elif (el(se)if) ---> senão se
+# elif (el(se) if) ---> senão se
 # else ---> senão
 
 # Normas de boas práticas: (Os 4 mandamentos de uma boa condicional)
