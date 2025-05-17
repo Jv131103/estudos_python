@@ -238,7 +238,7 @@ def usar_nonlocal():
     x = 3
 
     def interna():
-        nonlocal x 
+        nonlocal x
         x += 1
         return x
 
@@ -312,7 +312,6 @@ def gerador():
     yield 3
 
 
-
 """
 Diferenças entre print, return e yield
 | Comando  | O que faz                                 | Uso típico                       |
@@ -352,6 +351,7 @@ for f in funcoes:
 # ------------------------------------
 def subtracao(a: int, b: int) -> int:
     return a - b
+
 
 # ------------------------------------
 # Função principal (boas práticas)
