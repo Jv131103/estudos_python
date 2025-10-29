@@ -91,8 +91,10 @@ valor = list()  # Gera uma lista vazia
 print(list((1, 2, 3, 4)))
 
 lista = [31, 914, 236, 376, 140, 705, 236]
-# Realizando busca da posição de um valor da string
+# Realizando busca da posição de um valor da lista
 print(lista.index(31))
+# Buscando em posição específica
+print(lista.index(236, 4))  # Posição 4 a diante, mas pode colocar final
 
 # Pegando o máximo
 print(max(lista))
@@ -113,12 +115,18 @@ print(list(reversed(lista)))
 # PS: ele não pode ser atribuido, ele muda a lista por completo
 lista.sort()
 print(lista)
+# Sequiser inverso
+lista.sort(reverse=True)
+print(lista)
 
 # Ordenar com sorted
 # PS: Ele pode ser atribuído, e assim pode não mudar o valor original da lista
 lista = [31, 914, 236, 376, 140, 705, 236]
 print(lista)
 ordenada = sorted(lista)
+print(ordenada)
+# Sequiser inverso
+ordenada = sorted(lista, reverse=True)
 print(ordenada)
 
 # Pegando indice e valor com enumerate
@@ -135,6 +143,10 @@ print(list(zip(l1, l2)))
 lista = ["João", "Maria", "Renato"]
 lista.append("Giovanna")
 print(lista)
+# Se quisesse adicionar dois valores:
+lista_n = [1, 2]
+lista_n.append([3, 4])  # type: ignore  - Isso foi usado, para evitar erro typehint
+print(lista_n)
 
 # insert seta um valor em um campo específico, escolhedo um índice,
 # Pode ser vantajoso em casos pequenos, ams em grades casos pode ser ruim,
@@ -180,4 +192,51 @@ print(lista)
 # Vai limpar a lista
 del lista  # Se tentar chamar ou usar ela não vai mais existir
 
+# range(inicio, fim, intervalo): Cria um gerador que faz uma contagem
+serie = list(range(2010, 2025))  # Cria uma lista de anos de 2010 até 2024
+print(serie)
+
+# Convertendo string em lista com split
+frase = "Python é legal"
+print(frase.split())  # Por padrão pega espaços, mas pode definir um valor
+print(frase.split(" é "))
+
+# Definindo listas em termos de variáveis
+num1 = 10
+num2 = 20
+num3 = 30
+lista = [num1, num2, num3]
+print(lista)
+
+# Empacotamento e desempacotamento de listas
+# Empacotar é o mesmo que guardar itens dentro de um iterável mutável
+# Desempacotar é remover qualquer itens dentro de iteráveis
+valores = [350, 400, 900, 120]  # Isso pode ser o mesmo que enmpacotar
+print(valores)
+a, b, c, d = valores  # Isso é o mesmo que desempacotar
+print(a, b, c, d)
+# Se você quiser pegar só alguns valores e ignorar outros, ]
+# usa _ (underline) para ignorar
+primeiro, _, _, ultimo = valores
+print(primeiro, ultimo)
+# O * pega “o resto” dos valores e coloca em uma lista.
+a, *b = valores
+print(a)
+print(b)
+*a, b = valores
+print(a)
+print(b)
+# Ambos ao mesmo tempo
+a, b, *c = [1, 2, 3, 4, 5]
+print(a, b, c)  # 1 2 [3, 4, 5]
+x = [10, 20, 30]
+y = [40, 50]
+z = [*x, *y]  # junta listas
+print(z)  # [10, 20, 30, 40, 50]
+
 # Fazendo verificações na lista
+# Com in podemos ver se algo pertence a uma lista
+# Com not in fazemos um inverso
+k = ['F', 'M', 'J', 'K']
+print('K' in k)
+print('K' not in k)
