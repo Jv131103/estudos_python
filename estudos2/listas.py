@@ -240,3 +240,11 @@ print(z)  # [10, 20, 30, 40, 50]
 k = ['F', 'M', 'J', 'K']
 print('K' in k)
 print('K' not in k)
+
+# Fezendo cópia com copy
+# PS: Isso é uma cópia parcial, ou seja, pode não copiar tudo dentro da lista
+lista = [1, 2, 3]
+lista_copia = lista.copy()
+print(lista)
+lista_copia[0] = 2
+print(lista_copia)
