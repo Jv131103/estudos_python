@@ -7,6 +7,11 @@ chromedriver
 mysql_206
 .env
 
+# remover arquivos .db
+*.db
+databases/
+
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
