@@ -11,6 +11,9 @@ mysql_206
 *.db
 databases/
 
+# remover a pasta arquivos
+arquivos/
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
