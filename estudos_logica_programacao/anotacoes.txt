@@ -1,0 +1,155 @@
+- Um programa ou software, é o que podemos chamar de inteligência do computador
+
+- O hardware é a máquina, a parte física
+
+- Em computação, dados são a representação simbólica de um fato ou acontecimento.
+Os fatos podem ser, nomes, datas, valores numéricos, imagens, etc. Ou seja,
+qualquer coisa que possa ser medido, comparado ou representados no computador.
+
+- Os símbolos mais comuns são as letras e os números. (As imagens e os sons são representados
+no computador por uma sequencia de número).
+
+- Uma informação é um dado, ou conjunto de dados, ou o o resultado da transformação de um
+conjunto de dados que, dentro de determinado contexto, faça sentido para alguém. Poe exemplo,
+uma ficha médica, ou um formulário de cadastro.
+
+- Qualquer fato, pode ser representado simbolicamente? Não. Por que certos, fatos,
+não podem ser representados como são na realidade, por conta de não poderem ser interpretados
+lógico-matematicamente. Outros, por conta de não serem duais, assim não interpretados, como zeros
+e uns. Emoções, sabores e sentimentos são exemplos de fatos que não podem ser representados,
+por serem complexas e por terem reprodução além do lógico.
+
+SOBRE SISTEMA BINÁRIO
+
+- São representados por 0s e 1s, embora, haja outros sistemas, como ternários,
+decimais, hexadecimais e octais.
+
+- O computador atualmente, entende apenas 0s e 1s que representam ligado e desligado,
+tal que seguem o princípio de ebtrada e saída de energia no hardware.
+
+- Possui um sistema de numeração onde cada dígito, aqui chamado de bit, tem apenas dois valores
+possíveis, ou seja, 0 e 1
+
+- No sistema decimal, podemos representar até 10 elementos com um único dígito:
+
+    0, 1, 2, 3, 4, 5, 6, 7, 8, 9
+
+- No sistema binário, podemos representar apenas 2 com um único bit.
+
+    0, 1
+
+- Para se poder rtepresentar mais elementos, é necessário acrescentar outros dígitos e bits.
+
+- O 11° elemento no sistema decimal e'representado por 10.
+
+    IMPORTANTE: Na computação, o valor 0 é super significativo quanto a identificar elementos
+
+- No sistema binário, o 3° elemento, já que só podemos representar o 2 como um único bit, será
+o 10.
+
+- Tabela de 0, 20
+
+    Decimal | Binário
+    0       | 0
+    1       | 1
+    2       | 10
+    3       | 11
+    4       | 100
+    5       | 101
+    6       | 110
+    7       | 111
+    8       | 1000
+    9       | 1001
+    10      | 1010
+    11      | 1011
+    12      | 1100
+    13      | 1101
+    14      | 1110
+    15      | 1111
+    16      | 10000
+    17      | 10001
+    18      | 10010
+    19      | 10011
+    20      | 10100
+
+- No sistema decimal, cada dígito adicional aumenta em 10 vezes a capacidade de contagem, ao passo
+que no binário, cada bit adicional aumenta em 2 vezes.
+
+- Qual a capacidade de contagem de um número com 3 dígitos?
+
+    10**3 = 1000
+
+    - Vai de 0 a 999
+
+- Qual a capacidade de contagem de um número com 3 bits?
+
+    2**3 = 8
+
+    - Vai de 0 a 7
+
+- Como saber quanto um binário vale em decimal?
+
+    EX:
+
+        1       0       0       1       1       0       1       0       1       0       1       1       1       0
+        2**13   2**12   2**11   2**10   2**9    2**8    2**7    2**6    2**5    2**4    2**3    2**2    2**1    2**0
+        8192    4096    2048    1024    512     256     128     64      32      16      8       4       2       1
+        8192    0       0       1024    512     0       128     0       32      0       8       4       2       0
+
+        8192 + 0 + 0 + 1024 + 512 + 0 + 128 + 0 + 32 + 0 + 8 + 4 + 2 + 0 =  9902
+
+
+        1° linha: Símbolo binário
+        2° linha: Resutado do valor 2**n
+        3° linha: Resultado do valor de 2**n * símbolo binário
+
+- Como saber quanto um decimal vale em binário?
+
+    EX: 100
+
+    100 / 2 = 50, resto 0
+    50 / 2 = 25, resto 0
+    25 / 2 = 12, resto 1
+    12 / 2 = 6, resto 0,
+    6 / 2 = 3, resto 0
+    3 / 2 = 1, resto 1,
+    1 / 2 = resto 1, pois 1 não divide 2
+
+    resultado dos restos: 0010011
+
+    inverte ficará: 1100100
+
+- Prático:
+
+    Exercício 1 - Foi vista na videoaula a conversão do número
+    binário 10011010111001 para o seu equivalente decimal que
+    resultou em 9913.
+
+    Acrescente um bit 0 à direita (o menos significativo) deste
+    número binário e veja que número decimal obterá.
+    
+    Divida este novo número decimal obtido pelo decimal anterior e
+    analise o resultado.
+
+        100110101110010
+
+        2**14 = 16384 * 1 = 16384
+        2**13 = 8192 * 0 = 0
+        2**12 = 4096 * 0 = 0
+        2**11 = 2048 * 1 = 2048
+        2**10 = 1024 * 1 = 1024
+        2**9 = 512 * 0 = 0
+        2**8 = 256 * 1 = 256
+        2**7 = 128 * 0 = 0
+        2**6 = 64 * 1 = 64
+        2**5 = 32 * 1 = 32
+        2**4 = 16 * 1 = 16
+        2**3 = 8 * 0 = 0
+        2**2 = 4 * 0 = 0
+        2**1 = 2 * 1 = 2
+        2**0 = 1 * 0 = 0
+
+        16384 + 2048 + 1024 + 256 + 64 + 32 + 16 + 2 = 19826
+
+    Exercício 2 - Com o resultado decimal obtido no exercício 1, aplique a técnica da divisão 
+    sucessiva por 2 para obter seu equivalente binário. O resultado deverá ser o número original
