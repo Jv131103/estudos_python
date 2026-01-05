@@ -151,5 +151,44 @@ que no binário, cada bit adicional aumenta em 2 vezes.
 
         16384 + 2048 + 1024 + 256 + 64 + 32 + 16 + 2 = 19826
 
+        Divisão: 19826 // 9913 = 2
+
+
     Exercício 2 - Com o resultado decimal obtido no exercício 1, aplique a técnica da divisão 
     sucessiva por 2 para obter seu equivalente binário. O resultado deverá ser o número original
+
+        19826
+
+        19826 // 2 = 9913, resto 0
+        9913 // 2 = 4956, resto 1
+        4956 // 2 = 2478, resto 0
+        2478 // 2 = 1239, resto 0
+        1239 // 2 = 619, resto 1
+        619 // 2 = 309, resto 1
+        309 // 2 = 154, resto 1
+        154 // 2 = 77, resto 0
+        77 // 2 = 38, resto 1
+        38 // 2 = 19, resto 0
+        19 // 2 = 9, resto 1
+        9 // 2 = 4, resto 1
+        4 // 2 = 2, resto 0
+        2 // 2 = 1, resto 0
+        1 // 2 = 1
+
+        Resultado dos restos: 010011101011001
+
+        Resultado final, invertido: 100110101110010
+
+SOBRE O COMPUTADOR:
+
+- A Memória, é onde se armazena e endereça informações e dados. É nela onde se permite
+guardar informações e registrá-las e mantê-las enquanto o programa ou a máquina estiver ligada.
+É nela onde o processador se comunica retornando informações. Ela se divide em dois pontos:
+
+    . Endereço fixo: O local referente onde os dados estão armazenados
+
+    . Conteúdo vartiável: O conteúdo que está armazenado no endereço e pode ser mutável
+
+- 1 byte contém 8 bits
+
+- Os computadores tradicionais se compõem de uma grande sequencia de bytes de 8 bits
