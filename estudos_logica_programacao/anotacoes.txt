@@ -302,3 +302,142 @@ Não existe programa executavel gerado.Tudo é realizado pelo interpretador.
 
     . Considerando uma mesma linguagem, o seu computador produz programas mais rápidos do que
     o seu interpretador.
+
+SOBRE PROGRAMAS
+
+- Um programa é um conjunto de passos e instruções, organizadas de maneira lógica, que realiza um ou mais serviços
+de processamento de dados.
+
+- Processamento de dados é o ato de tratar dados brutos e obter dados tranformados, seguindo especificações previamente
+estabelecidas, ou obter infortmações com esses dados contextualizados.
+
+
+                    DADOS BRUTOS -> PROGRAMA -> DADOS TRABALHADOS
+
+- Um programa pode ser simples ou composto por diversos outros programas
+
+- Um algoritmo é uma sequencia finita de passos, etapas ou instruções que resolvem determinados
+problemas. Um algoritmo é dito determinístico quando se obtém sempre o mesmo resultado a partir dos
+mesmos dados. Um programa pode ter 1 ou N algorítmos.
+
+- Um exemplo de um algoritmo funcional:
+
+    . Cada linguagem têm uma estrutura ou sintaxe
+
+    . Cada programa possui uma linha de execução. Dependendo da linguagem, ela precisa ser fechada
+    ou concluída, para referenciar outra linha ou se fecha automaticamente.
+
+    . variáveis são definições e referencias a objetos ou valores no programa. Eles são escopos
+    de memória onde se realizará procedimentos e armazenazem tempórária de dados e informações.
+    Elas não podem começar com números e símbolos que não sejam _ e também com espaços.
+
+    EX: ISSO FOI CRIADO POR MIM, UMA FORMA INTERPRETATIVA MINHA DE MOLDAR ALGORITMO FORA DA MÁQUINA
+    É MERA INTERPRETAÇÃO, PODEMOS USAR FERRAMENTAS JÁ PRONTAS QUE LEIAM EM PORTUGUÊS OU PODE MONTAR DO
+    SEU JEITO, CONTANTO, QUE SIGA NORMAS E PADRÕES DA COMPUTAÇÃO E QUE FIQUE FÁCIL DE VOCÊ APLICAR,
+    LER E IMPLEMENTAR EM OUTRAS LINGUAGENS.
+
+        TÍTULO: "Soma"
+        OBSERVACAO: "Vai realizar a soma de dois número"
+
+        INICIO
+
+        num1: int = int(ler("N1: "))
+        num2: int = int(ler("N2: "))
+
+        soma: int = num1 + num2   # Realiza a soma
+
+        exibir f"Resultado = {soma}"
+
+        FIM
+
+- Um outro exemplo no qual usamos funções. Fuções são blocos de códigos, especializados
+para executar funções específicas de código, ou seja, realizam procedimentos dentro de um escopo,
+para que seja implementado no escopo principal. Ela facilita a leitura e entendimento do código e 
+traz mais eficiência, legibilidade e pode ser usada e reaproveitada em outros programas.
+
+    TÍTULO: "Função"
+    OBSERVACAO: "Vai realizar uma demonstração do que é uma função"
+
+    INICIO
+
+    REALIZAR MÉDIA DE DOIS NÚMEROS
+    [funçao] media
+        params:
+            n1: int
+            n2: int
+        ações:
+            retornar (n1 + n2) / 2
+    [fimfuncao]
+
+
+    num1: float = float(ler("N1: "))
+    num2: float = float(ler("N2: "))
+
+    media: float = media(num1, num2)
+
+    exibir f"A média é {media:.2f}"
+
+    FIM
+
+UM POUCO SOBRE LÓGICA DE PROGRAMAÇÃO:
+
+
+    Variáveis:
+    
+    Constantes:
+
+    Entrada e saída de dados:
+
+    Interpolação e concatenação:
+
+    Operadores aritméticos:
+
+    Operadores de atribuição:
+
+    Operadores lógicos:
+
+    Operadores relacionais:
+
+    Incremento / Decremento:
+
+    Precedência:
+
+    Swap:
+
+    Casting:
+
+    Coerção:
+
+    Caracteres de controle:
+
+    strings e caracteres:
+
+    Blocos e escopos:
+
+    Estruturas condicionais / ternários:
+
+    Estruturas de repetição:
+
+    Variável acumuladora e Variável atribuidora
+
+    Iterações e Iteráveis:
+
+    Funções e lambdas:
+
+    Operadores bit-wise:
+
+    Listas e Arrays:
+
+    Índices:
+
+    In place:
+
+    Janelas:
+
+    Tuplas:
+
+    Dicionários:
+
+    Conjuntos:
+
+    tecnica de ponteiros:
