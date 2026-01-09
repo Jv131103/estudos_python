@@ -1,0 +1,128 @@
+TÍTULO: Roteador de Mensagens (fila + regras)
+
+OBSERVAÇÕES:
+
+    Estrutura principal é uma fila (ordem importa).
+
+    A fila começa vazia.
+
+    Comandos modificam ou consultam a fila.
+
+    FILTER remove mensagens, mas preserva a ordem relativa das que ficam.
+
+    Comparações de texto são case-insensitive.
+
+INICIO:
+
+ROTEADOR DE MENSAGENS
+[classe] RoteadorMensagens
+
+[construtor]
+fila: list[str] (inicia vazia dentro do init)
+
+[metodo] enqueue
+PARAMS:
+    texto: str
+AÇÕES:  
+	adicionar texto ao final da fila  
+SAÍDA:  
+	(nenhuma)
+
+
+[metodo] dequeue
+PARAMS:
+    (nenhum)
+
+AÇÕES:  
+	se fila estiver vazia:  
+		imprimir "FILA VAZIA"  
+		retornar None  
+	senão:  
+		remover o primeiro elemento da fila (início)  
+		imprimir a mensagem removida  
+		retornar a mensagem removida  
+
+SAÍDA:  
+	- imprime a removida **ou** "FILA VAZIA"
+
+[metodo] filter
+PARAMS:
+    palavra: str
+
+AÇÕES:  
+	palavra_min = palavra.lower()  
+	criar nova_fila: list[str] vazia  
+	para cada msg em fila:  
+		se palavra_min NÃO estiver contida em msg.lower():  
+			adicionar msg em nova_fila  
+	substituir fila = nova_fila  
+	(garante que a ordem das mensagens restantes seja preservada)  
+
+SAÍDA:  
+	(nenhuma)
+
+[metodo] show
+PARAMS:
+    (nenhum)
+
+AÇÕES:  
+	se fila estiver vazia:  
+		imprimir "FILA VAZIA"  
+	senão:  
+		para cada msg em fila (na ordem):  
+			imprimir msg (uma por linha)  
+
+SAÍDA:  
+	- imprime a fila inteira (uma por linha) **ou** "FILA VAZIA"
+
+SAÍDA:
+
+roteador = RoteadorMensagens()
+
+Executar comandos (N = 9)
+
+ENQUEUE "Oi Renato"
+roteador.enqueue("Oi Renato")
+(fila: ["Oi Renato"])
+
+ENQUEUE "Promo imperdivel"
+roteador.enqueue("Promo imperdivel")
+(fila: ["Oi Renato", "Promo imperdivel"])
+
+ENQUEUE "Aula de python hoje"
+roteador.enqueue("Aula de python hoje")
+(fila: ["Oi Renato", "Promo imperdivel", "Aula de python hoje"])
+
+FILTER "promo"
+roteador.filter("promo")
+(remove mensagens contendo "promo" ignorando maiúsculas/minúsculas)
+(fila: ["Oi Renato", "Aula de python hoje"])
+
+DEQUEUE
+roteador.dequeue()
+IMPRIME:
+Oi Renato
+(fila: ["Aula de python hoje"])
+
+SHOW
+roteador.show()
+IMPRIME:
+Aula de python hoje
+
+DEQUEUE
+roteador.dequeue()
+IMPRIME:
+Aula de python hoje
+(fila: [])
+
+DEQUEUE
+roteador.dequeue()
+IMPRIME:
+FILA VAZIA
+
+DEQUEUE
+roteador.dequeue()
+IMPRIME:
+FILA VAZIA
+
+FIM

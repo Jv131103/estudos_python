@@ -1,0 +1,37 @@
+TÍTULO: Controle de Estoque
+
+OBSERVAÇÕES:
+    Estoque inicia em 0.
+    
+    Se uma SAIDA x pedir mais do que tem, ignore a saída e imprima SAIDA INVALIDA.
+
+INICIO:
+
+estoque: int = 0
+
+opcoes: list = ["ENTRADA", "SAÍDA", "CONSULTA", "ALERTA", "FIM"]
+enquanto verdade:
+    dados: str = ler "[OPCAO] [x]"
+    opc: str, valor: str = dados.split()
+
+    tente:
+        valor: int = int(valor)
+    exceto erro de tipo:
+        exibir "Valor precisa ser do tipo numérico!"
+        continuar
+
+    se opc == "FIM":
+        parar o loop
+
+    se opc == "ENTRADA":
+        estoque += valor
+    senao se opc == "SAÍDA" e 0 < valor < estoque:
+        estoque -= valor
+    senao se opc == "CONSULTA":
+        exibir f"Estoque atual: {estoque}"
+    senao se opc == "ALERTA":
+        limite: int = ler "[y] "
+        se estoque < limite:
+            exibir "Estoque baixo"
+    senao:
+        exibir "Comando inválido!"

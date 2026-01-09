@@ -1,0 +1,85 @@
+Título: Agenda simples
+Observações: Telefone é 1 por contato (conforme enunciado). Duplicado ignora. Telefone inválido pede de novo (loop).
+
+INICIO
+
+[funcao] telefone_valido
+PARAMS:
+telefone: str
+AÇÕES:
+retornar telefone.isdigit()
+
+[funcao] ler_telefone_valido
+PARAMS:
+telefone_inicial: str
+AÇÕES:
+telefone = telefone_inicial
+enquanto telefone_valido(telefone) for FALSO:
+exibir na tela:
+Telefone invalido, digite novamente:
+ler novo telefone (somente o telefone) e salvar em telefone
+retornar telefone
+
+[funcao] adicionar_contato
+PARAMS:
+contatos: dict
+nome: str
+telefone_inicial: str
+
+AÇÕES:  
+	se nome estiver em contatos:  
+		exibir na tela:  
+			Nome duplicado, contato ignorado.  
+		retornar contatos  
+
+	telefone = ler_telefone_valido(telefone_inicial)  
+	contatos[nome] = telefone  
+	retornar contatos  
+
+
+[funcao] retornar_contato
+PARAMS:
+contatos: dict
+nome: str
+
+AÇÕES:  
+	se nome estiver em contatos:  
+		retornar contatos[nome]  
+	senao:  
+		retornar "Contato nao encontrado"
+
+
+SAÍDA (fluxo do programa)
+
+contatos: dict = {}
+
+ler M (int)
+
+para i em range(M):
+ler nome (str) e telefone (str)
+contatos = adicionar_contato(contatos, nome, telefone)
+
+ler nome_busca (str)
+
+resultado: str = retornar_contato(contatos, nome_busca)
+exibir na tela:
+resultado
+
+EXEMPLO (baseado no enunciado)
+
+M = 3
+
+ler: Ana 11999990000
+contatos = adicionar_contato(contatos, "Ana", "11999990000")
+
+ler: Bia 11ABC
+contatos = adicionar_contato(contatos, "Bia", "11ABC")
+(exibe “Telefone invalido, digite novamente:” e lê 11000000000)
+
+ler: Ana 11911112222
+contatos = adicionar_contato(contatos, "Ana", "11911112222")
+(exibe “Nome duplicado, contato ignorado.”)
+
+buscar: Ana
+retornar_contato(contatos, "Ana") -> "11999990000"
+exibir: 11999990000

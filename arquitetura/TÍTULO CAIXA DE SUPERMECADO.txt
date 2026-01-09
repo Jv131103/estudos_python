@@ -1,0 +1,105 @@
+TÍTULO: CAIXA DE SUPERMECADO
+OBSERVAÇÕES: (Nenhum)
+
+
+INICIO:
+
+PRODUTO
+[classe] Produto
+[construtor]
+	nome: str
+	preco: float
+	quantidade: int
+
+CAIXA DE SUPERMERCADO
+[classe] CaixaSupermercado
+[construtor]
+	produtos: list[Produto] (inicia vazia dentro do init)
+	total_bruto: float = 0
+	desconto_valor: float = 0
+	total_final: float = 0
+	ticket_medio: float = 0
+	
+MÉTODOS DE CaixaSupermecado
+[metodo] inserir_produto
+	PARAMS:
+		produto: Produto
+
+	AÇÕES:
+		Se produto não for do tipo Produto:
+			retornar erro
+		adicionar produto na lista produtos
+
+[metodo] calcular_total_bruto
+	PARAMS: (nenhum)
+
+	AÇÕES:
+		total_bruto = 0
+		Para cada p em produtos:
+			total_bruto += p.preco * p.quantidade
+		Retornar total_bruto
+
+[metodo] calcular_desconto
+
+	PARAMS: (nenhum)
+
+	AÇÕES:
+		Se total_bruto >= 200:
+			desconto_valor = total_bruto * 0.10
+		Senão:
+			desconto_valor = 0
+		Retornar desconto_valor
+
+[metodo] calcular_total_final
+
+	PARAMS: (nenhum)
+
+	AÇÕES:
+		total_final = total_bruto - desconto_valor
+		Retornar total_final
+
+[metodo] calcular_ticket_medio
+
+	PARAMS: (nenhum)
+
+	AÇÕES:
+
+		N = len(produtos) (N = quantidade de produtos cadastrados)
+		Se N == 0:
+			retornar erro ou 0 (evitar divisão por zero)
+		ticket_medio = total_final / N
+		Retornar ticket_medio
+
+[metodo] exibir
+
+	PARAMS: (nenhum)
+
+	AÇÕES:
+
+		Se produtos estiver vazia:
+			retornar "CAIXA VAZIO"
+		total_bruto = calcular_total_bruto()
+		desconto_valor = calcular_desconto()
+		total_final = calcular_total_final()
+		ticket_medio = calcular_ticket_medio()
+		Exibir na tela:
+			Total bruto: {total_bruto:.2f}
+			Desconto: {desconto_valor:.2f}
+			Total final: {total_final:.2f}
+			Ticket medio: {ticket_medio:.2f}
+
+SAÍDA
+Definir produtos
+	p1 = Produto('Arroz', 25.00, 2)
+	p2 = Produto('Feijao', 12.50, 4)
+	p3 = Produto('Carne', 45.00, 1)
+
+Definir caixa
+	caixa1 = CaixaSupermercado()
+	caixa1.inserir_produto(p1)
+	caixa1.inserir_produto(p2)
+	caixa1.inserir_produto(p3)
+	caixa1.exibir()
+
+FIM DA EXECUÇÃO
+

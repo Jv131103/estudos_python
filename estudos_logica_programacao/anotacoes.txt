@@ -103,6 +103,19 @@ que no binário, cada bit adicional aumenta em 2 vezes.
         2° linha: Resutado do valor 2**n
         3° linha: Resultado do valor de 2**n * símbolo binário
 
+        10011011
+
+        2**7 = 128 * 1 = 128
+        2**6 = 64 * 0 = 0
+        2**5 = 32 * 0 = 0
+        2**4 = 16 * 1 = 16
+        2**3 = 8 * 1 = 8
+        2**2 = 4 * 0 = 0
+        2**1 = 2 * 1 = 2
+        2**0 = 1 * 1 = 1
+
+        128 + 16 + 8 + 2 + 1 = 155
+
 - Como saber quanto um decimal vale em binário?
 
     EX: 100
@@ -192,3 +205,100 @@ guardar informações e registrá-las e mantê-las enquanto o programa ou a máq
 - 1 byte contém 8 bits
 
 - Os computadores tradicionais se compõem de uma grande sequencia de bytes de 8 bits
+
+- A ideia original de que o byte deva ter 8 bits surgiu da necessidade de se ter um código
+para representar cada um dos caracteres visíveis (letras, números, sinais de pontuação e
+alguns símbolos mais utilizados como o $, %, @ e outros), além de caracteres de controle
+(invisíveis) tais como o comando de saltar linha na tela ou soar o beep do PC. Chegou na
+conclusão que 8 bits era mais que o suficiente
+
+- A tabela ASCII, é um formato interpretador que serve de base para interpretação unicode
+dos dados. Ela possui seus caracteres em 8 bits e foi uma das bases mais usadas e até hoje
+é bastante utilizada. Nela, a letra 'a' têm o valor de 01100001 (97 em decimal) e o caracter
+numérico '1' tem o valor de 00110001 (49 em decimal).
+
+- No caso dos números, este valor é meramente um identificador do símbolo do número, porque
+o seu valor matemático está nos bits conforme vimos anteriormente. E como disse acima,
+49 não representa o valor matemático 1 e sim representa o tipo de texto 1, ou seja,
+o valor simbólico, não literal.
+
+- O byte é um agrupamento voltado aos conteúdos da memória, sendo que a quantidade de bits
+para fazer o endereçamento da memória segue outra contagem. Os primiros Pcs pessoais tinham memória
+com endereçamento de 8 bits, o que permitia apenas 256 endereços.
+
+- A CPU (Central Processing Unit), é o mecanismo principal do computador. É nele onde as instruções
+são processadas e ela é responsável por trabalhar com o conteúdo das memória, recebendo dados
+e retornando-as / escrevendo para tal. Ela realiza um procedimento de coleta de cada item
+endereçado na memória, e faz um trabalho X nela dependendo do dado, procedimento pedido e 
+comportamento do sistema com o hardware.
+
+- Os conteúdos da CPU são:
+
+    . Instruções:
+
+        - Dizem a CPU o que fazer
+
+        - Cada instrução, possui um SET, que é responsável por dizer a CPU que coisas devem acontecer
+
+            EX de um computador elementar de 4 bits a nível binário:
+
+                x----------x--------------------------------------------------------------------x
+                | Conteúdo |                            Ação                                    |
+                x----------x--------------------------------------------------------------------x
+                |   0000   | Interrompe a execução do programa                                  |
+                x----------x--------------------------------------------------------------------x
+                |   0100   | Lê o conteúdo da memória que está no endereço logo a seguir a esta |
+                |          | instrução e armazena no registrador 1.                             |
+                x----------x--------------------------------------------------------------------x
+                |   0110   | Lê o conteúdo da memória que está no endereço logo a seguir a esta |
+                |          | instrução e armazena no registrador 1.                             |
+                x----------x--------------------------------------------------------------------x
+                |          | Soma o conteúdo do registrador 1 com o conteúdo do registrador 2   |
+                |   0111   | e armazena o resultado no endereço de memória cujo número equivale |
+                |          | ao conteúdo do endereço a seguir a esta instrução                  |
+                x----------x--------------------------------------------------------------------x
+
+            PS: Cada código binário representa uma ação específica, previamente definida pela 
+            arquitetura da CPU.
+
+    . Dados:
+
+        - Manipulados pelas instruções para que determinado pedido ou resultado seja obtido
+
+
+- Linguagem binária ou de máquina: É a linguagem do computador, responsável por seguir
+sequencias complexas de instruções, tudo isso seguindo no princípio binário.
+
+- Linguagem Assembly: relação direta entre as instruções em linguagem binária e expressões
+mnemônicas.
+
+    Instrução Binária       Correspondente eletrônico
+          0000                         stop
+          0100                         read 1
+          0110                         read 2
+          0111                         add 1 2
+
+- Esta "altitude" do nível de uma linguagem diz respeito, em linhas gerais, a facilidade e rapidez
+com que se produz um programa. Ou seja, são necessárias menos instruções escritas pelo programador
+para se obter um mesmo resultado. Em outras palavras uma instrução escrita produz mais instruções
+binárias. Porém, linguagens de alto nível, costumam produzir programas de desempenho inferior
+
+- Os compiladores leem o programa fonte e produzem um programa executável independente de qualquer
+outro software que não seja o sistema operacional do computador.
+
+            PROGRAMA -> COMPILADOR -> PROGRAMA.exe 
+            
+        ps: Em sistemas UNIX PROGRAMA.exe, retorna apenas PROGRAMA, mas no fundo é um executável 
+        também
+
+- Os interpretadores leem o programa fonte, criam este programa na memória (binário) e o executam.
+Não existe programa executavel gerado.Tudo é realizado pelo interpretador.
+
+    . Os interpretadores facilitam o trabalho de manutenção principalmente em grandes sistemas
+    compostos de muitos programas
+
+    . Em ambientes de muitos programas rodando simultaneamente, os interpretadores consomem menos
+    memória
+
+    . Considerando uma mesma linguagem, o seu computador produz programas mais rápidos do que
+    o seu interpretador.
