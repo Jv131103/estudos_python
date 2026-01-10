@@ -426,13 +426,15 @@ UM POUCO SOBRE LÓGICA DE PROGRAMAÇÃO:
 
     Operadores bit-wise:
 
-    Listas e Arrays:
+    Listas, Arrays e Vetores:
 
     Índices:
 
     In place:
 
     Janelas:
+
+    Matrizes:
 
     Tuplas:
 
