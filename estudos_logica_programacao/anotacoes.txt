@@ -379,6 +379,80 @@ traz mais eficiência, legibilidade e pode ser usada e reaproveitada em outros p
 
     FIM
 
+- Ide vs Editor de código fonte:
+
+    . Ide (Integrated Development Environment): Uma IDE é um ambiente completo 
+    de desenvolvimento. Ela integra várias ferramentas em um só lugar.
+
+        O que uma IDE já traz integrada:
+
+            + Editor de código
+
+            + Compilador / interpretador
+
+            + Debugger (passo a passo)
+
+            + Gerenciador de projetos
+
+            + Gerenciador de dependências
+            
+            + Build / Run com um clique
+            
+            + Testes integrados
+
+        A IDE entende:
+
+            o projeto
+
+            a linguagem
+
+            a estrutura
+
+            as dependências
+
+        Exemplos típicos
+
+            . PyCharm
+
+            . IntelliJ IDEA
+
+            . Eclipse
+
+            . Visual Studio
+
+            . NetBeans
+
+        → “Eu desenvolvo software aqui”
+
+    . Editor de código fonte: Um editor de código é uma ferramenta focada em 
+    escrever e editar texto/código. Ele não se preocupa com o projeto inteiro,
+    só com o arquivo que você está editando. 
+    
+        Um editor oferece:
+
+            + Destaque de sintaxe (cores)
+
+            + Numeração de linhas
+
+            + Busca e substituição
+
+            + Autocompletar básico
+
+            + Leve e rápido
+        
+        Exemplos típicos
+
+            . VS Code (editor avançado)
+
+            . Sublime Text
+
+            . Notepad++
+
+            . Vim / Nano
+
+        → “Eu escrevo código aqui”
+
+
 UM POUCO SOBRE LÓGICA DE PROGRAMAÇÃO:
 
 
@@ -410,7 +484,13 @@ UM POUCO SOBRE LÓGICA DE PROGRAMAÇÃO:
 
     Caracteres de controle:
 
+    Números (inteiros e reais):
+
+    Problema de arredondamento:
+
     strings e caracteres:
+
+    parsings:
 
     Blocos e escopos:
 
@@ -418,11 +498,17 @@ UM POUCO SOBRE LÓGICA DE PROGRAMAÇÃO:
 
     Estruturas de repetição:
 
+    break, continue e pass:
+
     Variável acumuladora e Variável atribuidora
 
     Iterações e Iteráveis:
 
     Funções e lambdas:
+
+    Recursões:
+
+    Variáveis globais e locais:
 
     Operadores bit-wise:
 
@@ -434,7 +520,15 @@ UM POUCO SOBRE LÓGICA DE PROGRAMAÇÃO:
 
     Janelas:
 
+    Slicing:
+
+    Listas, Arrays e Vetores circulares:
+
     Matrizes:
+
+    Diagonais:
+
+    Matriz circular:
 
     Tuplas:
 
@@ -443,3 +537,96 @@ UM POUCO SOBRE LÓGICA DE PROGRAMAÇÃO:
     Conjuntos:
 
     tecnica de ponteiros:
+
+    Divisão e conquista:
+
+    números aleatórios:
+
+    Módulos, Bibliotecas e importações:
+
+    Alias:
+
+    Garbage:
+
+    Arquivos:
+
+
+Um pouco sobre POO:
+
+    Objetos e classes
+
+    Variáveis de classe e Construtor
+
+    Métodos
+
+    atributos e propriedades de classe
+
+    atributos privados, protegidos e públicos
+
+    métodos privados, protegidos e públicos
+
+    Encapsulamento
+
+    Composição, herança e delegação
+
+    Polimorfismo
+
+    Sub-tipagem
+
+    Métodos de classe
+
+    Métodos abstratos
+
+    Métodos estáticos
+
+    self e cls
+
+    Métodos mágicos
+
+    DataClass
+
+    Setups, interfaces e Managers
+
+    SOLID
+
+Um pouco sobre Estruturas de dados:
+
+    listas / vetores e matrizes não ordenadas
+
+    listas / vetores e matrizes ordenadas
+
+    matrizes
+
+    algoritmos de busca
+
+    algoritmo de Ordenações
+
+    pilhas
+
+    filas
+
+    fila de prioridade
+
+    fila circular
+
+    fila de extremidade dupla
+
+    deques
+
+    Lista encadeada
+
+    ávores
+
+    hash tables
+
+    grafos
+
+    Busca em profundidade
+
+    Busca em largura
+
+    Busca gulosa
+
+    Busca A*
+
+    Algoritmo de Dijkstra
