@@ -457,30 +457,1315 @@ UM POUCO SOBRE LÓGICA DE PROGRAMAÇÃO:
 
 
     Variáveis:
+
+        - Variável é um nome que guarda um valor na memória para ser usado depois.
+
+        . Variável = caixa com nome
+
+        . Valor = conteúdo da caixa
+
+        . O valor pode mudar ao longo do programa
+
+        . Serve para guardar dados temporários
+
+        Por que variáveis existem?
+
+            . Evitam repetir valores
+
+            . Facilitam cálculos
+
+            . Permitem decisões (if)
+
+            . Permitem repetições (while, for)
+
+        Antes de criar qualquer variável, pergunte:
+
+            1. Que informação eu preciso guardar?
+
+            2. Essa informação muda ou é fixa?
+
+            3. Vou usar esse valor depois?
+
+            4. Esse nome está claro para um humano?
+
+        - Nome bom de variável explica o que ela guarda.
+
+        TIPOS MAIS COMUNS DE VARIÁVEIS (conceito):
+
+            | Tipo    | Guarda o quê?       | Exemplo         |
+            | ------- | ------------------- | --------------- |
+            | inteiro | números sem vírgula | idade = 20      |
+            | real    | números com vírgula | altura = 1.75   |
+            | texto   | palavras/frases     | nome = "Renato" |
+            | lógico  | verdadeiro ou falso | aprovado = True |
+
+        EXEMPLOS SIMPLES:
+
+            Exemplo 1 — Guardar valor
+
+                idade = 20
+
+            Mental: “Criei uma caixa chamada idade e coloquei o valor 20 dentro.”
+
+            Exemplo 2 — Usar variável
+
+                preco = 10
+                total = preco + 5
+            
+            Mental: “Usei o valor guardado para calcular outro.”
+
+            Exemplo 3 — Valor muda
+
+                contador = 0
+                contador = contador + 1
+
+            Mental: “A variável continua existindo, mas o valor mudou.”
+        
+        ERROS COMUNS:
+
+            Usar nomes confusos:
+
+                x = 10   # ruim
+
+            Melhor:
+
+                quantidade = 10
+
+            Usar variável sem valor:
+
+                print(total)  # erro se total não existir
+
+            Pensar que variável é o valor:
+
+                - Não é
+
+                Variável é o nome, não o conteúdo.
+
+        FRASE-CHAVE (decora essa)
+
+            . Variável não é número, nem texto.
+
+            . Variável é um nome que aponta para um valor.
+
+        DICAS:
+
+            . Pense no nome antes do valor
+            . Variável deve ter sentido humano
+            . Uma variável = uma informação
+            . Se travar, pergunte: “O que eu preciso guardar?”
     
+    =====================================================================
+
     Constantes:
 
-    Entrada e saída de dados:
+        - Constante é um valor que NÃO deve mudar durante o programa.
 
-    Interpolação e concatenação:
+        . Constante = valor fixo
+
+        . Serve para representar regras, limites ou padrões
+
+        . Evita “números mágicos” espalhados no código
+
+        . Deixa o programa mais claro e seguro
+
+        Ideia-chave:
+
+            - Se não pode mudar, não deve ser variável.
+
+        COMO PENSAR COMO LÓGICO (ANTES DO CÓDIGO):
+
+            Perguntas obrigatórias antes de decidir:
+
+                1. Esse valor pode mudar durante a execução?
+
+                2. Ele representa uma regra do problema?
+
+                3. Se mudar no futuro, deveria mudar em um só lugar?
+
+                4. Esse valor tem significado fixo no mundo real?
+
+            Se a resposta for “não muda” → constante
+
+        DIFERENÇA CLARA: VARIÁVEL × CONSTANTE:
+
+            | Conceito  | Pode mudar?  | Exemplo        |
+            | --------- | ------------ | -------------- |
+            | Variável  | ✅ Sim       | idade, saldo   |
+            | Constante | ❌ Não       | PI, taxa fixa  |
+
+        - Constante não depende do usuário, nem do tempo.
+
+        COMO REPRESENTAR CONSTANTES (boa prática):
+
+            Em Python, usa-se:
+
+                . Nome em MAIÚSCULO
+
+                . Separação com _
+
+                EX:
+
+                    PI = 3.14
+                    TAXA_JUROS = 0.05
+                    IDADE_MINIMA = 18
+        
+            Mesmo que Python permita mudar, a regra é lógica, não da linguagem.
+
+        Exemplo 1 — Regra matemática
+
+            PI = 3.14
+            area = PI * 10 * 10
+
+        Mental: “PI não muda. O raio pode mudar.”
+
+        Exemplo 2 — Regra de negócio
+            
+            IDADE_MINIMA = 18
+            idade = 20
+
+        Mental: “A idade muda, a regra não.”
+
+        Exemplo 3 — Evitando número mágico
+
+            Ruim:
+
+                total = preco * 0.1
+
+            Bom:
+
+                DESCONTO = 0.1
+                total = preco * DESCONTO
+            
+        ERROS COMUNS:
+
+            . Usar valor fixo direto no código
+
+            . Espalhar o mesmo número em vários lugares
+
+            . Tratar regra como variável
+
+            . Nomear constante como variável comum
+
+        Regra prática:
+
+            - Se você precisar procurar o número no código para entender, ele 
+            deveria ser uma constante.
+
+        FRASE-CHAVE PARA MEMORIZAR:
+
+            . Variável guarda estado.
+
+            . Constante guarda regra.
+
+        DICAS:
+
+            . Regra → constante
+            . Dado do usuário → variável
+            . Constante no topo do código
+            . Nome claro e em maiúsculo
+            . Menos números “soltos” = menos erro
+
+    =====================================================================
+
+    Tipos de dados:
+
+        - Tipo de dado define o que uma informação é e o que pode ser feito 
+        com ela.
+
+        Existem duas grandes visões:
+
+            . Primitivos × Compostos
+
+            . Objeto × Não-objeto
+
+            Essas visões se complementam, não competem.
+        
+        TIPOS PRIMITIVOS (ou simples):
+
+            - Guardam um único valor simples.
+
+            Características:
+
+                Valor único
+
+                Não possuem partes internas
+
+                Representam dados básicos
+
+            Exemplos comuns:
+
+                Número inteiro → 10
+
+                Número real → 2.5
+
+                Texto → "Olá"
+
+                Lógico → True / False
+
+            Ideia-chave:
+
+                - Primitivo = uma informação só.
+
+        TIPOS COMPOSTOS:
+
+            - Guardam vários valores ou estruturas internas.
+
+            Características:
+
+                Podem conter vários dados
+
+                Organizam informações relacionadas
+
+                Facilitam trabalhar com conjuntos
+
+            Exemplos comuns:
+
+                Lista
+
+                Tupla
+
+                Conjunto
+
+                Dicionário
+
+            Ideia-chave:
+
+                - Composto = várias informações agrupadas.
+
+        COMPARAÇÃO RÁPIDA:
+
+            | Tipo      | Quantidade de dados |
+            | --------- | ------------------- |
+            | Primitivo | 1 valor             |
+            | Composto  | Vários valores      |
+
+        NÃO-OBJETO (visão lógica):
+
+            - Dado sem comportamento próprio.
+
+            . Só representa um valor
+
+            . Não “faz coisas”
+            
+            . Usado diretamente em cálculos e decisões
+
+            Exemplos:
+
+                Número
+
+                Texto
+
+                Booleano
+
+            Pense assim:
+
+                . É só dado, não é coisa.
+
+        OBJETO (visão mais avançada):
+
+            - Objeto = dado + comportamento.
+
+            Características:
+
+                . Tem valor
+
+                . Tem ações
+
+                . Possui estrutura interna
+
+                . Pode ser manipulado por métodos
+
+            Exemplo conceitual:
+
+                . Uma lista guarda valores e sabe adicionar, remover, ordenar.
+
+            Objeto é algo que:
+
+                - Guarda dados
+
+                - Sabe operar sobre si mesmo
+
+                - Referencia moldes específicos para se realizar ações
+
+        OBJETO × NÃO-OBJETO (resumo mental):
+
+            | Conceito   | O que é      |
+            | ---------- | ------------ |
+            | Não-objeto | Dado puro    |
+            | Objeto     | Dado + ações |
+
+        Em Python:
+        
+            Tudo é objeto, mas conceitualmente essa separação ajuda muito a 
+            entender POO.
+
+        Exemplo 1 — Primitivo
+
+            idade = 20
+
+        Mental: Um único valor.
+
+        Exemplo 2 — Composto
+
+            notas = [7, 8, 9]
+
+        Mental: Vários valores agrupados.
+
+        Exemplo 3 — Objeto em ação
+
+            notas.append(10)
+
+        Mental: A lista faz algo.
+
+        Exemplo 4 — Não-objeto
+
+            soma = 10 + 5
+
+        Mental: Apenas valores sendo usados.
+
+        ERROS COMUNS:
+
+            - Achar que tudo é só número
+            - Confundir tipo com valor
+            - Não perceber quando precisa de estrutura
+            - Tentar resolver tudo com primitivos
+
+            Regra prática:
+
+                . Muitos dados relacionados → tipo composto.
+
+        FRASES-CHAVE PARA MEMORIZAR:
+
+            Primitivo = um valor
+            Composto = vários valores
+            Objeto = dado que sabe agir
+            Não-objeto = dado puro
+
+    =====================================================================
+
+    Verificação de tipo (type, issinstance, issubclass):
+
+        - Verificar tipo é perguntar: “que tipo de coisa é isso?”
+
+        Em Python, usamos isso para:
+
+            Evitar erros
+
+            Tomar decisões
+
+            Garantir que um dado é do tipo esperado
+
+            Trabalhar com objetos e herança
+
+        VISÃO LÓGICA (ANTES DO CÓDIGO):
+
+            Sempre pense assim:
+
+                1. Isso é um valor ou um objeto?
+
+                2. Preciso saber exatamente o tipo ou apenas se pertence a um 
+                grupo?
+
+                3. Estou lidando com classe ou instância?
+
+            Essas perguntas definem qual ferramenta usar.
+
+        type() — qual é o tipo exato:
+
+            - Retorna o tipo exato do valor ou objeto.
+
+            Ideia-chave:
+
+                . type compara identidade de tipo, não parentesco.
+
+            Exemplo:
+                
+                x = 10
+                type(x)
+
+            Leitura humana:
+
+                “O tipo exato de x é inteiro.”
+
+            Comparação direta:
+
+                type(x) == int
+
+            Só será True se for exatamente int.
+
+            Quando usar type?
+
+                . Testes simples
+                . Depuração
+                . Verificação rígida
+
+                . Não é ideal para POO e herança
+
+        isinstance() — pertence a esse tipo?
+
+            - Verifica se um valor é instância de um tipo ou de seus subtipos.
+
+            Ideia-chave:
+
+                . isinstance respeita herança.
+
+            Exemplo:
+
+                x = 10
+                isinstance(x, int)
+
+            Leitura humana:
+
+                “x é um inteiro ou algo derivado de inteiro?”
+
+            Múltiplos tipos:
+
+                isinstance(x, (int, float))
+
+            Mental: “É número?”
+
+            Quando usar isinstance?
+
+                . Código real
+                . Funções genéricas
+                . Validação de entrada
+                . POO
+
+            É o mais usado na prática.
+
+        issubclass() — classe filha de outra?
+
+            - Verifica se uma classe herda de outra classe.
+
+            PS: Não funciona com valores, só com classes.
+
+            Exemplo:
+
+                issubclass(bool, int)
+
+            Leitura humana:
+
+                “bool é uma subclasse de int?”
+
+            Sim (True)
+
+            Outro exemplo:
+
+                issubclass(list, object)
+
+            Sim — tudo herda de object.
+
+        COMPARAÇÃO FINAL (anote isso):
+
+            | Função       | Pergunta que responde       |
+            | ------------ | --------------------------- |
+            | `type`       | Qual é o tipo exato?        |
+            | `isinstance` | É desse tipo ou derivado?   |
+            | `issubclass` | Essa classe herda de outra? |
+
+        ERROS COMUNS:
+
+            . Usar type quando deveria usar isinstance
+            . Usar issubclass com objetos
+            . Comparar tipos sem entender herança
+            . Verificar tipo quando não precisa
+
+            Regra prática:
+
+                - Prefira isinstance em código de verdade.
+
+        FRASES-CHAVE PARA MEMORIZAR
+
+            type é rígido
+            isinstance é flexível
+            issubclass é estrutural
+
+    ===================================================================== 
+
+    Entrada e saída de dados (Input / Output — I/O):
+
+        - Entrada de dados é quando o programa recebe informação de fora.
+        
+        - Saída de dados é quando o programa mostra informação para fora.
+
+        . Entrada → usuário, arquivo, sistema
+
+        . Saída → tela, arquivo, sistema
+
+        . Todo programa útil recebe algo e entrega algo
+
+        ENTRADA DE DADOS (conceito):
+
+            Em Python, a entrada padrão vem do teclado:
+
+                input()
+
+            Importante:
+
+                input() sempre retorna TEXTO (string).
+
+            Exemplo simples:
+
+                nome = input("Digite seu nome: ")
+                print(nome)
+
+        SAÍDA DE DADOS (conceito):
+
+            Saída padrão é feita com:
+
+                print()
+
+            Serve para:
+
+                Mostrar resultados
+
+                Informar erros
+
+                Exibir mensagens
+
+            Exemplo com texto:
+
+                print("Olá, mundo!")
+        
+        CONVERSÃO DE TIPO (obrigatório entender):
+
+            Como input() retorna texto, precisamos converter:
+
+                idade = int(input("Digite sua idade: "))
+
+            Se não converter → erro em cálculo.
+
+            Exemplo 1 — Número:
+
+                numero = int(input("Digite um número: "))
+                print(numero)
+
+            Exemplo 2 — Soma:
+
+                a = int(input("Digite o primeiro número: "))
+                b = int(input("Digite o segundo número: "))
+                soma = a + b
+                print(soma)
+
+            Exemplo 3 — Texto formatado:
+
+                nome = input("Nome: ")
+                idade = int(input("Idade: "))
+                print(f"{nome} tem {idade} anos")
+
+        ERROS COMUNS:
+
+            . Esquecer conversão de tipo
+            . Fazer cálculo com string
+            . Entrada confusa para o usuário
+            . Não guardar o valor em variável
+
+            Regra de ouro:
+
+                . Entrada → variável → processamento → saída
+
+        FRASE-CHAVE PARA MEMORIZAR:
+
+            - Programa sem entrada e saída não conversa com o mundo.
+
+        DICAS:
+
+            . Leia a entrada com calma
+            . Converta logo após o input
+            . Guarde tudo em variáveis
+            . Só depois faça contas
+            . Mostre saída clara para o usuário
+
+    =====================================================================
+
+    Interpolação e concatenação e formatação:
+
+        - Concatenação junta textos manualmente.
+        
+        - Interpolação insere valores dentro do texto automaticamente.
+        
+        - Formatação controla como o texto e os números aparecem.
+
+        Objetivo principal:
+
+            - mostrar informações de forma clara para humanos.
+
+        COMO PENSAR COMO LÓGICO (ANTES DO CÓDIGO):
+
+            Pergunte sempre:
+
+                Vou juntar textos?
+
+                Vou mostrar valores dentro do texto?
+
+                Preciso controlar casas decimais, alinhamento ou formato?
+
+                O usuário entenderia essa saída facilmente?
+
+        CONCATENAÇÃO (forma antiga):
+
+            . Juntar textos usando +
+
+            EX:
+
+                nome = "Renato"
+                idade = "20"
+                print("Nome: " + nome + " | Idade: " + idade)
+
+            Observação importante:
+
+                . Só funciona bem com texto
+
+                . Fica confuso com números
+
+                . Pouco usado hoje
+
+            Problema comum:
+
+                print("Idade: " + 20)  # erro
+
+        INTERPOLAÇÃO (forma moderna — RECOMENDADA):
+
+            - Inserir valores dentro do texto automaticamente
+
+            Em Python, usamos f-strings:
+
+                print(f"Nome: {nome} | Idade: {idade}")
+
+            Vantagens:
+
+                Mais legível
+
+                Aceita qualquer tipo
+
+                Mais profissional
+
+                Menos erro
+
+            Use isso sempre que possível.
+
+        FORMATAÇÃO DE VALORES:
+
+            - Controlar como o valor aparece
+
+            + Casas decimais:
+
+                preco = 10.56789
+                print(f"Preço: {preco:.2f}")
+
+            Mostra apenas 2 casas decimais.
+
+            + Texto alinhado:
+
+                print(f"{nome:<10} {idade:>3}")
+
+            . < esquerda
+
+            . > direita
+
+            . número = largura
+
+            + Formatação monetária (simples):
+
+                total = 1234.5
+                print(f"Total: R$ {total:.2f}")
+
+        Ruim (concatenação excessiva):
+
+            print("Total: R$ " + str(total))
+
+        Bom (interpolação):
+
+            print(f"Total: R$ {total:.2f}")
+
+        ERROS COMUNS:
+
+            . Usar concatenação com números
+            . Converter tudo para string sem necessidade
+            . Saída confusa para o usuário
+            . Não formatar valores financeiros
+
+        Regra prática:
+
+            - Se tem variável no texto → use f-string.
+
+        FRASES-CHAVE PARA MEMORIZAR:
+
+            Concatenação é manual
+            
+            Interpolação é automática
+            
+            Formatação é controle visual
+
+        DICAS:
+
+            . Use f"" sempre
+            . Formate números financeiros
+            . Saída clara vale mais que código curto
+            . Pense no usuário lendo
+
+        Outras saídas:
+
+            Saída com vírgula no print:
+
+                Você pode passar vários valores no print separados por vírgula:
+
+                    nome = "Renato"
+                    idade = 20
+                    print("Nome:", nome, "| Idade:", idade)
+
+            Por padrão o print coloca um espaço entre os itens.
+            Você pode controlar com sep e end:
+
+                print("A", "B", "C", sep="-")   # A-B-C
+                print("Oi", end="!")           # Oi!
+
+            Formatação com % (antiga, mas cai em exercícios):
+
+                Sintaxe:
+
+                    %s texto
+
+                    %d inteiro
+
+                    %.2f float com 2 casas
+
+                EX:
+
+                    nome = "Renato"
+                    idade = 20
+                    print("Nome: %s | Idade: %d" % (nome, idade))
+
+                    preco = 10.567
+                    print("Preço: R$ %.2f" % preco)
+
+            Formatação com .format():
+
+                Por posição:
+
+                    nome = "Renato"
+                    idade = 20
+                    print("Nome: {} | Idade: {}".format(nome, idade))
+
+                Por nome:
+
+                    print("Nome: {n} | Idade: {i}".format(n=nome, i=idade))
+
+                Casas decimais:
+
+                    total = 1234.5
+                    print("Total: R$ {:.2f}".format(total))
+
+    =====================================================================
 
     Operadores aritméticos:
 
+        - Operadores aritméticos servem para fazer cálculos matemáticos no 
+        programa.
+
+        Eles permitem:
+
+            Somar
+
+            Subtrair
+
+            Multiplicar
+
+            Dividir
+
+            Divisão inteira
+
+            Resto da divisão
+
+            Potência
+
+        Sem operadores, o programa não calcula nada.
+
+        COMO PENSAR COMO LÓGICO (ANTES DO CÓDIGO)
+
+            Pergunte sempre:
+
+                Que cálculo o problema pede?
+                
+                É conta de escola (soma, divisão, média, etc.)?
+                
+                O resultado precisa ser inteiro ou decimal?
+                
+                Preciso do resto ou só do resultado?
+
+            A lógica vem antes do símbolo.
+
+        OPERADORES ARITMÉTICOS EM PYTHON:
+
+            | Operador | Nome            | Exemplo  |
+            | -------- | --------------- | -------- |
+            | `+`      | Soma            | `a + b`  |
+            | `-`      | Subtração       | `a - b`  |
+            | `*`      | Multiplicação   | `a * b`  |
+            | `/`      | Divisão         | `a / b`  |
+            | `//`     | Divisão inteira | `a // b` |
+            | `%`      | Resto (módulo)  | `a % b`  |
+            | `**`     | Potência        | `a ** b` |
+        
+        Soma:
+
+            a = 10
+            b = 3
+            print(a + b)   # 13
+
+        Divisão (sempre gera decimal):
+
+            print(10 / 3)  # 3.3333...
+
+        Divisão inteira:
+
+            print(10 // 3) # 3
+
+        . Quantas vezes cabe, sem quebrar.
+
+        Resto da divisão:
+
+            print(10 % 3)  # 1
+        
+        . Muito usado para:
+
+            Par ou ímpar
+
+            Ciclos
+
+            Quebras de grupo
+
+        Potência:
+
+            print(2 ** 3)  # 8
+
+            print(pow(2, 3))  # 8
+
+        Subtração:
+
+            a = 10
+            b = 3
+            print(a - b)   # 7
+
+        Multiplicação:
+
+            a = 10
+            b = 3
+            print(a * b)   # 30
+
+        Adicional: Raizes
+
+            indice = 2
+            radicando = 4
+
+            raiz = radicando**(1/indice)
+
+            print(raiz)  # 2.0
+
+        abs() — valor absoluto:
+
+            - Retorna o valor sem sinal (distância até o zero).
+
+            Ex:
+
+                print(abs(10))    # 10
+                print(abs(-10))   # 10
+
+                # tpécnica em caso de negativos, fazer conversão explícita
+                print(-(-10)) # 10
+
+        round() — arredondamento:
+
+            - Arredonda um número.
+
+            Ex:
+
+                print(round(3.6))      # 4
+                print(round(3.14159, 2))  # 3.14
+
+            Pode receber:
+
+                - 1 argumento → arredonda inteiro
+
+                - 2 argumentos → casas decimais
+
+        min() e max() — menor e maior:
+
+            print(min(3, 7, 2))  # 2
+            print(max(3, 7, 2))  # 7
+            
+            # Com iteraveis de tipo numérico:
+            valores = [10, 3, 8]
+            print(min(valores))
+            print(max(valores))
+
+        divmod() — divisão + resto:
+
+            - Retorna quociente e resto juntos.
+
+            q, r = divmod(10, 3)
+            print(q, r)  # 3 1
+
+        int(), float() — conversão numérica:
+
+            - PS: int() corta, não arredonda.
+
+                print(int(3.9))    # 3
+                print(float(10))   # 10.0
+
+        PRECEDÊNCIA (ordem das contas):
+
+            - Python segue a matemática.
+
+            Ordem:
+
+                1. ()
+
+                2. **
+
+                3. * / // %
+
+                4. + -
+
+            Exemplo:
+
+                resultado = 10 + 2 * 3
+
+            Resultado: 16, não 36.
+
+            Use parênteses para deixar claro:
+
+                resultado = (10 + 2) * 3
+
+             Resultado: 36.
+
+        ERROS COMUNS
+
+            . Esquecer conversão do input()
+            . Usar / achando que retorna inteiro
+            . Confundir % com porcentagem
+            . Não usar parênteses quando precisa
+            . Achar que abs arredonda
+            . Confundir int() com round()
+            . Não usar funções prontas
+            . Repetir cálculo manual desnecessário
+
+            % não é porcentagem, é resto da divisão.
+
+            Se parece “básico demais”, provavelmente já existe função pronta.
+
+        DICAS:
+
+            . Converta o input imediatamente
+            . Pense na matemática antes do operador
+            . Use parênteses sem medo
+            . Teste com números simples (2, 3, 10)
+
+    =====================================================================
+
     Operadores de atribuição:
+
+        - Operadores de atribuição servem para colocar ou atualizar valores em 
+        variáveis.
+
+        Eles fazem duas coisas ao mesmo tempo:
+
+            1. Executam uma operação
+
+            2. Guardam o resultado na variável
+
+        Não é matemática pura, é estado do programa mudando.
+
+        COMO PENSAR COMO LÓGICO:
+
+            Sempre leia assim:
+
+                “Pegue o valor atual da variável, faça algo, e guarde de volta.”
+
+            Se você não entende isso, vai errar laço, contador e soma acumulada.
+
+        ATRIBUIÇÃO SIMPLES:
+
+            . =
+                
+                x = 10
+
+            Mental: “Coloque 10 dentro de x.” / “x recebe 10” /
+            “x atribui 10” / “x referencia 10”
+
+        ATRIBUIÇÃO COM OPERAÇÃO:
+
+            | Operador | Significado             |
+            | -------- | ----------------------- |
+            | `+=`     | soma e guarda           |
+            | `-=`     | subtrai e guarda        |
+            | `*=`     | multiplica e guarda     |
+            | `/=`     | divide e guarda         |
+            | `//=`    | divide inteiro e guarda |
+            | `%=`     | resto e guarda          |
+            | `**=`    | potência e guarda       |
+
+        . +=
+
+            total = 0
+            total += 5
+
+        Mesmo que:
+
+            total = total + 5
+
+        . -=
+
+            saldo = 100
+            saldo -= 30
+
+        Mesmo que:
+
+            saldo = saldo - 30
+
+        . *=
+
+            preco = 10
+            preco *= 2
+
+        Mesmo que:
+
+            preco = preco * 2
+
+        . /=
+
+            media = 10
+            media /= 2
+
+        Mesmo que:
+
+            media = media / 2
+
+        . %= (muito usado em ciclos)
+
+            x = 10
+            x %= 3   # sobra 1
+
+        Mesmo que:
+
+            x = x % 3
+
+        . **=
+
+            n = 2
+            n **= 3
+
+        Mesmo que:
+
+            n = n ** 3
+
+        LEITURA HUMANA:
+
+            Leia como:
+
+                “x recebe x mais 1”
+
+            Nunca como:
+
+                “x mais igual 1”
+
+        ERROS COMUNS
+
+            . Usar sem entender o valor anterior
+            . Confundir = com ==
+            . Achar que cria variável nova
+            . Usar antes de inicializar
+
+            Regra de ouro:
+
+                Nunca use += sem inicializar a variável antes.
+
+        FRASE-CHAVE PARA MEMORIZAR
+
+            - Operador de atribuição muda o estado da variável.
+
+        DICAS:
+
+            . Inicialize sempre
+            . Leia o operador como frase
+            . Use muito em contadores
+            . Use em laços (em breve!)
+
+    =====================================================================
 
     Operadores lógicos:
 
+        - Operadores lógicos combinam condições e produzem verdadeiro ou falso.
+
+        Eles trabalham com valores lógicos:
+
+            True (verdadeiro)
+
+            False (falso)
+
+        São usados para:
+
+            Decidir caminhos (if)
+
+            Validar dados
+
+            Criar regras compostas
+
+        COMO PENSAR COMO LÓGICO (ANTES DO CÓDIGO):
+
+            Sempre pergunte:
+
+                1. Quantas condições existem?
+
+                2. Todas precisam ser verdadeiras ou só uma?
+
+                3. Existe negação de alguma condição?
+
+            Traduza a frase humana para lógica.
+
+        and — E:
+
+            - Só é True se todas forem verdadeiras.
+
+            EX:
+
+                idade = 20
+                tem_documento = True
+
+                print(idade >= 18 and tem_documento)
+
+            Tabela verdade (and):
+
+                |    A    |   B    | A and B |
+                | ------- | ------ | ------- |
+                | True    | True   | True    |
+                | True    | False  | False   |
+                | False   | True   | False   |
+                | False   | False  | False   |
+
+        or — OU
+
+            É True se pelo menos uma condição for verdadeira.
+
+            EX:
+
+                dia = "sábado"
+                print(dia == "sábado" or dia == "domingo")
+
+            Leitura humana:
+
+                “É sábado ou domingo?”
+
+            Tabela verdade (or):
+
+                |    A    |   B    | A or B |
+                | ------- | ------ | ------ |
+                | True    | True   | True   |
+                | True    | False  | True   |
+                | False   | True   | True   |
+                | False   | False  | False  |
+
+        not — NÃO
+
+            - Inverte o valor lógico.
+
+            Exemplo:
+
+                chovendo = False
+                print(not chovendo)
+
+            Leitura humana:
+
+                “Não está chovendo.”
+
+            Tabela Verdade:
+
+                |   A   |   not A   |
+                | ----- | --------- |
+                | True  |   False   |
+                | False |   True    |
+
+        COMBINAÇÕES (muito comum):
+
+            Ex1:
+
+                idade = 17
+                estudante = True
+
+                print(idade < 18 and estudante)
+
+            Ex2:
+
+                senha_correta = False
+                print(not senha_correta)
+
+        PRECEDÊNCIA LÓGICA (importante):
+
+            Ordem:
+
+                1. not
+
+                2. and
+
+                3. or
+            
+            Use parênteses para clareza:
+
+                (idade >= 18 and tem_documento) or autorizado
+
+        ERROS COMUNS
+
+            . Esquecer parênteses
+            . Confundir and com or
+            . Escrever frases mal traduzidas
+            . Usar lógica sem pensar na frase humana
+
+            Regra de ouro:
+
+                Se não dá pra ler em português, a lógica está errada.
+
+        FRASES-CHAVE PARA MEMORIZAR
+
+            and exige tudo
+            or aceita um
+            not inverte
+
+        DICAS:
+
+            . Traduza para frase humana
+            . Use parênteses sem medo
+            . Teste com valores verdadeiros e falsos
+            . Não complique a lógica cedo demais
+
+    =====================================================================
+
     Operadores relacionais:
+
+    =====================================================================
+
+    in e is:
+
+    =====================================================================
 
     Incremento / Decremento:
 
+    =====================================================================
+
     Precedência:
+
+    =====================================================================
 
     Swap:
 
+    =====================================================================
+
     Casting:
 
+    =====================================================================
+
     Coerção:
+
+    =====================================================================
 
     Caracteres de controle:
 
