@@ -455,7 +455,6 @@ traz mais eficiência, legibilidade e pode ser usada e reaproveitada em outros p
 
 UM POUCO SOBRE LÓGICA DE PROGRAMAÇÃO:
 
-
     Variáveis:
 
         - Variável é um nome que guarda um valor na memória para ser usado depois.
@@ -1737,104 +1736,1886 @@ UM POUCO SOBRE LÓGICA DE PROGRAMAÇÃO:
             . Teste com valores verdadeiros e falsos
             . Não complique a lógica cedo demais
 
+        CONCEITO AVANÇADO (MUITO IMPORTANTE):
+
+            - and e or retornam operandos, não booleanos
+
+            - Eles usam short-circuit evaluation (avaliação curta)
+
+            Isso permite padrões como:
+
+                valor = entrada or valor_padrao
+
+            ou
+
+                condicao and funcao()
+
+        Operação de Curto Circuito:
+
+            - Curto-circuito é quando o Python para de avaliar uma expressão
+            lógica assim que o resultado já está decidido.
+
+            Ele acontece com:
+
+                and
+                or
+
+            REGRAS SIMPLES:
+
+                and
+
+                    Para no primeiro falsy
+
+                        0 and 5
+
+                    . 0 já é falsy
+
+                    . Python nem olha o 5
+
+                or
+
+                    Para no primeiro truthy
+
+                        0 or 5
+
+                    . 0 é falsy
+
+                    . Vai para 5
+
+                    . 5 é truthy → para aqui
+
+                not
+
+                    Não tem curto-circuito, só inverte o valor.
+
+                        not 0   # True
+
+            POR QUE ISSO É IMPORTANTE?
+
+                Evita erros
+
+                        lista = []
+                        lista and lista[0]
+
+                    não dá erro, porque lista é falsy
+
+                Mais performance:
+
+                    . Menos operações
+
+                    . Menos avaliações
+
+            FRASE PARA MEMORIZAR:
+
+                and para no falso
+                or para no verdadeiro
+
     =====================================================================
 
     Operadores relacionais:
+
+        - Operadores relacionais comparam valores e geram um resultado lógico:
+            
+            True ou False.
+
+        Eles respondem perguntas como:
+
+            É maior?
+
+            É menor?
+
+            É igual?
+
+            É diferente?
+
+            Sem operadores relacionais, não existe decisão no programa.
+
+        COMO PENSAR COMO LÓGICO (ANTES DO CÓDIGO):
+
+            Sempre leia como pergunta humana:
+
+                . “Esse valor é maior que aquele?”
+
+                . “São iguais?”
+
+                . “É diferente?”
+
+            O resultado nunca é número, é verdadeiro ou falso.
+
+        OPERADORES RELACIONAIS EM PYTHON:
+
+            | Operador | Significado    |
+            | -------- | -------------- |
+            |  >       | maior que      |
+            |  <       | menor que      |
+            |  >=      | maior ou igual |
+            |  <=      | menor ou igual |
+            |  ==      | igual          |
+            |  !=      | diferente      |
+
+        EXEMPLOS EXPLICADOS:
+
+            . Maior / Menor
+
+                print(10 > 5)    # True
+                print(3 < 1)     # False
+
+            . Maior ou igual / Menor ou igual
+
+                print(18 >= 18)  # True
+                print(5 <= 3)    # False
+
+            . Igualdade (==)
+
+                print(10 == 10)  # True
+                print(10 == 5)   # False
+
+            . Diferente (!=)
+
+                print(10 != 5)   # True
+                print(10 != 10)  # False
+
+        Atenção:
+
+            x = 10   # atribuição
+            x == 10  # comparação
+
+
+        Relações com texto:
+
+            - Strings também podem ser comparadas com operadores relacionais.
+
+
+            COMPARANDO TEXTO:
+
+                nome = "Renato"
+                print(nome == "Renato")   # True
+                print(nome != "Ana")      # True
+
+            Comparação de texto é exata (maiúscula ≠ minúscula).
+
+            Python compara strings:
+
+                . caractere por caractere
+
+                . seguindo a ordem alfabética (tabela Unicode / ASCII)
+
+                PS: Não é “tamanho”, é ordem lexical.
+
+            COMO O PYTHON COMPARA STRINGS:
+
+                A comparação acontece:
+
+                    1 - Do primeiro caractere
+
+                    2 - Depois o segundo
+
+                    3 - Até encontrar diferença
+
+                Exemplo mental:
+
+                    "casa" vs "carro"
+                    c  == c
+                    a  == a
+                    s  >  r   → decisão aqui
+
+            EXEMPLOS IMPORTANTES:
+
+                . Ordem alfabética
+
+                    print("ana" < "bia")   # True
+                    print("casa" > "carro")  # True
+
+                . Maiúscula x minúscula (pegadinha!)
+
+                    print("ana" < "Ana")  # False
+
+                PS: Letras maiúsculas vêm antes das minúsculas.
+
+                . Comparando palavras:
+
+                    palavra = "banana"
+                    print(palavra >= "abacate")
+
+            COMPARAÇÃO COM len():
+
+                Às vezes o que você quer não é ordem, é tamanho:
+
+                    print(len("casa") > len("sol"))
+
+                Comparar tamanho ≠ comparar string diretamente.
+
+        COMPARAÇÕES COMBINADAS:
+
+            idade = 20
+            print(idade >= 18 and idade <= 65)
+
+        Mental: “Está entre 18 e 65?”
+
+        ERROS COMUNS
+
+            . Usar = no lugar de ==
+            . Comparar tipos diferentes sem querer
+            . Esquecer que o resultado é True/False
+            . Fazer comparação sem sentido lógico
+
+            . Achar que "z" > "ab" por tamanho
+            . Ignorar maiúsculas e minúsculas
+            . Comparar string quando queria comparar tamanho
+            . Não normalizar entrada do usuário
+
+            Regra de ouro:
+
+                Operador relacional sempre responde uma pergunta.
+
+                Python compara texto como dicionário, não como humano.
+
+        FRASES-CHAVE PARA MEMORIZAR
+
+            . Relacional compara
+            . Lógico combina
+            . Aritmético calcula
+            . Atribuição guarda
+
+            . String é comparada por ordem, não por tamanho.
+            . Maiúscula vem antes de minúscula.
+            . Normalize antes de comparar.
+
+        DICAS:
+
+            . Leia cada comparação em voz alta
+            . Teste com valores simples
+            . Use parênteses para clareza
+            . Combine com operadores lógicos
+
+            . Normalize strings
+            . Leia comparação como dicionário
+            . Use len() quando quiser tamanho
+            . Teste com maiúsculas e minúsculas
 
     =====================================================================
 
     in e is:
 
+        - in pergunta se algo está dentro de outra coisa.
+        
+        - is pergunta se duas variáveis apontam para o MESMO objeto.
+
+        Eles não fazem a mesma coisa e não são intercambiáveis.
+
+        COMO PENSAR COMO LÓGICO:
+
+            Antes de escolher:
+
+                Quero saber se pertence? → in
+
+                Quero saber se é o mesmo objeto na memória? → is
+
+            Valor igual ≠ objeto igual.
+
+        in — pertinência:
+
+            - Verifica se um elemento está contido em uma sequência ou coleção.
+
+            Funciona com:
+
+                str
+
+                list
+
+                tuple
+
+                set
+
+                dict (verifica chaves)
+            
+            . Exemplos com string:
+
+                print("a" in "casa")     # True
+                print("z" in "casa")     # False
+
+            . Exemplos com lista
+
+                numeros = [1, 2, 3]
+                print(2 in numeros)      # True
+                print(5 in numeros)      # False
+
+            . Exemplo com dicionário
+
+                dados = {"nome": "Renato", "idade": 20}
+                print("nome" in dados)   # True
+                print("Renato" in dados) # False
+
+            Em dicionários, in verifica chaves, não valores.
+
+        is — identidade
+
+            - Verifica se duas variáveis apontam para o mesmo objeto na memória.
+
+            Exemplo simples:
+
+                a = None
+                print(a is None)   # True
+
+            Uso correto clássico de is.
+
+            Exemplo com números (pegadinha)
+
+                a = 256
+                b = 256
+                print(a is b)   # True (por otimização interna)
+
+                a = 1000
+                b = 1000
+                print(a is b)   # Pode ser False
+
+            Não confie em is para comparar valores.
+
+            Exemplo com listas:
+
+                a = [1, 2, 3]
+                b = [1, 2, 3]
+
+                print(a == b)   # True (valores iguais)
+                print(a is b)   # False (objetos diferentes)
+
+        COMPARAÇÃO FINAL
+
+            | Operador | Pergunta           |
+            | -------- | ------------------ |
+            | `in`     | Está dentro?       |
+            | `is`     | É o mesmo objeto?  |
+            | `==`     | Tem o mesmo valor? |
+
+        ERROS COMUNS
+
+            . Usar is no lugar de ==
+            . Comparar string com is
+            . Usar in achando que compara igualdade
+            . Não entender dicionário com in
+
+            Regra de ouro:
+
+                Para valores → ==
+                Para identidade → is
+
+        FRASES-CHAVE PARA MEMORIZAR:
+
+            in é pertinência
+            
+            is é identidade
+
+            Igual não é o mesmo
+
+        DICAS:
+
+            . Leia o operador como pergunta
+            . Nunca use is para comparar valor
+            . Use is None sempre
+            . Teste com listas para entender memória
+
     =====================================================================
 
     Incremento / Decremento:
 
+        - Incrementar é aumentar um valor passo a passo.
+
+        - Decrementar é diminuir um valor passo a passo.
+
+        Em Python não existe ++ ou --.
+
+            Tudo é feito com operadores de atribuição.
+
+        COMO PENSAR COMO LÓGICO:
+
+            Leia sempre assim:
+
+                “Pegue o valor atual, altere um pouco, e guarde de volta.”
+
+            Isso é mudança de estado.
+
+        FORMAS DE INCREMENTAR:
+
+            . Forma clássica
+
+                x = x + 1
+
+            . Forma recomendada
+
+                x += 1
+            
+            Ambas fazem a mesma coisa.
+
+            . Incrementar por outro valor
+
+                x += 5
+
+        FORMAS DE DECREMENTAR:
+
+            . Forma clássica
+
+                x = x - 1
+
+            . Forma recomendada
+
+                x -= 1
+
+            . Decrementar por outro valor
+
+                x -= 3
+        
+        EXEMPLOS PRÁTICOS:
+
+            . Contador
+
+                contador = 0
+                contador += 1
+                contador += 1
+                print(contador)  # 2
+
+            . Contagem regressiva
+
+                x = 5
+                x -= 1
+                x -= 1
+                print(x)  # 3
+
+            . Acumulador
+
+                soma = 0
+                soma += 10
+                soma += 5
+                print(soma)  # 15
+
+        ERROS COMUNS
+
+            . Tentar usar x++ ou x-- (isso não existe em Python)
+            . Usar incremento sem inicializar
+            . Confundir incremento com atribuição simples
+
+            Regra de ouro:
+
+                Sempre inicialize antes de incrementar.
+
+        FRASES-CHAVE PARA MEMORIZAR
+
+            
+            Incrementar soma
+            
+            Decrementar subtrai
+            
+            Python não tem ++
+
+        DICAS:
+
+            . Inicialize sempre
+            . Leia o código em voz alta
+            . Use para contar, somar, iterar
+            . Pense em estado, não em fórmula
+
     =====================================================================
 
-    Precedência:
+    Precedência dos operadores e uso de um ou mais operadores:
+
+        - Precedência define a ordem em que os operadores são avaliados.
+
+        Se você não controlar a ordem, o Python controla por você — e isso
+        nem sempre é o que você quer.
+
+        Parênteses sempre vencem.
+
+        COMO PENSAR COMO LÓGICO:
+
+            Pergunte sempre:
+
+                Qual parte deve ser calculada primeiro?
+
+                Essa conta é clara para um humano?
+
+                Preciso forçar a ordem com parênteses?
+            
+            Código claro > código curto.
+
+        ORDEM DE PRECEDÊNCIA:
+
+            Aritméticos:
+
+                1. ()
+                2. **
+                3. * / // %
+                4. + -
+
+            Relacionais:
+
+                5. > < >= <=
+                6. == !=
+
+            Lógicos
+
+                7. not
+                8. and
+                9. or
+
+            Atribuição
+
+                10. = += -= *= /= ...
+
+            Atribuição sempre por último.
+        
+        Exemplo 1 — Aritmética simples:
+
+            resultado = 10 + 2 * 3
+            print(resultado)   # 16
+
+        PS: Multiplicação vem antes da soma.
+
+        Exemplo 2 — Forçando ordem
+
+            resultado = (10 + 2) * 3
+            print(resultado)   # 36
+
+        Exemplo 3 — Relacional + aritmético
+
+            print(10 + 2 > 11)   # True
+
+        PS: Soma primeiro, depois comparação.
+
+        Exemplo 4 — Lógico + relacional
+
+            idade = 17
+            print(idade >= 18 or idade >= 16 and idade < 18)
+
+        Avaliação real:
+
+            >= e <
+            and
+            or
+
+        Exemplo 5 — Com parênteses (melhor)
+
+            print(idade >= 18 or (idade >= 16 and idade < 18))
+
+        PS: Mesmo resultado, mais legível.
+
+        USO DE MÚLTIPLOS OPERADORES:
+
+            Ruim
+
+                if a > b and c < d or e == f:
+
+            Bom:
+
+                if (a > b and c < d) or e == f:
+
+        ERROS COMUNS
+
+            . Confiar só na precedência
+            . Esquecer parênteses
+            . Código impossível de ler
+            . Misturar tudo na mesma linha
+
+            Regra de ouro:
+
+                Se precisa pensar demais para entender, use parênteses.
+
+        FRASES-CHAVE PARA MEMORIZAR:
+
+            Parênteses mandam
+            Potência vem cedo
+            and vence or
+            Atribuição é a última
+
+        DICAS:
+
+            . Sempre pense na ordem
+            . Use parênteses por clareza
+            . Misture operadores conscientemente
+            . Leia a expressão em voz alta
+
+        Tabela completa de precedência (maior → menor):
+
+            | Prioridade | Operadores / forma                                                                | Observações rápidas                                |                                                                       |
+            | ---------: | --------------------------------------------------------------------------------- | -------------------------------------------------- | --------------------------------------------------------------------- |
+            |          1 | **Agrupamento / acesso**: `(...)`, `x[...]`, `x(...)`, `x.attr`                   | Parênteses, indexação, chamada de função, atributo |                                                                       |
+            |          2 | **Await**: `await x`                                                              | Em async                                           |                                                                       |
+            |          3 | **Potência**: `**`                                                                | **Associativa à direita**: `2**3**2 = 2**(3**2)`   |                                                                       |
+            |          4 | **Unários**: `+x`, `-x`, `~x`                                                     | Ex.: `-n`, `+n`, bitwise NOT `~`                   |                                                                       |
+            |          5 | **Multiplicativos**: `*`, `@`, `/`, `//`, `%`                                     | `@` é multiplicação matricial                      |                                                                       |
+            |          6 | **Aditivos**: `+`, `-`                                                            | Soma/subtração                                     |                                                                       |
+            |          7 | **Shifts**: `<<`, `>>`                                                            | Deslocamento de bits                               |                                                                       |
+            |          8 | **Bitwise AND**: `&`                                                              |                                                    |                                                                       |
+            |          9 | **Bitwise XOR**: `^`                                                              |                                                    |                                                                       |
+            |         10 | **Bitwise OR**: `                                                                 | `                                                  |                                                                       |
+            |         11 | **Comparações**: `<`, `<=`, `>`, `>=`, `!=`, `==`, `in`, `not in`, `is`, `is not` | Comparações podem “encadear”: `a < b < c`          |                                                                       |
+            |         12 | **NOT lógico**: `not x`                                                           | `not` vem antes de `and/or`                        |                                                                       |
+            |         13 | **AND lógico**: `and`                                                             |                                                    |                                                                       |
+            |         14 | **OR lógico**: `or`                                                               |                                                    |                                                                       |
+            |         15 | **Condicional (ternário)**: `x if cond else y`                                    | Avalia `cond` e escolhe `x` ou `y`                 |                                                                       |
+            |         16 | **Lambda**: `lambda`                                                              | É o mais fraco entre “expressões normais”          |                                                                       |
+            |         17 | **Walrus**: `:=`                                                                  | Atribuição como expressão (bem baixa)              |                                                                       |
+            |         18 | **Atribuições**: `=`, `+=`, `-=`, `*=`, `/=`, `//=`, `%=`, `**=`, `&=`, `^=`, `   | =`, `<<=`, `>>=`, `@=`                             | **Não é expressão** comum (é statement); fica “por último” na prática |
+
+        Detalhes importantíssimos:
+
+            ** (potência) é mais forte que unário, e é à direita:
+
+                -2**2 vira -(2**2) = -4
+
+                (-2)**2 = 4
+
+            Comparações têm uma faixa única: tudo de < até is e in tem a mesma
+            prioridade, e pode encadear:
+
+                1 < x < 10 (equivale a 1 < x and x < 10, mas sem avaliar x duas 
+                            vezes)
+            
+            Lógicos: not > and > or.
 
     =====================================================================
 
     Swap:
 
+        - Swap é a troca de valores entre duas variáveis.
+
+        Após um swap:
+
+            . o valor de a vai para b
+
+            . o valor de b vai para a
+
+        As variáveis continuam as mesmas — só os valores mudam.
+
+        COMO PENSAR COMO LÓGICO (ESSENCIAL):
+
+            Antes do código, pense assim:
+
+                Tenho dois valores
+
+                Quero trocar os valores
+
+                Não posso perder nenhum no processo
+
+            O problema central do swap é não sobrescrever um valor antes de 
+            salvá-lo.
+
+        O ERRO CLÁSSICO (NÃO FUNCIONA):
+
+                a = 5
+                b = 10
+
+                a = b
+                b = a
+
+            O que acontece de verdade:
+
+                . a vira 10
+
+                . b recebe a (que já é 10)
+
+                . o 5 se perde
+
+            Esse erro mostra por que o swap existe.
+
+        SWAP COM VARIÁVEL AUXILIAR (FORMA UNIVERSAL):
+
+            - Funciona em qualquer linguagem.
+
+                a = 5
+                b = 10
+                
+                temp = a
+                a = b
+                b = temp
+            
+            Leitura humana:
+
+                1. Guarde a em temp
+
+                2. Coloque b em a
+
+                3. Coloque temp em b
+
+            . Seguro
+            . Didático
+            . Ótimo para aprender lógica
+
+        SWAP EM PYTHON (FORMA IDIOMÁTICA):
+
+            - Python permite swap sem variável auxiliar, usando desempacotamento.
+
+                a = 5
+                b = 10
+
+                a, b = b, a
+
+            O que acontece internamente:
+
+                . Python cria uma tupla temporária
+
+                . Depois distribui os valores
+
+            Não é mágica, é recurso da linguagem.
+
+        SWAP COM EXPRESSÕES (IMPORTANTE):
+
+                x = 3
+                y = x + 2
+
+                x, y = y, x
+
+            Primeiro o Python avalia tudo do lado direito, depois faz as 
+            atribuições.
+
+            Isso evita conflito de valores.
+
+        SWAP ≠ COMPARAÇÃO:
+
+            Errado:
+
+                a == b
+
+            Correto:
+
+                a, b = b, a
+
+            == compara, não troca.
+
+        SWAP E MEMÓRIA (IDEIA IMPORTANTE):
+
+                a = [1, 2]
+                b = [3, 4]
+
+                a, b = b, a
+
+            . As referências são trocadas
+            . As listas não são copiadas
+
+        ERROS COMUNS
+
+            . Fazer a = b; b = a
+            . Confundir swap com comparação
+            . Achar que Python copia valores
+            . Não entender avaliação do lado direito
+
+            Regra de ouro:
+
+                Nunca sobrescreva um valor antes de salvá-lo.
+
+        FRASES-CHAVE PARA MEMORIZAR
+
+            Swap troca valores, não variáveis
+            Swap exige preservar informação
+            Python avalia antes de atribuir
+
+        DICAS:
+
+            . Pense em preservar valores
+            . Lado direito é avaliado primeiro
+            . Use swap Python quando possível
+            . Use variável auxiliar para entender lógica
+
+        SWAP COM ITERÁVEIS:
+
+            - Swap em iteráveis é a troca de elementos dentro de uma estrutura.
+
+            . Iterável = algo que tem vários valores (lista, string, tupla, etc.)
+
+            . Swap = trocar posições ou referências
+
+            . Base de ordenação, inversão, reorganização
+
+            Quase todo algoritmo clássico usa swap em iteráveis.
+
+            COMO PENSAR COMO LÓGICO:
+
+                Antes de fazer swap em iterável, pergunte:
+
+                    Vou trocar valores ou posições?
+
+                    O iterável é mutável ou imutável?
+
+                    A troca é local (índices) ou global (estrutura inteira)?
+
+                Isso define a técnica.
+
+            1) SWAP DE ELEMENTOS EM LISTAS (FORMA BÁSICA)
+
+                - Listas são mutáveis, então podemos trocar posições.
+
+                    lista = [10, 20, 30]
+                    lista[0], lista[2] = lista[2], lista[0]
+
+                Resultado:
+
+                    [30, 20, 10]
+
+                Troca de elementos, não da lista inteira.
+
+            2) SWAP COM VARIÁVEL AUXILIAR (DIDÁTICO)
+
+                    lista = [1, 2, 3]
+
+                    temp = lista[0]
+                    lista[0] = lista[1]
+                    lista[1] = temp
+
+            3) SWAP EM ITERÁVEIS IMUTÁVEIS (STRING / TUPLA)
+
+                - Strings e tuplas não podem ser alteradas diretamente.
+
+                Errado:
+
+                    s = "abc"
+                    s[0], s[2] = s[2], s[0]
+
+                Correto (converter):
+
+                    s = "abc"
+                    lista = list(s)
+                    lista[0], lista[2] = lista[2], lista[0]
+                    s = "".join(lista)
+
+                Imutável → cria novo objeto.
+
+            4) SWAP DE FATIAS (SLICES)
+
+                Inverter partes
+
+                    lista = [1, 2, 3, 4, 5]
+                    lista[:2], lista[2:] = lista[2:], lista[:2]
+
+                Resultado:
+
+                    [3, 4, 5, 1, 2]
+
+                Muito usado em rotações.
+
+            5) SWAP PARA INVERSÃO DE LISTA (ALGORÍTMICO)
+
+                . Manual (com dois índices)
+
+                    lista = [1, 2, 3, 4]
+                    i = 0
+                    j = len(lista) - 1
+
+                    while i < j:
+                        lista[i], lista[j] = lista[j], lista[i]
+                        i += 1
+                        j -= 1
+
+            Aqui o swap é o motor da inversão.
+
+            6) SWAP EM ALGORITMOS DE ORDENAÇÃO
+
+                . Bubble sort (exemplo clássico)
+
+                    for i in range(len(lista)):
+                        for j in range(len(lista) - 1):
+                            if lista[j] > lista[j + 1]:
+                                lista[j], lista[j + 1] = lista[j + 1], lista[j]
+
+                Sem swap, não existe ordenação.
+
+            7) SWAP DE REFERÊNCIAS (LISTAS INTEIRAS)
+
+                a = [1, 2]
+                b = [3, 4]
+
+                a, b = b, a
+
+            Aqui não troca elementos — troca quem aponta para quem.
+
+            ERROS COMUNS
+
+                . Tentar trocar string direto
+                . Confundir troca de elemento com troca de referência
+                . Errar índice
+                . Sobrescrever valor antes do swap
+
+                Regra de ouro:
+
+                    Swap em iteráveis sempre depende de índice ou referência.
+
+            FRASES-CHAVE PARA MEMORIZAR:
+
+                Lista troca elemento
+                String cria outra
+                Swap move posição
+                Algoritmo vive de swap
+
+            DICAS:
+
+                . Identifique mutabilidade
+                . Use índices conscientemente
+                . Swap é ferramenta, não fim
+                . Algoritmo = repetição + comparação + swap
+
     =====================================================================
 
     Casting:
+
+        - Casting é a conversão explícita de um tipo de dado para outro.
+
+        Em Python, usamos funções para isso:
+
+            . int()
+
+            . float()
+
+            . str()
+
+            . bool()
+
+            . list(), tuple(), set()
+
+        Casting não muda o valor em si, muda como o Python interpreta esse valor.
+
+        COMO PENSAR COMO LÓGICO:
+
+            Sempre se pergunte:
+
+                Que tipo esse dado tem agora?
+
+                Que tipo eu preciso para operar?
+
+                A conversão é segura ou pode gerar erro?
+
+            Erros de casting são erros de lógica, não de sintaxe.
+
+        CASTING NUMÉRICO:
+
+            . int()
+
+                - Converte para inteiro (corta decimais).
+
+                    print(int(3.9))     # 3
+                    print(int("10"))    # 10
+
+                Erro:
+
+                    int("abc")
+
+            . float()
+
+                Converte para decimal.
+
+                    print(float(10))       # 10.0
+                    print(float("3.14"))   # 3.14
+
+            . str()
+
+                Converte para texto.
+
+                    idade = 20
+                    print("Idade: " + str(idade))
+
+                Muito usado em saída de dados.
+
+        CASTING LÓGICO (bool()):
+
+            - Converte valores para True ou False.
+
+            . Regras importantes
+
+                bool(0)        # False
+                bool(1)        # True
+                bool(-5)       # True
+                bool("")       # False
+                bool("abc")    # True
+                bool([])       # False
+                bool([1, 2])   # True
+
+            Falsy:
+
+                0
+                0.0
+                ""
+                []
+                {}
+                None
+
+            Todo o resto é Truthy.
+
+        CASTING COM ITERÁVEIS:
+
+            . String → lista
+
+                list("abc")   # ['a', 'b', 'c']
+
+            . Lista → tupla
+
+                tuple([1, 2, 3])
+
+            . Lista → conjunto
+
+                set([1, 1, 2, 3])   # {1, 2, 3}
+
+            Conjunto remove duplicados.
+
+        CASTING AUTOMÁTICO (IMPLÍCITO):
+
+            Python faz isso em alguns casos:
+
+                print(10 + 2.5)   # 12.5
+
+            O inteiro vira float automaticamente.
+
+            Mas não confie demais nisso.
+
+        ERROS COMUNS:
+
+            . Esquecer que input() retorna str
+            . Converter string inválida para número
+            . Achar que int() arredonda
+            . Usar casting sem entender o dado
+
+            Regra de ouro:
+
+                Sempre valide antes de converter.
+
+        FRASES-CHAVE PARA MEMORIZAR:
+
+            Casting muda o tipo, não o dado
+            int() corta
+            bool() segue truthy/falsy
+            input() sempre retorna string
+
+        DICAS:
+
+            . Converta logo após a entrada
+            . Teste casos inválidos
+            . Use try/except quando avançar
+            . Entenda truthy/falsy profundamente
 
     =====================================================================
 
     Coerção:
 
+        - Coerção é quando o Python converte automaticamente um tipo em outro 
+        durante uma operação.
+
+        . Não é você que manda converter
+
+        . É o Python tentando não quebrar o programa
+
+        . Acontece principalmente em operações mistas
+
+        Coerção ≠ Casting
+
+            Casting → você manda
+
+            Coerção → Python decide
+
+        COMO PENSAR COMO LÓGICO:
+
+            Pergunte sempre:
+
+                Estou misturando tipos diferentes?
+
+                Existe um tipo “mais abrangente”?
+
+                O Python precisa escolher um tipo comum?
+
+            O Python nunca perde informação na coerção (sempre sobe o tipo).
+
+        REGRA FUNDAMENTAL DA COERÇÃO:
+
+            - O Python promove o tipo mais simples para o mais geral.
+
+            Exemplo clássico:
+
+                int  →  float  →  complex
+
+            Nunca o contrário.
+
+        COERÇÃO NUMÉRICA:
+
+            . int + float → float
+
+                    print(10 + 2.5)      # 12.5
+                    print(type(10 + 2.5))  # float
+
+                O 10 vira 10.0 automaticamente.
+
+            . float + complex → complex
+
+                print(2.5 + 1j)
+
+        COERÇÃO EM OPERAÇÕES LÓGICAS:
+
+            . Booleano como número
+
+                    print(True + 1)    # 2
+                    print(False * 10)  # 0
+            
+                Porque:
+
+                    True → 1
+                    False → 0
+
+                Isso é coerção implícita.
+
+        COERÇÃO EM EXPRESSÕES CONDICIONAIS:
+
+                if 10:
+                    print("Executa")
+
+            O 10 vira True automaticamente.
+
+                if "":
+                    print("Não executa")
+
+            String vazia → False.
+
+            Aqui entra truthy e falsy (coerção para bool).
+
+        COERÇÃO QUE NÃO EXISTE (IMPORTANTE):
+
+            Python não faz coerção perigosa.
+
+            Não existe:
+
+                "10" + 5
+
+            Não existe:
+
+                "3" * 2.5
+
+            Aqui o Python exige casting explícito.
+
+        COERÇÃO EM OPERADORES LÓGICOS (and, or):
+
+            Pegadinha importante:
+
+                    print(0 or 10)    # 10
+                    print(10 and 5)   # 5
+
+                and e or:
+
+                    . não retornam True/False
+
+                    . retornam um dos operandos
+
+                Eles usam coerção para decidir, mas retornam valores reais.
+
+        COERÇÃO EM COMPARAÇÕES:
+
+                print(1 == True)   # True
+                print(0 == False)  # True
+
+            Booleano é subclasse de int.
+
+            Comparação funciona, mas não é boa prática.
+
+        COERÇÃO × CASTING (tabela mental)
+
+            | Conceito | Quem decide | Exemplo     |
+            | -------- | ----------- | ----------- |
+            | Casting  | Você        | `int("10")` |
+            | Coerção  | Python      | `10 + 2.5`  |
+
+        ERROS COMUNS
+
+            . Confiar demais na coerção
+            . Misturar tipos sem perceber
+            . Achar que Python converte string para número
+            . Usar coerção como “atalho lógico”
+
+            Regra de ouro:
+
+                Coerção ajuda, mas não substitui casting consciente.
+
+        FRASES-CHAVE PARA MEMORIZAR:
+
+            Coerção é automática
+            Python sobe o tipo
+            Nunca perde informação
+            String não vira número sozinha
+
+        DICAS:
+
+            . Não confie em coerção silenciosa
+            . Prefira casting explícito
+            . Teste tipos com type()
+            . Código claro > código esperto
+
     =====================================================================
 
     Caracteres de controle:
 
+        - Caracteres de controle são sequências especiais que começam com \ e 
+        alteram a forma como o texto é interpretado ou exibido.
+
+        Eles servem para:
+
+            . Quebra de linha
+
+            . Tabulação
+
+            . Aspas dentro de texto
+
+            . Sons, cursores e efeitos
+
+            . Unicode e caracteres especiais
+
+        Não aparecem “visualmente”, mas controlam o comportamento do texto.
+
+        COMO PENSAR COMO LÓGICO:
+
+            Sempre pense assim:
+
+                Texto normal → aparece
+
+                Caractere de controle → controla o texto
+
+            Eles não são letras, são comandos embutidos.
+
+        TABELA COMPLETA — CARACTERES DE CONTROLE EM PYTHON:
+
+            | Sequência | Nome            | O que faz                    |
+            | --------- | --------------- | ---------------------------- |
+            | `\n`      | New line        | Quebra de linha              |
+            | `\t`      | Tab             | Tabulação horizontal         |
+            | `\\`      | Backslash       | Mostra `\`                   |
+            | `\'`      | Aspa simples    | Mostra `'`                   |
+            | `\"`      | Aspa dupla      | Mostra `"`                   |
+            | `\r`      | Carriage return | Retorna ao início da linha   |
+            | `\b`      | Backspace       | Apaga um caractere anterior  |
+            | `\f`      | Form feed       | Avança página (legado)       |
+            | `\v`      | Vertical tab    | Tabulação vertical           |
+            | `\a`      | Bell            | Alerta sonoro (se suportado) |
+            | `\0`      | Null            | Caractere nulo               |
+
+        CARACTERES NUMÉRICOS (ASCII / OCTAL / HEX):
+
+            . Octal
+
+                "\101"   # 'A'
+
+            . Hexadecimal
+
+                "\x41"   # 'A'
+            
+            Pouco usados hoje, mas existem.
+
+        UNICODE (ESSENCIAL EM PYTHON):
+
+            . Unicode de 16 bits
+
+                "\u2764"   # ❤
+
+            . Unicode completo (32 bits)
+
+                "\U0001F600"   # 😀
+
+            Python é totalmente Unicode.
+
+        STRING RAW (IMPORTANTE):
+
+            - String raw ignora caracteres de controle.
+
+                print(r"C:\Users\Renato\Docs")
+
+            Sem r, isso quebraria (\U, \D, etc.).
+
+        EXEMPLOS PRÁTICOS:
+
+            Quebra de linha:
+
+                print("Linha 1\nLinha 2")
+
+            Tabulação:
+
+                print("Nome\tIdade\tCidade")
+
+            Aspas dentro de texto:
+
+                print("Ele disse: \"Olá\"")
+
+            \r sobrescrevendo linha
+
+                print("Carregando...\rFeito!")
+
+            Unicode
+
+                print("Coração: \u2764")
+
+        ERROS COMUNS
+
+            . Esquecer que \n quebra linha
+            . Caminhos do Windows sem string raw
+            . Usar \ achando que é caractere normal
+            . Confundir \t com espaços
+
+            Regra de ouro:
+
+                Se começa com \, não é letra — é comando.
+
+        FRASES-CHAVE PARA MEMORIZAR:
+
+            \n quebra
+            \t organiza
+            \r retorna
+            r"" protege
+            Unicode manda
+
+        DICAS:
+
+            . Use \n para clareza
+            . Use \t para alinhamento simples
+            . Sempre use r"" em caminhos
+            . Unicode funciona em tudo
+
+    =====================================================================
+
     Números (inteiros e reais):
 
-    Problema de arredondamento:
+        - Números representam valores matemáticos usados em cálculos, 
+        comparações e decisões.
+
+        Em Python, os principais tipos numéricos básicos são:
+
+            Inteiros (int) → números sem parte decimal
+
+            Reais (float) → números com parte decimal
+
+        Python não limita o tamanho de inteiros (diferente de C, Java).
+
+        COMO PENSAR COMO LÓGICO:
+
+            Antes de usar números, pergunte:
+
+                Esse valor pode ter vírgula?
+
+                Preciso de exatidão absoluta ou aproximação?
+
+                Esse número vai crescer muito?
+
+                Vou usar em comparações, cálculos ou controle de fluxo?
+
+            A escolha entre int e float é lógica, não sintática.
+
+        1) NÚMEROS INTEIROS (int)
+
+            O que são?
+
+                . Valores sem parte decimal
+
+                . Positivos, negativos ou zero
+
+                . Precisos (exatos)
+
+                EX:
+
+                    a = 10
+                    b = -3
+                    c = 0
+
+            Características importantes:
+
+                . Precisão exata
+
+                . Sem limite de tamanho:
+
+                    x = 10**100
+
+            Ideais para:
+
+                . contadores
+
+                . índices
+
+                . quantidades
+
+                . idade, unidades, peças
+
+            Operações comuns com int:
+
+                10 + 3     # soma
+                10 - 3     # subtração
+                10 * 3     # multiplicação
+                10 // 3    # divisão inteira
+                10 % 3     # resto
+                10 ** 3    # potência
+
+            Divisão com inteiros:
+
+                10 / 2     # 5.0 (float!)
+
+            Toda divisão / gera float, mesmo entre inteiros.
+
+        2) NÚMEROS REAIS (float)
+
+            O que são?
+
+                . Valores com parte decimal
+
+                . Representados internamente em ponto flutuante
+
+                . Aproximados (não exatos)
+
+                EX:
+
+                    x = 3.14
+                    y = -0.5
+                    z = 10.0
+
+            Características importantes:
+
+                . Possuem erro de precisão
+
+                . Não são ideais para dinheiro
+
+                . Bons para:
+
+                    médias
+
+                    medidas
+
+                    cálculos científicos
+
+                    porcentagens
+
+            PROBLEMA CLÁSSICO DE PRECISÃO:
+
+                print(0.1 + 0.2)  # 0.30000000000000004
+
+            Isso não é bug, é limitação matemática do float.
+
+        3) CONVERSÃO ENTRE INT E FLOAT
+
+            . int()
+
+                    int(3.9)    # 3
+
+                PS: Corta, não arredonda.
+
+            . float()
+
+                    float(10)   # 10.0
+
+            . round()
+
+                round(3.6)      # 4
+                round(3.14159, 2)  # 3.14
+
+        4) OPERAÇÕES MISTAS (COERÇÃO)
+
+            EX:
+
+                10 + 2.5   # 12.5
+
+            O int é convertido automaticamente para float.
+
+            Python sempre sobe o tipo, nunca desce.
+
+        5) COMPARAÇÕES COM NÚMEROS
+
+                10 > 5
+                3.5 <= 4
+                10 == 10.0   # True
+
+            Cuidado com float:
+
+                0.1 + 0.2 == 0.3   # False
+
+            Melhor:
+
+                abs((0.1 + 0.2) - 0.3) < 1e-9
+
+        6) FUNÇÕES NUMÉRICAS IMPORTANTES
+
+            | Função     | Uso             |
+            | ---------- | --------------- |
+            | `abs()`    | valor absoluto  |
+            | `round()`  | arredondar      |
+            | `pow()`    | potência        |
+            | `min()`    | menor           |
+            | `max()`    | maior           |
+            | `sum()`    | soma            |
+            | `divmod()` | divisão + resto |
+
+        ERROS COMUNS
+
+            . Usar float para dinheiro
+            . Comparar floats diretamente
+            . Achar que int() arredonda
+            . Esquecer que / gera float
+
+            Regra de ouro:
+
+                Contagem → int
+                Medida → float
+
+        FRASES-CHAVE PARA MEMORIZAR:
+
+            Inteiro é exato
+            Float é aproximado
+            Divisão sempre flutua
+            Precisão importa
+
+        int, long e limites de 32/64 bits:
+
+            Em Python moderno (3.x), não existe mais long separado.
+            
+            Todo inteiro é do tipo int e cresce automaticamente.
+
+            Limites de 32 e 64 bits não se aplicam da mesma forma em Python.
+
+            1) int × long (histórico importante)
+
+                . Python 2 (ANTIGO)
+
+                    int → limitado (32 ou 64 bits)
+
+                    long → inteiros grandes (ex: 1234567890123456789L)
+
+                . Python 3 (ATUAL)
+
+                    long não existe
+
+                    Tudo é int
+
+                    Inteiros têm precisão arbitrária
+
+                    O Python cuida do tamanho automaticamente.
+
+            2) O MITO DOS 32 E 64 BITS EM PYTHON
+
+                Python não limita inteiros a 32 ou 64 bits como C/Java.
+
+                Em linguagens como C:
+
+                    int → 32 bits
+
+                    long → 64 bits (depende da arquitetura)
+
+                Em Python:
+
+                    int cresce conforme necessário
+
+                    O limite é memória disponível
+
+                Não ocorre overflow aritmético em int.
+
+            3) ENTÃO O QUE SIGNIFICA 32 OU 64 BITS?
+
+                Isso se refere à arquitetura da máquina e ao ponteiro de memória, 
+                não ao número em si.
+
+                . Python 32-bit:
+
+                    - Ponteiros de 32 bits
+
+                    - Menos memória endereçável
+
+                . Python 64-bit:
+
+                    - Ponteiros de 64 bits
+
+                    - Mais memória endereçável
+
+                O valor inteiro continua ilimitado, só o consumo de memória muda.
+
+            4) CUSTO DE MEMÓRIA DE INTEIROS GRANDES
+
+                Inteiros grandes:
+
+                    Usam mais memória
+
+                    São mais lentos que inteiros pequenos
+
+                Python usa múltiplas “palavras” internas para representar
+                o número.
+
+                Python é mais seguro, porém menos previsível em performance 
+                extrema.
+
+            5) FLOAT AINDA TEM LIMITE (IMPORTANTE)
+
+                Apesar do int ser ilimitado:
+
+                    - float continua limitado (IEEE 754)
+
+                    - Aproximadamente:
+
+                        . ~1.8 × 10³⁰⁸ (máximo)
+
+                        . ~15–17 dígitos de precisão
+                
+                EX:
+
+                    x = 1e308
+                    x * 10   # inf
+
+                Overflow ainda existe em float.
+
+        CAMPO DE ESTUDO — FUNÇÕES ESPECIAIS DE int E float:
+
+            - int e float não são apenas números: são objetos com métodos 
+            próprios.
+
+            Esses métodos servem para:
+
+                Inspecionar o número
+
+                Converter formatos
+
+                Trabalhar com bits
+
+                Lidar com precisão
+
+                Representação interna
+            
+            Isso diferencia Python de linguagens “mais simples”.
+
+            FUNÇÕES ESPECIAIS DE int:
+
+                1. bit_length():
+
+                    Retorna quantos bits são necessários para representar o 
+                    inteiro.
+
+                    EX:
+
+                        n = 10
+                        print(n.bit_length())  # 4
+
+                    10 em binário → 1010 (4 bits)
+
+                2. to_bytes() e from_bytes()
+
+                    . to_bytes()
+
+                        Converte inteiro para bytes.
+
+                            n = 1024
+                            b = n.to_bytes(2, byteorder="big")
+                            print(b)
+                    
+                    . from_bytes()
+
+                        Faz o caminho inverso.
+
+                            n2 = int.from_bytes(b, byteorder="big")
+                            print(n2)
+
+                3. __int__() (conceitual)
+
+                    Conversão interna para inteiro.
+
+                        int(3.7)  # usa __int__
+
+                    Raramente usado diretamente, mas fundamental para coerção.
+
+                4. Representações: bin(), oct(), hex()
+
+                    n = 42
+                    print(bin(n))  # 0b101010
+                    print(oct(n))  # 0o52
+                    print(hex(n))  # 0x2a
+
+                5. int() com base (MUITO IMPORTANTE)
+
+                    int("1010", 2)   # 10
+                    int("FF", 16)    # 255
+                    int("77", 8)     # 63
+
+                Converte string em número usando base numérica.
+            
+            FUNÇÕES ESPECIAIS DE float:
+
+                1. is_integer()
+
+                    Verifica se o float representa um inteiro exato.
+
+                        x = 10.0
+                        y = 10.5
+
+                        print(x.is_integer())  # True
+                        print(y.is_integer())  # False
+
+                    Muito útil para validações.
+                
+                2. as_integer_ratio()
+
+                    Retorna o float como fração exata.
+
+                        x = 0.75
+                        print(x.as_integer_ratio())  # (3, 4)
+
+                    Mostra como o float é representado matematicamente.
+
+                3. hex() (do float!)
+
+                        x = 3.14
+                        print(x.hex())
+
+                    E o inverso:
+
+                        float.fromhex(x.hex())
+
+                    Representação exata do float em hexadecimal.
+
+                4. __float__() (conceitual)
+
+                    Usado quando Python força conversão para float:
+
+                        float(10)
+
+                    Importante para coerção automática.
+
+            QUANDO USAR ISSO NA VIDA REAL
+
+                bit_length() → segurança, criptografia
+
+                to_bytes() → arquivos, rede
+
+                is_integer() → validação de cálculo
+
+                as_integer_ratio() → precisão matemática
+
+                int(base) → parsing de dados
+
+                hex/bin → debug de baixo nível
+
+    =====================================================================
 
     strings e caracteres:
 
+    =====================================================================
+
     parsings:
+
+    =====================================================================
 
     Blocos e escopos:
 
+    =====================================================================
+
     Estruturas condicionais / ternários:
+
+    =====================================================================
 
     Estruturas de repetição:
 
+    =====================================================================
+
     break, continue e pass:
+
+    =====================================================================
 
     Variável acumuladora e Variável atribuidora
 
+    =====================================================================
+
     Iterações e Iteráveis:
+
+    =====================================================================
 
     Funções e lambdas:
 
+    =====================================================================
+
     Recursões:
+
+    =====================================================================
 
     Variáveis globais e locais:
 
+    =====================================================================
+
     Operadores bit-wise:
+
+    =====================================================================
 
     Listas, Arrays e Vetores:
 
+    =====================================================================
+
     Índices:
+
+    =====================================================================
 
     In place:
 
+    =====================================================================
+
     Janelas:
+
+    =====================================================================
 
     Slicing:
 
-    Listas, Arrays e Vetores circulares:
-
-    Matrizes:
-
-    Diagonais:
-
-    Matriz circular:
-
-    Tuplas:
-
-    Dicionários:
-
-    Conjuntos:
-
-    tecnica de ponteiros:
+    =====================================================================
 
     Divisão e conquista:
 
+    =====================================================================
+
+    Rotação:
+
+    =====================================================================
+
+    Listas, Arrays e Vetores circulares:
+
+    =====================================================================
+
+    Matrizes:
+
+    =====================================================================
+
+    Diagonais:
+
+    =====================================================================
+
+    Matriz circular:
+
+    =====================================================================
+
+    Tuplas:
+
+    =====================================================================
+
+    Dicionários:
+
+    =====================================================================
+
+    Conjuntos:
+
+    =====================================================================
+
+    tecnica de ponteiros:
+
+    =====================================================================
+
+    Divisão e conquista:
+
+    =====================================================================
+
     números aleatórios:
+
+    =====================================================================
 
     Módulos, Bibliotecas e importações:
 
+    =====================================================================
+
     Alias:
+
+    =====================================================================
 
     Garbage:
 
+    =====================================================================
+
+    shuffle:
+
+    =====================================================================
+
     Arquivos:
 
+    =====================================================================
 
 Um pouco sobre POO:
 
@@ -1881,6 +3662,8 @@ Um pouco sobre Estruturas de dados:
     listas / vetores e matrizes ordenadas
 
     matrizes
+
+    Torre de Hanoi
 
     algoritmos de busca
 
