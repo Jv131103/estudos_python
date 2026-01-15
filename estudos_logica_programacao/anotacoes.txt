@@ -453,6 +453,71 @@ traz mais eficiência, legibilidade e pode ser usada e reaproveitada em outros p
         → “Eu escrevo código aqui”
 
 
+TABELA ASCII (origem histórica):
+
+- ASCII foi o primeiro padrão de caracteres.
+
+- Características:
+
+    . 7 bits (0 a 127)
+
+    . Letras A–Z, a–z
+
+    . Dígitos 0–9
+
+    . Símbolos básicos
+
+    . Sem acentos
+
+- ASCII não suporta:
+
+    . ç
+
+    . á, é, í
+
+    . emojis
+ 
+    . línguas não latinas
+
+UNICODE (padrão universal)
+
+- Unicode é um catálogo gigante de caracteres do mundo inteiro.
+
+- Inclui:
+
+    . Letras latinas com acento
+
+    . Japonês, chinês, árabe
+
+    . Símbolos matemáticos
+
+    . Emojis 😄🔥
+
+    . Alfabetos antigos
+
+- Cada caractere tem um código único
+
+- Unicode é abstrato (só define os códigos).
+
+UTF-8 (codificação)
+
+- UTF-8 é a forma de guardar Unicode em bytes.
+
+- Características:
+
+    . Compatível com ASCII
+
+    . Usa 1 a 4 bytes por caractere
+
+    . Padrão da internet
+
+    . Padrão do Python
+
+- Unicode = o que é
+
+- UTF-8 = como é armazenado
+
+
 UM POUCO SOBRE LÓGICA DE PROGRAMAÇÃO:
 
     Variáveis:
@@ -3483,29 +3548,2160 @@ UM POUCO SOBRE LÓGICA DE PROGRAMAÇÃO:
 
     strings e caracteres:
 
+        - String é uma sequência de caracteres.
+
+        - Em Python, string é um objeto do tipo str, imutável e Unicode.
+
+        . Caractere → unidade básica (letra, número, símbolo)
+
+        . String → vários caracteres juntos
+
+        . Python não tem tipo char, só str
+
+        . Cada caractere é um Unicode code point
+
+        CARACTERE vs STRING:
+
+            . Em Python:
+
+                letra = "a"
+                palavra = "abc"
+
+            Ambos são str:
+
+                type("a")      # str
+                type("abc")    # str
+
+            Não existe diferença de tipo entre caractere e string curta.
+
+        EM PYTHON (codificação):
+
+                texto = "coração 😄"
+
+            . Isso é str
+
+            . Já é Unicode
+
+            . Não precisa configurar nada
+
+            Em Python 3, str é Unicode por padrão.
+
+        str COMO OBJETO:
+
+            - str é uma classe, e strings são objetos.
+
+                s = "Python"
+            
+                type(s)        # str
+                isinstance(s, str)  # True
+
+            - Por isso strings têm métodos.
+
+        PROPRIEDADES IMPORTANTES DE str
+
+            . Imutabilidade
+
+                    s = "abc"
+                    # s[0] = "x"  # erro
+
+                . Strings não podem ser alteradas
+                . Qualquer “modificação” cria outra string
+
+            . Indexável
+
+                    s = "Python"
+                    print(s[0])    # 'P'
+                    print(s[-1])   # 'n'
+
+            . Iterável
+
+                    for c in "abc":
+                        print(c)
+
+            . Comprimento
+
+                    len("Python")  # 6
+
+        MÉTODOS ESSENCIAIS DE str
+
+            - Transformação
+
+                . Converter tudo em minúscula:
+
+                    s.lower()
+
+                . Converter tudo em maiúscula:
+
+                    s.upper()
+
+                . Converter as primeiras letras em maiúsculas:
+
+                    s.capitalize()
+
+                . Converter apenas a primeira letra da string em maiúscula:
+
+                    s.title()
+
+            - Remoção de espaços:
+
+                . Remover espaços a direita e esquerda:
+
+                    s.strip()
+
+                . Remover espaços esquerda apenas:
+
+                    s.lstrip()
+
+                . Remover espaços a direita apenas:
+
+                    s.rstrip()
+
+            - Testes (retornam bool)
+
+                s.isalpha()     # só letras
+                s.isdigit()     # só números
+                s.isalnum()     # letras e números
+                s.isspace()     # só espaços
+                s.islower()     # se está em minúscula
+                s.isupper()     # se está em maiúscula
+
+            - Busca
+
+                s.find("a")        # índice ou -1
+                "a" in s           # True / False
+                s.startswith("a")  # Se o início contém string 'a'. Se sim True senão False
+                s.endswith("a")    # Se o final contém string 'a'. Se sim True senão False
+
+            - Substituição:
+
+                s.replace("a", "x")
+
+            - Quebra e junção:
+
+                "1,2,3".split(",")  # Quebra
+                "-".join(["a", "b", "c"])  # Une apenas listas do tipo string
+
+        FUNÇÕES RELACIONADAS A CARACTERES
+
+            - Código Unicode:
+
+                ord("a")   # 97
+                ord("ç")   # 231
+
+            - Caractere pelo código
+
+                chr(97)    # 'a'
+                chr(231)   # 'ç'
+
+        SLICING (FATIAMENTO):
+
+            - Slicing é extrair partes de uma string usando índices.
+
+            Sintaxe geral:
+
+                texto[início:fim:passo]
+
+            . início → índice inicial (inclusivo)
+
+            . fim → índice final (exclusivo)
+
+            . passo → de quantos em quantos caracteres
+
+            Todos são opcionais.
+
+            EXEMPLOS BÁSICOS:
+
+                s = "Python"
+
+                Primeiro caractere:
+
+                    s[0]      # 'P'
+
+                Último caractere
+
+                    s[-1]     # 'n'
+
+                Do índice 1 ao 3
+
+                    s[1:4]    # 'yth'
+
+                Do começo até o índice 3
+
+                    s[:4]     # 'Pyth'
+
+                Do índice 2 até o final
+
+                    s[2:]     # 'thon'
+
+            SLICING COM PASSO
+
+                Pulando caracteres
+
+                    s[::2]    # 'Pto'
+
+                Invertendo string
+
+                    s[::-1]   # 'nohtyP'
+
+                Forma curta para inversão.
+
+                - Slicing cria nova string
+
+        CONCATENAÇÃO
+
+            - Concatenação é juntar strings.
+
+            . Com operador +
+
+                a = "Py"
+                b = "thon"
+
+                c = a + b
+
+            Resultado:
+
+                Python
+
+            - Isso cria uma nova string.
+
+            . Com +=
+
+                s = "Py"
+                s += "thon"
+
+            - Também cria nova string (imutável).
+
+        CUIDADO COM CONCATENAÇÃO EM LOOP:
+
+                texto = ""
+                for c in "abc":
+                    texto += c
+
+            Ineficiente para strings grandes.
+
+            Melhor:
+
+                lista = []
+                for c in "abc":
+                    lista.append(c)
+
+                texto = "".join(lista)
+
+        CONCATENAÇÃO COM TIPOS DIFERENTES
+
+            Erro:
+
+                "Idade: " + 20
+
+            Correto:
+
+                "Idade: " + str(20)
+
+            Melhor:
+
+                f"Idade: {20}"
+
+        CONCATENAÇÃO x INTERPOLAÇÃO
+
+            | Forma      | Quando usar           |
+            | ---------- | --------------------- |
+            | `+`        | Strings simples       |
+            | `+=`       | Acumular poucas vezes |
+            | `f-string` | Formatação            |
+            | `.join()`  | Muitas strings        |
+
+        EXEMPLOS CLÁSSICOS
+
+            Extrair domínio de e-mail
+
+                email = "user@gmail.com"
+                dominio = email[email.index("@")+1:]
+
+            Remover prefixo/sufixo
+
+                texto = "###dados###"
+                limpo = texto.strip("#")
+
+        PEGADINHAS IMPORTANTES
+
+            . Tamanho visual ≠ tamanho real
+
+                    len("😄")  # 1
+
+                Mas em bytes:
+
+                    len("😄".encode("utf-8"))  # 4
+            
+            . Comparação depende de Unicode
+
+                    "Z" < "a"   # True
+
+                Maiúsculas vêm antes no Unicode.
+
+        FRASES-CHAVE PARA MEMORIZAR
+
+            Python não tem char
+            Tudo é Unicode
+            UTF-8 é codificação
+            String é objeto imutável
+            Caractere é uma string de tamanho 1
+            Slicing fatia
+            Fim não inclui
+            Passo controla salto
+            Concatenação cria nova string
+
+        Erros comuns:
+
+            Achar que existe char em Python (não existe). "a" ainda é str.
+            
+            Confundir str com bytes (texto vs dados binários).
+            
+            Achar que string é mutável: tentar s[0] = "x" dá erro.
+            
+            Esquecer que input() vem com texto, e não número.
+            
+            Esquecer de normalizar: comparar sem .lower() / .strip().
+            
+            Usar .strip() achando que remove “no meio” (ele só remove nas pontas).
+            
+            Comparar texto com is em vez de ==.
+            
+            Achar que "Z" > "a" segue “alfabeto humano” (é ordem Unicode)
+            
+            Usar in achando que é “palavra inteira” (é substring).
+            
+            Usar .find() e esquecer que -1 significa “não achou”.
+            
+            Usar .replace() achando que altera a string original (não altera; 
+            cria outra).
+
+            Achar que o fim em s[inicio:fim] é inclusivo (não é).
+
+            Errar índice negativo (ex.: s[-0] é igual a s[0]).
+            
+            Confundir s[::-1] (inversão) com “ordenar”.
+
+        Dicas:
+
+            - Normalize antes de comparar
+
+            - Pense em índice, fatia, busca, separação (split) e junção (join).
+
+            - Escolha a ferramenta certa
+
+            - Slicing: fim não entra
+
+            - Teste com casos chatos
+
+            - Sempre mostre com aspas no debug
+
     =====================================================================
 
     parsings:
+
+        - Parsing é o processo de analisar uma string e extrair partes com 
+        significado.
+
+        Ou seja:
+
+            Entrada é texto bruto
+
+            Saída são dados organizados (números, campos, estruturas)
+
+        - Parsing ≠ validação
+        - Parsing ≠ formatação
+        - Parsing = interpretar
+
+        COMO PENSAR COMO LÓGICO (ANTES DO CÓDIGO):
+
+            Sempre responda:
+
+                1. Qual é o formato esperado do texto?
+
+                2. Onde estão os delimitadores? (@, ,, ;, :…)
+
+                3. O texto é fixo ou variável?
+
+                4. O que eu preciso extrair?
+
+            Parsing começa no formato, não no código.
+
+        TIPOS COMUNS DE PARSING
+
+            1. Parsing por delimitador
+
+                Quando o texto tem separadores claros.
+
+                Exemplo:
+
+                    nome;idade;cidade
+
+                Código:
+
+                    linha = "Ana;20;SP"
+                    nome, idade, cidade = linha.split(";")
+
+            2. Parsing por posição fixa
+
+                Quando cada campo tem posição conhecida.
+
+                Exemplo:
+
+                    20240115BRSP
+
+                Código:
+
+                    data = texto[0:8]
+                    pais = texto[8:10]
+                    estado = texto[10:12]
+
+                Muito usado em arquivos antigos (mainframe).
+
+            3. Parsing por busca (find, index)
+
+                Quando o delimitador pode variar de posição.
+
+                Exemplo:
+
+                    email = "user.name+tag@gmail.com"
+                    pos = email.find("@")
+
+                    usuario = email[:pos]
+                    dominio = email[pos+1:]
+
+            4. Parsing progressivo (passo a passo)
+
+                Quando você “consome” a string.
+
+                    texto = "10:20:30"
+                    partes = texto.split(":")
+                    h, m, s = map(int, partes)
+
+        FERRAMENTAS DE PARSING EM STRINGS
+
+            + .split()
+
+                "1,2,3".split(",")
+
+            + .find() / .index
+
+                s.find("@")   # -1 se não achar
+                s.index("@")  # erro se não achar
+
+            + .startswith() / .endswith()
+
+                email.endswith(".com")
+
+            + Slicing
+
+                texto[a:b]
+
+            + .replace() (pré-processamento)
+
+                valor = "1.234,56".replace(".", "").replace(",", ".")
+
+        PARSING + CONVERSÃO DE TIPO:
+
+            Parsing geralmente vem antes de converter tipo.
+
+            Exemplo:
+
+                valor = "R$ 12,50"
+                valor = valor.replace("R$", "").strip()
+                valor = float(valor.replace(",", "."))
+
+            Ordem correta:
+
+                limpar → extrair → converter
+
+        PARSING ≠ REGEX (IMPORTANTE)
+
+            . Parsing simples → split, find, slicing
+
+            . Parsing complexo/padrões → regex (re)
+
+            Não use regex quando split resolve.
+
+        ERROS COMUNS EM PARSING
+
+            Assumir que o formato sempre vem certo
+
+            Não tratar caso de erro (find retornar -1)
+
+            Fazer parsing e conversão tudo junto
+
+            Não normalizar antes (strip, lower)
+
+            Usar regex para tudo (overkill)
+
+        FRASES-CHAVE PARA MEMORIZAR
+
+            Parsing é leitura estruturada
+            Delimitador manda
+            Limpa antes de converter
+            Texto primeiro, número depois
+
+        DICAS
+
+            Desenhe o formato
+
+            Ache os delimitadores
+
+            Extraia em partes
+
+            Só depois converta tipo
+
+            Teste entradas “feias”
 
     =====================================================================
 
     Blocos e escopos:
 
+        - Bloco é um agrupamento de código.
+
+        - Escopo define onde uma variável é visível.
+
+        Em Python:
+
+            Blocos são definidos por indentação
+
+            Escopo não depende de {} (como em C/Java)
+
+            Nem todo bloco cria um novo escopo
+
+        BLOCOS EM PYTHON
+
+            - Um bloco começa após : e é definido pela indentação.
+
+            Exemplos de blocos:
+
+                if condicao:
+                    ...
+
+                for x in lista:
+                    ...
+
+                while condicao:
+                    ...
+
+                def func():
+                    ...
+
+            Indentação errada = erro ou bug lógico.
+
+        ESCOPO (VISIBILIDADE)
+
+            Escopo responde:
+
+                “Essa variável existe aqui?”
+
+            Python segue a regra LEGB:
+
+                1. local
+                2. Enclosing
+                3. global
+                4. Built-in
+
+            . ESCOPO LOCAL:
+
+                - Variáveis criadas dentro de funções.
+
+                    def f():
+                        x = 10
+
+                    # x não existe aqui
+  
+                Só existem dentro da função.
+
+            . ESCOPO GLOBAL
+
+                - Variáveis criadas fora de funções.
+
+                    x = 5
+
+                    def f():
+                        print(x)
+
+                . Pode ler
+
+                . Não pode atribuir sem a palavra resrvada global
+
+            . global (cuidado)
+
+                    x = 10
+
+                    def f():
+                        global x
+                        x = 20
+
+                . Altera o valor global
+
+                . Pode causar bugs difíceis
+
+            . nonlocal
+
+                - Usado em funções dentro de funções.
+
+                    def externa():
+                        x = 10
+                        def interna():
+                            nonlocal x
+                            x = 20
+
+        BLOCO ≠ ESCOPO (PEGADINHA CLÁSSICA)
+
+            if, for, while NÃO criam escopo:
+
+                if True:
+                    y = 10
+
+                print(y)  # funciona
+
+            Diferente de C/Java.
+
+            Funções criam escopo:
+
+                def f():
+                    z = 5
+
+                print(z)  # erro
+
+        SOMBREAMENTO (SHADOWING)
+
+            - Variável local com mesmo nome de uma global.
+
+                x = 10
+
+                def f():
+                    x = 5   # sombra
+
+            Global continua existindo, mas “escondida” dentro da função.
+
+        ERROS COMUNS
+
+            Achar que if cria escopo
+
+            Esquecer indentação
+
+            Usar global sem necessidade
+
+            Modificar global dentro de função sem perceber
+
+            Criar variáveis dentro de loop achando que “morrem”
+
+        DICAS DE ATAQUE
+
+            Sempre leia a indentação
+
+            Pergunte: “onde essa variável nasceu?”
+
+            Prefira retornar valores a usar global
+
+            Evite nomes iguais em escopos diferentes
+
+            Use funções para isolar lógica
+
+        FRASES-CHAVE PARA MEMORIZAR
+
+            Indentação manda
+            Função cria escopo
+            Loop não cria
+            global é perigoso
+            Escopo evita bugs
+
+        UM POUCO MAIS SOBRE LEGB:
+
+            Quando o Python encontra um nome (x, print, len…), ele procura 
+            nesta ordem exata:
+
+                1. Local
+                2. Enclosing
+                3. Global
+                4. Built-in
+
+            Ele para no primeiro que encontrar.
+
+            LOCAL (L):
+
+                - Variáveis criadas dentro da função atual.
+
+                    def f():
+                        x = 10
+                        print(x)
+
+                    f()
+
+                . x existe só dentro de f
+
+                . É o primeiro lugar que o Python procura
+
+                Fora da função:
+
+                    print(x)  # erro
+
+                Local é o escopo mais forte.
+
+            ENCLOSING (E):
+
+                - Variáveis da função externa que envolve a função atual.
+
+                    def externa():
+                        y = 20
+                        def interna():
+                            print(y)
+                        interna()
+
+                    externa()
+
+                . y não é local de interna
+
+                . Também não é global
+
+                . É enclosing
+
+                + nonlocal (controla o enclosing):
+
+                    def externa():
+                        y = 20
+                        def interna():
+                            nonlocal y
+                            y = 30
+                        interna()
+                        print(y)  # 30
+
+                . Sem nonlocal, você não pode atribuir ao enclosing.
+
+            GLOBAL (G):
+
+                - Variáveis criadas fora de qualquer função.
+
+                    x = 5
+
+                    def f():
+                        print(x)
+
+                    f()
+
+                . Pode ler variável global
+
+                . Não pode atribuir sem global
+
+                + global (cuidado!):
+
+                    x = 5
+
+                    def f():
+                        global x
+                        x = 10
+
+                . Altera o valor global
+
+                . Pode causar bugs difíceis de rastrear
+
+            BUILT-IN (B):
+
+                - Nomes que já vêm com o Python.
+
+                Exemplos:
+
+                    print
+                    len
+                    int
+                    str
+                    range
+
+                Código:
+
+                    print(len("abc"))  # 3
+
+                . Último lugar onde o Python procura.
+
+                Sombreamento perigoso (shadowing):
+
+                        len = 10
+                        print(len("abc"))  # ERRO
+
+                    . Você escondeu o len built-in.
+
+            ORDEM REAL DE BUSCA (PASSO A PASSO)
+
+                Quando o Python vê:
+
+                    print(x)
+
+                Ele faz:
+
+                    1. x existe no local?
+
+                    2. Não? existe no enclosing?
+
+                    3. Não? existe no global?
+
+                    4. Não? existe no built-in?
+
+                    5. Não? → NameError
+
+            EXEMPLO COMPLETO LEGB:
+
+                    x = "global"
+
+                    def externa():
+                        x = "enclosing"
+                        def interna():
+                            x = "local"
+                            print(x)  # Built-in
+                        interna()
+
+                    externa()
+
+                Saída:
+
+                    local
+
+                Se você remover x = "local":
+
+                    enclosing
+
+                Se remover também:
+
+                    global
+
+                Se não existir global:
+
+                    NameError
+
+            ERROS COMUNS COM LEGB:
+
+                Achar que if cria escopo
+
+                Usar global sem perceber
+
+                Não entender nonlocal
+
+                Sombrear print, list, str
+
+                Pensar que Python “adivinha” escopo
+
+            DICAS:
+
+                Sempre pergunte: onde esse nome nasceu?
+
+                Função → cria escopo
+
+                Loop → não cria
+
+                Prefira retorno a global
+
+                Evite nomes iguais aos built-ins
+
+            FRASE FINAL PRA MEMORIZAR:
+
+                . Python procura nomes como uma cebola:
+
+                . local → enclosing → global → built-in
+
     =====================================================================
 
     Estruturas condicionais / ternários:
+
+        - Estruturas condicionais controlam o fluxo de execução do programa com 
+        base em expressões lógicas.
+
+        Formalmente:
+
+            Avaliam uma condição booleana
+
+            Executam um bloco entre alternativas possíveis
+
+            São a base de decisão, ramificação e lógica de negócio
+
+        Sem condicionais, um programa é apenas sequencial.
+
+        if:
+
+            - Executa um bloco se a condição for verdadeira.
+
+            Sintaxe:
+
+                if condição:
+                    bloco
+
+            Exemplo:
+
+                idade = 18
+
+                if idade >= 18:
+                    print("Maior de idade")
+
+                if True:  # SE TROCAR POR False NÃO IRÁ ENTRAR NO BLOCO
+                    print("Sempre vai passar aqui")
+
+            Características:
+
+                . Condição deve resultar em verdade lógico (truthy)
+
+                . Se for falsa, o bloco é ignorado
+
+                . Pode existir sozinho
+
+            Uso típico:
+
+                validação
+
+                checagem simples
+
+                guarda de execução
+
+        if if if ... (ifs independentes):
+
+            - Múltiplos if não são ligados entre si.
+
+            Sintaxe:
+
+                if A:
+                    bloco
+                if B:
+                    bloco
+                if C:
+                    bloco
+
+            Exemplo:
+
+                x = 10
+
+                if x > 0:
+                    print("x é positivo")
+
+                if x % 2 == 0:
+                    print("x é par")
+
+                if x >= 10:
+                    print("x é maior ou igual a 10")
+
+            . Cada condição é avaliada sempre
+
+            . Mais de um bloco pode executar
+
+            . Não é escolha exclusiva
+
+            Use quando condições são independentes.
+
+        if / elif:
+
+            - Estrutura de escolha exclusiva.
+
+            Sintaxe:
+
+                if A:
+                    bloco
+                elif B:
+                    bloco
+                elif C:
+                    bloco
+
+            Exemplo:
+
+                nota = 7.5
+
+                if nota >= 8:
+                    print("Nota alta")
+                elif nota > 6 and nota < 8:
+                    print("Nota na média")
+
+            Características:
+
+                . Avaliação sequencial
+
+                . Apenas um bloco executa
+
+                . Para no primeiro verdadeiro
+
+                . elif é um acrônimo a else if
+
+                . elif depende exclusivamente de um if, ou seja, não consegue 
+                rodar sozinho
+
+            Modela decisão hierárquica.
+
+        if / else:
+
+            - Escolha binária: ou isso, ou aquilo.
+
+            Sintaxe:
+            
+                if A:
+                    bloco
+                else:
+                    bloco
+
+            Exemplo:
+
+                nome = "Carro"
+
+                if nome == "Carro":
+                    print("Automotor de 4 eixos")
+                else:
+                    print("Outro objeto")
+                
+            . Garante execução de um dos dois blocos
+
+            . Muito usado para validação
+
+            . Um else depende exclusivamente de if, ou seja, não pode rodar
+            sozinho
+
+        if / elif / else:
+
+            - Forma mais comum de decisão completa.
+
+            Sintaxe:
+
+                if A:
+                    bloco
+                elif B:
+                    bloco
+                elif C:
+                    bloco
+                else:
+                    bloco
+
+            Exemplo:
+
+                permissao = 0
+
+                if permissao == 0:
+                    print("Sem permissão")
+                elif permissao == 1:
+                    print("Permissao total")
+                else:
+                    print("Fora do limite de permissão")
+
+            . Todas as possibilidades são cobertas
+
+            . else é o caso residual
+
+            . Estrutura fechada e previsível
+
+            Ideal quando há categorias mutuamente exclusivas.
+
+        if ANINHADO (if dentro de if):
+
+            - Condições dependentes de condições anteriores.
+
+            Sintaxe:
+
+                if A:
+                    if B:
+                        ...
+
+            Exemplo:
+
+                nome = "João"
+                idade = 22
+
+                if nome == "João":
+
+                    if idade >= 18:
+                        print("É de maior")
+                    elif 15 <= idade < 18:
+                        print("É adolescente")
+                    else:
+                        if idade == 14:
+                            print("Têm 14 anos")
+                        print("É menos de idade")
+
+                else:
+                    print("Nome inválido")
+
+            PS: Nota que podemos aninhar todas as versões anteriores se
+            necessário.
+
+            Características:
+
+                . Cria árvore de decisão
+
+                . Pode aumentar complexidade rapidamente
+
+                . Pode ser reescrito como elif em muitos casos
+
+            Aninhamento profundo = alerta de design.
+
+        IF TERNÁRIO (expressão condicional)
+
+            - Condicional como expressão, não como bloco.
+
+            Forma geral:
+
+                valor = X if condição else Y
+
+            Exemplo:
+
+                acesso_a_entrada = True
+                pode_passar = True if acesso_a_entrada else False
+
+            Características:
+
+                Retorna um valor
+
+                Mais conciso
+
+                Não cria bloco
+
+            Use para atribuições simples, não para lógica complexa.
+
+        IF TERNÁRIO ANINHADO
+
+            - Vários ternários encadeados.
+
+            Forma geral:
+
+                valor = A if c1 else B if c2 else C
+
+            Exemplo:
+
+                x = -3
+
+                resultado = (  # () Serve nesse caso para linhar e deixar mais legível
+                    "positivo" if x > 0
+                    else "zero" if x == 0
+                    else "negativo"
+                )
+
+                print(resultado)
+
+            Características:
+
+                . Funciona
+
+                . Legibilidade cai rápido
+
+                . Deve ser usado com extremo cuidado
+
+                Em geral, prefira if / elif / else.
+
+        match (Python 3.10+)
+
+            - Estrutura de pattern matching (equivalente moderno ao switch).
+
+            Sintaxe:
+
+                match valor:
+                    case X:
+                    case Y:
+                    case _:
+
+            Exemplo:
+
+                opcao = input("Escolha uma opção (1, 2, 3, a, b): ")
+
+                match opcao:
+                    case "1":
+                        print("Opção 1 selecionada")
+
+                    case "2" | "3":
+                        print("Opção 2 ou 3 selecionada")
+
+                    case x if x in ("a", "b", "c"):
+                        print("Opção de letra válida (a, b ou c)")
+
+                    case _:
+                        print("Opção inválida")
+
+            Características:
+
+                . Comparação estrutural
+
+                . Melhor que if/elif para muitos casos fixos
+
+                . _ é o caso padrão (else)
+
+                . Match só aceita condições lógicas bit-wise, exemplo acima: |
+
+                . Pode fazer verificações com ifs ternários
+
+            Excelente para:
+
+                enums
+
+                comandos
+
+                protocolos
+
+                parsing
+
+        IFs MAL PROJETADOS (MÁS PRÁTICAS)
+
+            . Condições longas e ilegíveis:
+
+                if a and b or c and not d and e:
+
+            . Aninhamento profundo:
+
+                if A:
+                    if B:
+                        if C:
+                            if D:
+
+            . Repetição de condição:
+
+                if x > 10:
+                    ...
+                elif x > 10 and y > 5:
+                    ...
+
+            . Uso excessivo de else:
+
+                - else escondendo erro
+
+                - lógica implícita perigosa
+
+        BOAS PRÁTICAS COM CONDICIONAIS:
+
+            . Prefira retornos antecipados
+            . Use elif em vez de aninhar
+            . Quebre condições complexas em variáveis
+            . Use parênteses para clareza
+            . Cada if deve ter uma responsabilidade
+
+        if + return (PADRÃO PROFISSIONAL EM FUNÇÕES E MÉTODOS DE CLASSE)
+
+            - Retornar cedo simplifica lógica.
+
+            Ruim:
+
+                if cond:
+                    resultado = X
+                else:
+                    resultado = Y
+                return resultado
+
+            Bom:
+
+                if cond:
+                    return X
+                return Y
+
+            Benefícios:
+
+                Menos indentação
+
+                Fluxo mais claro
+
+                Código mais legível
+
+            Early return é padrão profissional.
+        
+        FRASES-CHAVE PARA MEMORIZAR
+
+            if decide
+            elif organiza
+            else cobre o resto
+            Ternário é expressão
+            match é escolha estrutural
+            Muitos ifs = sinal de design ruim
+
+        ERROS COMUNS EM ESTRUTURAS CONDICIONAIS
+
+            1) Confundir if independentes com if/elif
+
+                    if x > 0:
+                        ...
+                    if x > 10:
+                        ...
+
+                PS: Ambos podem executar.
+
+                Use elif quando a decisão for exclusiva.
+
+            2) Aninhamento excessivo
+
+                    if A:
+                        if B:
+                            if C:
+                                if D:
+
+                - Código difícil de ler e manter
+
+                Correto: Reescreva com elif, and ou early return
+
+            3) Condições longas e ilegíveis
+
+                    if a and b or c and not d and e:
+
+                - Alto risco de bug
+
+                Correto: Quebre em variáveis intermediárias
+
+            4) else genérico escondendo erro
+
+                    if valido:
+                        processa()
+                    else:
+                        processa_outra_coisa()
+
+                PS: O else pode engolir casos inesperados
+
+                Correto: Trate casos explícitos
+
+            5) Comparar booleanos explicitamente
+
+                    if cond == True:
+
+                - Desnecessário
+
+                Use apenas:
+                
+                    if cond:
+
+            6) Ternário complexo demais
+
+                    x = a if c1 else b if c2 else d if c3 else e
+
+                Legibilidade péssima
+
+                Correto: Use if/elif/else
+
+            7) Repetição de condição
+
+                    if x > 10:
+                        ...
+                    elif x > 10 and y > 5:
+
+                - Redundância
+
+                Correto: Reorganize a lógica
+
+            8) match usado como if comum
+
+                - Usar match para poucas condições simples
+
+                Correto: Use quando há múltiplos padrões claros
+
+            9) Usar is para comparar valor
+
+                    if x is 10:
+
+                - Errado
+                
+                Correto: if x == 10:
+
+            10) Não entender truthy/falsy
+
+                    if valor:
+
+                PS: "0" é True
+
+            11) Condições implícitas demais
+
+                    if a and b or c:
+
+                - Ambíguo
+
+                Correto: Use parênteses ou variáveis intermediárias
+
+            12) Usar in achando que é igualdade
+
+                    if "a" in "ana":
+
+                PS: Isso é substring, não palavra inteira
+
+        DICAS:
+
+            - Decisão é exclusiva ou independente?
+
+            - Liste os casos possíveis antes de codar
+
+            - Use early return sempre que possível
+
+            - Prefira clareza a concisão
+
+            - Se tem muitos elif, pense em match.
+
+            - Se o if cresce demais, é sinal de design ruim
+
+            - Leia a condição em voz alta
+
+            - Pergunte: que objeto está sendo avaliado?
+
+            - Qual operador está sendo usado?
+
+            - Esse operador retorna bool ou objeto?
+
+            - Esse objeto é truthy ou falsy?
+
+            - Preciso comparar valor (==) ou identidade (is)?
+
+            - Preciso normalizar antes (strip, lower)?
+
+        OPERADORES E OBJETOS EM CONDIÇÕES:
+
+            - Em Python, condições avaliam objetos, não apenas valores booleanos.
+
+            Qualquer expressão em um if passa por:
+
+                bool(expressão)
+
+            Por isso, objetos têm comportamento condicional.
+
+            1. Operadores Relacionais:
+
+                - Usados para comparar valores.
+
+                    if idade >= 18:
+                    if nome == "Ana":
+
+                Resultado: bool
+
+            2. Operadores Lógicos:
+
+                - Combinam condições.
+
+                    if idade >= 18 and tem_doc:
+
+                    if n1 * n2 == n1 + n2 or is_prime():
+
+                    if not (valor_zerado):
+
+                Retornam operandos, mas em if são avaliados como booleanos.
+
+            3. Operadores de Pertinência:
+
+                - Verificam pertencimento.
+
+                    if "@" in email:
+
+                    if nome not in lista:
+
+                Chamam internamente métodos como __contains__.
+
+            4. Operadores de Identidade:
+
+                - Verificam identidade de objeto, não valor.
+
+                    if x is None:
+
+                Usado para sentinelas, não para comparação de valor.
+
+            OBJETOS EM CONDIÇÕES (TRUTHY / FALSY):
+
+                Objetos Falsy (avaliam como False):
+
+                    False
+                    None
+                    0, 0.0
+                    ""
+                    [], {}, set()
+
+                    EX:
+
+                        if lista:
+                            ...
+
+                    Só entra se a lista não estiver vazia.
+            
+                Objetos Truthy:
+
+                    Todo objeto que não é falsy.
+
+                    EX:
+
+                        if "abc":
+                        if [1]:
+                        if 10:
+
+                    Conteúdo não importa — só o estado lógico.
+
+            MÉTODOS DE OBJETOS EM CONDIÇÕES:
+
+                Strings:
+
+                    if nome.strip():
+                    if texto.isdigit():
+
+                Listas:
+
+                    if lista:
+
+                Dicionários:
+
+                    if "chave" in d:
+
+                Condições frequentemente usam métodos do objeto, não operadores 
+                puros.
+
+            OPERADORES CHAMAM MÉTODOS (IMPORTANTE)
+
+                Quando você escreve:
+
+                    a == b
+
+                Python executa:
+
+                    a.__eq__(b)
+
+                Isso significa:
+
+                    . Objetos controlam como são comparados
+
+                    . Classes podem redefinir comportamento condicional
+
+                Isso é base de polimorfismo.
+
+            CONDIÇÕES COM FUNÇÕES (RETORNO)
+
+                    if func():
+
+                . A função é chamada
+
+                . O retorno é convertido com bool()
+
+                . Decide o fluxo
+
+                Funções devem retornar algo semântico para condições.
+
 
     =====================================================================
 
     Estruturas de repetição:
 
-    =====================================================================
+        - Estruturas de repetição executam um bloco de código múltiplas vezes 
+        enquanto uma condição for satisfeita ou enquanto houver elementos a 
+        percorrer.
 
-    break, continue e pass:
+        Formalmente:
 
-    =====================================================================
+            Reduzem repetição de código
 
-    Variável acumuladora e Variável atribuidora
+            Modelam processos iterativos
+
+            São base de algoritmos, busca, acumulação e simulação
+
+        while:
+
+            - Repetição controlada por condição
+
+            - Executa o bloco enquanto a condição for verdadeira.
+
+            EX:
+
+                while condição:
+                    bloco
+
+            Exemplo classico:
+
+                cont = 0
+
+                while cont < 10:
+                    print(cont)
+                    cont += 1
+
+            . Leia-se, enquanto a variável chamada cont for menor que 10
+            . Mostre cont
+            . Incremente + 1 em cont
+
+            Características:
+
+                Teste ocorre antes da execução
+
+                Pode executar zero ou mais vezes
+
+                Ideal quando não se sabe o número de iterações
+
+            Iteráveis com while:
+
+                Uso clássico com índice:
+
+                        i = 0
+                        while i < len(lista):
+                            lista[i]
+                            i += 1
+
+                    Exige:
+
+                        controle manual de índice
+
+                        incremento explícito
+
+                        maior chance de erro
+
+                Uso de operadores com while:
+
+                    Relacionais: controlam a condição
+
+                    Aritméticos: contadores
+
+                    Lógicos: múltiplas condições
+
+                        while i < 10 and ativo:
+
+            while aninhado:
+
+                - Um while dentro de outro.
+
+                EX:
+                    
+                    while A:
+                        while B:
+
+                Código:
+
+                    linha = 0
+
+                    while linha < 3:
+                        coluna = 0
+
+                        while coluna < 4:
+                            print(f"linha={linha}, coluna={coluna}")
+                            coluna += 1
+
+                        linha += 1
+
+
+                    i = 1
+
+                    while i <= 3:
+                        j = 1
+
+                        while j <= 5:
+                            print(f"{i} x {j} = {i * j}")
+                            j += 1
+
+                        print("-----")
+                        i += 1
+
+                . Modela repetições bidimensionais
+
+                . Usado em matrizes, tabelas, força bruta
+
+                . Risco alto de complexidade O(n²)
+
+            while True:
+
+                - Loop incondicional.
+
+                EX:
+
+                    while True:
+                        if condicao_de_saida:
+                            break   # Para o loop
+
+                Usado quando:
+
+                    . a condição de parada é interna
+
+                    . leitura contínua
+
+                    . menus
+
+                    . eventos
+
+                Sempre deve existir break.
+
+            Loop infinito:
+
+                    while True:
+                        pass
+
+                . Pode travar o programa
+
+                . Às vezes é intencional (servidores, sistemas reativos)
+
+                . Em scripts comuns → bug
+
+            Funções especiais no while:
+
+                break → sai do loop
+
+                continue → pula para próxima iteração
+
+                pass → não faz nada (placeholder)
+
+            while else:
+
+                Executa o else se o loop terminar sem break.
+
+                EX:
+
+                    while cond:
+                        ...
+                        if erro:
+                            break
+                    else:
+                        # terminou normalmente
+
+                Pouco usado, mas poderoso para:
+
+                    . busca
+
+                    . validação
+
+                    . detecção de falha
+
+        for:
+
+            - Repetição controlada por iterável
+
+            - Percorre cada elemento de um iterável.
+
+            Sintaxe:
+
+                for elemento in iterável:
+                    bloco
+
+            Características:
+
+                Mais seguro que while
+
+                Não exige índice manual
+
+                Preferido em Python
+
+            Iteráveis com for:
+
+                Exemplos:
+
+                    string
+                    lista
+                    tupla
+                    set
+                    dict
+                    range
+
+                EX Sintaxe:
+
+                    for c in "Python":
+
+                . range:
+
+                    - Gerador de sequência numérica.
+
+                        range(inicio, fim, passo)
+
+                    . fim é exclusivo
+
+                    . Muito usado para contagem
+
+                        for i in range(10):
+
+                . Uso de operadores com for:
+
+                        soma = 0
+                        for x in range(10):
+                            soma += x
+
+                    Modelo clássico: acumulador
+
+                . Aplicações clássicas de for:
+
+                    1. Contador
+
+                            contador = 0
+                            for _ in range(10):
+                                contador += 1
+
+                        . _: significa, não chamar nada, apenas executar
+
+                    2. Acumulador
+
+                            total = 0
+                            for n in lista:
+                                total += n
+
+                    3. Busca
+
+                            for x in lista:
+                                if x == alvo:
+                                    break
+
+                    4. Filtragem
+
+                            for x in lista:
+                                if x > 0:
+
+                    5. Transformação
+
+                            for x in lista:
+                                novo = x * 2
+
+            for aninhado:
+
+                Sintaxe:
+
+                    for i in range(n):
+                        for j in range(m):
+
+                EX:
+
+                    for i in range(1, 5):
+                        for j in range(1, 5):
+                            if i != j:
+                                print(f"({i}, {j})")
+
+
+                    letras = ["A", "B", "C"]
+                    for l1 in letras:
+                        for l2 in letras:
+                            if l1 != l2:
+                                print(l1 + l2)
+
+                . Matrizes
+
+                . Tabelas
+
+                . Combinações
+
+                . Complexidade cresce rápido
+
+            Funções especiais no for
+
+                break
+                continue
+                pass
+                enumerate
+                zip
+
+                Exemplo:
+
+                    for i, valor in enumerate(lista):
+
+            for else:
+
+                - Executa o else se o loop terminar sem break.
+
+                Sintaxe:
+
+                    for x in lista:
+                        if x == alvo:
+                            break
+                    else:
+                        # não encontrou
+
+                Muito usado em busca.
+
+            ERROS COMUNS EM LOOPS:
+
+                Esquecer incremento no while
+
+                Loop infinito acidental
+
+                Usar while quando for é melhor
+
+                Aninhamento excessivo
+
+                Misturar lógica demais dentro do loop
+
+                Não usar break quando deveria
+
+                Usar while sem atualizar estado
+
+                Tentar controlar índice dentro de for
+
+                Misturar responsabilidades (contador + condição confusa)
+
+                Off-by-one (< vs <=)
+
+                Incrementar fora do lugar correto
+
+            DICAS:
+
+                Sabe quantas vezes? → for
+                Não sabe quando para? → while
+                Percorre coleção? → for
+                Menu / evento / leitura contínua? → while True
+                Busca? → for + break + else
+                Muito aninhamento? → repense o algoritmo
+                Pergunte: quem controla o passo? você → while | Python → for
+                Se precisar decrementar, pense em range com passo negativo
+                Se tem contador manual em for, talvez precise de enumerate
+                Se o loop não termina, procure o incremento
+                Atualização do estado deve ser óbvia ao ler o código
+
+            FRASES-CHAVE PARA MEMORIZAR:
+
+                while depende de condição
+                for depende de coleção
+                break encerra
+                continue pula
+                else só roda sem break
+                loop ruim = design ruim
+                while exige atualização explícita
+                for itera sozinho
+                Incremento move o estado
+                Sem incremento, não há progresso
+
+
+        INCREMENTO E DECREMENTO EM LOOPS:
+
+            - Como o estado do loop evolui
+
+            - Incrementar/decrementar é alterar o estado que controla a repetição.
+            
+            - Sem isso, o loop não progride → loop infinito.
+
+            Em termos formais:
+
+                Loop = condição + estado + atualização
+
+                Incremento/decremento = atualização do estado
+
+            Papel no while:
+
+                - No while, VOCÊ é responsável por atualizar a variável de 
+                controle.
+
+                Estrutura conceitual:
+
+                    estado_inicial
+                    while condição(estado):
+                        bloco
+                        atualização_do_estado
+
+                . Incremento clássico:
+
+                        i = 0
+                        while i < 5:
+                            print(i)
+                            i += 1
+
+                    Leitura lógica:
+
+                        i começa em 0
+                        enquanto i < 5
+                        imprime
+                        incrementa i
+                        volta para testar
+
+                    Sem i += 1 → loop infinito.
+
+                . Decremento clássico:
+
+                        i = 5
+                        while i > 0:
+                            print(i)
+                            i -= 1
+
+                    Leitura:
+
+                        contador regressivo
+                        usado em temporizadores, contagem reversa
+
+                Incremento/decremento com operadores:
+
+                        while x < 10:
+                            x = x + 2      # incremento de 2
+
+                        while saldo > 0:
+                            saldo -= gasto
+                    
+                    Incremento não precisa ser de 1.
+
+                Exemplo clássico de bug:
+
+                    i = 0
+                    while i < 10:
+                        print(i)
+                    # i nunca muda
+
+            while True + incremento
+
+                    i = 0
+                    while True:
+                        print(i)
+                        i += 1
+                        if i == 5:
+                            break
+
+                Aqui o incremento controla a saída, não a condição do while.
+
+        INCREMENTO / DECREMENTO NO for:
+
+            . Conceito fundamental
+
+                No for, o incremento é implícito.
+
+            Você não controla o índice manualmente.
+
+                for i in range(5):
+                    print(i)
+
+            Internamente:
+
+                . Python pega o próximo valor do iterável
+
+                . Não existe i += 1 visível
+
+                Não tente controlar i manualmente dentro do for.
+
+            Incremento com range:
+
+                    for i in range(0, 10, 2):
+                        print(i)
+
+                Incremento de 2:
+
+                    0 → 2 → 4 → 6 → 8
+
+            Decremento com range:
+
+                    for i in range(5, 0, -1):
+                        print(i)
+
+                . Passo negativo → decremento.
+
+            Acumuladores (incremento indireto)
+
+                Muito comum em for:
+
+                        soma = 0
+                        for x in range(10):
+                            soma += x
+
+                    Aqui:
+
+                        x muda automaticamente
+
+                        soma é incrementada manualmente
+
+                    Dois tipos de “incremento” coexistem:
+
+                        do iterador
+
+                        do acumulador
+
+            NÃO FAÇA ISSO EM for
+
+                    for i in range(10):
+                        i += 1  # inútil
+
+                . Isso não altera o loop
+
+                . Só muda a variável local naquela iteração
+
+        QUANDO USAR CADA LOOP:
+
+            Use for quando:
+
+                Você tem uma coleção
+                Você sabe quantas vezes vai iterar
+                Está percorrendo lista, string, dicionário
+                Está acumulando valores
+                Está fazendo busca simples
+
+                - Em Python, for é a escolha padrão.
+
+            Use while quando:
+
+                A condição de parada é dinâmica
+                Você não sabe quantas iterações haverá
+                O loop depende de eventos, entradas ou estados
+                Menus interativos
+                Leitura até erro/sentinela
+
+                - while é mais poderoso — e mais perigoso.
+
+        LOOPS COM CONDICIONAIS:
+
+            - Loop sem if quase não decide nada.
+
+            - if fora de loop quase não escala.
+
+            O poder está na combinação.
+
+            1) Condicional controla permanência no loop
+
+                while:
+                
+                        while x < 10:
+
+                    Aqui:
+
+                        Condição mantém ou encerra o loop
+
+            2) Condicional controla saída antecipada (break)
+
+                    for x in lista:
+                        if x == alvo:
+                            break
+
+                Busca eficiente: para quando encontra.
+            
+            3) Condicional controla pulo (continue)
+
+                    for x in lista:
+                        if x < 0:
+                            continue
+                        processa(x)
+
+                Filtragem elegante.
+
+            4) Condicional controla processamento
+
+                    for x in lista:
+                        if x % 2 == 0:
+                            pares += 1
+    
+                Lógica de negócio dentro do loop.
+
+            5) Condicional decide acumulação
+
+                    total = 0
+                    for x in lista:
+                        if x > 0:
+                            total += x
+
+                Só acumula quando faz sentido.
+
+            6) Condicional controla finalização (for/while else)
+
+                for x in lista:
+                    if x == alvo:
+                        break
+                else:
+                    print("Não encontrado")
+
+            ERROS CLÁSSICOS (LOOP + IF):
+
+                1) Condição errada → loop infinito
+
+                        while i < 10:
+                            if i == 5:
+                                pass
+                
+                2) if no lugar errado
+
+                        if x > 0:
+                            for x in lista:
+
+                    (geralmente o if deveria estar dentro)
+
+                3) break fora do contexto correto
+
+                    sai do loop errado
+                    encerra cedo demais
+
+                4) continue pulando atualização
+
+                        while i < 10:
+                            if i == 5:
+                                continue
+                            i += 1
+
+                    Loop infinito (i nunca muda quando i == 5)
+
+                5) Misturar lógica demais dentro do loop
+
+                    loop vira “bola de lama”
+                    difícil de provar correto
+
+            BOAS PRÁTICAS (LOOPS + IF)
+
+                . Prefira for a while
+                . Condição de parada clara
+                . Atualização do estado sempre visível
+                . Use break para encurtar busca
+                . Use continue para filtrar
+                . Use else para sucesso/falha
+                . Se ficou complexo → extraia função
 
     =====================================================================
 
@@ -3597,6 +5793,10 @@ UM POUCO SOBRE LÓGICA DE PROGRAMAÇÃO:
 
     =====================================================================
 
+    regex:
+
+    =====================================================================
+
     Módulos, Bibliotecas e importações:
 
     =====================================================================
@@ -3616,6 +5816,15 @@ UM POUCO SOBRE LÓGICA DE PROGRAMAÇÃO:
     Arquivos:
 
     =====================================================================
+
+    Programação funcional (map, any, sum, all):
+
+    =====================================================================
+
+    Exceções, assertations e testes de software:
+
+    =====================================================================
+
 
 Um pouco sobre POO:
 
