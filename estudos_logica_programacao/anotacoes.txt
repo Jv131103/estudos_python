@@ -5707,17 +5707,1218 @@ UM POUCO SOBRE LÓGICA DE PROGRAMAÇÃO:
 
     Iterações e Iteráveis:
 
+        - Iteração é o processo de percorrer elementos um a um.
+        
+        - Iterável é algo que pode ser percorrido.
+        
+        - Iterador é quem faz a iteração acontecer.
+
+        Em Python:
+
+            for não percorre diretamente
+
+            Ele usa iteradores
+
+            Isso é um modelo formal e poderoso
+
+        ITERAÇÃO:
+
+            Iterar significa executar um processo repetidamente, avançando 
+            passo a passo em uma sequência de dados.
+
+            Exemplos de iteração:
+
+                . Percorrer uma lista
+
+                . Ler caracteres de uma string
+
+                . Consumir valores de um gerador
+
+                . Avançar em um range
+            
+            Iteração ≠ repetição cega
+
+            Iteração envolve estado + avanço + término
+
+        ITERÁVEL (Iterable):
+
+            Um iterável é um objeto que pode fornecer um iterador.
+
+            Formalmente:
+
+                iterável → pode ser passado para iter()
+
+            Exemplos de iteráveis:
+
+                str
+
+                list
+
+                tuple
+
+                set
+
+                dict
+
+                range
+
+                arquivos
+
+                geradores
+
+                    iter("abc")
+                    iter([1, 2, 3])
+
+                - Se iter(obj) funciona → é iterável.
+
+            Iterável NÃO percorre sozinho:
+
+                    lista = [1, 2, 3]
+
+                . A lista não anda
+
+                . Ela apenas permite ser percorrida
+
+                Quem anda é o iterador.
+
+        ITERADOR (Iterator):
+
+            - Um iterador é o objeto que mantém o estado da iteração.
+
+            Formalmente, um iterador:
+
+                Possui método __next__()
+
+                Lembra onde parou
+
+                Lança StopIteration quando acaba
+
+                EX:
+
+                    it = iter([1, 2, 3])
+
+                    next(it)  # 1
+                    next(it)  # 2
+                    next(it)  # 3
+                    next(it)  # StopIteration
+
+                Iterador é consumível.
+
+        Iterador ≠ Iterável (diferença crucial):
+
+            | Característica      | Iterável | Iterador |
+            | ------------------- | -------- | -------- |
+            | Pode gerar iterador | Sim      | Não      |
+            | Mantém estado       | Não      | Sim      |
+            | Pode ser reiniciado | Sim      | Não      |
+            | Possui `__next__`   | Não      | Sim      |
+
+            Um iterador geralmente não pode ser reutilizado.
+        
+        COMO O for FUNCIONA (POR DENTRO):
+
+            Quando você escreve:
+
+                for x in lista:
+                    ...
+
+            O Python faz (conceitualmente):
+
+                it = iter(lista)
+                while True:
+                    try:
+                        x = next(it)
+                    except StopIteration:
+                        break
+                    ...
+
+            O for é um while com iterador.
+
+            Isso é MUITO importante.
+
+        ITERAÇÃO EM DIFERENTES TIPOS:
+
+            . String
+
+                    for c in "abc":
+
+                Itera caractere por caractere.
+
+            . Lista
+
+                    for chave in d:
+
+                Itera elemento por elemento.
+
+            . Dicionário
+
+                    for chave in d:
+
+                Itera chaves por padrão.
+
+                    for k, v in d.items():
+
+            . Range
+
+                    for i in range(5):
+
+                range é iterável preguiçoso, não lista.
+
+        ITERADORES SÃO ESTADO + PROGRESSO
+
+            Exemplo de problema comum:
+
+                it = iter([1, 2, 3])
+
+                for x in it:
+                    print(x)
+
+                for x in it:
+                    print(x)  # não imprime nada
+
+            O iterador foi consumido.
+
+        FUNÇÕES RELACIONADAS À ITERAÇÃO
+
+            . iter()
+
+                Cria um iterador:
+
+                    iter(obj)
+
+            . next()
+
+                Avança o iterador:
+
+                    next(it)
+
+            . enumerate()
+
+                Itera com índice:
+
+                    for i, v in enumerate(lista):
+
+            . zip()
+
+                Itera em paralelo:
+
+                    for a, b in zip(lista1, lista2):
+
+            . any() / all()
+
+                Consomem iteráveis:
+
+                    any(x > 0 for x in lista)
+                    all(x > 0 for x in lista)
+
+        ERROS COMUNS
+
+            . Confundir iterável com iterador
+            . Tentar reutilizar iterador consumido
+            . Converter tudo para lista sem necessidade
+            . Usar índice quando o for já resolve
+            . Alterar coleção enquanto itera
+
+        DICAS:
+
+            . Pergunte: isso é iterável ou iterador?
+            . Preciso percorrer mais de uma vez? → use iterável
+            . Quero economizar memória? → use iterador
+            . Quero simplicidade? → use for
+            . Quero controle fino? → use iter + next
+
+        FRASES-CHAVE PARA MEMORIZAR
+
+            Iterável permite
+            Iterador percorre
+            for consome iterador
+            Iterador tem estado
+            StopIteration encerra
+
     =====================================================================
 
     Funções e lambdas:
+
+        - Função é uma unidade de comportamento reutilizável, que recebe entrada, 
+        processa e pode produzir saída.
+
+        Formalmente:
+
+            . Encapsula lógica
+            
+            . Reduz repetição
+            
+            . Controla fluxo
+            
+            . Cria abstração
+
+        Funções simples:
+
+                def f():
+                    bloco
+
+            . Não recebe parâmetros
+
+            . Pode ou não retornar valor
+
+            . Executa uma tarefa específica
+
+        Funções com parâmetros e sem parâmetros:
+
+            Sem parâmetros
+
+                def mostrar_menu():
+
+            Com parâmetros
+            
+                def soma(a, b):
+
+            Parâmetros são entradas explícitas do comportamento
+
+        Funções com parâmetros definidos (default):
+
+                def saudacao(nome="Usuário"):
+
+            Permitem chamadas flexíveis
+
+            Devem vir após parâmetros obrigatórios
+
+            Usar defaults reduz quantidade de parâmetros.
+        
+        NORMA DE CÓDIGO LIMPO:
+
+            - Quanto menos parâmetros, melhor.
+
+            0–2 → ideal
+
+            3 → aceitável
+
+            4+ → sinal de design ruim
+
+            Muitos parâmetros indicam:
+
+                . função fazendo coisas demais
+
+                . falta de encapsulamento
+
+                . necessidade de objeto/dict
+
+        Escopo em Python — regra LEGB:
+
+            - Python procura variáveis nesta ordem como vimos antes:
+
+                L → Local
+                E → Enclosing
+                G → Global
+                B → Built-in
+
+                Isso se chama regra LEGB.
+
+            1. Local (L) — dentro da função:
+
+                    def f():
+                        x = 10   # local
+                        print(x)
+
+                    f()
+
+                - Só existe dentro da função
+
+                - Não pode ser acessada fora
+
+            2. Enclosing (E) — função dentro de função:
+
+                    def externa():
+                        x = 20  # enclosing
+
+                        def interna():
+                            print(x)  # acessa enclosing
+
+                        interna()
+
+                    externa()
+
+                - x não é local da interna, mas está no escopo envolvente 
+                (enclosing).
+
+            3. Global (G) — topo do código (arquivo)
+
+                    x = 30  # global
+
+                    def f():
+                        print(x)  # lê global
+
+                    f()
+
+                - Funções podem ler variáveis globais
+                
+                - Não podem alterar sem global
+
+            4. Built-in (B) — nomes do Python
+
+                    print(len([1, 2, 3]))
+
+                . len, print, sum, int etc.
+
+                PS: Não sobrescreva isso (péssima ideia). Cuidado com
+                sombreamento.
+
+            Como usar variável do topo (global) dentro de função:
+
+                Apenas ler → funciona direto:
+
+                    x = 5
+
+                    def f():
+                        print(x)
+
+                    f()
+
+                Alterar sem global → erro
+
+                    x = 5
+
+                    def f():
+                        x = x + 1  # UnboundLocalError
+
+            Alterar usando global:
+
+                    x = 5
+
+                    def f():
+                        global x
+                        x += 1
+
+                    f()
+                    print(x)  # 6
+
+                global diz:
+
+                    “essa variável não é local, use a global”
+
+            nonlocal — quando existe função dentro de função:
+
+                Situação:
+
+                    variável não é local
+
+                    não é global
+
+                    está na função externa
+
+                Código:
+
+                    def externa():
+                        x = 10
+
+                        def interna():
+                            nonlocal x
+                            x += 1
+
+                        interna()
+                        print(x)
+
+                    externa()
+
+                Sem nonlocal, isso daria erro.
+
+            - global → arquivo inteiro
+
+            - nonlocal → função imediatamente externa
+
+            Função deve receber dados por parâmetro e devolver por retorno.
+            global e nonlocal são exceções, não regra.
+
+        COMPORTAMENTO E FLUXO:
+
+            Funções:
+
+                Criam fronteira de execução
+
+                Controlam início, meio e fim
+
+                Facilitam raciocínio local
+
+            O fluxo entra, executa, retorna.
+
+        return:
+
+            - return encerra a função e devolve um valor.
+
+            Sintaxe:
+
+                return valor
+
+            . Pode haver vários return
+
+            . Usado para controle de fluxo
+
+        return vs print (CRUCIAL):
+
+            | `return`      | `print`          |
+            | ------------- | ---------------- |
+            | devolve valor | mostra na tela   |
+            | afeta fluxo   | efeito colateral |
+            | testável      | não testável     |
+            | reutilizável  | não reutilizável |
+
+            - Funções devem retornar, não imprimir.
+
+        Funções com loops e condicionais:
+
+                def soma_positivos(lista):
+                    total = 0
+                    for x in lista:
+                        if x > 0:
+                            total += x
+                    return total
+
+            - Função = comportamento
+
+            - Loop = repetição
+
+            - If = decisão
+
+        Funções compostas:
+
+            - Funções que chamam outras funções.
+
+            Ex:
+
+                    def processar():
+                        validar()
+                        calcular()
+                        salvar()
+
+                - Base da arquitetura de software.
+
+        Funções aninhadas:
+
+                def externa():
+                    def interna():
+                        ...
+
+            . Escopo enclosing
+
+            . Usadas para encapsular lógica auxiliar
+
+        FUNÇÕES COMO OBJETO:
+
+            - Em Python, funções são objetos de primeira classe.
+
+            Isso significa:
+
+                podem ser atribuídas a variáveis
+
+                passadas como argumento
+
+                retornadas por outras funções
+
+            Ex:
+
+                f = soma
+
+        CLOSURES:
+
+            Closure = função + ambiente capturado.
+
+            EX:
+
+                def externa(x):
+                    def interna():
+                        return x
+                    return interna
+
+            - x permanece vivo mesmo após externa terminar.
+
+            Usos:
+
+                configuração
+
+                encapsulamento
+
+                estado privado
+
+        CURRYING:
+
+            - Transformar função de múltiplos parâmetros em funções parciais.
+
+            EX:
+
+                def soma(a):
+                    def soma_b(b):
+                        return a + b
+                    return soma_b
+
+            Muito usado em programação funcional.
+
+        DECORADORES:
+
+            - Função que envolve outra função para modificar comportamento.
+
+            EX:
+
+                @decorador
+                def f():
+
+            Conceito:
+
+                função recebe função
+                retorna nova função
+
+            Usos:
+
+                logging
+                autenticação
+                cache
+                validação
+
+            Decoradores = aplicação prática de closures.
+
+        FUNÇÕES COMO CALLBACKS:
+
+            - Callback é uma função passada como argumento para ser chamada 
+            depois.
+
+            Ou seja:
+
+                Você não executa a função agora
+
+                Você entrega o comportamento
+
+                Quem chama decide quando executar
+
+            Inversão de controle.
+
+            Pensamento: “Não me diga como fazer, diga o que fazer quando algo 
+            acontecer.”
+
+            Exemplo conceitual:
+
+                def processar(valor, acao):
+                    return acao(valor)
+
+                def dobrar(x):
+                    return x * 2
+
+                processar(10, dobrar)
+
+            dobrar é callback.
+
+        FUNÇÕES COMO ESTRATÉGIAS (Strategy Pattern):
+
+            - Estratégia é trocar o comportamento sem mudar o código que usa.
+
+            Você tem:
+
+                uma interface de comportamento
+
+                várias implementações
+
+            É um padrão clássico de design.
+
+            Pensamento: “O algoritmo é o mesmo, o comportamento muda.”
+
+            Exemplo conceitual:
+
+                def ordenar(lista, estrategia):
+                    return estrategia(lista)
+
+                def crescente(l):
+                    return sorted(l)
+
+                def decrescente(l):
+                    return sorted(l, reverse=True)
+
+            A estratégia define como ordenar.
+
+            Quando usar:
+
+                regras de negócio variáveis
+
+                cálculos diferentes
+
+                políticas (preço, desconto, imposto)
+
+                validações alternativas
+
+        DISPATCH POR FUNÇÃO:
+
+            - Dispatch é escolher qual função executar com base em uma chave.
+
+            Em vez de:
+
+                if cmd == "add":
+                elif cmd == "remove":
+                elif cmd == "list":
+
+            Você usa:
+
+                funções
+
+                mapeamento direto
+
+            Remove condicionais desnecessários.
+
+            Pensamento: “Dados escolhem comportamento.”
+
+            Exemplo conceitual:
+
+                def add():
+                    ...
+
+                def remove():
+                    ...
+
+                def listar():
+                    ...
+
+                acoes = {
+                    "add": add,
+                    "remove": remove,
+                    "list": listar
+                }
+
+                acoes[cmd]()
+
+            Isso é dispatch por função.
+
+        FUNÇÕES GERADORAS (yield):
+
+            - Produzem valores sob demanda.
+
+            EX:
+
+                def gerador():
+                    yield valor
+
+            . Retornam iterador
+
+            . Mantêm estado interno
+
+            . Muito eficientes em memória
+
+            yield pausa a função.
+
+        *args e **kwargs:
+
+            . *args
+
+                - argumentos posicionais variáveis
+
+                    def f(*args):
+
+            . **kwargs
+
+                - argumentos nomeados variáveis
+
+                    def f(**kwargs):
+
+            Use com moderação.
+
+        LAMBDAS (lambda):
+
+            - Lambda é uma função anônima de expressão única.
+
+            - Lambda não substitui função.
+
+            - Lambda remove ruído quando o comportamento é simples.
+
+            Sintaxe:
+
+                lambda x: x + 1
+
+            COMPORTAMENTO E FLUXO
+
+                . Executa expressão
+
+                . Retorna valor automaticamente
+
+                . Não tem return explícito
+
+                . Não tem bloco
+
+            Lambda com parâmetros e sem parâmetros:
+
+                lambda: 10
+                lambda x: x * 2
+                lambda x, y: x + y
+
+            NORMA DE CÓDIGO LIMPO (LAMBDA)
+
+                - Se não cabe em uma linha clara, não é lambda.
+
+                Lambdas complexas são má prática.
+
+            Lambda com parâmetros definidos (default):
+
+                lambda x=10: x * 2
+
+            Lambda key (uso mais comum):
+
+                    sorted(lista, key=lambda x: x.valor)
+
+                - Essencial para ordenação e agrupamento.
+
+            Lambda com condicionais:
+
+                    lambda x: x if x > 0 else 0
+
+                - Forma ternária apenas.
+
+                - Não existe loop em lambda. Se precisar de loop → use def.
+
+            Lambda funcional:
+
+                Usadas com:
+
+                    map
+                    filter
+                    sorted
+                    min, max
+
+                EX:
+
+                    map(lambda x: x*2, lista)
+
+            FUNÇÕES INLINE:
+
+                - Função inline é um comportamento definido no ponto de uso,
+                sem nome.
+
+                EX:
+
+                    sorted(lista, key=lambda x: x.idade)
+
+                . Não merece um def
+
+                . Usada uma única vez
+
+                . Expressão simples
+
+                Lambda = função inline por natureza.
+
+                PS: Se você precisa pensar para ler → não é inline.
+
+            ESTRATÉGIAS RÁPIDAS:
+
+                - Estratégia rápida é trocar comportamento sem criar várias 
+                funções nomeadas.
+
+                    EX:
+
+                        operacao = lambda a, b: a + b
+
+                    Depois:
+
+                        operacao = lambda a, b: a * b
+
+                Estratégia definida no local.
+
+            CALLBACKS SIMPLES:
+
+                - Callback simples é um comportamento pequeno passado para ser 
+                executado depois.
+
+                EX:
+
+                    processar(lista, lambda x: x > 0)
+
+                Mental: “Quando isso acontecer, faça isso.”
+
+                Exemplo clássico:
+
+                    filter(lambda x: x % 2 == 0, lista)
+
+            ADAPTAÇÃO DE INTERFACE:
+
+                - Adapter com lambda ajusta uma função ao formato esperado por 
+                outra.
+
+                Você tem:
+
+                    def soma(a, b):
+                        return a + b
+
+                Mas precisa de:
+
+                    f(x)
+
+                Solução:
+
+                    f = lambda x: soma(x, 10)
+
+                Lambda atua como adaptador.
+
+        ERROS COMUNS
+
+            Lambdas longas
+
+            Lambdas com efeitos colaterais
+
+            Usar lambda no lugar de def complexo
+
+            Função com muitos parâmetros
+
+            Confundir print com retorno
+
+        FRASES-CHAVE PARA MEMORIZAR
+
+            . Função é comportamento
+            . return encerra
+            . Função é objeto
+            . Closure captura estado
+            . Decorador envolve
+            . Lambda é expressão
 
     =====================================================================
 
     Recursões:
 
+        Resolver um problema chamando o próprio problema
+
+        - Recursão é uma técnica em que uma função chama a si mesma para 
+        resolver um problema menor do mesmo tipo.
+
+        Toda recursão correta tem:
+
+            1. Caso base → quando parar
+
+            2. Caso recursivo → chamada para um problema menor
+
+            3. Progresso → cada chamada se aproxima do caso base
+
+            Se faltar qualquer um → bug.
+
+        COMO A RECURSÃO FUNCIONA (POR DENTRO):
+
+            Exemplo conceitual:
+
+                f(3)
+                └─ f(2)
+                    └─ f(1)
+                        └─ f(0)  ← caso base
+
+            . Cada chamada cria um novo frame na pilha (stack)
+
+            . Variáveis são locais àquela chamada
+
+            . Quando o caso base retorna, a pilha desempilha
+
+            Isso se chama call stack.
+        
+        CALL STACK (PILHA DE EXECUÇÃO):
+
+            . Estrutura LIFO (Last In, First Out)
+
+            . Cada chamada ocupa memória
+
+            . Python não otimiza tail recursion
+
+            Recursão profunda → risco real.
+
+        STACK OVERFLOW:
+
+            - Stack overflow ocorre quando a recursão cria chamadas demais
+            antes de retornar.
+
+            Causas:
+
+                . caso base inexistente
+                . caso base errado
+                . problema grande demais
+                . recursão infinita
+
+            Exemplo clássico de erro:
+
+                def f(n):
+                    return f(n + 1)
+
+            Em Python:
+
+                RecursionError: maximum recursion depth exceeded
+
+        QUANDO USAR RECURSÃO (E QUANDO NÃO):
+
+            Use recursão quando:
+
+                problema é naturalmente recursivo
+
+                estrutura em árvore
+
+                divisão em subproblemas claros
+
+                clareza > performance
+
+            Evite recursão quando:
+
+                há laço simples equivalente
+
+                profundidade pode ser grande
+
+                performance e memória são críticas
+
+            Em Python, loops geralmente são melhores.
+
+        TÉCNICAS E ESTRATÉGIAS DE RECURSÃO:
+
+            1. Recursão direta simples
+
+                - A função chama a si mesma.
+
+                Exemplo conceitual:
+
+                    f(n) = f(n-1)
+
+                Usos:
+
+                    fatorial
+
+                    soma
+
+                    contagem
+
+            2. Recursão linear
+
+                - Uma chamada recursiva por execução.
+
+                EX:
+
+                    f(n) → f(n-1)
+
+                Profundidade = n
+
+            3. Recursão múltipla (ramificada)
+
+                - Mais de uma chamada recursiva.
+
+                Ex:
+
+                    f(n) → f(n-1) + f(n-2)
+
+                . Crescimento exponencial
+
+                . Cuidado com performance
+
+            4. Recursão em estruturas:
+
+                Muito comum em:
+
+                    listas aninhadas
+
+                    árvores
+
+                    dicionários aninhados
+
+                EX:
+
+                    processa(no):
+                        para cada filho:
+                            processa(filho)
+
+            5. Dividir para conquistar
+
+                - Quebra o problema em partes.
+
+                Exemplos:
+
+                    busca binária
+
+                    merge sort
+
+                    quicksort
+
+            6. Recursão com acumulador (quase tail recursion)
+
+                EX:
+
+                    f(n, acc)
+
+                . reduz trabalho pós-retorno
+
+                . Python não otimiza, mas melhora clareza
+
+        RECURSÃO — COMPLEMENTOS ESSENCIAIS:
+
+            - Toda recursão é um if disfarçado.
+
+            A forma geral é:
+
+                if caso_base:
+                    return valor
+                else:
+                    return chamada_recursiva(...)
+
+            - Sem if → não existe parada → loop infinito na stack.
+
+            . Caso base é uma condição:
+
+                if n == 0:
+                    return 1
+
+            . Caso recursivo é outra condição
+
+                return n * f(n - 1)
+
+            Recursão é controle de fluxo condicional, não mágico.
+
+            RECURSÃO × LOOPS (RELAÇÃO REAL):
+
+                - Recursão substitui loops, mas não elimina repetição.
+
+                . Não use loop para SIMULAR a recursão
+
+                . Use loop para ITERAR níveis, e recursão para ESTRUTURA
+
+                Conceitualmente:
+
+                    for / while → repetição explícita
+
+                    recursão → repetição implícita via chamadas
+
+                    Exemplo mental:
+
+                        for i in range(n):
+
+                    ≈
+
+                        f(n):
+                            f(n-1)
+
+                Cada chamada equivale a uma iteração.
+
+                NÃO misture loop e recursão sem motivo:
+
+                        def f(n):
+                            for i in range(n):
+                                f(i)
+
+                    PS: Complexidade explode
+
+                    - Use uma técnica por vez, salvo casos específicos.
+
+            return EM RECURSÃO (PONTO CRUCIAL):
+
+                - Em recursão, return não é opcional.
+
+                Erro comum:
+
+                        def f(n):
+                            if n == 0:
+                                return
+                            f(n - 1)
+
+                    - Retorna None
+
+                    - Resultado inútil
+
+                Forma correta:
+
+                        def f(n):
+                            if n == 0:
+                                return 0
+                            return 1 + f(n - 1)
+
+                    - Cada chamada deve retornar algo para a anterior.
+
+            PARÂMETRO AUXILIAR:
+
+                - é um parâmetro acumulador ou parâmetro de controle.
+
+                Também conhecido como:
+
+                    . índice de progresso
+
+                    . estado da recursão
+
+                    . contador recursivo
+
+                    Ele representa onde a recursão está.
+
+                . EX Forma conceitual:
+
+                        soma(lista, i):
+                            se i chegou no fim:
+                                retorna 0
+                            senão:
+                                retorna lista[i] + soma(lista, i+1)
+
+                    Esse padrão é chamado de:
+
+                        recursão com estado explícito
+
+            RECURSÃO COM ACUMULADOR:
+
+                Outro padrão clássico:
+
+                    def soma_lista(lista, i=0, total=0):
+
+                . i → controle
+                . total → acumulador
+
+                Equivale a:
+
+                    total = 0
+                    for x in lista:
+                        total += x
+
+            TÉCNICA: DIVIDIR E CONQUISTAR:
+
+                - Dividir e conquistar quebra o problema em partes 
+                independentes, resolve cada parte e combina os resultados.
+
+                Estrutura formal:
+
+                    Dividir o problema
+
+                    Resolver subproblemas
+
+                    Combinar resultados
+
+                . Exemplo conceitual (soma)
+
+                    soma(lista):
+                        divide em duas metades
+                        soma_esq = soma(esq)
+                        soma_dir = soma(dir)
+                        retorna soma_esq + soma_dir
+
+                Profundidade menor que recursão linear.
+
+
+        ERROS COMUNS EM RECURSÃO
+
+            . esquecer o caso base
+            . caso base nunca ser alcançado
+            . mudar variável errada
+            . retornar antes da recursão
+            . achar que recursão é sempre melhor
+            . confundir recursão com loop
+
+        DICAS:
+
+            . Defina o caso base primeiro
+            . Pergunte: qual é a versão menor do problema?
+            . Cada chamada deve reduzir o problema
+            . Teste manualmente com n = 0, 1, 2
+            . Desenhe a árvore de chamadas
+            . Se ficou confuso → escreva versão iterativa
+
+        FRASES-CHAVE PARA MEMORIZAR
+
+            Caso base manda
+            Problema menor a cada passo
+            Stack cresce
+            Python não otimiza tail recursion
+            Recursão é modelo mental
+            Loop percorre nível
+            Recursão percorre profundidade
+            Não simule recursão com loop
+            Use loop dentro da recursão, não o contrário
+
     =====================================================================
 
-    Variáveis globais e locais:
+    tabelas de decisão:
 
     =====================================================================
 
@@ -5817,11 +7018,23 @@ UM POUCO SOBRE LÓGICA DE PROGRAMAÇÃO:
 
     =====================================================================
 
+    Geradores:
+
+    =====================================================================
+
     Programação funcional (map, any, sum, all):
 
     =====================================================================
 
+    Fallback:
+
+    =====================================================================
+
     Exceções, assertations e testes de software:
+
+    =====================================================================
+
+    Assincronismo, funções e geradores assíncronos, threads e processos:
 
     =====================================================================
 
