@@ -6920,17 +6920,933 @@ UM POUCO SOBRE LÓGICA DE PROGRAMAÇÃO:
 
     tabelas de decisão:
 
+        - Tabela de decisão é uma estrutura que mapeia combinações de 
+        condições → ações.
+
+        Em vez de:
+
+            . muitos if / elif / else
+
+            . lógica espalhada
+
+        Você tem:
+
+            . regras explícitas
+
+            . decisão orientada a dados
+
+            . baixo acoplamento
+
+        É uma técnica de design, não apenas de código.
+
+        O PROBLEMA QUE A TABELA DE DECISÃO RESOLVE:
+
+            Considere lógica assim:
+
+                if A and B:
+                elif A and not B:
+                elif not A and B:
+                else:
+
+            Isso gera:
+
+                . explosão combinatória
+
+                . código difícil de manter
+
+                . bugs silenciosos
+
+                Tabela de decisão resolve isso.
+
+        O QUE É UMA TABELA DE DECISÃO (FORMALMENTE):
+
+            Uma tabela de decisão possui:
+
+                1. Condições (entradas)
+
+                2. Combinações possíveis
+
+                3. Ação associada a cada combinação
+
+            Matematicamente:
+
+                (condição1, condição2, ..., condiçãoN) → ação
+
+        MODELO MENTAL CORRETO:
+
+            - Dados escolhem comportamento.
+
+            Você não pergunta:
+
+                “Qual if eu escrevo agora?”
+
+            Você pergunta:
+
+                “Quais estados existem e o que deve acontecer em cada um?”
+
+        TABELA DE DECISÃO EM PYTHON (FORMA NATURAL):
+
+            Em Python, a forma mais comum é:
+
+                - dict
+
+                - chaves compostas (tuple)
+
+                - valores como funções ou resultados
+
+            . Exemplo conceitual simples
+
+                Regras:
+
+                    usuário vip?
+
+                    possui cartão?
+
+                | VIP | Cartão | Ação                |
+                | --- | ------ | ------------------- |
+                | Sim | Sim    | desconto_vip_cartao |
+                | Sim | Não    | desconto_vip        |
+                | Não | Sim    | desconto_cartao     |
+                | Não | Não    | sem_desconto        |
+
+            Representação:
+
+                tabela = {
+                    (True, True): acao1,
+                    (True, False): acao2,
+                    (False, True): acao3,
+                    (False, False): acao4
+                }
+
+            Isso é uma tabela de decisão explícita.
+
+        TABELA DE DECISÃO × IF/ELIF:
+
+            | Critério       | `if/elif` | Tabela  |
+            | -------------- | --------- | ------- |
+            | Clareza        | Média     | Alta    |
+            | Escalabilidade | Baixa     | Alta    |
+            | Manutenção     | Difícil   | Fácil   |
+            | Testes         | Complexos | Simples |
+            | Extensão       | Perigosa  | Segura  |
+
+            Quanto mais regras → mais a tabela vence.
+
+        QUANDO USAR TABELA DE DECISÃO:
+
+            Use quando:
+
+                . há muitas combinações
+                . regras são estáveis
+                . lógica é determinística
+                . regras são parte do negócio
+
+            Exemplos reais:
+
+                . regras de desconto
+                . permissões
+                . validações
+                . impostos
+                . workflows
+
+        QUANDO NÃO USAR:
+
+            Não use quando:
+
+                . lógica depende de sequência temporal
+                . decisões são probabilísticas
+                . regras mudam durante execução
+                . poucas condições simples
+
+            Não é bala de prata.
+        
+        TABELA DE DECISÃO + FUNÇÕES:
+
+            Ação não precisa ser valor — pode ser função.
+
+                tabela[(True, False)]()
+
+            Isso une:
+
+                tabela de decisão
+
+                dispatch por função
+
+                estratégia
+
+        TABELA DE DECISÃO PARCIAL:
+
+            - Nem todas as combinações precisam existir.
+
+                tabela.get(chave, acao_padrao)
+
+            Isso substitui else.
+
+        ERROS COMUNS:
+
+            . chaves mal definidas
+            . duplicar lógica dentro das ações
+            . misturar regra com execução
+            . usar tabela para lógica sequencial
+            . não tratar caso padrão
+
+        DICAS:
+
+            . Liste todas as condições
+            . Liste todos os estados possíveis
+            . Defina a ação de cada estado
+            . Crie chave composta (tuple)
+            . Separe decisão de execução
+            . Teste cada linha da tabela
+
+        FRASES-CHAVE PARA MEMORIZAR:
+
+            Regra vira dado
+            Dado escolhe ação
+            Menos ifs, mais clareza
+            Tabela escala melhor
+
     =====================================================================
 
     Operadores bit-wise:
+
+        - Pensando como o computador
+
+        - Operadores bit-wise operam diretamente nos bits (0 e 1) de um número 
+        inteiro.
+
+        Eles não trabalham com valores, mas com a representação binária do valor.
+
+        BINÁRIO, VERDADE E FALSO:
+
+            No nível mais baixo:
+
+                0 → False
+
+                1 → True
+
+            Mas atenção:
+
+                Em bit-wise, cada bit é avaliado individualmente, não o número 
+                inteiro.
+
+            Exemplo:
+
+                6  → 110
+                3  → 011
+
+            Cada coluna é uma “verdade” independente.
+
+        OPERADORES BIT-WISE EM PYTHON:
+
+            | Operador | Nome        | Leitura            |
+            | -------- | ----------- | ------------------ |
+            | `&`      | AND         | e                  |
+            | `|`      | OR          | ou                 |
+            | `^`      | XOR         | ou exclusivo       |
+            | `~`      | NOT         | negação            |
+            | `<<`     | SHIFT LEFT  | desloca à esquerda |
+            | `>>`     | SHIFT RIGHT | desloca à direita  |
+
+        . 1) AND (&)
+
+            Regra lógica
+
+                1 & 1 = 1
+                1 & 0 = 0
+                0 & 1 = 0
+                0 & 0 = 0
+
+            Cálculo bit a bit:
+
+                6  = 110
+                3  = 011
+                ---------
+                &  = 010  → 2
+
+            Interpretação:
+
+                O bit só é 1 se ambos forem 1.
+
+        . 2) OR (|)
+
+            Regra lógica
+
+                1 | 1 = 1
+                1 | 0 = 1
+                0 | 1 = 1
+                0 | 0 = 0
+
+            Cálculo:
+
+                6  = 110
+                3  = 011
+                ---------
+                |  = 111 → 7
+
+            Interpretação
+
+                O bit é 1 se qualquer um for 1.
+
+        . 3) XOR (^) — OU EXCLUSIVO:
+
+            Regra lógica:
+
+                1 ^ 1 = 0
+                1 ^ 0 = 1
+                0 ^ 1 = 1
+                0 ^ 0 = 0
+
+            Cálculo:
+
+                6  = 110
+                3  = 011
+                ---------
+                ^  = 101 → 5
+
+            Interpretação
+
+                O bit é 1 somente se forem diferentes.
+
+        . 4) NOT (~):
+
+            Regra lógica:
+
+                ~1 = 0
+                ~0 = 1
+
+            Mas em Python:
+
+                ~x == -(x + 1)
+
+            Exemplo:
+
+                ~5   # -6
+
+            Por quê?
+
+                Python usa complemento de dois, com tamanho infinito de bits.
+
+        . 5) SHIFT LEFT (<<)
+
+            Desloca bits para a esquerda (multiplica por 2ⁿ).
+
+            EX:
+
+                3 = 011
+                3 << 1 = 110 → 6
+                3 << 2 = 1100 → 12
+
+                3 << 1  # 6
+                3 << 2  # 12
+
+            Regra matemática:
+
+                x << n = x * (2ⁿ)
+
+        . 6) SHIFT RIGHT (>>)
+
+            Desloca bits para a direita (divide por 2ⁿ).
+
+            EX:
+
+                8 = 1000
+                8 >> 1 = 0100 → 4
+                8 >> 2 = 0010 → 2
+
+                8 >> 1  # 4
+
+            Regra matemática:
+
+                x >> n = x // (2ⁿ)
+
+        BIT-WISE × OPERADORES LÓGICOS:
+
+            | Tipo     | Operador           | Atua sobre  |
+            | -------- | ------------------ | ----------- |
+            | Lógico   | `and`, `or`, `not` | valores     |
+            | Bit-wise | `&`, `|`, `^`, `~` | bits        |
+
+            Erro comum:
+
+                if x & y:   # bit-wise
+                if x and y: # lógico
+
+            São coisas diferentes.
+
+        USO COM CONDICIONAIS (FLAGS):
+
+            READ  = 0b001
+            WRITE = 0b010
+            EXEC  = 0b100
+
+            permissao = READ | WRITE
+
+        Verificar permissão:
+
+            if permissao & READ:
+                print("Pode ler")
+
+        Isso é bit-masking.
+
+        USO COM match:
+
+            match permissao:
+                case p if p & READ and p & WRITE:
+                    print("Leitura e escrita")
+                case p if p & READ:
+                    print("Somente leitura")
+
+        match + bit-wise = leitura expressiva.
+
+        USO COM LOOPS:
+
+            - Iterar bits de um número
+
+                n = 13  # 1101
+                while n:
+                    print(n & 1)
+                    n >>= 1
+
+        USO COM FUNÇÕES:
+
+            Verificar se número é par:
+
+                def eh_par(n):
+                    return (n & 1) == 0
+
+            Mais baixo nível que:
+
+                n % 2 == 0
+
+        EXEMPLOS LEGAIS (CLÁSSICOS):
+
+            1. Testar se é potência de 2
+
+                def potencia_de_dois(n):
+                    return n > 0 and (n & (n - 1)) == 0
+
+            2. Contar bits 1
+
+                def conta_bits(n):
+                    count = 0
+                    while n:
+                        count += 1
+                        n &= n - 1
+                    return count
+
+            3. Flags com enumeração
+
+                FLAG_A = 1 << 0
+                FLAG_B = 1 << 1
+                FLAG_C = 1 << 2
+
+        O QUE SÃO ESSES BINÁRIOS DE SAÍDA?
+
+            - Eles são novos estados compostos.
+
+            Eles NÃO são:
+
+                números mágicos
+
+                valores arbitrários
+
+            Eles SÃO:
+
+                representações compactas de múltiplas verdades independentes
+
+        MODELO MENTAL CORRETO (MUITO IMPORTANTE):
+
+            Pense assim:
+
+                Cada bit = uma pergunta SIM / NÃO
+
+            Exemplo:
+
+                bit 0 → pode ler?
+                bit 1 → pode escrever?
+                bit 2 → pode executar?
+
+            Então:
+
+                6 = 110 → escrever + executar
+                3 = 011 → ler + escrever
+
+                Bits não têm significado natural.
+                O significado é você quem define.
+
+                . OS BITS NÃO “SABEM” O QUE É LER OU ESCREVER
+
+                    O número 6 = 110 significa apenas:
+
+                        bit2  bit1  bit0
+                        1     1     0
+
+                    Isso é tudo que o computador sabe.
+
+                    “ler”, “escrever”, “executar” não existem no número.
+                    Eles surgem quando você define uma convenção.
+
+                . A CONVENÇÃO PRECISA SER FIXA
+
+                    Quando eu escrevi:
+
+                        bit 0 → ler
+                        bit 1 → escrever
+                        bit 2 → executar
+
+                    isso foi uma escolha arbitrária, mas consistente.
+
+                    Vamos escrever isso formalmente:
+
+                        LER       = 1 << 0  # 001
+                        ESCREVER  = 1 << 1  # 010
+                        EXECUTAR  = 1 << 2  # 100
+
+                    Agora sim temos um dicionário de significado.
+
+                . AGORA VAMOS REFAZER OS EXEMPLOS SEM AMBIGUIDADE
+
+                    . Número 6
+
+                        6 = 110
+
+                    Bits ligados:
+
+                        bit1 (010) → ESCREVER
+
+                        bit2 (100) → EXECUTAR
+
+                    6 = escrever + executar
+                
+                . Número 3
+
+                    3 = 011
+
+                Bits ligados:
+
+                    bit0 (001) → LER
+
+                    bit1 (010) → ESCREVER
+
+                3 = ler + escrever
+
+                . POR QUE 6 NÃO É “LER + ESCREVER”?
+
+                    Porque o bit de LER é o bit 0, e no número 6 ele está 
+                    desligado:
+
+                        6 = 110
+                                ↑
+                              bit0 = 0  → não lê
+
+                    Já no número 3:
+
+                        3 = 011
+                                ↑
+                            bit0 = 1  → lê
+
+                O ERRO MAIS COMUM (E FOI ESSE O SEU INCÔMODO):
+
+                    Pensar que “posição visual” do bit define significado.
+
+                    ERRADO:
+
+                        110 → “os dois primeiros”
+
+                    CERTO:
+
+                        cada posição = uma potência de 2 fixa
+
+                - Bit não é rótulo.
+                - Bit é posição.
+                - O significado vem da constante associada.
+
+            Agora veja:
+
+                AND (&):
+
+                    comum aos dois → escrever
+
+                OR (|)
+
+                    tudo que qualquer um pode → ler + escrever + executar
+
+                XOR (^)
+
+                    o que só um deles pode → ler + executar
+
+            Isso é lógica de estados, não matemática comum.
+
+
+        ERROS COMUNS
+
+            . confundir & com and
+            . usar bit-wise com floats
+            . usar ~ sem entender complemento de dois
+            . esquecer precedência (& < ==)
+            . achar que bit-wise substitui lógica comum
+
+        DICAS:
+
+            Pense em bits, não em números
+            Use bit-wise quando:
+                estados são combináveis
+                flags independentes
+                performance importa
+            Use máscaras para clareza
+            Prefira nomes semânticos (READ, WRITE)
+            Teste com binário (bin(x))
+
+        FRASES-CHAVE PARA MEMORIZAR:
+
+            Bit-wise é lógica por bit
+            AND restringe
+            OR ativa
+            XOR alterna
+            Shift multiplica/divide por 2
+            Flags simplificam decisões
+            Operadores bit-wise não produzem números.
+            Eles produzem estados.
 
     =====================================================================
 
     Listas, Arrays e Vetores:
 
+        - Estrutura de dados que armazena múltiplos valores em sequência,
+        acessados por índice.
+
+        . Em Python
+
+            . list é a estrutura nativa
+
+            . É:
+
+                ordenada
+
+                mutável
+
+                heterogênea
+
+                dinâmica
+
+        Python não tem array fixo nativo como C.
+
+        Para arrays numéricos reais: array, numpy (outro assunto).
+
+        CRIAÇÃO DE LISTAS:
+
+            lista = []
+            lista = [1, 2, 3]
+            lista = list(range(5))
+
+        ÍNDICES:
+
+            Índices começam em 0
+
+            Índices negativos contam do final
+
+                lista[0]    # primeiro
+                lista[-1]   # último
+
+            Índice inválido → IndexError
+
+        ACESSO A ELEMENTOS:
+
+            leitura
+
+            constante O(1)
+
+        MODIFICANDO ELEMENTOS:
+
+                lista[0] = 10
+
+            Lista é mutável.
+
+        SWAP COM LISTAS:
+
+                lista[i], lista[j] = lista[j], lista[i]
+
+            Swap nativo, sem variável auxiliar.
+
+        TAMANHO DA LISTA:
+
+            len(lista)
+
+        SLICING:
+
+                lista[inicio:fim:passo]
+
+            Exemplos:
+
+                lista[:3]
+                lista[2:]
+                lista[::-1]
+
+            Slicing cria nova lista.
+
+        CÓPIA DE LISTA vs ENDEREÇAMENTO:
+
+            Referência (mesmo objeto):
+
+                lista = [1, 2, 3]
+                listab = lista
+
+            Cópia rasa:
+
+                lista = [1, 2, 3]
+                listab = lista[:]
+                listab = lista.copy()
+
+            Modificar b não afeta a.
+
+        LISTA COM OPERADORES:
+
+                [1, 2] + [3, 4]     # concatena
+                [0] * 5             # repete
+
+            - + cria nova lista
+
+            - * replica referências (cuidado com listas aninhadas)
+
+        LISTA COM CONDICIONAIS:
+
+                for x in lista:
+                    if x > 0:
+                        ...
+
+            Muito comum em filtragem.
+
+        LISTA COM LOOPS:
+
+            FOR:
+
+                    for x in lista:
+
+                Com índice:
+
+                    for i in range(len(lista)):
+
+                Melhor:
+
+                    for i, v in enumerate(lista):
+
+            while:
+
+                i = 0
+                while i <= len(lista):
+
+        LISTA COM NÚMEROS
+
+            Usos comuns:
+
+                soma
+
+                média
+
+                máximo
+
+                mínimo
+
+                contagem
+
+        LISTA COM STRINGS
+
+                nomes = ["Ana", "João"]
+
+            Comuns:
+
+                normalização
+
+                busca
+
+                comparação
+
+                parsing
+
+        in / not in vs is / is not:
+
+            . in: Verifica valor
+
+                x in lista
+
+            . is: Verifica objeto. Nunca use is para comparar valores de lista.
+
+                x is y
+
+        sort vs sorted:
+
+            - Ordenam a lista
+
+            . sort()
+
+                    lista.sort()
+                    lista.sort(reverse=True)
+
+                . modifica a lista
+
+                . retorna None
+
+            . sorted()
+
+                    nova = sorted(lista)
+                    nova = sorted(lista, reverse=True)
+
+                . cria nova lista
+
+                . original intacta
+
+        index:
+
+                lista.index(valor)
+
+            . retorna índice
+
+            . erro se não existir
+
+        min e max:
+
+            min(lista)  # Menor valor
+            max(lista)  # Maior valor
+
+        sum: Apenas para números.
+
+            sum(lista)  # Soma o conteúdo da lista
+
+        count:
+
+            Faz contagem de um elemento na lista
+
+            PS: É usado com strings e outros iteráveis também
+
+                lista.count(valor)
+
+        reverse:
+
+                lista.reverse()
+
+            . In-place
+
+            . Diferente de lista[::-1]
+
+        zip:
+
+                zip(lista1, lista2)
+
+            . iteração paralela
+
+            . gera tuplas
+
+        enumerate:
+
+                enumerate(lista)
+
+            . índice + valor
+
+            . padrão profissional
+
+        append, insert, extend, concatenação:
+
+            append: Adiciona no final daa lista
+
+                lista.append(x)
+
+            insert: Adiciona em uma posição específica da lista.
+            PS: Fica inificiente em relação a posição escolhidas e tamanho da
+            lista, pois ele movimenta os dados para o próximo após a inserção
+
+                lista.insert(i, x)
+
+            extend: Funde uma lista na outra
+
+                lista.extend(outra)
+
+            concatenação: Junta uma lista na outra
+
+                lista + outra
+
+        REPETIÇÃO DE ELEMENTOS:
+
+                [0] * 5
+
+            PS: Cuidado com listas aninhadas:
+
+                [[0]*3]*3  # errado
+
+        REMOÇÃO: pop, remove, del:
+
+            pop: Remove um valor por índice escolhido
+
+                lista.pop()  # Padrão sempre o último
+                lista.pop(i)
+
+            remove: Remove por valor
+
+                lista.remove(valor)
+
+            del: Forma alternativa de remover um item. Mas cuidado,
+            se você dar um del lista sem especificar o item, apagará a 
+            referência inteira da lista.
+
+                del lista[i]
+
+        EMPACOTAMENTO E DESEMPACOTAMENTO:
+
+                a, b = [1, 2]
+
+            Com estrela: Pega todo o resto
+
+                a, *resto = [1, 2, 3, 4]
+
+        OUTRAS PROPRIEDADES E TÉCNICAS:
+
+            . Lista é heterogênea
+
+                [1, "a", True]
+
+            . Lista é dinâmica
+
+                cresce
+
+                diminui
+
+            . Lista pode conter listas
+
+                matriz = [[1,2],[3,4]]
+
+            . Percurso seguro:
+
+                for x in lista[:]:
+
+        ERROS COMUNS:
+
+            . confundir cópia com referência
+            . usar is em vez de ==
+            . modificar lista enquanto itera
+            . usar índice quando não precisa
+            . esquecer que sort() não retorna lista
+
+        DICAS:
+
+            Precisa de ordem? → lista
+            Precisa mudar valores? → lista
+            Precisa percorrer? → for ou while dependendo da situação
+            Precisa índice? → enumerate
+            Precisa cópia? → copy()
+            Muito if? → refatorar
+
+        FRASES-CHAVE PARA MEMORIZAR:
+
+            Lista é mutável
+            Índice começa em zero
+            Slicing copia
+            sort modifica
+            sorted cria nova
+            in verifica valor
+
     =====================================================================
 
-    Índices:
+    Indices:
 
     =====================================================================
 
@@ -7090,6 +8006,8 @@ Um pouco sobre Estruturas de dados:
     algoritmos de busca
 
     algoritmo de Ordenações
+
+    BFS × DFS
 
     pilhas
 
