@@ -7848,13 +7848,664 @@ UM POUCO SOBRE LÓGICA DE PROGRAMAÇÃO:
 
     Indices:
 
+        Índice é a posição numérica que identifica um elemento dentro de uma 
+        estrutura sequencial.
+
+        - Índice = deslocamento (offset) a partir de um endereço base
+
+        - Permite acesso direto a elementos
+
+        Sem índice, estruturas sequenciais não seriam eficientes.
+
+        USO DE ÍNDICES:
+
+            - Acesso direto (O(1))
+
+                    lista[i]
+
+                . O computador não percorre a lista
+
+                . Ele calcula o endereço diretamente
+
+                Isso é acesso de tempo constante.
+
+            . Escrita / modificação
+
+                Motivo histórico e técnico:
+
+                    Em memória:
+
+                        endereço = base + índice * tamanho_do_elemento
+
+                    Se índice começa em 0:
+
+                        primeiro elemento → deslocamento zero
+
+                        cálculo mais simples
+
+                        hardware agradece
+
+                        Isso vem de C, assembly e arquitetura de CPU.
+
+            . FUNCIONAMENTO NA MEMÓRIA
+
+                Suponha:
+
+                    . lista começa no endereço 1000
+
+                    . cada elemento ocupa 8 bytes
+
+                    | Índice | Endereço |
+                    | ------ | -------- |
+                    | 0      | 1000     |
+                    | 1      | 1008     |
+                    | 2      | 1016     |
+                    | 3      | 1024     |
+
+                Fórmula:
+
+                    endereço = base + índice × tamanho
+
+                É por isso que lista[i] é rápido.
+
+        ÍNDICE ≠ CONTEÚDO:
+
+            O índice não é o valor.
+
+                lista = [10, 20, 30]
+
+            . índice 1 → valor 20
+
+            . índice é posição, não dado
+
+            Confundir isso gera bugs clássicos.
+
+        ÍNDICES NEGATIVOS (PYTHON):
+
+                lista[-1]
+
+            Significa:
+
+                lista[len(lista) - 1]
+
+            É um atalho semântico, não algo mágico.
+
+            Na memória:
+
+                . o Python ajusta o índice
+
+                . converte para positivo
+
+                . acessa normalmente
+
+        ÍNDICES E LIMITES:
+
+            . Erro clássico
+
+                lista[len(lista)]
+
+            - último índice válido é len(lista) - 1
+
+            - len(lista) é fora do intervalo
+
+            Gera IndexError.
+
+        APLICAÇÕES DE ÍNDICES:
+
+            . Percurso manual
+
+                    i = 0
+                    while i < len(lista):
+                        ...
+                        i += 1
+
+                - Índice atua como estado do loop.
+
+            . Comparação entre elementos
+
+                    lista[i] > lista[i+1]
+
+                - Base de algoritmos de ordenação.
+
+            . Sincronização entre listas
+
+                lista1[i], lista2[i]
+
+        TÉCNICAS DE USO COM ÍNDICES:
+
+            . Técnica 1 — Dois índices (two pointers)
+
+                    i = 0
+                    j = len(lista) - 1
+
+                Usos:
+
+                    . inversão
+
+                    . verificação de palíndromo
+
+                    . partições
+
+                    Muito comum em entrevistas.
+
+            . Técnica 2 — Índice como estado
+
+                    def f(lista, i=0):
+
+                . i indica progresso
+
+                . comum em recursão
+
+                i = parâmetro de controle.
+
+            . Técnica 3 — Índice + condição
+
+                    for i in range(len(lista)):
+                        if i % 2 == 0:
+                            ...
+
+                Usos:
+
+                    posições pares/ímpares
+
+                    padrões
+
+            . Técnica 4 — Índice com deslocamento
+
+                    lista[i+k]
+
+                Usos:
+
+                    janelas deslizantes
+
+                    análise local
+
+            . Técnica 5 — enumerate (índice seguro)
+
+                    for i, v in enumerate(lista):
+
+                .  Mais legível
+                .  Menos erro
+                .  Padrão profissional
+
+            . Técnica 6 — Swap por índice
+
+                    lista[i], lista[j] = lista[j], lista[i]
+
+                Base de:
+
+                    ordenação
+
+                    rearranjos
+
+        ÍNDICES E PERFORMANCE:
+
+            | Operação               | Complexidade |
+            | ---------------------- | ------------ |
+            | acesso `lista[i]`      | O(1)         |
+            | modificação `lista[i]` | O(1)         |
+            | inserção no meio       | O(n)         |
+            | remoção no meio        | O(n)         |
+
+            Índices são rápidos, movimentação não.
+
+        ERROS COMUNS COM ÍNDICES:
+
+            . off-by-one (+1 ou -1 errado)
+
+            . usar índice quando não precisa
+
+            . modificar lista enquanto itera
+
+            . confundir índice com valor
+
+            . acessar fora do limite
+
+        DICAS:
+
+            Sempre pense: intervalo válido é [0, len-1]
+
+            Último elemento → len - 1
+
+            Prefira enumerate
+
+            Use dois índices quando houver simetria
+
+            Se ficou confuso → desenhe os índices
+
+            Índice é matemática, não tentativa
+
+        FRASES-CHAVE PARA MEMORIZAR:
+
+            Índice é deslocamento
+            Começa em zero por eficiência
+            Acesso é constante
+            Valor ≠ posição
+            enumerate é seu amigo
+
     =====================================================================
 
     In place:
 
+        - Um algoritmo ou operação é in place quando modifica os dados 
+        diretamente na estrutura original, usando pouca ou nenhuma memória
+        extra.
+
+        . Espaço extra → O(1) (ou constante)
+
+        . A estrutura original é alterada
+
+        EXEMPLO SIMPLES (LISTA):
+
+            - NÃO in place
+
+                    nova = lista[::-1]
+
+                . cria nova lista
+ 
+                . memória extra O(n)
+
+                . original permanece intacta
+
+            - IN PLACE:
+
+                    lista.reverse()
+
+                . mesma lista
+
+                . sem criar outra
+
+                . memória extra mínima
+
+                Resultado visual pode ser igual, mas o custo é diferente.
+        
+        IN PLACE E MEMÓRIA:
+
+            Imagine uma lista na memória:
+
+                Endereço 1000 → [1, 2, 3, 4]
+
+            . Operação in place
+
+                - altera valores nos mesmos endereços
+
+                - não realoca a estrutura inteira
+
+            . Operação não in place
+
+                - cria outra área de memória
+
+                - copia os valores
+
+                - mantém a original intacta
+
+            Isso impacta:
+
+                desempenho
+
+                consumo de memória
+
+                cache da CPU
+
+        IN PLACE × NÃO IN PLACE (COMPARAÇÃO):
+
+            | Critério            | In place     | Não in place  |
+            | ------------------- | ------------ | ------------- |
+            | Cria nova estrutura | ❌           | ✔             |
+            | Usa memória extra   | O(1)         | O(n)          |
+            | Modifica original   | ✔            | ❌            |
+            | Mais rápido         | geralmente ✔ | geralmente ❌ |
+            | Mais seguro         | ❌           | ✔             |
+
+            Segurança aqui = não destruir dados originais.
+
+        EXEMPLOS CLÁSSICOS EM PYTHON:
+
+            . sort() vs sorted()
+
+                lista.sort()      # IN PLACE
+                sorted(lista)     # NÃO in place
+
+            . reverse()
+
+                lista.reverse()   # IN PLACE
+
+            . Swap
+
+                lista[i], lista[j] = lista[j], lista[i]  # IN PLACE
+
+            . Modificação direta
+
+                lista[0] = 10     # IN PLACE
+
+        OPERADORES SÃO IN PLACE?
+
+            . NÃO
+
+                    lista = lista + outra
+
+                . cria nova lista
+
+            . SIM (conceitualmente)
+
+                    lista += outra
+
+                . += pode ser in place dependendo do tipo.
+
+        IN PLACE E ÍNDICES (CONEXÃO DIRETA)
+
+            Operações in place:
+
+                usam índices
+
+                alteram posições existentes
+
+                não mudam a identidade do objeto
+
+            EX:
+
+                id(lista)  # permanece o mesmo
+
+            Isso é fundamental para entender referências.
+
+        IN PLACE E REFERÊNCIAS:
+
+                a = [1, 2, 3]
+                b = a
+
+            Agora:
+
+                a.sort()  # IN PLACE
+
+            + b também muda.
+
+            Porque é o mesmo objeto.
+
+        QUANDO USAR IN PLACE:
+
+            Use quando:
+
+                memória é crítica
+
+                lista é grande
+
+                você quer modificar o original
+
+                não precisa preservar versão anterior
+
+        QUANDO NÃO USAR:
+
+            Evite quando:
+
+                precisa preservar dados
+
+                código deve ser seguro
+
+                múltiplas referências existem
+
+                clareza é mais importante que performance
+
+        TÉCNICAS COMUNS IN PLACE:
+
+            . Dois índices
+
+                i, j = 0, len(lista)-1
+
+            . Swap progressivo
+
+                while i < j:
+                    lista[i], lista[j] = lista[j], lista[i]
+
+            . Atualização acumulada
+
+                for i in range(len(lista)):
+                    lista[i] += 1
+
+        ERROS COMUNS
+
+            esquecer que a lista original será alterada
+
+            modificar enquanto itera sem cuidado
+
+            confundir retorno None com erro
+
+            usar in place quando precisava de cópia
+
+        DICAS:
+
+            Pergunte: preciso preservar o original?
+
+            Se sim → não use in place
+
+            Se não → prefira in place
+
+            Verifique se o método retorna None
+
+            Atenção a referências múltiplas
+
+        FRASES-CHAVE PARA MEMORIZAR:
+
+            . In place altera o original
+            . Usa pouca memória
+            . Não cria cópia
+            . Mais rápido, menos seguro
+            . Referências importam
+
     =====================================================================
 
     Janelas:
+
+        - Janela é uma técnica que analisa subconjuntos consecutivos de uma 
+        estrutura sequencial (lista, string, array), deslocando um intervalo 
+        ao longo dos dados.
+
+        Em vez de:
+
+            recalcular tudo do zero
+
+            usar loops aninhados
+
+        Você:
+
+            mantém uma janela
+
+            move ela passo a passo
+
+            atualiza o estado
+
+        Isso reduz drasticamente o custo computacional.
+
+        MODELO MENTAL FUNDAMENTAL:
+
+            Imagine a lista:
+
+                [2, 4, 1, 7, 3, 6]
+
+            Janela de tamanho 3:
+
+                [2, 4, 1]  → janela 1
+                    [4, 1, 7]  → janela 2
+                        [1, 7, 3]  → janela 3
+                            [7, 3, 6]  → janela 4
+
+            A janela desliza, mas os dados não mudam.
+
+        POR QUE JANELAS EXISTEM?
+
+            Sem janela (ingênuo):
+
+                    para cada posição:
+                        recalcula tudo
+
+                Complexidade:
+
+                    O(n × k)
+
+                Com janela:
+
+                    remove o que sai
+                    adiciona o que entra
+
+                Complexidade:
+
+                    O(n)
+
+                Isso é otimização algorítmica pura.
+
+        TIPOS DE JANELA:
+
+            1) JANELA DE TAMANHO FIXO
+
+                - O tamanho da janela é constante.
+
+                Exemplo:
+
+                    . média móvel
+                    . soma de k elementos
+                    . maior soma de k elementos consecutivos
+
+                    Modelo:
+
+                        início = 0
+                        fim = k - 1
+
+            2) JANELA DE TAMANHO VARIÁVEL
+
+                - O tamanho cresce ou diminui conforme uma condição.
+
+                Exemplo:
+
+                    . menor sublista com soma ≥ X
+                    . substring sem caracteres repetidos
+
+                    Modelo:
+
+                        expande → contrai → expande
+
+        JANELA E ÍNDICES (CONEXÃO DIRETA):
+
+            Janela sempre usa:
+
+                . dois índices
+
+                    . left
+
+                    . right
+
+                Eles definem:
+
+                    janela = dados[left:right+1]
+
+                Técnica dos dois ponteiros.
+
+        JANELA DE TAMANHO FIXO (EXPLICAÇÃO):
+
+            Exemplo conceitual: soma de 3 elementos
+
+                lista = [2, 4, 1, 7, 3, 6]
+                k = 3
+
+            Passos:
+
+                1. soma inicial dos 3 primeiros
+
+                2. move a janela:
+
+                    . subtrai o elemento que saiu
+
+                    . soma o elemento que entrou
+
+                Não recalcula tudo.
+
+        JANELA DE TAMANHO VARIÁVEL (EXPLICAÇÃO):
+
+            Exemplo:
+
+                menor sublista com soma ≥ 10
+
+            Processo:
+
+                1. expande a janela (direita)
+
+                2. quando atingir condição:
+
+                    . tenta contrair (esquerda)
+
+                3. mantém o melhor resultado
+
+                Muito usada em problemas difíceis.
+        
+        JANELAS E MEMÓRIA:
+
+            . A janela não cria cópia
+
+            . Trabalha in place sobre índices
+
+            . Usa memória O(1)
+
+            Isso conecta diretamente com:
+
+                índices
+
+                in place
+
+                performance
+
+        JANELAS × SLICING:
+
+            Ruim:
+
+                lista[i:i+k]  # cria nova lista
+
+            Bom:
+
+                usa índices + acumulador
+
+            Janelas não copiam dados.
+
+        USOS CLÁSSICOS DE JANELAS:
+
+            média móvel
+            soma máxima
+            análise de séries temporais
+            detecção de padrões
+            strings (substrings)
+            processamento de sinais
+            logs e streams
+        
+        ERROS COMUNS
+
+            usar slicing dentro do loop
+
+            esquecer de remover o elemento que sai
+
+            errar limites (right < len)
+
+            confundir janela fixa com variável
+
+            usar dois loops quando um basta
+
+        DICAS:
+
+            Pergunte:
+
+                Estou analisando elementos consecutivos?
+
+                Recalculo valores repetidamente?
+
+                Existe um tamanho fixo ou condição dinâmica?
+
+                Posso atualizar o resultado incrementalmente?
+
+            Se sim → é problema de janela.
+
+        FRASES-CHAVE PARA MEMORIZAR
+
+            . Janela analisa subconjuntos consecutivos
+            . Dois índices definem a janela
+            . Remove o que sai, adiciona o que entra
+            . Evita loops aninhados
+            . Janela é otimização
 
     =====================================================================
 
@@ -7869,6 +8520,10 @@ UM POUCO SOBRE LÓGICA DE PROGRAMAÇÃO:
     Rotação:
 
     =====================================================================
+
+    particionamento:
+
+    ======================================================================
 
     Listas, Arrays e Vetores circulares:
 
