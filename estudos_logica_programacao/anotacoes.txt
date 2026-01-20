@@ -8511,17 +8511,804 @@ UM POUCO SOBRE LÓGICA DE PROGRAMAÇÃO:
 
     Slicing:
 
+        - Slicing é a operação de extrair um subconjunto consecutivo de uma
+        sequência, usando índices.
+
+        Funciona em:
+
+            . listas
+ 
+            . strings
+ 
+            . tuplas
+
+            . outras sequências
+
+            Sempre baseado em índices.
+
+        FORMA PYTHÔNICA (OFICIAL):
+
+            seq[inicio:fim:passo]
+
+        Regras:
+
+            inicio → inclusivo
+
+            fim → exclusivo
+
+            passo → incremento
+
+        Exemplos:
+
+            lista[1:4]
+            lista[:3]
+            lista[2:]
+            lista[::2]
+            lista[::-1]
+
+        POR QUE O FIM É EXCLUSIVO?
+
+            - Consistência matemática:
+
+                tamanho = fim - inicio
+
+            Isso:
+
+                . evita +1
+                . simplifica cálculo
+                . permite compor slices
+
+                Mesma razão dos loops range.
+
+        FUNCIONAMENTO NA MEMÓRIA:
+
+            . Listas
+
+                slicing cria nova lista
+
+                cópia rasa
+
+                custo O(k)
+
+            EX:
+
+                nova = lista[2:5]
+
+            Não é in place.
+
+            . Strings
+
+                strings são imutáveis
+
+                slicing cria nova string
+
+        IMPLICAÇÃO IMPORTANTE:
+
+            - Slicing não é barato.
+
+            Dentro de loops:
+
+                for i in range(n):
+                    lista[i:i+k]
+
+            Pode virar O(n²).
+
+        SLICING MANUAL (COM ÍNDICES):
+
+            Antes de slicing existir, faríamos:
+
+                nova = []
+                for i in range(inicio, fim):
+                    nova.append(lista[i])
+
+            Isso é slicing manual.
+
+            Quando usar slicing manual?
+
+                quando precisa de controle
+
+                quando quer evitar cópias
+
+                quando usa janelas
+
+                quando filtra dinamicamente
+
+        SLICING PYTHÔNICO (IDIOMÁTICO):
+
+                lista[::-1]
+                lista[:]
+                lista[::2]
+
+            . Legível
+            . Expressivo
+            . Menos código
+
+            Mas pode esconder custo.
+
+        SLICING COM PASSO:
+
+                lista[::2]   # pares
+                lista[1::2]  # ímpares
+
+            Cria nova lista pulando elementos.
+
+        SLICING NEGATIVO:
+
+                lista[-3:]
+                lista[:-1]
+            
+            Python ajusta índices automaticamente.
+
+        SLICING COMO CÓPIA:
+
+                copia = lista[:]
+
+            . Cópia rasa.
+
+            . Para listas aninhadas, cuidado.
+
+        SLICING IN PLACE?
+
+            Slicing não é in place, exceto em atribuição.
+
+            . Atribuição por slice
+
+                    lista[1:3] = [9, 9]
+
+                . In place
+                . Modifica estrutura
+
+                Técnica avançada.
+
+        SLICING vs JANELAS:
+
+            | Slicing          | Janela           |
+            | ---------------- | ---------------- |
+            | cria cópia       | não cria         |
+            | simples          | eficiente        |
+            | custo O(k)       | custo O(1)       |
+            | bom para leitura | bom para análise |
+
+            Use slicing para extrair, janelas para analisar.
+
+        TÉCNICAS E ESTRATÉGIAS COM SLICING:
+
+            Técnica 1 — Cópia segura
+
+                nova = lista[:]
+
+            Técnica 2 — Reversão rápida
+
+                    lista[::-1]
+
+                Para leitura ou cópia.
+
+            Técnica 3 — Substituição parcial
+
+                    lista[:2] = [0, 0]
+
+                . In place.
+
+            Técnica 4 — Quebra em partes
+
+                    meio = len(lista)//2
+                    esq = lista[:meio]
+                    dir = lista[meio:]
+
+                . Base de divide and conquer.
+
+            Técnica 5 — Fatiamento por padrão
+
+                pares = lista[::2]
+
+            Técnica 6 — Sliding via slicing (cuidado)
+
+                    for i in range(len(lista)-k+1):
+                        janela = lista[i:i+k]
+
+                Simples, mas custoso.
+
+        ERROS COMUNS
+
+            achar que slicing é in place
+
+            usar slicing pesado em loops
+
+            confundir slice vazio com erro
+
+            esquecer que fim é exclusivo
+
+            usar slicing quando índice basta
+
+        DICAS:
+
+            . Precisa extrair → slicing
+            . Precisa analisar repetidamente → janela
+            . Precisa copiar → slicing
+            . Precisa performance → índices
+            . Use slicing com intenção
+
+        FRASES-CHAVE PARA MEMORIZAR:
+
+            Slicing copia
+            Fim é exclusivo
+            Passo controla salto
+            Não é in place
+            Janela é melhor para análise
+
     =====================================================================
 
     Divisão e conquista:
+
+        - Resolver o grande resolvendo muitos pequenos
+
+        - Divisão e conquista é um paradigma algorítmico que resolve um problema
+        dividindo-o em subproblemas menores, resolvendo cada um de forma 
+        independente e combinando os resultados.
+
+        Ele tem 3 etapas obrigatórias:
+
+            1. Dividir o problema
+
+            2. Conquistar (resolver os subproblemas)
+
+            3. Combinar os resultados
+
+            Se faltar uma delas → não é divisão e conquista.
+
+        - “Se eu sei resolver o problema pequeno, sei resolver o grande.”
+
+        É o mesmo raciocínio da indução matemática.
+
+        ESTRUTURA PADRÃO (FORMA GERAL):
+
+            Em pseudocódigo:
+
+                resolver(problema):
+                    se problema é pequeno:
+                        resolve diretamente
+                    divide o problema em partes
+                    resolve cada parte recursivamente
+                    combina os resultados
+
+            Note: recursão quase sempre aparece, mas recursão sozinha não é 
+            divisão e conquista.
+
+        DIFERENÇA CRUCIAL: RECURSÃO × DIVISÃO E CONQUISTA:
+
+            | Recursão           | Divisão e Conquista |
+            | ------------------ | ------------------- |
+            | Técnica            | Paradigma           |
+            | Pode ter 1 chamada | Tem 2+ subproblemas |
+            | Pode ser linear    | É estrutural        |
+            | Nem sempre divide  | Sempre divide       |
+
+            Todo divide & conquer usa recursão,
+
+            mas nem toda recursão é divide & conquer.
+
+        EXEMPLO CONCEITUAL SIMPLES (SOMA):
+
+            Problema:
+
+                Somar uma lista grande
+
+            Forma linear: ineficiente nesse caso
+
+                soma = soma(lista inteira)
+
+            Divisão e conquista: Mais eficiente nesse caso
+
+                soma(lista):
+                    divide em duas metades
+                    soma esquerda
+                    soma direita
+                    retorna soma_esq + soma_dir
+
+            O problema fica menor em cada nível.
+
+        POR QUE ISSO FUNCIONA TÃO BEM?
+
+            1) Reduz complexidade
+
+                . profundidade ≈ log n
+
+                . não cresce linearmente
+
+            2) Explora paralelismo
+
+                . subproblemas independentes
+
+                . ideal para múltiplos núcleos
+
+            3) Estrutura clara
+
+                . lógica local
+
+                . menos estados confusos
+
+        COMPARAÇÃO COM FORÇA BRUTA:
+
+            | Abordagem        | Complexidade  |
+            | ---------------- | ------------- |
+            | Força bruta      | O(n²) ou pior |
+            | Divide & conquer | O(n log n)    |
+
+            Isso muda completamente a escala.
+
+        FUNCIONAMENTO NA MEMÓRIA
+
+            . Cada divisão cria chamadas recursivas
+            . Usa stack
+            . Aloca subestruturas (às vezes com slicing)
+
+            Implementações boas evitam cópias desnecessárias.
+
+        ERROS COMUNS (MUITO IMPORTANTES)
+
+            . “Usar recursão = dividir e conquistar”
+            . Não definir caso base 
+            . Dividir mal (subproblemas desbalanceados) 
+            . Não combinar corretamente
+            . Usar quando um loop simples basta
+
+        QUANDO USAR DIVISÃO E CONQUISTA
+
+            Use quando:
+
+                o problema é grande
+
+                pode ser quebrado naturalmente
+
+                subproblemas são independentes
+
+                há ganho claro de performance
+
+        QUANDO NÃO USAR
+
+            Evite quando:
+
+                problema é linear simples
+
+                custo de divisão é alto
+
+                há dependência sequencial forte
+
+                solução iterativa é mais clara
+
+        Dividir só por “estilo” é erro.
+
+        COMO IDENTIFICAR UM PROBLEMA DE DIVISÃO E CONQUISTA:
+
+            Pergunte:
+
+                1. Posso quebrar o problema em partes iguais?
+                2. Resolver uma parte ajuda a resolver o todo?
+                3. Subproblemas são independentes?
+                4. Combinar resultados é simples?
+
+                Se sim → é candidato.
+
+        FRASES-CHAVE PARA MEMORIZAR
+
+            Divide o problema
+            Resolve partes menores
+            Combina resultados
+            Cresce em log n
+            Paradigma, não técnica
 
     =====================================================================
 
     Rotação:
 
+        - Reorganizando elementos sem perder a ordem relativa
+
+        - Rotação é a operação que desloca os elementos de uma sequência 
+        circularmente, preservando a ordem relativa.
+
+        Ou seja:
+
+            nada é perdido
+
+            nada é criado
+
+            apenas muda de posição
+
+        Diferente de:
+
+            ordenação
+
+            reversão
+
+            embaralhamento
+
+        MODELO MENTAL CORRETO:
+
+            - Imagine uma lista como um anel, não como uma linha.
+
+                [1, 2, 3, 4, 5]
+
+            Se você “gira” esse anel, os elementos continuam na mesma ordem,
+            só começam em outro ponto.
+
+        TIPOS DE ROTAÇÃO:
+
+            1) ROTAÇÃO À ESQUERDA (LEFT ROTATION)
+
+                Cada elemento anda para a esquerda
+                
+                O primeiro vai para o final
+
+                Exemplo:
+
+                    [1, 2, 3, 4, 5]  → rotacionar 2 à esquerda
+                    [3, 4, 5, 1, 2]
+
+            2) ROTAÇÃO À DIREITA (RIGHT ROTATION)
+
+                Cada elemento anda para a direita
+                
+                O último vai para o início
+
+                Exemplo:
+
+                    [1, 2, 3, 4, 5] → rotacionar 2 à direita
+                    [4, 5, 1, 2, 3]
+
+                Rotação à direita = rotação à esquerda de n - k.
+
+            ROTAÇÃO ≠ SHIFT:
+
+                | Operação | O que acontece       |
+                | -------- | -------------------- |
+                | Shift    | elementos caem fora  |
+                | Rotação  | elementos reaparecem |
+
+                Rotação é circular.
+
+                É um padrão estrutural, não cosmético.
+
+        FORMAS DE IMPLEMENTAR ROTAÇÃO:
+
+            1) ROTAÇÃO COM SLICING (NÃO IN PLACE)
+
+                    rot = lista[k:] + lista[:k]
+
+                . simples
+                . cria nova lista
+                . usa memória O(n)
+
+                Bom para leitura, não para performance.
+
+            2) ROTAÇÃO IN PLACE COM CÓPIA AUXILIAR
+
+                    temp = lista[:k]
+                    lista[:len(lista)-k] = lista[k:]
+                    lista[len(lista)-k:] = temp
+
+                Parcialmente in place (usa buffer pequeno).
+
+            3) ROTAÇÃO IN PLACE (TÉCNICA DAS REVERSÕES)
+
+                Método clássico de CS
+
+                Rotação à esquerda por k:
+
+                    1. reverta os primeiros k
+
+                    2. reverta o restante
+
+                    3. reverta tudo
+
+                    Exemplo:
+
+                        [1,2,3,4,5], k=2
+                        → [2,1,3,4,5]
+                        → [2,1,5,4,3]
+                        → [3,4,5,1,2]
+
+                . O(n)
+                . O(1) memória
+                . Algoritmo clássico
+
+        ROTAÇÃO E ÍNDICES (BASE MATEMÁTICA):
+
+            Para índice i:
+
+                novo_indice = (i + k) % n
+
+            Essa fórmula aparece em:
+
+                . hashing
+                . criptografia
+                . buffers
+                . jogos
+                . matrizes
+
+        ROTAÇÃO E JANELAS:
+
+            Rotação cria:
+
+                janelas circulares
+
+                padrões repetitivos
+
+            Exemplo:
+
+                [1,2,3] → janelas circulares
+                [1,2], [2,3], [3,1]
+
+            Muito usado em processamento de sinais.
+
+        ROTAÇÃO EM STRINGS
+
+            Strings são imutáveis:
+
+                . rotação sempre cria nova string
+
+                    s = s[k:] + s[:k]
+
+        ERROS COMUNS
+
+            . confundir rotação com inversão
+            . esquecer de usar k % n
+            . usar slicing pesado em loops
+            . achar que rotação é sempre in place
+            . errar esquerda × direita
+
+        DICAS:
+
+            Defina direção (esquerda ou direita)
+
+            Normalize k (k %= n)
+
+            Escolha:
+
+                clareza → slicing
+
+                performance → in place
+
+            Pense circular, não linear
+
+            Desenhe a lista como um anel
+
+        FRASES-CHAVE PARA MEMORIZAR
+
+            Rotação é circular
+            Ordem relativa é preservada
+            Não perde elementos
+            Índice usa módulo
+            Reversões resolvem in place
+
     =====================================================================
 
     particionamento:
+
+        Separar dados por critério, sem necessariamente ordenar
+
+        - Particionamento é a técnica de dividir uma estrutura sequencial em
+        partes, com base em um critério, mantendo os elementos relacionados
+        juntos.
+
+        Ou seja:
+
+            você não ordena
+
+            você não perde dados
+
+            você apenas separa por condição
+
+        É uma reorganização estrutural, não estética.
+
+        MODELO MENTAL FUNDAMENTAL:
+
+            Pense assim:
+
+                “Quero que todos os elementos que satisfazem uma condição fiquem 
+                de um lado, e os que não satisfazem, do outro.”
+
+            Exemplo:
+
+                    [3, 8, 5, 2, 7, 4]
+
+                Critério: < 5
+
+            Resultado possível:
+
+                    [3, 2, 4 | 8, 5, 7]
+
+                A ordem interna não importa (a menos que você exija).
+
+        PARTICIONAMENTO ≠ ORDENAÇÃO:
+
+            | Particionamento     | Ordenação          |
+            | ------------------- | ------------------ |
+            | separa por critério | organiza por ordem |
+            | O(n)                | O(n log n)         |
+            | local               | global             |
+            | base de algoritmos  | objetivo final     |
+
+            Particionar é mais barato que ordenar.
+
+        POR QUE PARTICIONAMENTO EXISTE?
+
+            Usos reais:
+
+                QuickSort
+
+                filtros in place
+
+                dois ponteiros
+
+                janelas
+
+                seleção do k-ésimo menor elemento
+
+                separação de dados (positivos/negativos, válidos/inválidos)
+
+            Ele resolve classes inteiras de problemas.
+
+        FORMAS DE PARTICIONAR:
+
+            1) PARTICIONAMENTO SIMPLES (COM LISTAS NOVAS)
+
+                    menores = []
+                    maiores = []
+
+                . simples
+                . usa memória extra
+                . não é in place
+
+                Bom para clareza, ruim para performance.
+
+            2) PARTICIONAMENTO IN PLACE (DOIS ÍNDICES)
+
+                Técnica clássica
+
+                Modelo:
+
+                    i → avança procurando erro
+                    j → recua procurando erro
+                    swap quando necessário
+
+                Muito usada em QuickSort.
+
+        PARTICIONAMENTO COM PIVÔ:
+
+            Um elemento especial define a divisão.
+
+            Exemplo:
+
+                pivô = 5
+
+            Objetivo:
+
+                ≤ pivô | > pivô
+
+            O pivô não precisa ficar no lugar final (dependendo da variação).
+
+        ALGORITMO MENTAL DO PARTICIONAMENTO IN PLACE:
+
+            1. Escolha um critério (ou pivô)
+
+            2. Mantenha um índice de “fronteira”
+
+            3. Percorra a lista
+
+            4. Quando encontrar um elemento válido:
+
+                . troque com a fronteira
+
+                . avance a fronteira
+
+            Isso garante separação correta.
+
+        EXEMPLO CONCEITUAL (SEM CÓDIGO):
+
+            Lista:
+
+                [7, 3, 5, 2, 8]
+
+            Critério: < 5
+
+            Processo:
+
+                [3 | 7, 5, 2, 8]
+                [3, 2 | 5, 7, 8]
+
+            Não ordena, apenas agrupa.
+
+        PARTICIONAMENTO E ÍNDICES:
+
+            Particionamento:
+
+                depende fortemente de índices
+
+                geralmente usa:
+
+                    índice de varredura
+
+                    índice de fronteira
+
+                Conecta diretamente com:
+
+                    swap
+
+                    in place
+
+                    memória
+
+        PARTICIONAMENTO E JANELAS:
+
+            . janelas → analisam subconjuntos
+
+            . particionamento → reorganiza o conjunto
+
+            Técnicas complementares.
+
+        PARTICIONAMENTO E DIVISÃO E CONQUISTA:
+
+            QuickSort funciona assim:
+
+                1. particiona a lista
+
+                2. resolve cada lado recursivamente
+
+                Particionamento é o passo central.
+
+        VARIAÇÕES IMPORTANTES:
+
+            estável × instável
+
+            com pivô fixo
+
+            com pivô aleatório
+
+            particionamento por múltiplos critérios
+
+            particionamento lógico (sem mover dados)
+
+        ERROS COMUNS
+
+            achar que particionamento ordena
+
+            esquecer que a ordem interna pode mudar
+
+            errar limites dos índices
+
+            confundir fronteira com posição final
+
+            tentar usar quando filtro simples bastaria
+
+        DICAS:
+
+            Pergunte:
+
+                Preciso separar por condição?
+
+                A ordem interna importa?
+
+                Preciso ser in place?
+
+                Isso é pré-processamento para outro algoritmo?
+
+            Se sim → particionamento.
+
+        FRASES-CHAVE PARA MEMORIZAR:
+
+            Particionar é separar
+            Não ordena
+            É O(n)
+            Base do QuickSort
+            Usa índices e swaps
+
+    ======================================================================
+
+    Shift:
+
+    ======================================================================
+
+    embaralhamento:
 
     ======================================================================
 
