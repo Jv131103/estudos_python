@@ -9306,17 +9306,750 @@ UM POUCO SOBRE LÓGICA DE PROGRAMAÇÃO:
 
     Shift:
 
+        “Empurrar” itens para a esquerda/direita
+
+        - Shift = deslocar elementos k posições para a esquerda ou direita.
+
+        . Shift à esquerda (não circular): itens “saem” pelo começo, e entram 
+        “buracos” no fim (preenchidos por algo).
+
+        . Shift à direita (não circular): itens “saem” pelo fim, e entram 
+        “buracos” no começo.
+
+        Isso é diferente de rotação:
+
+            . Shift: perde itens (ou você descarta) e preenche buracos.
+
+            . Rotação: ninguém some; é circular.
+
+        Exemplo (shift à esquerda, k=2, preenchendo com 0):
+
+            [1,2,3,4,5]  ->  [3,4,5,0,0]
+
+        Exemplo (rotação à esquerda, k=2):
+
+            [1,2,3,4,5]  ->  [3,4,5,1,2]
+
+        Tipos de shift (estratégias):
+
+            A) Shift “lógico” (sem mexer na lista):
+
+                Você não move nada, só muda a forma de acessar:
+
+                    . Para ler como se estivesse deslocado, use um índice 
+                    convertido:
+
+                        . esquerda: elemento “virtual” i vem de i+k
+
+                        . direita: elemento “virtual” i vem de i-k
+
+                    Isso é ótimo quando:
+
+                        você só precisa ler
+
+                        quer performance
+
+                        quer evitar cópias
+
+            B) Shift físico criando nova lista
+
+                Simples e legível, mas usa memória extra O(n).
+
+            C) Shift físico in place
+
+                Você realmente move elementos na mesma lista. Útil quando:
+
+                . precisa preservar o objeto (mesmo id)
+
+                . quer economizar memória
+
+                . está implementando estruturas (buffer, fila, etc.)
+
+        SHIFT IN PLACE (o “clássico” com índices):
+
+            Shift à direita (k posições) preenchendo com fill
+
+                Ideia: copiar de trás pra frente para não sobrescrever dados.
+
+                Para i de n-1 até 0:
+                    se i-k >= 0, a[i] = a[i-k]
+                    senão a[i] = fill
+
+            Shift à esquerda (k posições) preenchendo com fill
+
+                Ideia: copiar da frente pra trás.
+
+                Para i de 0 até n-1:
+                    se i+k < n, a[i] = a[i+k]
+                    senão a[i] = fill
+
+                Essa lógica é exatamente “memmove” mental: escolher o sentido 
+                para evitar sobrescrita.
+
+        O custo (por que isso importa):
+
+            Shift físico in place: O(n) tempo, O(1) memória extra
+
+            Shift criando nova lista: O(n) tempo, O(n) memória
+
+            Shift lógico (só índice): O(1) memória, O(1) por acesso
+
+        Uso com loops e condicionais (padrões reais)
+
+            A) “Remover” elementos do começo sem pop(0) (que é caro)
+
+                Em listas, pop(0) é O(n) porque desloca tudo.
+
+                Um padrão melhor:
+
+                    . manter um ponteiro start (shift lógico)
+
+                    . quando precisar “compactar”, aí sim copia/recorta
+
+            B) Buffer deslizante (janela fixa)
+
+                Você mantém uma lista de tamanho k e “shift” para inserir o
+                novo no fim:
+
+                    . shift à esquerda 1
+
+                    . coloca novo elemento no final
+
+        Shift em outros iteráveis:
+
+            Strings/tuplas (imutáveis)
+
+                Você não faz in place. Só:
+
+                    . cria nova (slicing/concatenação)
+
+                    . ou faz acesso lógico via índice
+
+        Armadilhas comuns:
+
+            . confundir shift com rotação
+
+            . mover no sentido errado e sobrescrever dados
+
+            . esquecer o k maior que n (normalizar: k = min(k, n) para shift 
+            “não circular”)
+
+            . usar pop(0) repetidamente em listas
+
     ======================================================================
 
     embaralhamento:
+
+        - Embaralhamento é a operação de reorganizar os elementos de uma 
+        sequência de forma aleatória, sem perder nem repetir elementos.
+
+        Ou seja:
+
+            todos os elementos continuam existindo
+
+            apenas a ordem muda
+
+            o objetivo é aleatoriedade justa
+
+        Embaralhar não é:
+
+            ordenar
+
+            rotacionar
+
+            inverter
+
+            particionar
+
+        MODELO MENTAL CORRETO:
+
+            Imagine cartas de baralho:
+
+                você não cria cartas novas
+
+                não remove cartas
+
+                apenas muda a ordem
+
+            Um bom embaralhamento faz todas as ordens possíveis terem a mesma 
+            chance.
+
+        EMBARALHAMENTO “RUIM” × “CORRETO”:
+
+            . Embaralhamento ingênuo (errado)
+
+                    import random
+                    random.shuffle(lista)
+
+                . Isso funciona, mas não explica o algoritmo.
+
+                . E pior: muita gente tenta fazer assim:
+
+                    for i in range(len(lista)):
+                        j = random.randint(0, len(lista)-1)
+                        lista[i], lista[j] = lista[j], lista[i]
+
+                - Esse método NÃO é uniforme
+
+                - Algumas permutações têm mais chance que outras
+
+                Isso é um erro clássico.
+
+        EMBARALHAMENTO CORRETO (FISHER–YATES):
+
+            - O único algoritmo simples e correto para embaralhar listas é o 
+            Fisher–Yates (ou Knuth shuffle).
+
+            IDEIA CENTRAL DO FISHER–YATES:
+
+                Para cada posição:
+
+                    escolha aleatoriamente um elemento ainda não fixado
+
+                    troque com a posição atual
+
+                Cada elemento é escolhido uma única vez.
+
+            MODELO PASSO A PASSO (CONCEITUAL)
+
+                Lista:
+
+                    [1, 2, 3, 4]
+
+                Passos:
+
+                    1. escolha índice entre [0..3], troque com posição 3
+
+                    2. escolha índice entre [0..2], troque com posição 2
+
+                    3. escolha índice entre [0..1], troque com posição 1
+
+                    A parte “final” vai ficando fixa.
+
+            POR QUE FUNCIONA?
+
+                No passo i, existem exatamente i+1 escolhas válidas
+
+                Cada permutação possível ocorre com probabilidade igual
+
+                Prova matemática simples (mas profunda)
+
+            Isso garante aleatoriedade uniforme.
+
+        EMBARALHAMENTO IN PLACE:
+
+            Fisher–Yates:
+
+                é in place
+
+                usa O(1) memória extra
+
+                roda em O(n)
+
+            Perfeito para listas grandes.
+
+        EMBARALHAMENTO E ÍNDICES
+
+            Tudo é baseado em:
+
+                índice atual
+
+                índice aleatório dentro de um intervalo
+
+                swap in place
+
+            Sem índices, não existe shuffle eficiente.
+
+        EMBARALHAMENTO E PROBABILIDADE
+
+            Um embaralhamento correto deve:
+
+                gerar n! permutações possíveis
+
+                cada uma com probabilidade 1 / n!
+
+            Se isso não acontece → algoritmo errado.
+
+        ERROS COMUNS
+
+            trocar com índice aleatório completo sempre
+
+            usar sorted(..., key=random.random)
+
+            achar que “parece aleatório” é suficiente
+
+            usar shuffle sem entender impacto
+
+        DICAS:
+
+            Sempre fixe uma posição por vez
+
+            Reduza o intervalo de escolha
+            
+            Use swap in place
+            
+            Pense: “essa posição já está decidida?”
+
+            Se não conseguir explicar a probabilidade → revise
+
+        FRASES-CHAVE PARA MEMORIZAR:
+
+            . Embaralhar é permutar
+            . Aleatoriedade precisa ser justa
+            . Fisher–Yates é o padrão
+            . Swap + índice aleatório
+            . In place e O(n)
 
     ======================================================================
 
     Listas, Arrays e Vetores circulares:
 
+        LISTA / ARRAY / VETOR — ALINHANDO OS TERMOS:
+
+            | Termo     | O que significa                        |
+            | --------- | -------------------------------------- |
+            | **Vetor** | Estrutura sequencial indexada          |
+            | **Array** | Vetor alocado contiguamente na memória |
+            | **Lista** | Estrutura sequencial de alto nível     |
+
+        Em Python:
+
+            list ≈ array dinâmico (contíguo, redimensionável)
+
+            mas com semântica de lista de alto nível
+
+        MODELO LINEAR (O PADRÃO):
+
+            Modelo tradicional:
+
+                índices:  0   1   2   3   4
+                valores: [A | B | C | D | E]
+
+            . tem começo
+
+            . tem fim
+
+            . acessar fora → erro
+
+            Esse modelo não é circular.
+
+        PROBLEMA DO MODELO LINEAR:
+
+            Em muitas situações reais:
+
+                dados chegam continuamente
+
+                dados antigos saem
+
+                você não quer mover tudo
+
+            Surge o modelo circular.
+
+        VETOR / ARRAY CIRCULAR (ESSÊNCIA):
+
+            - Um vetor circular é uma estrutura que reaproveita o espaço, 
+            tratando o final como ligado ao início.
+
+            Visualmente:
+
+                [A] → [B] → [C] → [D]
+                ↑                 ↓
+                └─────────────────┘
+
+            Não existe “fim” lógico — só posição atual.
+
+        A CHAVE DO CIRCULAR: MÓDULO (%)
+
+            Tudo se baseia em:
+
+                índice_real = índice_lógico % tamanho
+
+            Exemplo:
+
+                i = 6
+                n = 5
+                i % n = 1
+
+            Esse % é o que transforma linear em circular.
+
+        ACESSO EM VETOR CIRCULAR
+
+            Lista:
+
+                lista = ['A','B','C','D','E']
+
+            Acesso circular:
+
+                lista[i % len(lista)]
+
+            Exemplo:
+
+                i = 5 → A
+                i = 6 → B
+                i = 7 → C
+
+            Nenhum erro, tudo reaproveitado.
+
+        CIRCULAR ≠ ROTAÇÃO:
+
+            | Circular       | Rotação           |
+            | -------------- | ----------------- |
+            | muda o acesso  | muda a estrutura  |
+            | lógico         | físico            |
+            | não move dados | move dados        |
+            | usa `%`        | usa swap/reversão |
+
+            Vetor circular não rotaciona a lista, só muda o ponto de vista.
+
+        FILA CIRCULAR (USO CLÁSSICO):
+
+            Você mantém:
+
+                head (início)
+
+                tail (fim)
+
+            Inserção:
+
+                tail = (tail + 1) % n
+
+            Remoção:
+
+                head = (head + 1) % n
+
+            Nenhum elemento é deslocado.
+
+        VANTAGENS DO MODELO CIRCULAR:
+
+            . O(1) para inserir/remover
+            . Nenhum shift físico
+            . Reuso de memória
+            . Ideal para streams
+
+            Muito usado em sistemas operacionais e redes.
+
+        CIRCULAR E JANELAS DESLIZANTES:
+
+            Janela fixa:
+
+                . você avança o índice
+
+                . reaproveita posições antigas
+
+                . mantém tamanho constante
+
+                Buffer circular + janela = eficiência máxima.
+
+        CIRCULAR E SHIFT (CONEXÃO)
+
+            Shift físico → caro
+
+            Circular → só muda índice
+
+            Exemplo:
+
+                shift lógico = start += 1
+
+            Essa é a ideia de shift lógico circular.
+
+        CIRCULAR E STRINGS
+
+            Strings são imutáveis:
+
+                circular só pode ser lógico
+
+                acesso via %
+
+                    s[(i + k) % len(s)]
+
+        ERROS COMUNS
+
+            confundir circular com rotação
+
+            esquecer %
+
+            misturar índice lógico com real
+
+            tentar usar circular sem ponteiros (head, tail)
+
+            fazer shift físico desnecessário
+
+        QUANDO USAR CIRCULAR
+
+            Use quando:
+
+                dados são contínuos
+
+                tamanho é fixo
+
+                você descarta os mais antigos
+
+                desempenho importa
+
+            Não use quando:
+
+                precisa de ordem linear fixa
+
+                precisa de slicing frequente
+
+                dados são pequenos e simples
+
+        FRASES-CHAVE PARA MEMORIZAR
+
+            . Circular reaproveita memória
+            . Final liga ao começo
+            . Módulo é a chave
+            . Não move dados
+            . Troca estrutura por lógica
+
     =====================================================================
 
     Matrizes:
+
+        - Estrutura bidimensional, matemática + computação
+
+        O QUE É UMA MATRIZ (CONCEITO FORMAL):
+
+            - Uma matriz é uma tabela bidimensional de elementos organizada em 
+            linhas e colunas.
+    
+            Exemplo:
+
+                A=[
+                    1 2 3
+                    4 5 6
+                ]
+
+            . Dimensão: 2 × 3
+
+            . Elemento: ai,j
+	
+        - Em computação, uma matriz é uma estrutura de dados indexada em duas 
+        dimensões, usada para representar relações, grades, grafos, imagens, 
+        estados e transformações.
+
+        Em computação, matriz não é só matemática, é modelo de dados.
+
+            Representação ex:
+
+                matriz = [
+                    [1, 2, 3],
+                    [4, 5, 6]
+                ]
+        
+        MATRIZ EM PYTHON (REPRESENTAÇÃO):
+
+            Em Python:
+
+                matriz = [
+                    [1, 2, 3],
+                    [4, 5, 6]
+                ]
+
+            . matriz = lista de listas
+
+            . cada linha é um objeto independente
+
+            Nunca confundir com:
+
+                mat = [[0]*3]*2  # ERRO CLÁSSICO
+
+            (gera referências duplicadas)
+
+        ÍNDICES EM MATRIZES:
+
+            . mat[i][j]
+            . i → linha
+            . j → coluna
+
+            Exemplo:
+
+                mat[0][2]  # linha 0, coluna 2
+
+            Índices começam em 0.
+
+        MATRIZ ≠ ARRAY MULTIDIMENSIONAL REAL:
+
+            Conceito importante:
+
+                Python: lista de listas (ponteiros)
+
+                C / NumPy: memória contígua
+
+            Em Python:
+
+                mat
+                 ├── linha0 → [1,2,3]
+                 └── linha1 → [4,5,6]
+
+            Cada linha pode ter tamanho diferente (matriz “irregular”).
+
+        MATRIZES NA MEMÓRIA:
+
+            Duas formas clássicas:
+
+                - Row-major
+
+                    . linhas consecutivas na memória
+
+                    . usado em C, Python, NumPy
+
+                - Column-major
+
+                    . colunas consecutivas
+
+                    . usado em Fortran, MATLAB
+
+            Impacta cache, desempenho e loops.
+
+        PERCORRENDO MATRIZES (FORMA CORRETA):
+
+            . Dois loops
+
+                    for i in range(linhas):
+                        for j in range(colunas):
+                            processa(matriz[i][j])
+
+                - Ordem importa para desempenho.
+
+        OPERAÇÕES FUNDAMENTAIS:
+
+            - Leitura
+
+                acesso O(1)
+
+            - Escrita
+
+                acesso O(1)
+
+            - Inserção/remoção
+
+                cara (O(n))
+
+            Matrizes são ótimas para acesso direto, ruins para reestruturação.
+
+        MATRIZ E PROGRAMAÇÃO DINÂMICA:
+
+            Exemplo mental:
+
+                dp[i][j] = melhor resultado até (i,j)
+
+            Quase todo DP 2D é matriz.
+
+        MATRIZ E GRAFOS:
+
+            . Matriz de adjacência
+
+                mat[i][j] = 1 se existe aresta
+
+            acesso rápido
+
+            memória O(n²)
+
+        MATRIZ E IMAGENS:
+
+            Imagem = matriz:
+
+                . linhas → altura
+
+                . colunas → largura
+
+                . valor → intensidade/cor
+
+            Processamento de imagem = algoritmo em matriz.
+
+        MATRIZES ESPARSAS:
+
+            Muitas posições são zero.
+
+            Problema:
+
+                desperdiça memória
+
+            Soluções:
+
+                listas de coordenadas
+
+                dicionários
+
+                formatos CSR/CSC
+
+            Muito usadas em ML e grafos grandes.
+
+        MATRIZES E IN PLACE:
+
+            Operações possíveis:
+
+                alteração de valores
+
+                swap
+
+                rotação 90°
+
+                espelhamento
+
+            Cuidado:
+
+                operações in place exigem controle de índices
+
+                erros são comuns
+
+        ROTAÇÕES E TRANSFORMAÇÕES:
+
+            Exemplo:
+
+                rotação 90°
+
+                espelhamento horizontal/vertical
+
+            Muito usado em jogos e imagens.
+
+        MATRIZES IRREGULARES:
+
+                [
+                    [1, 2],
+                    [3, 4, 5],
+                    [6]
+                ]
+
+            . Permitidas em Python
+
+            . Não existem em matemática tradicional
+
+        ERROS CLÁSSICOS (PROVA E VIDA REAL):
+
+            . [[0]*n]*m
+            . inverter i e j
+            . estourar índice
+            . esquecer limites
+            . confundir linha/coluna
+            . usar matriz quando vetor basta
+
+        QUANDO USAR MATRIZ:
+
+            Use quando:
+
+                . dados são bidimensionais
+                . acesso rápido importa
+                . relações cruzadas existem
+
+            Não use quando:
+
+                . dados são lineares
+                . estrutura é esparsa
+                . crescimento dinâmico é frequente
+
+        FRASES-CHAVE PARA MEMORIZAR:
+
+            . Matriz é estrutura + matemática
+            . Índice é (linha, coluna)
+            . Acesso é O(1)
+            . Memória importa
+            . Base de jogos, grafos e DP
+
+    =====================================================================
+
+    Swaps com Matrizes, formas possíveis:
 
     =====================================================================
 
