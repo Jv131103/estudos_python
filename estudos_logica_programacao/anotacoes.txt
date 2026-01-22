@@ -10051,13 +10051,1093 @@ UM POUCO SOBRE LÓGICA DE PROGRAMAÇÃO:
 
     Swaps com Matrizes, formas possíveis:
 
+        Trocas estruturais em dados bidimensionais
+
+        - Swap em matriz é a troca controlada de posições, linhas, colunas ou 
+        regiões inteiras, preservando a estrutura bidimensional.
+
+        . Tudo é feito com índices.
+
+        . Pode ser local (elementos) ou estrutural (linhas/colunas).
+
+        . Pode ser in place ou não.
+
+    SWAP DE ELEMENTOS:
+
+        . Troca simples
+
+                mat[i1][j1], mat[i2][j2] = mat[i2][j2], mat[i1][j1]
+
+            Base de:
+
+                . rotações
+                . espelhamentos
+                . algoritmos em imagem
+                . transformações geométricas
+
+        SWAP DE LINHAS:
+
+            - Trocar duas linhas inteiras da matriz.
+
+            Exemplo:
+
+                Linha 0 ↔ Linha 2
+
+            Forma direta (Python)
+
+                mat[i], mat[j] = mat[j], mat[i]
+
+            . O(1)
+            . Muito rápido
+            . Troca referências das linhas
+
+        SWAP DE COLUNAS:
+
+            Colunas não são objetos separados em Python.
+
+            Forma correta:
+
+                for i in range(linhas):
+                    mat[i][c1], mat[i][c2] = mat[i][c2], mat[i][c1]
+
+            . O(n)
+            . Exige loop
+            . Muito comum em processamento de dados
+
+        SWAP DE DIAGONAIS:
+
+            . Diagonal principal ↔ secundária (matriz quadrada)
+
+            Índices:
+
+                principal: (i, i)
+
+                secundária: (i, n-1-i)
+
+                for i in range(n):
+                    mat[i][i], mat[i][n-1-i] = mat[i][n-1-i], mat[i][i]
+
+            Usado em:
+
+                . simetria
+                . jogos
+                . transformações visuais
+
+        SWAP DE LINHA COM COLUNA:
+
+            Trocar:
+
+                linha i
+
+                com coluna j
+
+            PS: Só faz sentido em matriz quadrada.
+
+            . Lógica
+
+                for k in range(n):
+                    mat[i][k], mat[k][j] = mat[k][j], mat[i][k]
+
+            Operação estrutural
+
+            Exige cuidado extremo com sobrescrita
+
+        SWAP DE COLUNA COM LINHA:
+
+            (variação semântica)
+
+            É o mesmo conceito acima, mas invertendo a intenção:
+
+                coluna vira linha
+
+                linha vira coluna
+
+            Muito próximo de transposição parcial.
+
+        SWAP DE ÍNDICES (PERMUTAÇÃO DE LINHAS/COLUNAS):
+
+            . Usando vetor de permutação
+
+                ordem = [2, 0, 1]
+
+            Aplicação:
+
+                nova_mat = [mat[i] for i in ordem]
+
+            Muito usado em:
+
+                . reorganização de dados
+
+                . machine learning
+
+                . matrizes esparsas
+
+        SWAP DE SUBMATRIZES:
+
+            . Trocar blocos
+
+            Exemplo:
+
+                . quadrante superior esquerdo ↔ inferior direito
+
+                    mat[i][j], mat[i+n][j+n] = mat[i+n][j+n], mat[i][j]
+
+                Base de:
+
+                    rotação 90°
+
+                    espelhamentos
+
+                    convoluções
+
+        SWAP PARA ROTAÇÃO DE MATRIZ
+
+            . Rotação 90° in place
+
+            Etapas:
+
+                1. Transpor
+
+                2. Swap de colunas
+
+            Todo algoritmo de rotação usa swaps.
+
+        SWAP EM MATRIZES IRREGULARES:
+
+            Só é possível:
+
+                . swap de linhas
+
+                . swap de elementos existentes
+
+            Colunas podem não existir em todas as linhas.
+
+        SWAP LÓGICO (SEM MOVER DADOS):
+
+            Troca de acesso:
+
+                def get(i, j):
+                    return mat[j][i]
+
+            Muito usado para:
+
+                . simular transposição
+
+                . evitar custo O(n²)
+
+        ERROS CLÁSSICOS:
+
+            . confundir linha com coluna
+            . tentar trocar colunas sem loop
+            . sobrescrever dados
+            . esquecer que Python troca referências
+            . usar swap onde bastava acesso lógico
+
+        DICAS:
+
+            Pergunte sempre:
+
+                Estou trocando valores ou estrutura?
+                Isso é quadrado ou retangular?
+                Preciso ser in place?
+                Trocar referência resolve?
+                Existe risco de sobrescrita?
+
+        FRASES-CHAVE PARA MEMORIZAR:
+
+            Linha é objeto
+            Coluna é índice
+            Swap pode ser estrutural
+            Quadrada permite mais operações
+            Swap é base de rotação
+
     =====================================================================
 
     Diagonais:
 
+        - Diagonal é uma sequência de elementos que atravessa a matriz ligando 
+        posições de mesmo “deslocamento”.
+
+        - Diagonal é um conjunto de posições definido por uma relação entre 
+        índices (i, j).
+
+        diagonal não é desenho, é condição sobre índices.
+
+        MATRIZ QUADRADA × NÃO QUADRADA:
+
+            Importante:
+
+                . Diagonal principal e secundária só existem formalmente em 
+                matrizes quadradas
+
+                . Em matrizes retangulares, falamos em diagonais parciais
+
+        DIAGONAL PRINCIPAL:
+
+            Elementos onde:
+
+                i == j
+
+            Exemplo (3×3):
+
+                [ X . . ]
+                [ . X . ]
+                [ . . X ]
+
+            Código:
+
+                mat[i][i]
+
+            . Tamanho = N
+
+        DIAGONAL SECUNDÁRIA:
+
+            Elementos onde:
+
+                i + j == N - 1
+
+            Exemplo:
+
+                [ . . X ]
+                [ . X . ]
+                [ X . . ]
+
+            Código:
+
+                mat[i][N-1-i]
+
+            Só existe em matriz quadrada.
+
+        OUTRAS DIAGONAIS:
+
+            - Aqui entra o que muita gente nunca aprende direito.
+
+            . Diagonais paralelas à principal:
+
+                Condição:
+
+                    j - i = constante
+
+                Exemplos:
+
+                    . j - i = 0 → diagonal principal
+                    . j - i = 1 → acima
+                    . j - i = -1 → abaixo
+
+            . Diagonais paralelas à secundária
+
+                Condição:
+
+                    i + j = constante
+
+                Exemplo:
+
+                    . i + j = N - 1 → diagonal secundária
+                    . i + j = N - 2, N, etc.
+
+                    Base de vários algoritmos de grade.
+            
+        PERCORRENDO DIAGONAIS (PADRÕES):
+
+            Diagonal principal:
+
+                for i in range(n):
+                    mat[i][i]
+
+            Diagonal secundária:
+
+                for i in range(n):
+                    mat[i][n-1-i]
+
+            Diagonal geral (j - i = k):
+
+                for i in range(n):
+                    j = i + k
+                    if 0 <= j < m:
+                        mat[i][j]
+
+        DIAGONAIS E MEMÓRIA:
+
+            . Diagonais não são contíguas na memória
+            . Acesso salta linhas
+            . Pode causar cache misses
+
+            Em sistemas de alto desempenho, isso importa.
+
+        OPERAÇÕES COM DIAGONAIS:
+
+            . Soma
+
+                soma += mat[i][i]
+
+            . Swap
+
+                mat[i][i], mat[i][n-1-i] = mat[i][n-1-i], mat[i][i]
+
+            . Zeragem
+
+                mat[i][i] = 0
+
+        DIAGONAIS E TRANSFORMAÇÕES:
+
+            . Transposição
+
+                - diagonal principal vira eixo
+
+                - A[i][j] = A[j][i]
+
+                A diagonal principal é fixa na transposição.
+
+            . Simetria
+
+                - matriz simétrica → A[i][j] == A[j][i]
+
+                Conceito central em álgebra linear.
+
+        DIAGONAIS LÓGICAS:
+
+            Você pode:
+
+                . não percorrer a diagonal fisicamente
+
+                . apenas testar condição
+
+                    if i == j:
+                        ...
+
+                Isso evita custo extra.
+
+        ERROS CLÁSSICOS:
+
+            . confundir diagonal com linha
+            . errar N-1-i
+            . esquecer que só existe em quadradas
+            . usar diagonal quando não faz sentido
+            . inverter i e j
+
+        DICAS:
+
+            Sempre pergunte:
+
+                Essa matriz é quadrada?
+                Estou falando de qual diagonal?
+                A condição é i==j, i+j, ou j-i?
+                Preciso percorrer ou só testar?
+                Ordem de acesso importa?
+
+        FRASES-CHAVE PARA MEMORIZAR:
+
+            Diagonal é relação de índices
+            Principal: i == j
+            Secundária: i + j = N - 1
+            Outras diagonais existem
+            Muito usadas em DP
+
+    =====================================================================
+
+    Transposição de matriz:
+
+        - Trocar linhas por colunas
+
+        - A transposta de uma matriz A é a matriz A**T obtida trocando linhas 
+        por colunas.
+
+        Se:
+
+            A
+             i,j
+            
+        Então:
+             T
+            A​      ​=      A
+             i,j           i,j
+
+        Exemplo:
+
+            A =
+            1 2 3
+            4 5 6
+
+            Aᵀ =
+            1 4
+            2 5
+            3 6
+
+        E em computação?
+
+            - Transpor é:
+
+                trocar eixos
+
+                mudar o significado do acesso
+
+                reorganizar dados 2D
+
+            Em termos de índices:
+
+                (i, j) → (j, i)
+
+        TRANSPOSIÇÃO ≠ ROTAÇÃO:
+
+            | Operação        | O que faz                     |
+            | --------------- | ----------------------------- |
+            | Transposição    | espelha na diagonal principal |
+            | Rotação         | muda orientação               |
+            | Swap de linhas  | troca linhas                  |
+            | Swap de colunas | troca colunas                 |
+
+            Muitas pessoas confundem isso.
+
+        FORMAS DE IMPLEMENTAR TRANSPOSIÇÃO:
+
+            1) TRANSPOSIÇÃO CRIANDO NOVA MATRIZ (CLÁSSICA)
+
+                - Funciona para qualquer matriz (retangular ou quadrada).
+
+                Ideia:
+
+                    T[j][i] = A[i][j]
+
+                Em Python puro:
+
+                    T = []
+                    for j in range(colunas):
+                        linha = []
+                        for i in range(linhas):
+                            linha.append(A[i][j])
+                        T.append(linha)
+
+                . O(n × m)
+
+                . Usa memória extra
+
+            2) TRANSPOSIÇÃO IN PLACE (SÓ MATRIZ QUADRADA)
+
+                - Muito importante para CS/SE.
+
+                Só funciona se:
+
+                    N x N
+
+                Porque:
+
+                    número de linhas = número de colunas
+
+                Ideia central:
+
+                    mat[i][j] ↔ mat[j][i]
+
+                Mas:
+
+                    só para metade da matriz
+
+                    senão você desfaz a troca
+
+                Forma correta:
+
+                    for i in range(n):
+                        for j in range(i + 1, n):
+                            mat[i][j], mat[j][i] = mat[j][i], mat[i][j]
+
+                . Diagonal principal é eixo
+
+                . Não mexe nela
+
+        TRANSPOSIÇÃO E DIAGONAIS:
+
+            . diagonal principal fica fixa
+
+            . tudo é espelhado em relação a ela
+
+            Por isso:
+
+                for j in range(i+1, n)
+
+        TRANSPOSIÇÃO E MEMÓRIA (PONTO DE SE):
+
+            . Python (lista de listas)
+
+                - cada linha é um objeto
+                - acesso mat[j][i] pula referências
+
+            . C / NumPy:
+
+                - memória contígua
+                - ordem de acesso impacta cache
+
+            . Em sistemas grandes, transposição é cara.
+
+        TRANSPOSIÇÃO COMO OPERAÇÃO LÓGICA:
+
+            - Às vezes você não precisa transpor fisicamente.
+
+            Exemplo:
+
+                def get(i, j):
+                    return mat[j][i]
+
+            Isso simula transposição sem custo O(n²).
+        
+        TRANSPOSIÇÃO + SWAP:
+
+            Seu exercício de swap:
+
+                mat[i][i] ↔ mat[i][c]
+
+            Na transposição:
+
+                mat[i][j] ↔ mat[j][i]
+
+            É o mesmo padrão mental:
+
+                trocar posições simétricas
+
+                controlar índices
+
+                evitar sobrescrita
+
+        ERROS CLÁSSICOS:
+
+            tentar in place em matriz não quadrada
+
+            esquecer j > i
+
+            trocar diagonal duas vezes
+
+            confundir transposição com rotação
+
+            usar libs sem entender
+        
+        DICAS:
+
+            Pergunte sempre:
+
+                A matriz é quadrada?
+                Quero in place ou cópia?
+                Posso simular transposição?
+                A diagonal é eixo ou alvo?
+                O custo importa?
+
+            FRASES-CHAVE PARA MEMORIZAR:
+
+                . Transpor é trocar eixos
+                . (i,j) vira (j,i)
+                . In place só em quadradas
+                . Diagonal é o eixo
+                . Swap é a base
+
+    =====================================================================
+
+    Matriz simétrica e assimétrica:
+
+        Espelhamento estrutural em dados bidimensionais
+
+        Uma matriz A é simétrica se:
+
+                 t
+            A = A
+        
+        Ou seja:
+
+            A       =       A
+             i,j             j,i
+
+        A matriz precisa ser quadrada.
+
+        Exemplo:
+
+            2  3  5
+            3  7  9
+            5  9  1
+
+        Observe:
+
+            (0,1) = (1,0)
+
+            (0,2) = (2,0)
+
+        O QUE É UMA MATRIZ ASSIMÉTRICA?
+
+            - Aqui existem dois sentidos (muito importante).
+
+            2.1 Assimétrica (sentido geral / informal)
+
+                . A matriz não é simétrica.
+
+                Basta:
+
+                    A[i][j] ≠ A[j][i] para algum par
+
+                É o uso mais comum em programação.
+
+            2.2 Anti-simétrica (sentido matemático rigoroso):
+
+                - Uma matriz A é anti-simétrica se:
+
+                     T
+                    A = −A
+
+                Ou seja:
+
+                    A ​     =   −A
+                     i,j         j,i
+
+                E:
+
+                    . todos os elementos da diagonal principal são zero
+
+                    Também exige matriz quadrada.
+
+                Exemplo anti-simétrico
+
+                    0   2  -1
+                    -2   0   4
+                    1  -4   0
+
+        DIAGONAL PRINCIPAL (PONTO-CHAVE):
+
+            | Tipo           | Diagonal       |
+            | -------------- | -------------- |
+            | Simétrica      | qualquer valor |
+            | Anti-simétrica | sempre zero    |
+
+            Isso é um teste rápido.
+
+        COMO VERIFICAR SE UMA MATRIZ É SIMÉTRICA:
+
+            Lógica:
+
+                Você não precisa comparar tudo.
+
+                Basta verificar:
+
+                    i < j
+
+                Porque:
+
+                    . o outro lado é espelho
+            
+                Pseudocódigo:
+
+                    para i de 0 até n-1:
+                        para j de i+1 até n-1:
+                            se A[i][j] != A[j][i]:
+                                não é simétrica
+
+                Complexidade: O(n² / 2).
+        
+        COMO VERIFICAR MATRIZ ANTI-SIMÉTRICA:
+
+            Condições:
+
+                A[i][i] == 0
+
+                A[i][j] == -A[j][i]
+
+        SIMETRIA E MEMÓRIA:
+
+            Em matriz simétrica:
+
+                - metade dos dados é redundante
+
+            Você pode armazenar:
+
+                . apenas triângulo superior
+
+                . ou inferior
+
+            Isso reduz memória quase pela metade.
+
+        SIMETRIA EM PROGRAMAÇÃO DINÂMICA:
+
+            Exemplo:
+
+                dp[i][j] = dp[j][i]
+
+            Permite otimizações e poda de estados.
+
+        SIMETRIA E SWAPS:
+
+            Se você fizer:
+
+                mat[i][j], mat[j][i] = mat[j][i], mat[i][j]
+
+            Você está forçando simetria (ou quebrando).
+
+        ERROS CLÁSSICOS
+
+            testar simetria em matriz não quadrada
+
+            comparar tudo (ineficiente)
+
+            confundir anti-simétrica com “não simétrica”
+
+            esquecer diagonal no caso anti-simétrico
+
+            usar igualdade exata com floats
+
+        DICAS:
+
+            Pergunte sempre:
+
+                A matriz é quadrada?
+
+                O critério é igualdade ou negação?
+
+                Preciso testar tudo ou metade?
+
+                A diagonal importa?
+
+                Isso é propriedade ou operação?
+
+        FRASES-CHAVE PARA MEMORIZAR
+
+            . Simétrica espelha
+            . Anti-simétrica inverte sinal
+            . Diagonal é eixo
+            . Metade da matriz basta
+            . Grafo explica tudo
+
+    =====================================================================
+
+    Matriz quadada e não quadrada:
+
+        - Uma matriz é quadrada quando o número de linhas é igual ao número de 
+        colunas.
+
+            A ∈ R**n×n
+
+        Exemplos:
+
+            2×2
+            3×3
+            100×100
+
+                [ a b c ]
+                [ d e f ]
+                [ g h i ]
+
+        DIFERENÇA CONCEITUAL (O MAIS IMPORTANTE):
+
+            | Aspecto               | Quadrada | Não quadrada  |
+            | --------------------- | -------- | ------------- |
+            | Linhas = Colunas      | ✔        | ❌            |
+            | Diagonal principal    | ✔        | ❌ (formal)   |
+            | Transposição in place | ✔        | ❌            |
+            | Simetria              | ✔        | ❌            |
+            | Anti-simetria         | ✔        | ❌            |
+            | Determinante          | ✔        | ❌            |
+            | Inversa               | ✔        | ❌            |
+            | Autovalores           | ✔        | ❌            |
+
+            90% das propriedades “avançadas” só existem em matrizes quadradas.
+
+        DIAGONAIS: QUEM TEM E QUEM NÃO TEM
+
+            Matriz quadrada:
+
+                diagonal principal → mat[i][i]
+                diagonal secundária → mat[i][n-1-i]
+                diagonais paralelas → bem definidas
+
+            Matriz não quadrada:
+
+                não há diagonal “completa”
+                existem diagonais parciais
+                condições como i == j só valem enquanto índices existirem
+
+            Em computação, você pode percorrer, mas não pode aplicar 
+            propriedades matemáticas clássicas.
+
+        TRANSPOSIÇÃO: LIMITES CLAROS
+
+            . Quadrada
+
+                transposição in place possível
+                swap mat[i][j] ↔ mat[j][i]
+
+            . Não quadrada
+
+                transposição cria nova matriz
+                dimensões mudam: m×n → n×m
+
+            Tentar in place aqui é erro conceitual, não só técnico.
+
+        SIMETRIA E ANTI-SIMETRIA:
+
+            . Só fazem sentido em matrizes quadradas
+
+            Porque:
+
+                A[i][j] precisa ser comparado com A[j][i]
+
+            Se j não existe como linha → impossível.
+
+            Em computação, qualquer “verificação de simetria” exige matriz 
+            quadrada.
+        
+        SWAPS: O QUE MUDA
+
+            . Swap de linhas
+
+                - funciona em qualquer matriz
+
+                    mat[i], mat[j] = mat[j], mat[i]
+
+            . Swap de colunas
+
+                - funciona em qualquer matriz (com cuidado)
+
+                    for r in range(linhas):
+                        mat[r][c1], mat[r][c2] = mat[r][c2], mat[r][c1]
+
+            . Swap linha ↔ coluna
+
+                - só em matriz quadrada
+
+                Porque:
+
+                    . Linha tem n elementos
+                    . coluna precisa ter n posições
+
+        MATRIZ QUADRADA COMO TRANSFORMAÇÃO:
+
+            Em matemática e computação:
+
+                . matriz quadrada representa transformações
+                . entrada e saída têm mesma dimensão
+
+            Estruturalmente, quadrada = transformação do espaço em si mesmo.
+
+        MATRIZ NÃO QUADRADA COMO RELAÇÃO:
+
+            Matrizes não quadradas modelam:
+
+                . relações entre conjuntos diferentes
+                . dados tabulares
+                . datasets
+                . projeções
+
+            Estruturalmente, não quadrada = mapeamento entre espaços distintos.
+
+        MATRIZES E GRAFOS:
+
+            | Tipo de grafo   | Matriz                 |
+            | --------------- | ---------------------- |
+            | Não direcionado | Quadrada e simétrica   |
+            | Direcionado     | Quadrada e assimétrica |
+            | Bipartido       | Não quadrada           |
+
+            Excelente modelo mental.
+
+        MATRIZES E MEMÓRIA:
+
+            Quadradas:
+
+                . padrões de acesso mais previsíveis
+                . operações simétricas
+                . cache-friendly em muitos algoritmos
+
+            Não quadradas:
+
+                . acesso mais irregular
+                . transposição muda dimensão
+                . cuidado com ordem dos loops
+
+        ERROS CLÁSSICOS:
+
+            tentar acessar mat[i][i] em matriz não quadrada
+
+            assumir simetria sem checar dimensão
+
+            tentar transposição in place errada
+
+            aplicar fórmula de diagonal inválida
+
+            misturar linha/coluna por hábito
+
+        DICAS:
+
+            Antes de qualquer algoritmo, pergunte:
+
+                Essa matriz é quadrada?
+
+                Estou usando alguma propriedade que exige isso?
+
+                Transposição muda dimensão?
+
+                Linha e coluna têm o mesmo tamanho?
+
+                Estou pensando em transformação ou relação?
+
+            Essas perguntas evitam bugs conceituais.
+
+        FRASES-CHAVE PARA MEMORIZAR:
+
+            . Quadrada transforma
+            . Não quadrada relaciona
+            . Diagonal exige quadrada
+            . Simetria exige quadrada
+            . In place exige quadrada
+
     =====================================================================
 
     Matriz circular:
+
+        - Uma matriz circular é uma matriz em que o acesso aos índices é 
+        tratado de forma circular, ou seja, sair por um lado faz você entrar 
+        pelo lado oposto.
+
+        Importante:
+
+            . A matriz não muda fisicamente
+            . O que muda é a forma de acessar os índices
+
+        MODELO MENTAL CORRETO:
+
+            Pense na matriz como um tabuleiro em forma de toro (donut):
+
+                . saiu por cima → entra por baixo
+                . saiu pela esquerda → entra pela direita
+
+            Visualmente (2D circular):
+
+                ↑ conecta ↓
+                ← conecta →
+
+        MATRIZ LINEAR × MATRIZ CIRCULAR:
+
+            | Aspecto                | Linear | Circular       |
+            | ---------------------- | ------ | -------------- |
+            | Índices fora do limite | Erro   | Reaproveitados |
+            | Uso de `%`             | ❌     | ✔              |
+            | Estrutura muda         | ❌     | ❌             |
+            | Acesso lógico muda     | ❌     | ✔              |
+
+            Circularidade é lógica, não estrutural.
+
+        A CHAVE: MÓDULO (%):
+
+            - Tudo em matriz circular se baseia em:
+
+                i_circular = i % linhas
+                j_circular = j % colunas
+
+            Isso garante:
+
+                . -1 % n → último índice
+                . n % n → 0
+
+        ACESSO CIRCULAR BÁSICO:
+
+                def get(mat, i, j):
+                    linhas = len(mat)
+                    colunas = len(mat[0])
+                    return mat[i % linhas][j % colunas]
+
+            . Esse get transforma qualquer matriz comum em circular.
+
+        MATRIZ CIRCULAR ≠ ROTAÇÃO DE MATRIZ
+
+            | Matriz Circular | Rotação        |
+            | --------------- | -------------- |
+            | muda acesso     | muda estrutura |
+            | usa `%`         | usa swaps      |
+            | lógica          | física         |
+            | O(1)            | O(n²)          |
+
+            Matriz circular não move dados.
+
+        VIZINHANÇA CIRCULAR:
+
+            Em grids, você costuma acessar vizinhos:
+
+                cima, baixo, esquerda, direita
+
+            Em matriz circular:
+
+                cima     = mat[(i-1) % L][j]
+                baixo    = mat[(i+1) % L][j]
+                esquerda = mat[i][(j-1) % C]
+                direita  = mat[i][(j+1) % C]
+
+            Sem if, sem borda especial.
+
+        MATRIZ CIRCULAR E JANELAS 2D:
+
+            Janela 3×3 ao redor de (i,j):
+
+                for di in (-1, 0, 1):
+                    for dj in (-1, 0, 1):
+                        viz = mat[(i+di) % L][(j+dj) % C]
+
+            . Padrão extremamente importante.
+
+        MATRIZ CIRCULAR E SHIFT / ROTAÇÃO:
+
+            . shift físico → caro
+            . rotação física → cara
+            . matriz circular → só índice
+
+        Exemplo:
+
+            novo_i = (i + deslocamento) % L
+
+        É a generalização 2D do vetor circular.
+
+        IMPLEMENTAÇÃO FÍSICA × LÓGICA:
+
+            . Circular lógica (preferida)
+
+                usa %
+
+                O(1)
+
+                simples
+
+            . Circular física
+
+                usa swaps/rotações
+
+                raramente necessária
+
+                mais complexa
+
+        ERROS COMUNS:
+
+            tentar “criar” matriz circular
+
+            esquecer % em um dos eixos
+
+            confundir rotação com circularidade
+
+            usar if desnecessário
+
+            não tratar colunas diferentes de linhas
+
+        DICAS:
+
+            Antes de codar, pergunte:
+
+                Quero mover dados ou só mudar acesso?
+
+                    As bordas devem se conectar?
+
+                    Posso usar %?
+
+                    Isso é 1D ou 2D?
+
+                    Circular resolve sem if?
+
+                Se sim → matriz circular.
+
+        FRASES-CHAVE PARA MEMORIZAR:
+
+            . Circular é lógica
+            . Módulo conecta bordas
+            . Não move dados
+            . Excelente para grids
+            . Evita condições
 
     =====================================================================
 
