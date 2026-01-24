@@ -11143,9 +11143,682 @@ UM POUCO SOBRE LÓGICA DE PROGRAMAÇÃO:
 
     Tuplas:
 
+        - Tupla é uma sequência ordenada e imutável de elementos.
+
+        . Ordenada: tem posição (índice).
+
+        . Imutável: depois de criada, você não altera t[i] = ... (dá erro).
+
+        . Pode conter tipos misturados: int, str, lista, outra tupla…
+
+        Uso mental:
+
+            “quero agrupar valores que pertencem juntos e não devem mudar”.
+
+        Exemplos:
+
+            . coordenada (x, y)
+            . RGB (r, g, b)
+            . registro simples (nome, idade, cidade)
+            . retorno múltiplo de função
+
+        Criando tuplas (detalhe importante):
+
+            EX:
+
+                t1 = (1, 2, 3)
+                t2 = 1, 2, 3          # parênteses são opcionais
+                t3 = (5,)             # tupla de 1 elemento TEM vírgula
+                t4 = ()               # tupla vazia
+
+            Erro comum:
+
+                (5)    # isso é int, não tupla
+
+        Índices de tuplas:
+
+            Tuplas suportam:
+
+                . índice positivo e negativo
+
+                    t = ("a", "b", "c")
+                    t[0]   # "a"
+                    t[-1]  # "c"
+
+        Tamanho de tupla:
+
+            len(t)
+
+        Slicing:
+
+            - Tupla suporta slicing igual lista/string:
+
+                t[1:4]
+                t[:3]
+                t[::2]
+                t[::-1]
+
+            Slicing cria nova tupla (não é in place).
+
+        Métodos “especiais” de tupla:
+
+            - A tupla tem poucos métodos “normais”:
+
+                t.count(x)
+                t.index(x)
+
+            Mas ela tem várias propriedades comportamentais importantes:
+
+                . é hashable se todos os elementos forem hashable (isso permite 
+                usar como chave de dict)
+
+                . é iterável
+
+                . suporta comparação lexicográfica
+
+        Comparação lexicográfica (muito útil):
+
+            (1, 2) < (1, 3)   # True
+            (1, 2) < (0, 9)   # False
+
+        Empacotamento e desempacotamento:
+
+            Empacotamento:
+
+                ponto = 10, 20
+
+            Desempacotamento:
+
+                x, y = ponto
+
+            Desempacotamento com “resto”:
+
+                a, *meio, b = (1, 2, 3, 4, 5)
+                # a=1, meio=[2,3,4], b=5
+
+            - *meio vira lista por padrão.
+
+        Tuplas com outros iteráveis e com listas:
+
+            Tupla pode conter lista:
+
+                t = (1, [2, 3], 4)
+
+            PS: Imutável não significa “tudo dentro é imutável”.
+
+            Você não troca t[1], mas pode modificar a lista dentro:
+
+                t[1].append(99)
+
+            Conversões (casting):
+
+                tuple([1, 2, 3])       # (1,2,3)
+                list((1, 2, 3))        # [1,2,3]
+                tuple("abc")           # ('a','b','c')
+
+        Tupla com loops e condições:
+
+            Tupla é iterável:
+
+                for x in t:
+                    ...
+
+            Com condição:
+
+                for x in t:
+                    if x > 0:
+                        ...
+
+            Com enumerate:
+
+                for i, x in enumerate(t):
+                    ...
+
+        Return de dois ou mais dados:
+
+            - Em Python, “retornar vários valores” é retornar uma tupla:
+
+                    def stats(a, b):
+                        return a + b, a * b   # tupla
+
+                    soma, prod = stats(2, 3)
+
+                . Isso é empacotamento + desempacotamento.
+
+        Concatenação de tupla:
+
+                (1, 2) + (3, 4)   # (1,2,3,4)
+
+            PS: Cria nova tupla.
+
+        Repetição de tuplas:
+
+                (1, 2) * 3  # (1,2,1,2,1,2)
+
+            PS: Cuidado com repetição quando a tupla contém listas:
+
+                t = ([0],) * 3
+                # repete a MESMA lista 3 vezes (mesma referência)
+
+        Tuplas aninhadas:
+
+                t = ((1, 2), (3, 4))
+                t[0]      # (1, 2)
+                t[0][1]   # 2
+
+            Muito usada para:
+
+                . pontos 2D
+                . tabelas fixas
+                . “registros” simples
+
+        Casting para tuplas e de tuplas para outros tipos:
+
+            - Já vimos tuple() e list(). Também:
+
+                set((1, 2, 2))  # {1,2}
+                str((1, 2))     # "(1, 2)"
+
+        Ordenação de tuplas com sorted:
+
+            - Ordenar lista de tuplas
+
+            Muito comum:
+
+                dados = [("Ana", 20), ("João", 18), ("Bia", 25)]
+                sorted(dados)  # ordena por nome (primeiro item)
+
+            Por outro campo:
+
+                sorted(dados, key=lambda x: x[1])  # ordena por idade
+
+            . sorted retorna lista, mesmo que a entrada seja tupla.
+
+            Se quiser tupla:
+
+                tuple(sorted(dados))
+
+        “Coisas legais” com tuplas:
+
+            A) Tupla como “registro leve”
+
+                usuario = ("Renato", 17, "SP")
+                nome, idade, cidade = usuario
+
+            B) Tupla como chave de dicionário (muito poderoso)
+
+                - Se todos os itens forem hashable:
+
+                    visitas = {}
+                    pos = (2, 5)          # coordenada
+                    visitas[pos] = 1
+
+                Isso é base de:
+
+                    . grids
+                    . grafos
+                    . memoization (cache)
+                    . mapas 2D usando dict
+
+            C) “Ideia de dicionário com tuplas” (pares)
+
+                Uma estrutura estilo dicionário pode ser:
+
+                    pares = (("a", 1), ("b", 2), ("c", 3))
+
+                E você pode converter:
+
+                    d = dict(pares)
+
+                Ou buscar manualmente (menos eficiente):
+
+                    for k, v in pares:
+                        if k == "b":
+                            ...
+
+            D) Swap e múltiplas atribuições (tuplas por trás)
+
+                a, b = b, a
+
+        Erros comuns:
+
+            . esquecer a vírgula da tupla de 1 elemento: (5,)
+            . achar que tupla “congela” objetos mutáveis dentro
+            . repetir tupla com listas e criar referências duplicadas
+            . tentar modificar t[i]
+
     =====================================================================
 
     Dicionários:
+
+        - Um dicionário é uma estrutura que associa uma chave a um valor.
+
+        Formalmente:
+
+            chave → valor
+
+        Exemplo:
+
+            usuario = {
+                "nome": "Renato",
+                "idade": 17,
+                "cidade": "SP"
+            }
+
+        Diferente de listas/tuplas:
+
+            . acesso não é posicional
+
+            . acesso é por identidade (chave)
+
+        ESTRUTURA INTERNA:
+
+            Dicionários são implementados com tabelas hash.
+
+                . A chave passa por uma função hash()
+
+                . O hash define onde o valor é armazenado
+
+                . Busca média: O(1)
+
+            Isso é MUITO mais rápido que listas para busca por chave.
+
+        DEFINIÇÕES IMPORTANTES:
+
+            Chave:
+
+                - deve ser imutável
+                - deve ser hashable
+                - exemplos: str, int, float, tuple (imutável)
+
+            Valor:
+
+                - pode ser qualquer tipo
+                - mutável ou não
+
+            EX:
+
+                { (1, 2): "posição" }   # válido
+                { [1, 2]: "posição" }  # ERRO
+
+        CHAVE × ÍNDICE (EFICIÊNCIA):
+
+            | Estrutura               | Acesso |
+            | ----------------------- | ------ |
+            | Lista (índice)          | O(1)   |
+            | Lista (busca por valor) | O(n)   |
+            | Dicionário (chave)      | O(1)   |
+
+            Pergunta mental:
+
+                “Tenho um identificador lógico?” → dicionário
+
+        PROPRIEDADES DOS DICIONÁRIOS:
+
+            . Não permitem chaves duplicadas
+            . Inserção sobrescreve valor
+            . Mantêm ordem de inserção (Python 3.7+)
+            . Mutáveis
+            . Iteráveis
+
+        Métodos principais de dicionários:
+
+            1) Acesso e leitura:
+
+                . d[key]
+
+                    Acessa o valor. Se a chave não existir → KeyError.
+
+                . d.get(key, default=None)
+
+                    Acessa sem erro; se não existir, retorna default.
+                    Muito usado para evitar if key in d.
+
+                . d.keys()
+
+                    “view” das chaves (não é lista). Iterável.
+                
+                . d.values()
+
+                    “view” dos valores.
+
+                . d.items()
+
+                    “view” de pares (chave, valor) — perfeito para loops e sorted.
+
+                As views (keys/values/items) refletem mudanças no dicionário 
+                em tempo real.
+
+            2) Inserção / atualização:
+
+                . d[key] = value
+
+                    Insere ou sobrescreve.
+
+                . d.update(outro_dict | iterable_de_pares, **kwargs)
+
+                    Faz “merge”/atualização. Chaves repetidas são sobrescritas 
+                    pelo q
+
+                    Ex:
+
+                        d.update({"a": 1, "b": 2})
+                        d.update([("c", 3), ("d", 4)])
+                        d.update(e=5, f=6)
+
+                . Operador de merge (Python 3.9+)
+
+                    d1 | d2 → cria novo dict mesclado
+
+                    d1 |= d2 → atualiza in place
+
+            3) Remoção:
+
+                . del d[key]
+
+                    Remove a chave (se não existir → KeyError).
+
+                . d.pop(key, default=_sem)
+
+                    Remove e retorna o valor. Se não existir:
+
+                        sem default → KeyError
+
+                        com default → retorna default
+                
+                . d.popitem()
+
+                    Remove e retorna um par (key, value).
+                    
+                    Hoje remove o último inserido (LIFO).
+
+                    Útil para consumir/“desempilhar” itens.
+
+                . d.clear()
+
+                    Remove tudo.
+
+            4) Criação e padrões úteis:
+
+                . dict.fromkeys(iterable, value=None)
+
+                    Cria um dict com chaves vindas do iterável e o mesmo valor 
+                    para todas.
+
+                    EX:
+
+                        d = dict.fromkeys(["a", "b", "c"], 0)  # {"a":0, "b":0, "c":0}
+
+                    Cuidado com valor mutável:
+
+                        d = dict.fromkeys(["a","b"], [])  # MESMA lista para as duas chaves
+
+                . d.setdefault(key, default=None)
+
+                    Se a chave existir, retorna o valor.
+
+                    Se não existir, cria com default e retorna default.
+
+                    Muito usado para “acumular”:
+
+                        d.setdefault(chave, []).append(valor)
+
+        Operações/“funções especiais” (comportamento do dict):
+
+            1) Pertinência
+
+                key in d (testa chave, não valor)
+                key not in d
+
+            2) Tamanho e iteração
+
+                len(d)
+
+                for k in d: itera chaves
+
+                for k, v in d.items(): pares
+
+            3) Cópia
+
+                d.copy() → cópia rasa (shallow)
+                {**d} e d | {} também criam cópia rasa
+
+            4) Comparação
+
+                d1 == d2 compara por conteúdo (chaves/valores), não por ordem
+
+                d1 is d2 compara identidade (mesmo objeto)
+
+            5) Ordenação
+
+                Dicionário não “se ordena” por método próprio; você ordena os 
+                itens:
+
+                    sorted(d.items())  # por chave
+                    sorted(d.items(), key=lambda kv: kv[1])  # por valor
+
+                E se quiser de volta dict:
+
+                    d_ordenado = dict(sorted(d.items()))
+
+        Padrões de uso:
+
+            1) Contagem (histograma)
+
+                Padrão com get:
+
+                    d[x] = d.get(x, 0) + 1
+
+                ou com setdefault.
+
+            2) Agrupamento
+
+                grupos.setdefault(chave, []).append(item)
+
+            3) Tabela de decisão (dispatch)
+
+                acoes = {"soma": soma, "sub": sub}
+                acoes.get(op, erro)()
+
+            4) “Merge” de configurações
+
+                config = padrao | usuario
+
+        DICIONÁRIOS COM LOOPS E CONDIÇÕES:
+
+            . Iterar chaves:
+
+                for k in d:
+                    ...
+
+            . Iterar valores:
+
+                for v in d.values():
+                    ...
+
+            . Iterar pares:
+
+                for k, v in d.items():
+                    ...
+
+            . Condições:
+
+                if "idade" in usuario:
+                    ...
+
+        kwargs (IMPORTANTÍSSIMO):
+
+            Em funções:
+
+                def f(**kwargs):
+                    print(kwargs)
+
+            Chamada:
+
+                f(nome="Ana", idade=20)
+
+            kwargs é um dicionário.
+
+        EMPACOTAMENTO E DESEMPACOTAMENTO:
+
+            . Desempacotar em função
+
+                dados = {"a":1, "b":2}
+                f(**dados)
+
+            . Unir dicionários
+
+                novo = {**d1, **d2}
+
+            Ordem importa → sobrescrita.
+
+        DICIONÁRIOS ANINHADOS:
+
+            EX:
+
+                usuarios = {
+                    "u1": {"nome":"Ana", "idade":20},
+                    "u2": {"nome":"João", "idade":30}
+                }
+
+            Acesso:
+
+                usuarios["u1"]["idade"]
+
+            Base de JSON, APIs e configs.
+
+        DICIONÁRIOS COM OUTROS ITERÁVEIS:
+
+            . Lista de tuplas
+
+                dict([("a",1), ("b",2)])
+
+            . Zip
+
+                dict(zip(chaves, valores))
+
+        SOBRESCRITA (CUIDADO!):
+
+                d = {"a":1}
+                d["a"] = 99
+
+            . Não cria nova chave, substitui.
+
+        SWAP COM DICIONÁRIOS:
+
+            swap de valores:
+
+                d["a"], d["b"] = d["b"], d["a"]
+
+            Trocar chaves (menos comum):
+
+                exige reconstrução
+
+            swap em dict é lógico, não estrutural.
+
+        MÉTODO dict() (VERSÁTIL):
+
+            EX:
+
+                dict(a=1, b=2)
+                dict([("a",1), ("b",2)])
+
+            Muito usado em APIs e conversões.
+
+        DICIONÁRIO INVERTIDO:
+
+                inv = {v: k for k, v in d.items()}
+
+            . Só funciona se os valores forem:
+
+                . únicos
+
+                . hashable
+
+        DICIONÁRIO ORDENADO:
+
+            Desde Python 3.7+:
+
+                dict mantém ordem de inserção
+
+            Para ordenar:
+
+                dict(sorted(d.items()))
+
+            Ou por valor:
+
+                dict(sorted(d.items(), key=lambda x: x[1]))
+
+        DICIONÁRIO COM FUNÇÕES (ESTRATÉGIA):
+
+            EX:
+
+                ops = {
+                    "soma": lambda a,b: a+b,
+                    "sub": lambda a,b: a-b
+                }
+
+            Uso:
+
+                ops["soma"](2,3)
+
+            Isso substitui if/elif.
+
+        FUNÇÕES COM DICIONÁRIOS:
+
+            . entrada como config
+            . retorno estruturado
+            . múltiplos resultados
+            . estado acumulado
+
+            EX:
+
+                def stats(nums):
+                    return {
+                        "min": min(nums),
+                        "max": max(nums)
+                    }
+
+        DICIONÁRIOS COMO TABELAS DE DECISÃO (MUITO IMPORTANTE)
+
+            Em vez de:
+
+                if x == 1: ...
+                elif x == 2: ...
+
+            Use:
+
+                acoes = {
+                    1: func1,
+                    2: func2
+                }
+                acoes[x]()
+
+            Isso é:
+
+                . mais limpo
+                . extensível
+                . escalável
+
+        FRASES-CHAVE PARA MEMORIZAR:
+
+            Dicionário mapeia
+            Chave é identidade
+            Hash é O(1)
+            Base de APIs
+            Substitui ifs
+
+        Erros comuns:
+
+            for x in d: achar que x é valor (na verdade é chave)
+            in em dict testa chave, não valor
+            fromkeys(..., []) cria listas compartilhadas
+            usar d[key] sem garantir que a chave existe (prefira get quando fizer sentido)
+            usar lista como chave
+            esquecer .items()
+            sobrescrever sem perceber
+            iterar achando que vem ordenado por valor
+            usar dict quando lista bastava (ou vice-versa)
 
     =====================================================================
 
@@ -11206,6 +11879,14 @@ UM POUCO SOBRE LÓGICA DE PROGRAMAÇÃO:
     =====================================================================
 
     Assincronismo, funções e geradores assíncronos, threads e processos:
+
+    =====================================================================
+
+    bfs e dfs:
+
+    =====================================================================
+
+    Worse com Python:
 
     =====================================================================
 
