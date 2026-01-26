@@ -11824,9 +11824,194 @@ UM POUCO SOBRE LÓGICA DE PROGRAMAÇÃO:
 
     Conjuntos:
 
+        - Set é uma coleção não ordenada, mutável e sem elementos duplicados.
+
+        Modelo mental:
+
+            “Quero saber se algo existe”
+
+            “Quero remover duplicatas”
+
+            “Quero comparar grupos”
+
+        Exemplo:
+
+            s = {1, 2, 3}
+
+        Definições importantes:
+
+            . Sem ordem (não use índices)
+
+            . Sem duplicatas
+
+            . Mutável (você adiciona/remove)
+
+            . Elementos devem ser hashable (imutáveis)
+
+            Válido:
+
+                {1, "a", (2, 3)}
+
+            Inválido:
+
+                {[1, 2], {"a": 1}}  # erro
+
+        Criando sets:
+
+            set()              # conjunto vazio
+            {1, 2, 3}          # literal
+            set([1, 2, 2, 3])  # {1,2,3}
+            set("banana")      # {'b','a','n'}
+
+        PS: {} cria dicionário, não set.
+
+        Set × Lista × Tupla × Dict (quando usar):
+
+            | Estrutura | Uso ideal              |
+            | --------- | ---------------------- |
+            | list      | ordem, índices         |
+            | tuple     | dados imutáveis        |
+            | dict      | chave → valor          |
+            | set       | pertinência, unicidade |
+
+            Busca em set é O(1) (hash).
+
+        Operações fundamentais (o coração dos sets):
+
+            . Pertinência
+
+                    x in s
+                    x not in s
+
+                - Muito mais rápido que lista.
+
+            . União
+
+                    A | B
+                    A.union(B)
+
+            . Interseção
+
+                    A & B
+                    A.intersection(B)
+
+            . Diferença
+
+                    A - B
+                    A.difference(B)
+
+            . Diferença simétrica
+
+                    A ^ B
+                    A.symmetric_difference(B)
+
+            Isso é matemática pura aplicada a código.
+
+        Métodos principais de set:
+
+            . Adição
+
+                    s.add(x)
+                    s.update(iteravel)
+
+            . Remoção
+
+                    s.remove(x)     # erro se não existir
+                    s.discard(x)    # não gera erro
+                    s.pop()         # remove elemento arbitrário
+                    s.clear()
+
+            . Cópia
+
+                    s.copy()
+
+        Comparações e relações:
+
+                A == B
+                A <= B   # subconjunto
+                A < B    # subconjunto próprio
+                A >= B
+                A.isdisjoint(B)  # não têm elementos em comum
+
+        Sets com loops e condições:
+
+                for x in s:
+                    if x > 0:
+                        ...
+
+            - Ordem não garantida.
+
+        Set comprehension:
+
+                quadrados = {x*x for x in range(10) if x % 2 == 0}
+
+            - Muito usado para filtros rápidos.
+
+        Conversões (casting):
+
+                set(lista)
+                list(set(lista))     # remove duplicatas
+                tuple(set(lista))
+
+            Ordem pode mudar.
+
+        Sets e funções:
+
+                def comuns(a, b):
+                    return set(a) & set(b)
+
+            - Retorno ideal quando a ordem não importa.
+
+        Sets e dicionários:
+
+            . dict.keys() se comporta como um set
+
+                d.keys() & outro_set
+
+            Muito poderoso em validações.
+
+        Frozenset (set imutável):
+
+                fs = frozenset([1, 2, 3])
+
+            . imutável
+            . hashable
+            . pode ser chave de dicionário
+
+            Usado em cache, grafos, estados.
+
+        Erros comuns:
+
+            . tentar indexar set (s[0])
+            . assumir ordem
+            . usar remove quando deveria discard
+            . colocar mutáveis dentro 
+            . usar set quando precisa de ordem
+
+        Dicas:
+
+            Pergunte sempre:
+
+                Preciso de ordem?
+
+                Preciso de duplicatas?
+
+                Vou testar pertinência muitas vezes?
+
+                Operações de conjunto resolvem?
+
+            Se sim → set.
+
+        Frases-chave para memorizar:
+
+            . Set não ordena
+            . Set elimina duplicata
+            . Set testa rápido
+            . Set é matemática viva
+
     =====================================================================
 
-    tecnica de ponteiros:
+    tecnica de ponteiros (1 ou mais ponteiros):
 
     =====================================================================
 
