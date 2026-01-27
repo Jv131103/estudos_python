@@ -12013,6 +12013,248 @@ UM POUCO SOBRE LÓGICA DE PROGRAMAÇÃO:
 
     tecnica de ponteiros (1 ou mais ponteiros):
 
+        - Ponteiro é uma variável que aponta para uma posição de uma estrutura 
+        de dados.
+
+        Em Python:
+
+            . o “ponteiro” normalmente é um índice
+
+            . ou uma referência que se move
+
+        Você não move dados, você move o acesso.
+
+        UM PONTEIRO (Single Pointer):
+
+            - Um índice que percorre a estrutura de forma controlada.
+
+            EX:
+
+                i = 0
+                while i < len(lista):
+                    # usa lista[i]
+                    i += 1
+
+            Isso é a base de:
+
+                . varreduras
+                . contagem
+                . busca linear
+                . parsing
+
+            Quando usar:
+
+                . você precisa visitar todos os elementos
+                . a decisão depende apenas do elemento atual
+
+        DOIS PONTEIROS (Two Pointers):
+
+            - Usar dois índices independentes que se movem com regras próprias.
+
+            Existem três padrões clássicos.
+
+            . PADRÃO 1 — Ponteiros convergentes (esquerda ↔ direita):
+
+                i →        ← j
+
+                Exemplo:
+
+                    i = 0
+                    j = len(lista) - 1
+
+                    while i < j:
+                        # usa lista[i] e lista[j]
+                        i += 1
+                        j -= 1
+
+                Usos clássicos
+
+                    . inverter lista/string
+                    . verificar palíndromo
+                    . comparar extremos
+                    . swaps simétricos
+
+                Você já usou isso sem perceber.
+
+            . PADRÃO 2 — Ponteiros na mesma direção (rápido / lento):
+
+                slow → → →
+                fast → → → →
+
+                EX:
+
+                    slow = 0
+                    for fast in range(len(lista)):
+                        if condicao(lista[fast]):
+                            lista[slow] = lista[fast]
+                            slow += 1
+
+                Usos clássicos
+
+                    . remover elementos in place
+                    . filtrar lista sem criar outra
+                    . remover duplicatas
+                    . compactação
+
+                Muito usado em entrevistas e código profissional.
+
+            . PADRÃO 3 — Ponteiros em duas estruturas:
+
+                EX:
+
+                    i = j = 0
+                    while i < len(a) and j < len(b):
+                        if a[i] < b[j]:
+                            i += 1
+                        else:
+                            j += 1
+
+                Usos clássicos:
+
+                    . merge de listas ordenadas
+                    . interseção eficiente
+                    . comparação de streams
+
+                Base do merge sort.
+
+        MAIS DE DOIS PONTEIROS:
+
+            Quando aparece
+
+                janelas
+                
+                matrizes
+                
+                parsing avançado
+                
+                estados múltiplos
+
+            Exemplo:
+
+                i, j, k = 0, 1, len(lista)-1
+
+            O importante é:
+
+                cada ponteiro tem uma responsabilidade clara
+
+        PONTEIROS + CONDICIONAIS (CHAVE):
+
+            - Ponteiros só funcionam bem quando o movimento depende de condições.
+
+            Exemplo:
+
+                if soma < alvo:
+                    i += 1
+                else:
+                    j -= 1
+
+            Isso evita loops aninhados.
+
+        PONTEIROS × LOOPS ANINHADOS
+
+            | Abordagem    | Complexidade |
+            | ------------ | ------------ |
+            | Dois `for`   | O(n²)        |
+            | Two pointers | O(n)         |
+
+            Isso é otimização algorítmica real.
+
+        PONTEIROS + JANELAS (SLIDING WINDOW)
+
+            - Janela é um caso especial de dois ponteiros:
+
+                left = 0
+                for right in range(n):
+                    # expande
+                    while condicao:
+                        left += 1
+
+            Você controla:
+
+                expansão
+
+                contração
+
+        PONTEIROS EM STRINGS:
+
+            - Strings são imutáveis, mas os ponteiros funcionam igual:
+
+            EX:
+
+                i = 0
+                j = len(s) - 1
+
+                while i < j:
+                    if s[i] != s[j]:
+                        return False
+                    i += 1
+                    j -= 1
+
+            Base de validações de texto.
+
+        PONTEIROS EM MATRIZES:
+
+            Exemplo:
+
+                percorrer diagonal
+
+                swap simétrico
+
+                vizinhança
+
+            
+            Cód ex:
+
+                i = j = 0
+                while i < n:
+                    mat[i][j]
+                    i += 1
+                    j += 1
+
+            Ponteiros aqui são pares (i, j).
+
+        PONTEIROS × ITERADORES
+
+            . for x in lista → iterador implícito
+            . ponteiros → controle explícito
+
+            Use ponteiros quando:
+
+                . o passo não é sempre +1
+                . você precisa voltar, pular, sincronizar
+
+        ERROS COMUNS:
+
+            mover ponteiro errado
+
+            esquecer condição de parada
+
+            confundir i < j com i <= j
+
+            sobrescrever dados in place
+
+            usar ponteiros quando lista simples bastava
+
+        COMO PENSAR (MENTALIDADE):
+
+            Antes de codar, pergunte:
+
+                1. Quantos acessos simultâneos preciso?
+                2. Eles se movem juntos ou independentes?
+                3. Quando cada ponteiro avança?
+                4. Posso eliminar um loop aninhado?
+                5. Dá para fazer in place?
+
+            Se sim → ponteiros.
+
+        FRASES-CHAVE PARA MEMORIZAR:
+
+            . Ponteiro move acesso
+            . Dois ponteiros economizam tempo
+            . Janela é ponteiro disfarçado
+            . O(n) vence O(n²)
+            . Controle é tudo
+
     =====================================================================
 
     Divisão e conquista:
@@ -12051,7 +12293,7 @@ UM POUCO SOBRE LÓGICA DE PROGRAMAÇÃO:
 
     =====================================================================
 
-    Programação funcional (map, any, sum, all):
+    Programação funcional (map, any, sum, all, lambda k):
 
     =====================================================================
 
@@ -12064,10 +12306,6 @@ UM POUCO SOBRE LÓGICA DE PROGRAMAÇÃO:
     =====================================================================
 
     Assincronismo, funções e geradores assíncronos, threads e processos:
-
-    =====================================================================
-
-    bfs e dfs:
 
     =====================================================================
 
@@ -12116,9 +12354,13 @@ Um pouco sobre POO:
 
 Um pouco sobre Estruturas de dados:
 
-    listas / vetores e matrizes não ordenadas
+    caracteres e strings
 
-    listas / vetores e matrizes ordenadas
+    listas / vetores e arrays não ordenadas
+
+    listas / vetores e arrays ordenadas
+
+    circularidade e rotacionamento:
 
     matrizes
 
