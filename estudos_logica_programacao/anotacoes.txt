@@ -12257,31 +12257,1519 @@ UM POUCO SOBRE LÓGICA DE PROGRAMAÇÃO:
 
     =====================================================================
 
-    Divisão e conquista:
+    Divisão e conquista (Divide and Conquer):
+
+        - Quebre um problema grande em problemas menores do mesmo tipo, 
+        resolva os menores e combine os resultados.
+
+        Essa frase é tudo.
+
+        Se você entende isso, entendeu a técnica.
+
+        O MODELO MENTAL CORRETO:
+
+            Divisão e conquista sempre segue 3 etapas fixas:
+
+                1. Dividir
+
+                    Quebrar o problema em subproblemas menores, semelhantes ao 
+                    original.
+
+                2. Conquistar
+
+                    Resolver os subproblemas:
+
+                        . diretamente (caso base), ou
+
+                        . chamando o mesmo algoritmo (recursão)
+
+                3. Combinar
+
+                    Juntar as soluções dos subproblemas para resolver o problema 
+                    maior.
+
+                    Se não existe uma etapa clara de combinação, provavelmente 
+                    não é divisão e conquista.
+    
+            POR QUE ESSA TÉCNICA EXISTE?
+
+                Porque muitos problemas:
+
+                    . ficam intratáveis quando resolvidos de uma vez
+
+                    . mas ficam simples quando quebrados
+
+                Exemplo mental:
+
+                    . ordenar 1 milhão de números de uma vez → difícil
+
+                    . ordenar dois blocos de 500 mil → mais fácil
+
+                    . juntar os dois ordenados → simples
+
+            DIVISÃO E CONQUISTA × FORÇA BRUTA:
+
+                | Força bruta             | Divisão e conquista   |
+                | ----------------------- | --------------------- |
+                | Resolve tudo de uma vez | Divide o problema     |
+                | Muitos loops            | Estrutura recursiva   |
+                | Geralmente O(n²)        | Geralmente O(n log n) |
+                | Simples, mas lenta      | Elegante e eficiente  |
+
+                Divisão e conquista é otimização estrutural, não 
+                micro-otimização.
+
+        RELAÇÃO COM RECURSÃO (IMPORTANTE):
+
+            Quase toda divisão e conquista usa recursão, mas:
+
+                - nem toda recursão é divisão e conquista
+
+            Diferença:
+
+                Recursão simples → problema diminui linearmente
+
+                Divisão e conquista → problema se divide em vários subproblemas
+
+            Exemplo:
+
+                Recursão simples: n → n-1
+                Divisão e conquista: n → n/2 + n/2
+
+        CASO BASE (O PONTO CRÍTICO):
+
+            Todo algoritmo de divisão e conquista precisa de um caso base, que 
+            seja:
+
+                simples
+
+                resolvido diretamente
+
+                sem nova divisão
+
+            Exemplos:
+
+                lista com 0 ou 1 elemento
+
+                intervalo vazio
+
+                submatriz 1×1
+
+            Sem caso base → stack overflow.
+
+        COMPLEXIDADE (INTUIÇÃO, NÃO FÓRMULA):
+
+            O padrão clássico é:
+
+                T(n) = 2T(n/2) + O(n)
+
+            Resultado típico:
+
+                O(n log n)
+
+            Isso explica por que esses algoritmos escalam tão bem.
+
+        DIVISÃO E CONQUISTA EM ARRAYS E LISTAS:
+
+            Exemplo conceitual:
+
+                somar uma lista
+
+                dividir em duas metades
+
+                somar cada metade
+
+                somar os resultados
+
+            Não é o jeito mais rápido para somar, mas é didático.
+
+        DIVISÃO E CONQUISTA EM MATRIZES:
+
+            Muito comum:
+
+                dividir em quadrantes
+
+                resolver cada bloco
+
+                combinar
+
+            Exemplos de uso:
+
+                processamento de imagens
+
+                compressão
+
+                multiplicação de matrizes (Strassen)
+
+                jogos e simulações
+
+        QUANDO USAR DIVISÃO E CONQUISTA:
+
+            Use quando:
+
+                o problema pode ser dividido em partes independentes
+
+                as partes são do mesmo tipo do problema original
+
+                combinar resultados é simples
+
+                a divisão reduz bastante o tamanho
+
+            Não use quando:
+
+                os subproblemas dependem fortemente entre si
+
+                o custo de dividir é maior que resolver direto
+
+                um loop simples resolve melhor
+
+        ERROS COMUNS:
+
+            dividir mas não combinar
+
+            dividir de forma desigual sem motivo
+
+            esquecer o caso base
+
+            criar muitas cópias (custo alto)
+
+            usar divisão e conquista só “porque sim”
+
+        COMO PENSAR (MENTALIDADE)
+
+            Antes de tentar usar a técnica, pergunte:
+
+                1. Consigo dividir o problema em partes semelhantes?
+                2. Resolver metade é significativamente mais fácil?
+                3. Como vou combinar as respostas?
+                4. Qual é o caso base?
+                5. O custo total compensa?
+
+            Se você responde essas perguntas, o algoritmo praticamente se 
+            escreve sozinho.
+
+        FRASES-CHAVE PARA MEMORIZAR:
+
+            Dividir é reduzir
+            Conquistar é resolver
+            Combinar é a alma
+            Caso base salva a pilha
+            O(n log n) nasce aqui
 
     =====================================================================
 
     números aleatórios:
 
+        Computadores são determinísticos.
+
+        Então… como algo determinístico “gera aleatoriedade”?
+
+        Resposta curta: não gera aleatoriedade verdadeira, gera 
+        pseudoaleatoriedade.
+
+        ALEATORIEDADE NA MATEMÁTICA:
+
+            Na matemática, um processo aleatório:
+
+                não é previsível
+
+                não tem padrão detectável
+
+                cada evento tem probabilidade bem definida
+
+            Exemplo ideal:
+
+                lançamento de moeda perfeita
+
+                ruído térmico
+
+                decaimento radioativo
+
+            Isso é aleatoriedade verdadeira (física).
+
+        PSEUDOALEATORIEDADE (O QUE COMPUTADORES FAZEM):
+
+            Pseudoaleatório = parece aleatório, mas é gerado por um algoritmo 
+            determinístico.
+
+            Características:
+
+                começa com um valor inicial (seed)
+
+                produz uma sequência longa
+
+                estatisticamente “boa”
+
+                reprodutível
+
+            Reprodutibilidade é uma VANTAGEM enorme em software.
+
+        O CONCEITO DE SEED (SEMENTE)
+
+                seed → sequência
+
+            Se:
+
+                mesma seed → mesma sequência
+
+                seed diferente → sequência diferente
+
+            Exemplo mental:
+
+                seed = 42
+
+            Isso permite:
+
+                testes reproduzíveis
+
+                simulações controladas
+
+                depuração
+
+        ALGORITMOS CLÁSSICOS DE PSEUDOALEATORIEDADE:
+
+            . Linear Congruential Generator (LCG)
+
+                Um dos mais antigos:
+
+                    X   ​ = (aX  +  c) mod m
+                     n+1      n
+
+                Simples, rápido, mas previsível.
+
+            . Mersenne Twister (Python usa!)
+
+                . período enorme: 2**19937 − 1
+
+                . excelente distribuição estatística
+
+                . rápido
+
+                . não é criptograficamente seguro
+
+                Esse é o coração do random do Python.
+
+        ALEATÓRIO × CRIPTOGRAFICAMENTE SEGURO:
+
+            | Tipo         | Uso                       |
+            | ------------ | ------------------------- |
+            | `random`     | simulações, jogos, testes |
+            | `secrets`    | senhas, tokens, segurança |
+            | hardware RNG | criptografia real         |
+
+            Nunca use random para:
+
+                senha
+
+                token
+
+                chave de segurança
+
+        O MÓDULO random (PYTHON):
+
+                import random
+
+            Ele é um gerador pseudoaleatório global, baseado no Mersenne Twister.
+
+        SEED NO PYTHON:
+
+                random.seed(10)
+
+            Após isso, a sequência é previsível.
+
+        Uso típico:
+
+            testes
+
+            exemplos
+
+            simulações científicas
+
+        FUNÇÕES PRINCIPAIS DO random:
+
+            . random.random()
+
+                random.random()  # float em [0.0, 1.0)
+
+            . random.randint(a, b)
+
+                random.randint(1, 6)  # inteiro entre 1 e 6 (inclusive)
+
+            . random.randrange(start, stop, step)
+
+                    random.randrange(0, 10, 2)
+
+                - Parecido com range.
+
+            . random.uniform(a, b)
+
+                    random.uniform(1.5, 3.5)
+
+                Float contínuo.
+
+        ALEATÓRIO COM ITERÁVEIS:
+
+            . random.choice(seq)
+
+                random.choice(lista)
+
+            . random.sample(seq, k)
+
+                    random.sample(lista, 3)
+
+                Não repete.
+
+            . random.shuffle(lista)
+
+                    random.shuffle(lista)
+
+                In place (usa swaps).
+
+        DISTRIBUIÇÕES (IMPORTANTE):
+
+            . Normal (Gaussiana)
+
+                    random.gauss(mu, sigma)
+
+                Muito usada em:
+
+                    estatística
+
+                    IA
+
+                    simulações
+
+            . Outras
+
+                expovariate
+
+                betavariate
+
+                triangular
+
+                - O random é mais matemático do que parece.
+
+        O MÓDULO SECRETS
+
+            - random NÃO é seguro para segurança.
+
+            . random → rápido, previsível com seed
+
+            . secrets → imprevisível, próprio para segurança
+
+            Em termos técnicos:
+
+                . random = pseudoaleatório determinístico
+
+                . secrets = CSPRNG (Cryptographically Secure PRNG)
+
+            DE ONDE VEM A ALEATORIEDADE DO secrets?
+
+                secrets usa fontes do sistema operacional, como:
+
+                    ruído do hardware
+
+                    eventos imprevisíveis
+
+                    pools de entropia do kernel
+
+                Em Python:
+
+                    secrets → os.urandom()
+
+                Isso é o mais próximo de “aleatoriedade real” que um software 
+                comum consegue.
+
+            QUANDO USAR secrets (REGRA DE OURO):
+
+                Use secrets sempre que houver:
+
+                    senha
+
+                    token
+
+                    chave
+
+                    link de reset
+
+                    autenticação
+
+                    sessão
+
+                    API key
+
+                Nunca use random nesses casos.
+
+            FUNÇÕES PRINCIPAIS DO secrets
+
+                    import secrets
+
+                . secrets.randbelow(n)
+
+                    Inteiro seguro em [0, n)
+
+                        secrets.randbelow(10)
+
+                    Substitui random.randrange em segurança.
+
+                . secrets.choice(seq)
+
+                    Escolhe elemento de forma segura
+
+                        secrets.choice("abcdef012345")
+
+                    Ideal para gerar senhas.
+
+                . secrets.token_bytes(n)
+
+                    Gera bytes aleatórios seguros
+
+                        secrets.token_bytes(16)
+
+                    Base de chaves criptográficas.
+
+                . secrets.token_hex(n):
+
+                    Retorna string hexadecimal
+
+                        secrets.token_hex(16)
+
+                    Muito usado em tokens de API.
+
+                . secrets.token_urlsafe(n)
+
+                    Token seguro para URLs
+
+                        secrets.token_urlsafe(16)
+
+                    Perfeito para:
+
+                        links de ativação
+
+                        reset de senha
+
+            secrets × random (COMPARAÇÃO FINAL)
+
+            | Aspecto          | random | secrets |
+            | ---------------- | ------ | ------- |
+            | Previsível       | ✔      | ❌      |
+            | Reprodutível     | ✔      | ❌      |
+            | Seguro           | ❌     | ✔       |
+            | Rápido           | ✔      | ❌      |
+            | Jogos/simulações | ✔      | ❌      |
+            | Senhas/tokens    | ❌     | ✔       |
+
+            Escolher errado aqui é falha grave de segurança.
+
+        GERANDO SENHAS (EXEMPLO CONCEITUAL):
+
+                alfabeto = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%"
+                senha = "".join(secrets.choice(alfabeto) for _ in range(12))
+
+            - sso é segurança correta.
+
+        secrets E DISTRIBUIÇÕES:
+
+            Importante:
+
+                    secrets não oferece distribuições estatísticas
+                    
+                    só oferece uniformidade segura
+
+                Se você precisa de estatística → random
+                Se precisa de segurança → secrets
+
+        ERROS COMUNS
+
+            achar que random é “verdadeiro”
+
+            usar random para segurança
+
+            esquecer seed em testes
+
+            achar que distribuição é sempre uniforme
+
+            confundir choice com sample
+
+            usar random para senha
+
+            usar seed achando que melhora segurança
+
+            misturar random e secrets
+
+            achar que secrets é “melhor para tudo”
+
+
+        COMO PENSAR (MENTALIDADE)
+
+            Pergunte:
+
+                Preciso de reprodutibilidade?
+                
+                Preciso de segurança?
+                
+                Preciso de distribuição específica?
+                
+                Posso modificar a lista in place?
+                
+                Isso é estatística ou lógica?
+
+            Caso de secrets:
+
+                Isso pode ser previsto por um atacante?
+
+                Isso envolve autenticação?
+
+                Isso gera identidade secreta?
+
+        FRASES-CHAVE PARA MEMORIZAR:
+
+            Computador não cria caos
+            Random é determinístico
+            Seed controla tudo
+            Mersenne domina
+            Segurança ≠ random
+
     =====================================================================
 
     regex:
+
+        - Regex é uma linguagem para descrever padrões em texto.
+
+        . Não é Python.
+        . Não é algoritmo comum.
+        . É uma mini-linguagem declarativa.
+
+        Você não diz como procurar, você diz o padrão.
+
+        Modelo mental correto:
+
+            “Regex descreve o que eu aceito, não como eu procuro”.
+
+        POR QUE REGEX EXISTE?
+
+            Porque texto é caótico:
+
+                validações (email, CPF, telefone)
+
+                parsing
+
+                logs
+
+                scraping
+
+                substituições em massa
+
+            Sem regex:
+
+                dezenas de if
+
+                loops confusos
+
+                código frágil
+
+            Com regex:
+
+                1 linha resolve (às vezes)
+
+        REGEX NÃO É MÁGICA (É DETERMINÍSTICA):
+
+            Regex:
+
+                percorre o texto
+
+                tenta casar o padrão
+
+                segue regras bem definidas
+
+            O terror vem porque:
+
+                símbolos parecem criptografia
+
+                erros são silenciosos
+
+                leitura não é intuitiva no começo
+
+        REGEX NO PYTHON (re):
+
+            MÓDULO:
+
+                import re
+
+            Funções principais:
+
+                re.search
+
+                re.match
+
+                re.findall
+
+                re.sub
+
+                re.split
+
+        O ALFABETO DO REGEX (ESSENCIAL):
+
+            . Literais
+
+                    a  b  1  @
+
+                Casam exatamente com o caractere.
+
+            . Metacaracteres (os famosos)
+
+                    .  ^  $  *  +  ?  { }  [ ]  ( )  |  \
+
+                Eles têm significado especial.
+
+        CLASSES DE CARACTERES:
+
+            . Básicas:
+
+                | Padrão | Significado          |
+                | ------ | -------------------- |
+                | `.`    | qualquer caractere   |
+                | `\d`   | dígito (0–9)         |
+                | `\D`   | não dígito           |
+                | `\w`   | letra, número ou `_` |
+                | `\W`   | não `\w`             |
+                | `\s`   | espaço               |
+                | `\S`   | não espaço           |
+
+            . Conjuntos:
+
+                [abc]     → a ou b ou c
+                [a-z]     → letras minúsculas
+                [0-9]     → dígitos
+                [^0-9]    → tudo exceto dígitos
+
+            Isso já resolve MUITA coisa.
+
+        QUANTIFICADORES:
+
+            | Símbolo | Significado  |
+            | ------- | ------------ |
+            | `*`     | 0 ou mais    |
+            | `+`     | 1 ou mais    |
+            | `?`     | 0 ou 1       |
+            | `{n}`   | exatamente n |
+            | `{n,}`  | n ou mais    |
+            | `{n,m}` | entre n e m  |
+
+            Exemplo:
+
+                \d+    → um ou mais dígitos
+
+        ÂNCORAS (POSIÇÃO NO TEXTO):
+
+            | Símbolo | Significado      |
+            | ------- | ---------------- |
+            | `^`     | início da string |
+            | `$`     | fim da string    |
+
+            Exemplo:
+
+                ^\d+$   → string inteira só com números
+
+            Isso é validação, não busca solta.
+
+        GRUPOS:
+
+            . Grupos com parênteses
+
+                (\d{2})-(\d{2})
+
+            No Python:
+
+                m = re.search(r"(\d{2})-(\d{2})", texto)
+                m.group(1)
+                m.group(2)
+
+            Grupos servem para:
+
+                extrair partes
+
+                reutilizar padrões
+
+                substituir com controle
+
+        match × search × findall:
+
+            | Função    | O que faz                    |
+            | --------- | ---------------------------- |
+            | `match`   | casa só no início            |
+            | `search`  | casa em qualquer lugar       |
+            | `findall` | retorna todas as ocorrências |
+
+            90% das vezes você quer search ou findall.
+
+        SUBSTITUIÇÃO (re.sub):
+
+                re.sub(r"\d", "#", texto)
+
+            Troca poderosa:
+
+                limpar dados
+
+                mascarar informações
+
+                normalizar texto
+
+        RAW STRING (MUITO IMPORTANTE):
+
+            Sempre use:
+
+                r"\d+"
+
+            Evita conflitos com \n, \t, etc.
+
+            Erro clássico de iniciante.
+
+        REGEX É GREEDY (GANANCIOSO):
+
+            Por padrão:
+
+                .* 
+
+            - pega o máximo possível
+
+            Versão “não gananciosa”:
+
+                .*?
+
+            Isso evita capturar demais.
+
+        ERROS COMUNS (MUITO IMPORTANTES)
+
+            esquecer r""
+
+            usar match achando que busca tudo
+
+            não usar ^ e $ em validação
+
+            regex muito complexa (ilegível)
+
+            tentar resolver tudo com regex
+
+            - Regex é ferramenta, não religião.
+
+        COMO APRENDER REGEX SEM SOFRER:
+
+            Comece simples
+
+            Teste sempre (regex101.com é ouro)
+            
+            Leia regex da esquerda para a direita
+            
+            Pense em classes, não em letras
+            
+            Quebre regex grande em partes
+
+        FRASES-CHAVE PARA MEMORIZAR
+
+            . Regex descreve padrão
+            . Não é algoritmo
+            . Ganância é padrão
+            . Raw string é regra
+            . Simples > complexo
 
     =====================================================================
 
     Módulos, Bibliotecas e importações:
 
-    =====================================================================
+        . Módulo: um arquivo .py (ex: utils.py)
 
-    Alias:
+        . Pacote (package): uma pasta com código Python (hoje em dia pode ser 
+        “package” mesmo sem __init__.py, mas na prática ele ainda é muito útil)
+
+        . Biblioteca: um conjunto de módulos/pacotes (ex: requests, numpy), 
+        normalmente instalado via pip
+
+        import comum vs from ... import ...:
+
+            import comum
+
+                    import math
+                    import meu_modulo
+
+                . Você acessa com prefixo: math.sqrt(9)
+                . Evita conflitos de nomes
+                . Mais claro em projetos grandes
+
+            from ... import ...
+
+                    from math import sqrt
+                    from pacote.modulo import func
+
+                . Importa “direto” no namespace atual
+
+                . Pode ficar confuso se você importar muitas coisas com nomes 
+                comuns
+
+            from ... import * (evite)
+
+                . Polui o namespace
+
+                . Dificulta leitura e debug
+
+        Alias (as):
+
+            Alias é pra:
+
+                encurtar nome
+
+                evitar conflito
+
+                padronizar
+
+            São apelidos dados a módulos ou funções do módulo.
+
+            EX:
+
+                import numpy as np
+                import pandas as pd
+                from datetime import datetime as dt
+
+            Import relativo: . e .. (o que são de verdade)
+
+                Isso só faz sentido dentro de um pacote.
+
+                . from . import x → do pacote atual
+
+                . from .. import y → do pacote “pai”
+
+            Exemplo (estrutura):
+
+                meuprojeto/
+                app/
+                    __init__.py
+                    core/
+                    __init__.py
+                    config.py
+                    services/
+                    __init__.py
+                    auth.py
+                    main.py
+
+            Dentro de services/auth.py:
+
+                from ..core.config import SETTINGS
+
+            Import relativo falha se você roda o arquivo “solto” (tipo python 
+            app/services/auth.py).
+            
+            Ele funciona quando você roda como módulo (já já te mostro o jeito 
+            certo).
+
+        O erro mais comum: “quando importo fora da pasta dá erro”:
+
+            Isso acontece por causa de uma regra simples:
+
+                Python importa coisas a partir do que está no sys.path.
+                
+                E o primeiro item do sys.path costuma ser a pasta de onde você 
+                executou (current working directory) ou o script principal.
+
+            Então:
+
+                . rodar python main.py a partir da raiz ≠ rodar python 
+                app/main.py
+
+                . muda o caminho base de import
+
+            Solução que funciona de verdade (a mais correta):
+
+                Rodar com -m a partir da raiz do projeto.
+
+                Ex:
+
+                    python -m app.main
+
+                Assim:
+
+                    Python entende app como pacote
+                    
+                    import relativo funciona
+                    
+                    import absoluto fica estável
+
+        Import absoluto (o padrão mais robusto)
+
+            Em projetos, prefira:
+
+                from app.core.config import SETTINGS
+                from app.services.auth import login
+
+            E execute assim:
+
+                python -m app.main
+
+            Isso resolve 90% dos problemas de import “fora da pasta”.
+
+        __init__.py (pra que serve na prática):
+
+            __init__.py marca uma pasta como pacote “clássico” e também pode:
+
+                (a) Expor API do pacote
+
+                    app/services/__init__.py:
+
+                        from .auth import login
+                        from .users import get_user
+
+                    Aí você pode:
+
+                        from app.services import login
+
+                (b) Rodar código no import (use com cuidado)
+
+                    Tudo que estiver no __init__.py roda quando o pacote é 
+                    importado.
+
+        “import ACIMA” (import para pasta acima):
+
+            Aqui tem 3 formas:
+
+                Forma certa (recomendada): estrutura + -m
+
+                    Use import absoluto a partir do pacote raiz e execute com -m.
+
+                Forma de ambiente: PYTHONPATH
+
+                    Você pode definir a raiz no PYTHONPATH:
+
+                        PYTHONPATH=. python app/main.py
+
+                    Funciona, mas é mais “ambiente dependente”.
+
+                Forma gambiarra: mexer em sys.path
+
+                    Dentro do arquivo:
+
+                        import sys
+                        from pathlib import Path
+                        sys.path.append(str(Path(__file__).resolve().parents[1]))
+
+                    Funciona, mas evite em projeto sério. É fácil virar bagunça.
+
+        Import circular (o que é e como resolver):
+
+            Circular: A importa B e B importa A (direto ou indireto).
+
+            Exemplo:
+
+                a.py importa b.py
+
+                b.py importa a.py
+
+            Isso explode porque, no meio do import, um módulo ainda está 
+            “meio carregado”.
+
+        Soluções que funcionam:
+
+            (1) Quebrar dependência movendo tipos/constantes para um módulo 
+            terceiro
+
+                constants.py, interfaces.py, schemas.py
+
+            (2) Import tardio (lazy import)
+
+                def func():
+                    from app.services.auth import login
+                    return login()
+
+            (3) Inverter dependência (injeção)
+
+                Ao invés de auth importar db, passe db como parâmetro.
+
+            (4) Evitar código executando no import
+
+                Se a.py roda lógica no topo, piora circular.
+
+        main, entrypoint e “onde eu rodo?”:
+
+            Regra de ouro:
+
+                Sempre rode da raiz do projeto
+                Sempre rode como módulo quando for pacote
+
+            Exemplo:
+
+                python -m app.main
+
+            E no app/main.py:
+
+                def main():
+                    ...
+
+                if __name__ == "__main__":
+                    main()
+
+        Padrão de estrutura de projeto que “não dá dor de cabeça”
+
+            Estrutura recomendada (simples e forte):
+
+            meuprojeto/
+            app/
+                __init__.py
+                main.py
+                core/
+                    __init__.py
+                    config.py
+                services/
+                    __init__.py
+                    auth.py
+            tests/
+            pyproject.toml  (opcional, mas ótimo)
+
+        Import absoluto sempre:
+
+            from app.core.config import SETTINGS
+
+        Rodar sempre:
+
+            python -m app.main
+
+        “Outras coisas” importantes (bem práticas):
+
+            (a) Módulo vs pacote com mesmo nome
+
+                Se você tiver random.py no seu projeto, pode “quebrar” import 
+                random (vai importar o seu arquivo).
+
+                Evite nomes que colidem com libs padrão.
+
+            (b) Caching de imports
+
+                Import só carrega uma vez por execução (fica em sys.modules). 
+                Isso explica comportamentos “estranhos” em reload/testes.
+
+            (c) __all__
+
+                Controla o que aparece em from modulo import * (mesmo que você 
+                evite, é bom saber).
+
+        Checklist rápido quando “deu erro de import”:
+
+            1. Você está rodando da raiz do projeto?
+            2. Está rodando como módulo? (python -m ...)
+            3. Seus imports são absolutos a partir do pacote raiz?
+            4. Tem colisão de nome? (tipo random.py, re.py, json.py)
+            5. Tem import circular? (A ↔ B)
 
     =====================================================================
 
     Garbage:
 
+        - O “lixeiro inteligente” da memória
+
+        O PROBLEMA QUE O GC RESOLVE
+
+            Em qualquer programa:
+
+                . você cria objetos
+
+                . usa esses objetos
+
+                . em algum momento, eles não são mais necessários
+
+            Pergunta central:
+
+                Como saber quando algo pode ser removido da memória com
+                segurança?
+
+                Existem duas abordagens:
+
+                    . manual (C, C++)
+                    . automática (Python, Java, JS)
+
+                Python usa automática.
+
+        O QUE É GARBAGE (LIXO)?
+
+            - Garbage é qualquer objeto que não pode mais ser acessado pelo 
+            programa.
+
+            Exemplo simples:
+
+                x = [1, 2, 3]
+                x = None
+
+            A lista [1, 2, 3]:
+
+                ainda existe na memória por um instante
+
+                mas ninguém mais aponta para ela
+
+                virou lixo
+
+            “Não acessável” é a palavra-chave.
+
+        MODELO MENTAL CORRETO (IMPORTANTÍSSIMO):
+
+            - GC não apaga variáveis, ele apaga objetos.
+
+            Variáveis são apenas referências.
+
+                variável ──► objeto
+
+            Se nenhuma variável aponta para o objeto → candidato a coleta.
+
+        COMO O PYTHON FAZ GC (DUAS CAMADAS):
+
+            - Python usa DOIS mecanismos:
+
+                1) Contagem de referências (principal)
+
+                    Cada objeto tem um contador:
+
+                        quantas referências apontam para ele?
+
+                    Quando o contador chega a 0:
+
+                        . o objeto é destruído imediatamente
+
+                        Exemplo:
+
+                            a = []
+                            b = a      # refcount = 2
+                            a = None   # refcount = 1
+                            b = None   # refcount = 0 → destruído
+
+                        Isso explica por que Python “libera memória rápido”.
+
+                2) Garbage Collector cíclico (o verdadeiro GC)
+
+                    A contagem de referências falha em ciclos:
+
+                        a = []
+                        a.append(a)
+
+                    Aqui:
+
+                        . a referencia a si mesmo
+
+                        . refcount nunca chega a 0
+                    
+                    Entra o GC cíclico.
+
+        O PROBLEMA DOS CICLOS:
+
+            Exemplo clássico:
+
+                class A:
+                    def __init__(self):
+                        self.b = None
+
+                class B:
+                    def __init__(self):
+                        self.a = None
+
+                a = A()
+                b = B()
+                a.b = b
+                b.a = a
+
+            Mesmo apagando a e b:
+
+                eles ainda se referenciam
+
+                refcount ≠ 0
+
+            GC cíclico detecta grupos inacessíveis, mesmo com referências 
+            internas.
+        
+        COMO O GC CÍCLICO FUNCIONA (SIMPLIFICADO):
+
+            1. Ele procura objetos container (listas, dicts, classes)
+            2. Marca quem aponta para fora
+            3. O que sobra isolado é lixo
+            4. Coleta
+
+            Não roda o tempo todo (seria caro).
+
+        GERAÇÕES DO GC (MUITO IMPORTANTE):
+
+            Python divide objetos em gerações:
+
+                Geração 0: objetos novos
+
+                Geração 1: sobreviveram um pouco
+
+                Geração 2: sobreviventes “antigos”
+
+            Hipótese:
+
+                “Objetos que sobrevivem muito tendem a continuar vivos”.
+
+            Isso reduz custo de varredura.
+
+        O MÓDULO gc:
+
+            ex:
+
+                import gc
+
+            Funções úteis:
+
+                gc.collect() → força coleta
+
+                gc.disable() / gc.enable()
+
+                gc.get_count() → estatísticas
+
+                gc.get_objects() → objetos rastreados
+
+            Útil para debug, profiling e sistemas críticos.
+
+        __del__ (DESTRUTOR) — USE COM CUIDADO:
+
+            EX:
+
+                class X:
+                    def __del__(self):
+                        print("Objeto destruído")
+
+            Problemas:
+
+                não há garantia de quando será chamado
+
+                pode atrasar coleta
+
+                pode quebrar ciclos
+
+            Evite lógica importante em __del__.
+
+        GC × DESEMPENHO:
+
+            GC não é gratuito:
+
+                pausas pequenas
+
+                custo cresce com muitos objetos
+
+            Por isso:
+
+                Python tenta coletar o mínimo possível
+
+                usa heurísticas
+
+        COMO USAR O GC A SEU FAVOR (PARTE MAIS IMPORTANTE):
+
+            1) Preferir escopos curtos
+
+                def func():
+                    temp = [x for x in range(100000)]
+
+            Saiu da função → referências caem → memória liberada.
+
+            2) Quebrar ciclos manualmente
+
+                a.b = None
+                b.a = None
+
+            Em sistemas grandes, isso importa.
+
+            3) Usar with (context managers)
+
+                with open("file.txt") as f:
+                    ...
+
+            Liberação determinística, não depende do GC.
+
+            4) Usar estruturas simples
+
+                menos objetos
+
+                menos containers
+
+                menos ciclos
+
+            5) Reutilizar objetos quando possível
+
+                pools
+
+                buffers
+
+                caches
+
+        O QUE O GC NÃO FAZ:
+
+            . Não compacta memória como JVM
+            . Não garante liberação imediata de memória ao SO
+            . Não substitui bom design
+            . Não resolve vazamento lógico (referência viva sem querer)
+
+        VAZAMENTO DE MEMÓRIA EM PYTHON (SIM, EXISTE):
+
+            Exemplo clássico:
+
+                cache = []
+
+                def f(x):
+                    cache.append(x)
+
+            O GC não pode ajudar, porque ainda há referência.
+
+        COMPARAÇÃO COM OUTRAS LINGUAGENS:
+
+            | Linguagem | Modelo                 |
+            | --------- | ---------------------- |
+            | C         | manual (`malloc/free`) |
+            | C++       | RAII                   |
+            | Python    | refcount + GC          |
+            | Java      | GC puro                |
+            | Rust      | ownership (sem GC)     |
+
+            Python é um meio-termo.
+
+        FRASES-CHAVE PARA MEMORIZAR:
+
+            . GC apaga objetos
+            . Referência mantém vivo
+            . Ciclos precisam GC
+            . with é melhor que __del__
+            . GC não corrige design ruim
+
     =====================================================================
 
     shuffle:
+
+        - Shuffle é uma permutação aleatória dos elementos de uma coleção.
+
+        Ou seja:
+
+            . todos os elementos continuam lá
+            . só a ordem muda
+            . cada permutação válida deve ter a mesma probabilidade
+
+        A parte “mesma probabilidade” é o que separa:
+
+            shuffle correto
+
+            shuffle errado (muito comum!)
+
+        SHUFFLE NÃO É SORT + RANDOM:
+
+            Errado:
+
+                sorted(lista, key=lambda _: random.random())
+
+            Por quê?
+
+                distribuição enviesada
+
+                não garante equiprobabilidade
+
+                ineficiente
+
+            Parece funcionar, mas estatisticamente está errado.
+
+        SHUFFLE E MATEMÁTICA (INTUIÇÃO):
+
+            Se uma lista tem n elementos:
+
+                existem n! permutações possíveis
+
+                um shuffle correto dá 1/n! de chance para cada uma
+
+            Exemplo:
+
+                3 elementos → 3! = 6 ordens possíveis
+
+        SHUFFLE IN PLACE × NÃO IN PLACE:
+
+            . In place
+
+                modifica a lista original
+
+                O(n)
+
+                usa swaps
+
+            . Não in place
+
+                cria nova lista
+
+                mais memória
+
+                às vezes útil
+
+            Python prioriza in place para eficiência.
+
+        O ALGORITMO CORRETO: FISHER–YATES (KNUTH SHUFFLE):
+
+            Esse é o shuffle certo. Todo o resto é suspeito.
+
+            . Ideia
+
+                percorra a lista
+
+                para cada posição i
+
+                troque com uma posição aleatória j ≥ i
+
+            . Modelo mental
+
+                posição atual ←→ posição aleatória ainda não fixada
+
+            . Pseudocódigo
+
+                para i de n-1 até 1:
+                    j ← número aleatório entre 0 e i
+                    swap(lista[i], lista[j])
+
+            Cada passo “fixa” um elemento no final.
+
+        ERROS CLÁSSICOS DE SHUFFLE:
+
+            . Escolher j sempre de 0 a n-1
+            . Trocar sempre com qualquer posição
+            . Usar choice repetidamente
+            . Criar viés sem perceber
+            . Confundir rotação com shuffle
+
+            A faixa do índice aleatório importa muito.
+
+        SHUFFLE × ROTAÇÃO × SHIFT:
+
+            | Técnica | O que faz             |
+            | ------- | --------------------- |
+            | Shuffle | mistura aleatória     |
+            | Rotação | deslocamento circular |
+            | Shift   | empurra elementos     |
+
+            Não confundir: shuffle é caos controlado.
+
+        COMO PENSAR (MENTALIDADE)
+
+            Antes de embaralhar, pergunte:
+
+                Preciso de uniformidade real?
+                
+                Pode ser determinístico?
+                
+                Pode modificar a lista?
+                
+                Segurança importa?
+                
+                Preciso reproduzir o resultado?
+
+        FRASES-CHAVE PARA MEMORIZAR
+
+            . Shuffle é permutação
+            . Fisher–Yates é o padrão
+            . In place é eficiente
+            . Random ≠ seguro
+            . Viés mata shuffle
+
+    =====================================================================
+
+    bucket:
+
+    =====================================================================
+
+    buffer:
 
     =====================================================================
 
@@ -12312,6 +13800,79 @@ UM POUCO SOBRE LÓGICA DE PROGRAMAÇÃO:
     Worse com Python:
 
     =====================================================================
+
+    Módulo math e numpy:
+
+    =====================================================================
+
+    Módulos e controle de sistema com PYTHON 
+    (shutil, sys, os, psutil, platform, subprocess, signal):
+
+    =====================================================================
+
+    dotenv:
+
+    =====================================================================
+
+    time e datetime:
+
+    =====================================================================
+
+    Pathlib e glob:
+
+    =====================================================================
+
+    zipfile, tarfile
+
+    =====================================================================
+
+    Json:
+
+    =====================================================================
+
+    pyautogui:
+
+    =====================================================================
+
+    bs4:
+
+    =====================================================================
+
+    requests:
+
+    =====================================================================
+
+    curl_cffi:
+
+    =====================================================================
+
+    Selenium:
+
+    =====================================================================
+
+    playwright:
+
+    =====================================================================
+
+    scrappy:
+
+    =====================================================================
+
+    sockets, http.client e http.server:
+
+    =====================================================================
+
+    Pillow:
+
+    =====================================================================
+
+    logging e pdb:
+
+    =====================================================================
+
+    cryptography:
+
+    ======================================================================
 
 
 Um pouco sobre POO:
@@ -12351,6 +13912,8 @@ Um pouco sobre POO:
     Setups, interfaces e Managers
 
     SOLID
+
+    Lib dataclasses
 
 Um pouco sobre Estruturas de dados:
 
@@ -12401,3 +13964,17 @@ Um pouco sobre Estruturas de dados:
     Busca A*
 
     Algoritmo de Dijkstra
+
+Um pouco de ambientes:
+
+    Python com terminal:
+
+    Python com ambientes virtuais (virtualenv, poetry, pdb):
+
+    Banco de dados e ORM com Python:
+
+    Python com VMs:
+
+    Python com DOCKER:
+
+    Usando python com outras linguagens:

@@ -5,6 +5,8 @@ import statistics as stats
 import time
 import tracemalloc
 
+from soma_div_recursiva import (soma_div_conquer, soma_recursiva,
+                                soma_recursiva2)
 from soma_estrutural import (soma_estrutural1, soma_estrutural2,
                              soma_estrutural3)
 from soma_pythonico import soma_pythonico
@@ -14,6 +16,9 @@ FUNCS = [
     ("estrutural2", soma_estrutural2),
     ("estrutural3", soma_estrutural3),
     ("pythonic", soma_pythonico),
+    ("divide_and_conquer", soma_div_conquer),
+    ("recursiva1", soma_recursiva),
+    ("recursiva2", soma_recursiva2)
 ]
 
 
@@ -115,7 +120,7 @@ def fmt_ns(ns):
 
 def main():
     # Ajuste o tamanho do teste
-    N = 200_000
+    N = 500
     data = list(range(N))
 
     print(f"Python: {platform.python_version()} | OS: {platform.system()} {platform.release()}")
