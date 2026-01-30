@@ -13767,21 +13767,1665 @@ UM POUCO SOBRE LÓGICA DE PROGRAMAÇÃO:
 
     bucket:
 
+        - Bucket é a técnica de dividir dados em “baldes” (grupos) com base em 
+        algum critério, geralmente um intervalo de valores.
+
+        Em vez de tratar tudo junto:
+
+            . você classifica
+            . depois processa cada grupo separadamente
+
+        É dividir para organizar, não dividir para recursão (como divisão e 
+        conquista).
+
+        MODELO MENTAL (O MAIS IMPORTANTE):
+
+            Imagine:
+
+                . você tem números de 0 a 100
+
+                . cria 10 baldes:
+
+                    0–9
+
+                    10–19
+
+                    20–29
+
+                    ...
+
+            cada número vai para um único balde
+
+            Depois:
+
+                . trabalha balde por balde
+
+            O segredo está no critério de distribuição.
+
+        BUCKET ≠ HASH (CONFUSÃO COMUM):
+
+            | Bucket                     | Hash                         |
+            | -------------------------- | ---------------------------- |
+            | Intervalos ordenados       | Distribuição pseudoaleatória |
+            | Mantém noção de ordem      | Não mantém                   |
+            | Ótimo para dados numéricos | Ótimo para busca             |
+            | Base do Bucket Sort        | Base de dicionários          |
+
+            Bucket é classificação por faixa, hash é mapeamento arbitrário.
+
+        BUCKET SORT (O CASO MAIS FAMOSO):
+
+            Ideia geral:
+
+                1. Cria vários buckets vazios
+
+                2. Distribui os elementos
+
+                3. Ordena cada bucket
+
+                4. Concatena tudo
+
+                Se os dados forem bem distribuídos:
+
+                    . desempenho pode chegar a O(n)
+
+        EXEMPLO CONCEITUAL (SEM CÓDIGO):
+
+            Entrada:
+
+                [42, 32, 23, 52, 25, 47]
+
+            Buckets (por dezenas):
+
+                20s → [23, 25]
+                30s → [32]
+                40s → [42, 47]
+                50s → [52]
+
+            Resultado final:
+
+                [23, 25, 32, 42, 47, 52]
+
+        ONDE BUCKET É USADO NA PRÁTICA:
+
+            bucket sort
+
+            radix sort (usa buckets em cada dígito)
+
+            histogramas
+
+            distribuição de frequência
+
+            balanceamento de carga
+
+            sharding
+            
+            filas por prioridade
+
+            contagem por faixa
+
+            classificação rápida
+
+        COMO ESCOLHER BUCKETS (DECISÃO CRÍTICA)
+
+            Perguntas-chave:
+
+                Qual o intervalo dos dados?
+
+                Os dados são uniformes?
+
+                Quantos buckets usar?
+
+                Cada bucket pode ser processado rápido?
+
+            Buckets mal escolhidos = desempenho ruim.
+
+        BUCKET FIXO × BUCKET DINÂMICO:
+
+            - Bucket fixo
+
+                número de buckets definido antes
+
+                simples
+                
+                comum em provas e algoritmos clássicos
+
+            - Bucket dinâmico
+
+                cria buckets conforme necessário
+
+                mais flexível
+
+                comum em sistemas reais
+
+        BUCKET COM LISTAS (IMPLEMENTAÇÃO CLÁSSICA):
+
+            Buckets normalmente são:
+
+                listas
+
+                filas
+
+                contadores
+
+            Cada bucket é um mini-container.
+
+        BUCKET E MEMÓRIA:
+
+            Trade-off clássico:
+
+                mais buckets → mais memória
+
+                menos buckets → mais trabalho interno
+
+            Bucket é troca de espaço por tempo.
+
+        ERROS COMUNS
+
+            bucket demais (overhead)
+
+            bucket de menos (vira sort normal)
+
+            distribuição enviesada
+
+            não tratar valores fora do intervalo
+
+            confundir bucket com hash
+
+        BUCKET × DIVISÃO E CONQUISTA:
+
+            | Bucket           | Divisão e Conquista  |
+            | ---------------- | -------------------- |
+            | Divide por faixa | Divide por tamanho   |
+            | Iterativo        | Geralmente recursivo |
+            | Agrupa dados     | Resolve subproblemas |
+            | Usa listas       | Usa chamadas         |
+
+            São técnicas diferentes, mas podem coexistir.
+
+        COMO PENSAR (MENTALIDADE)
+
+            Antes de usar bucket, pergunte:
+            
+                Consigo classificar os dados por intervalo?
+            
+                Preciso manter ordem relativa?
+            
+                O domínio é conhecido?
+            
+                A distribuição é razoável?
+            
+            Se sim → bucket é forte candidato.
+
+        FRASES-CHAVE PARA MEMORIZAR
+
+            . Bucket organiza por faixa
+            . Não é hash
+            . Não é recursão
+            . Espaço troca por tempo
+            . Distribuição manda
+
     =====================================================================
 
     buffer:
 
+        - O intermediário silencioso entre velocidade e organização
+
+        O PROBLEMA QUE O BUFFER RESOLVE:
+
+            Existe um problema fundamental em computação:
+
+                - Componentes do sistema operam em velocidades diferentes.
+            
+            Exemplos:
+
+                . CPU → extremamente rápida
+                . RAM → rápida
+                . Disco → lento
+                . Rede → variável
+                . Usuário → lentíssimo
+
+            Buffer existe para desacoplar essas velocidades.
+
+        DEFINIÇÃO FORMAL:
+
+            Buffer é uma região de memória temporária usada para armazenar 
+            dados enquanto eles são transferidos entre dois lugares.
+
+            Palavras-chave:
+
+                . temporária
+                . intermediária
+                . organizada
+                . controlada
+
+            Buffer não é algoritmo, é estratégia de fluxo.
+
+        MODELO MENTAL CORRETO:
+
+            Imagine duas pessoas:
+
+                uma fala muito rápido
+
+                outra escreve devagar
+
+            Solução:
+
+                quem fala dita em blocos
+
+                o outro anota quando consegue
+
+            O bloco anotado é o buffer.
+
+        Se há fluxo de dados → há buffer.
+
+        BUFFER ≠ CACHE (CONFUSÃO CLÁSSICA):
+
+            | Buffer     | Cache       |
+            | ---------- | ----------- |
+            | Temporário | Persistente |
+            | Ordenado   | Otimizado   |
+            | Fluxo      | Acesso      |
+            | IO-centric | CPU-centric |
+
+            Buffer organiza transferência, cache otimiza reuso.
+
+        BUFFER DE ENTRADA E SAÍDA:
+
+            - Buffer de entrada (input buffer)
+
+                . dados chegam
+
+                . ficam armazenados
+
+                . são consumidos depois
+
+                Exemplo:
+
+                    teclado
+
+                    leitura de arquivo
+
+            - Buffer de saída (output buffer)
+
+                . dados são produzidos
+
+                . acumulados
+
+                . enviados em bloco
+
+                Exemplo:
+
+                    escrita em arquivo
+
+                    print()
+
+        BUFFER NO PYTHON (SEM PERCEBER):
+
+            EX:
+
+                print("Olá")
+
+            Você pensa:
+
+                “imprimi na tela”
+
+            Na prática:
+
+                o texto vai para um buffer
+
+                o buffer é descarregado depois
+
+            Por isso existe:
+
+                print("Olá", flush=True)
+
+        BUFFERING EM ARQUIVOS:
+
+            EX:
+
+                f = open("arquivo.txt", "w")
+                f.write("dados")
+
+            . write não garante escrita imediata
+            . vai para buffer
+            . só vai ao disco quando:
+            . buffer enche
+            . flush()
+            . close()
+            
+            Isso é enorme ganho de desempenho.
+
+        flush() — ESVAZIAR O BUFFER:
+
+            EX:
+
+                f.flush()
+
+            . força envio dos dados
+            . reduz risco de perda
+            . aumenta custo
+
+            Trade-off clássico:
+
+                mais flush → mais segurança
+
+                menos flush → mais desempenho
+
+        BUFFER E CONTEXT MANAGER (with):
+
+            EX:
+
+                with open("a.txt", "w") as f:
+                    f.write("oi")
+
+            Ao sair do bloco:
+
+                . buffer é descarregado
+
+                . arquivo é fechado
+
+            Isso é liberação determinística, melhor que depender do GC.
+
+        BUFFER E SISTEMAS OPERACIONAIS:
+
+            O SO:
+
+                gerencia buffers
+
+                usa page cache
+
+                agrupa chamadas de IO
+
+            Muitas vezes:
+
+                seu flush() ainda fica no cache do SO
+
+                só depois vai para o disco físico
+
+        BUFFER EM REDE (INTUIÇÃO):
+
+            dados chegam em pacotes
+
+            buffer acumula
+
+            aplicação consome no ritmo dela
+
+            Problemas comuns:
+
+                buffer pequeno → perda
+
+                buffer grande → latência
+
+            Latência × throughput.
+
+        BUFFER CIRCULAR (IMPORTANTE):
+
+            Usado quando:
+
+                fluxo contínuo
+
+                tamanho fixo
+
+                reaproveitamento de memória
+
+            Muito eficiente.
+
+        BUFFER OVERFLOW (CONCEITO CLÁSSICO):
+
+            Em linguagens sem controle:
+
+                . escrever além do buffer
+                . sobrescrever memória
+                . falha de segurança
+
+            Python:
+
+                . protegido
+                . mas o conceito ainda importa (principalmente em C, SO, redes).
+
+        COMO USAR BUFFER AO SEU FAVOR:
+
+            1) Trabalhar em blocos
+
+                - leia 1MB por vez
+                - escreva em blocos
+
+            2) Evitar flush excessivo
+
+                - flush só quando necessário
+
+            3) Preferir with
+
+                - garante descarregamento
+
+            4) Usar buffers próprios (listas, deque)
+
+                - para pipelines
+                - para filas
+                - para streaming
+
+        ERROS COMUNS:
+
+            achar que write() grava imediatamente
+
+            esquecer flush() em logs críticos
+
+            flush a cada linha sem necessidade
+
+            confundir buffer com cache
+
+            não entender latência causada por buffer
+
+        COMO PENSAR (MENTALIDADE):
+
+            Sempre pergunte:
+
+                Existe diferença de velocidade?
+
+                O dado pode esperar?
+
+                Posso agrupar operações?
+
+                Preciso de consistência imediata?
+
+                Qual o custo do flush?
+
+        FRASES-CHAVE PARA MEMORIZAR:
+
+            . Buffer desacopla velocidades
+            . Buffer é temporário
+            . Flush força envio
+            . with resolve 90%
+            . Buffer melhora desempenho
+
+        TÉCNICAS DE PROGRAMAÇÃO COM BUFFER:
+
+            - Buffer não é só memória → é estratégia de fluxo
+
+            Buffer = acumular → processar → liberar
+
+            Sempre que você:
+
+                não quer processar dado por dado
+
+                quer reduzir custo de operação
+
+                quer desacoplar produção e consumo
+
+            você usa buffer.
+
+        BUFFER DE ACUMULAÇÃO (BATCHING):
+
+            . Ideia
+
+                Acumular dados e processar em lote.
+
+            . Exemplo mental
+
+                em vez de salvar no banco a cada item
+
+                salva a cada 100 itens
+
+            Reduz custo brutalmente.
+
+            . Modelo
+
+                buffer ← dados
+                se buffer cheio:
+                    processa
+                    limpa buffer
+
+        BUFFER DE PRODUÇÃO × CONSUMO:
+
+            . Problema clássico
+
+                produtor gera dados rápido
+
+                consumidor processa devagar
+
+            . Solução
+
+                Buffer intermediário.
+
+            Isso é a base do Producer–Consumer Pattern.
+
+        BUFFER CIRCULAR (TÉCNICA FUNDAMENTAL):
+
+            . Quando usar
+
+                tamanho fixo
+
+                fluxo contínuo
+
+                reaproveitar memória
+
+            . Modelo mental
+
+                    [ _ _ _ _ _ ]
+                      ↑       ↓
+                     head   tail
+
+                . escreve no tail
+                . lê no head
+                . índices giram (módulo)
+
+        BUFFER COMO JANELA DESLIZANTE:
+
+            - Você já viu isso sem chamar de buffer
+
+            . Exemplo
+
+                analisar últimos 5 valores
+
+                manter histórico curto
+
+            Buffer = janela + política de descarte.
+
+        BUFFER PARA REDUZIR COMPLEXIDADE:
+
+            Sem buffer:
+
+                processa tudo a cada passo
+
+                custo alto
+
+            Com buffer:
+
+                mantém estado parcial
+
+                atualiza incrementalmente
+
+        BUFFER E IO EFICIENTE (NA PRÁTICA):
+
+            . Técnica
+
+                ler grandes blocos
+
+                escrever grandes blocos
+
+            Em vez de:
+
+                1 caractere → write
+
+            Faça:
+
+                1024 caracteres → write
+
+            Ganho enorme.
+
+        BUFFER COMO FILTRO:
+
+            Você pode ter:
+
+                entrada → buffer → transformação → buffer → saída
+
+            Cada estágio trabalha no seu ritmo.
+
+        BUFFER COMO ISOLADOR DE ERRO:
+
+            Ideia
+
+            Se algo falhar:
+
+                buffer ainda segura os dados
+
+                não perde tudo
+
+        BUFFER E CONTROLE DE FLUXO:
+
+            Buffer pequeno
+
+                baixa latência
+
+                risco de overflow
+
+            Buffer grande
+
+                alta latência
+
+                mais memória
+
+        Escolha do tamanho é decisão de engenharia.
+
     =====================================================================
 
-    Arquivos:
+    Arquivos e context managers:
+
+        Um arquivo é um recurso externo controlado pelo sistema operacional, 
+        usado para:
+
+            . armazenar dados
+            . ler dados
+            . persistir informação
+
+        Arquivo não é variável, não é memória RAM.
+
+        Ele vive fora do seu programa.
+
+        Características importantes:
+
+            - Precisa ser aberto
+            - Precisa ser fechado
+            - Opera com buffer
+            - Pode falhar (permissão, inexistência, etc.)
+
+        A FUNÇÃO open():
+
+            O que open() faz?
+
+                open(nome_arquivo, modo)
+
+            . pede ao SO acesso ao arquivo
+            . retorna um objeto arquivo
+            . NÃO garante escrita imediata (usa buffer)
+
+            Exemplo básico:
+
+                f = open("dados.txt", "w")
+                f.write("Olá")
+                f.close()
+
+            Se esquecer close(), o arquivo pode:
+
+                ficar aberto
+
+                perder dados
+
+                causar erro no Windows
+
+        MODOS DE ABERTURA DE ARQUIVO:
+
+            | Modo   | Significado          |
+            | ------ | -------------------- |
+            | `"r"`  | leitura              |
+            | `"w"`  | escrita (apaga tudo) |
+            | `"a"`  | escrita (append)     |
+            | `"r+"` | leitura + escrita    |
+            | `"w+"` | escrita + leitura    |
+            | `"a+"` | leitura + append     |
+            | `"b"`  | binário              |
+            | `"t"`  | texto (padrão)       |
+
+        FUNÇÕES / MÉTODOS DO OBJETO ARQUIVO:
+
+            . read()
+
+                    f.read()
+
+                - lê TODO o arquivo
+                - retorna str ou bytes
+
+            . read(n)
+
+                    f.read(10)
+
+                - lê n caracteres
+
+            . readline()
+
+                    f.readline()
+
+                - lê uma linha
+
+            . readlines()
+
+                    f.readlines()
+
+                - retorna lista de linhas
+
+            . write()
+
+                    f.write("texto")
+
+                - escreve no buffer
+                - NÃO pula linha automaticamente
+
+            . writelines()
+
+                    f.writelines(["a\n", "b\n"])
+
+                - escreve várias linhas
+                - NÃO adiciona \n
+
+            . seek()
+
+                    f.seek(0)
+
+                - move o cursor no arquivo
+
+            . tell()
+
+                    f.tell()
+
+                - retorna posição atual do cursor
+
+            . flush()
+
+                    f.flush()
+
+                - força escrita do buffer no SO
+
+            . close()
+
+                    f.close()
+
+                - fecha o arquivo
+                - libera recurso
+                - faz flush automaticamente
+
+        O COMANDO with (CONTEXT MANAGER):
+
+            with garante:
+
+                abertura correta
+
+                fechamento automático
+
+                mesmo se der erro
+
+            Exemplo correto (padrão profissional)
+
+                with open("dados.txt", "w") as f:
+                    f.write("Olá mundo")
+
+            O Python faz:
+
+                1. open
+                2. executa o bloco
+                3. flush
+                4. close
+
+            Não depende do Garbage Collector
+
+        EXEMPLOS COM TODOS OS MODOS:
+
+            . Leitura (r)
+
+                with open("dados.txt", "r") as f:
+                    print(f.read())
+
+            . Escrita (w)
+
+                with open("dados.txt", "w") as f:
+                    f.write("novo conteúdo")
+
+            . Append (a)
+
+                with open("dados.txt", "a") as f:
+                    f.write("\nlinha nova")
+
+            . Leitura + escrita (r+)
+
+                with open("dados.txt", "r+") as f:
+                    conteudo = f.read()
+                    f.write("\nextra")
+
+            . Binário (rb / wb)
+
+                with open("imagem.png", "rb") as f:
+                    dados = f.read()
+
+        BUFFER + FLUSH:
+
+            write() não grava imediatamente no disco.
+
+            Exemplo:
+
+                with open("log.txt", "w") as f:
+                    f.write("linha 1")
+                    f.flush()
+                    f.write("linha 2")
+
+            Use flush() quando:
+
+                logs
+
+                progresso
+
+                sistemas críticos
+
+        ARQUIVO COMO ITERADOR:
+
+            Arquivo é iterável:
+
+                with open("dados.txt") as f:
+                    for linha in f:
+                        print(linha.strip())
+
+            . Econômico
+            . Ideal para arquivos grandes
+            . Usa buffer automaticamente
+
+        MÚLTIPLAS LINHAS:
+
+            . Escrita
+
+                linhas = ["a\n", "b\n", "c\n"]
+
+                with open("dados.txt", "w") as f:
+                    f.writelines(linhas)
+
+            . Leitura
+
+                with open("dados.txt") as f:
+                    linhas = f.readlines()
+            
+        ARQUIVOS BINÁRIOS:
+
+            with open("arquivo.bin", "wb") as f:
+                f.write(b"\x00\x01\x02")
+
+        CONTEXT MANAGER NÃO É SÓ ARQUIVO:
+
+            Qualquer classe com:
+
+                __enter__
+
+                __exit__
+
+            Exemplo simples
+
+                class MeuContexto:
+                    def __enter__(self):
+                        print("Entrou")
+                        return self
+
+                    def __exit__(self, exc_type, exc_val, exc_tb):
+                        print("Saiu")
+
+                with MeuContexto():
+                    print("Dentro")
+
+        POR QUE with É TÃO IMPORTANTE?
+
+            Sem with:
+
+                vazamento de recurso
+
+                arquivo travado
+
+                dados perdidos
+
+                bugs difíceis
+
+            Com with:
+
+                fechamento garantido
+
+                código limpo
+
+                padrão profissional
+
+            Em produção, with não é opcional.
+
+        ERROS COMUNS:
+
+            . Esquecer close()
+            . Ler arquivo gigante com read()
+            . Escrever sem \n
+            . Não usar strip()
+            . Abrir arquivo várias vezes sem necessidade
+
+        DICAS:
+
+            Use with sempre
+
+            Prefira iterar linha a linha
+
+            Use flush() só quando necessário
+
+            Evite lógica pesada dentro do with
+
+            Use modo correto (r, w, a)
+
+        FRASES-CHAVE PARA MEMORIZAR:
+
+            . Arquivo é recurso externo
+            . open não grava imediatamente
+            . Buffer melhora desempenho
+            . with garante fechamento
+            . Arquivo é iterável
+
+            - Se você abriu um arquivo sem with, você provavelmente fez errado.
 
     =====================================================================
 
-    Geradores:
+    Geradores python:
+
+        - Um gerador é um objeto que produz valores sob demanda, um de cada
+        vez, em vez de armazenar tudo na memória.
+
+        Ideia central:
+
+            lista → armazena tudo
+
+            gerador → produz quando pedem
+
+            EX:
+
+                Gerador = fluxo de valores
+
+        COMO UM GERADOR FUNCIONA (MODELO MENTAL):
+
+            Um gerador:
+
+                . executa até encontrar yield
+                . pausa
+                . devolve um valor
+                . continua exatamente de onde parou na próxima chamada
+
+            Ele mantém:
+
+                . estado interno
+                . variáveis locais
+                . posição de execução
+
+        FINALIDADE DOS GERADORES:
+
+            Geradores existem para:
+
+                economizar memória
+
+                trabalhar com dados grandes
+
+                processar streams
+
+                criar pipelines
+
+                produzir dados infinitos
+
+                desacoplar produção e consumo
+
+            Gerador é fluxo, não coleção.
+
+        SINTAXE DE UM GERADOR:
+
+            Função geradora:
+
+                def contador():
+                    yield 1
+                    yield 2
+                    yield 3
+            
+
+            Chamando:
+
+                g = contador()
+                print(next(g))  # 1
+                print(next(g))  # 2
+                print(next(g))  # 3
+        
+        O PAPEL DO yield:
+
+            O que yield faz?
+
+                produz um valor
+
+                pausa a função
+
+                salva o estado
+
+                retorna depois
+
+            yield não encerra a função.
+
+        GERADOR SEM yield (NÃO EXISTE):
+
+            Importante:
+
+                Sem yield, não é gerador.
+
+                    def f():
+                        return 1
+
+            Isso é:
+
+                função normal
+
+                não mantém estado
+
+                executa tudo de uma vez
+
+            yield é o que transforma função em gerador.
+
+        GERADOR POR EXPRESSÃO (GENERATOR EXPRESSION):
+
+            Exemplo clássico:
+
+                x = (i for i in range(5))
+
+            Isso é um gerador, não uma tupla.
+
+            Por que é eficiente?
+
+                não cria lista
+
+                gera valores sob demanda
+
+                consumo incremental
+
+            Comparação:
+
+                lista = [i for i in range(10_000_000)]
+                gerador = (i for i in range(10_000_000))
+
+            O gerador usa ordens de magnitude menos memória.
+        
+        GERADOR VS FUNÇÃO:
+
+            | Função            | Gerador           |
+            | ----------------- | ----------------- |
+            | Executa tudo      | Executa em etapas |
+            | Usa `return`      | Usa `yield`       |
+            | Não mantém estado | Mantém estado     |
+            | Retorna 1 valor   | Retorna vários    |
+
+        RETURN VS YIELD:
+
+            . return
+
+                encerra a função
+
+                devolve valor final
+
+                EX:
+
+                    def soma():
+                        return 10
+
+            . yield
+
+                pausa
+
+                devolve valor parcial
+
+                pode continuar
+
+                EX:
+
+                    def soma():
+                        yield 3
+                        yield 7
+
+            - return encerra
+            - yield continua
+
+        GERADORES COMO ITERADORES:
+
+            Todo gerador:
+
+                . é um iterador
+                . implementa __iter__ e __next__
+
+            ex:
+
+                g = (i for i in range(3))
+
+                for x in g:
+                    print(x)
+
+            Depois de consumido, acabou.
+
+        APLICAÇÕES REAIS DE GERADORES:
+
+            . Leitura de arquivos
+
+                def ler_linhas(nome):
+                    with open(nome) as f:
+                        for linha in f:
+                            yield linha.strip()
+
+            . Processamento em pipeline
+
+                def quadrados(nums):
+                    for n in nums:
+                        yield n * n
+
+            . Dados infinitos
+
+                def naturais():
+                    n = 0
+                    while True:
+                        yield n
+                        n += 1
+
+        FUNÇÕES QUE USAM GERADORES:
+
+            EX:
+
+                def pares(nums):
+                    for n in nums:
+                        if n % 2 == 0:
+                            yield n
+
+
+            Uso:
+
+                dados = range(10)
+                for x in pares(dados):
+                    print(x)
+
+            Funções + geradores = pipelines.
+
+        DECORADORES COM GERADORES:
+
+            Decorador que “observa” valores:
+
+                def log_generator(func):
+                    def wrapper(*args):
+                        for valor in func(*args):
+                            print("Gerado:", valor)
+                            yield valor
+                    return wrapper
+
+            Decoradores não quebram geradores se usarem yield.
+
+        GERADOR DE GERADORES:
+
+            def sublistas():
+                yield (i for i in range(3))
+                yield (i for i in range(3, 6))
+
+            Uso:
+
+                for g in sublistas():
+                    for x in g:
+                        print(x)
+
+            Muito usado em pipelines complexos.
+
+        yield from:
+
+            yield from delega a produção de valores de um gerador para outro 
+            iterável/gerador.
+    
+            Ou seja:
+
+                em vez de fazer for + yield
+
+                você entrega o controle para outro gerador
+
+            PROBLEMA QUE yield from RESOLVE:
+
+                Forma manual (verbosa):
+
+                    def g1():
+                        for x in range(3):
+                            yield x
+
+                    def g2():
+                        for v in g1():
+                            yield v
+
+                Forma pythonica (yield from):
+
+                    def g2():
+                        yield from g1()
+
+                Mesmo comportamento, menos código, mais claro.
+
+            MODELO MENTAL DO yield from:
+
+                yield from iterable
+                ↓
+                “Produza tudo que esse iterável produzir”
+
+                Ele:
+
+                    itera
+
+                    repassa valores
+
+                    repassa exceções
+
+                    repassa StopIteration
+
+            yield from COM ITERÁVEIS SIMPLES:
+
+                    def letras():
+                        yield from "abc"
+
+                    list(letras())  # ['a', 'b', 'c']
+
+                Funciona com:
+
+                    listas
+
+                    tuplas
+
+                    strings
+
+                    ranges
+
+                    outros geradores
+
+            yield from COM VÁRIAS FONTES:
+
+                    def tudo():
+                        yield from range(3)
+                        yield from range(3, 6)
+                
+                Resultado:
+
+                    0 1 2 3 4 5
+
+                Muito usado para compor fluxos.
+
+            yield from × GERADOR DE GERADORES:
+
+                . Sem yield from
+
+                        def geradores():
+                            yield (i for i in range(3))
+                            yield (i for i in range(3, 6))
+
+                    Resultado: geradores dentro de geradores.
+
+                . Com yield from
+
+                        def flatten():
+                            yield from range(3)
+                            yield from range(3, 6)
+
+                    Resultado: fluxo plano.
+
+            yield from E RETURN (DETALHE AVANÇADO):
+
+                Um return dentro de um gerador:
+
+                        def g():
+                            yield 1
+                            return 99
+
+                    . o 99 vira o valor do StopIteration
+
+                Com yield from:
+
+                        def g2():
+                            x = yield from g()
+                            print(x)
+
+                    Usado em corrotinas avançadas (async).
+
+        propriedades de geradores de expressão:
+
+            Essas funções consomem iteráveis:
+
+                sum(g)
+                min(g)
+                max(g)
+                any(g)
+                all(g)
+            
+            Exemplo:
+
+                g = (i for i in range(5))
+                print(sum(g))  # 10
+
+            Elas percorrem o gerador uma vez.
+
+            Também funcionam:
+
+                list(g)
+                tuple(g)
+                set(g)
+
+            Mas:
+
+                consomem o gerador
+
+                perdem o benefício de memória
+
+            FUNÇÕES QUE NÃO FUNCIONAM COM GERADORES:
+
+                . len()
+
+                    . gerador não sabe quantos elementos ainda virão
+                    . fluxo pode ser infinito
+
+                . Acesso por índice:
+
+                    . não guarda elementos
+                    . não permite acesso aleatório
+
+                . Reuso:
+
+                    - Consumiu → acabou.
+
+            FUNÇÕES QUE FUNCIONAM PARCIALMENTE:
+
+                . sorted()
+
+                    . Funciona
+                    . Converte tudo para lista internamente
+
+                    Cuidado com dados grandes.
+
+                . enumerate()
+
+                        for i, v in enumerate(g):
+                            ...
+
+                    . Seguro
+                    . Streaming
+                    . Muito usado
+
+                . zip():
+
+                    . Funciona
+                    . Consome em paralelo
+
+                    Excelente com geradores.
+
+        ERROS COMUNS:
+
+            . Achar que gerador é lista
+            . Tentar usar len()
+            . Consumir duas vezes sem recriar
+            . Esquecer que ele acaba
+            . Misturar return e yield sem entender
+
+        DICAS PRÁTICAS
+
+            Use gerador para dados grandes
+
+            Use listas para acesso aleatório
+
+            Prefira generator expressions quando possível
+
+            Combine geradores em pipeline
+
+            Use yield from quando possível
+
+        FRASES-CHAVE PARA MEMORIZAR
+
+            . Gerador é fluxo
+            . yield pausa
+            . Gerador economiza memória
+            . Consumiu, acabou
+            . Pipeline é poder
+
+            - Se você não precisa de todos os dados ao mesmo tempo, use gerador.
 
     =====================================================================
 
-    Programação funcional (map, any, sum, all, lambda k):
+    Programação funcional (map, any, sum, all, lambda k entre outras funções):
+
+        - Programação funcional é um paradigma que trata computação como 
+        avaliação de funções.
+
+        Ou seja:
+
+            foco em transformar dados
+
+            menos foco em estado mutável
+
+            menos efeitos colaterais
+
+        Ideia central:
+
+            entrada → função → saída
+
+        É UM PARADIGMA?
+
+            Sim.
+
+            Principais paradigmas:
+
+                imperativo (C, Python clássico)
+
+                orientado a objetos
+
+                funcional
+
+                lógico
+
+            Python é multiparadigma:
+
+                permite estilo funcional
+
+                mas não é puramente funcional
+
+        PARA QUE SERVE / POR QUE FOI CRIADA?
+
+            Programação funcional surgiu para:
+
+                evitar bugs de estado
+
+                facilitar paralelismo
+
+                melhorar previsibilidade
+
+                trabalhar com matemática e lógica
+
+            Muito forte em:
+
+                matemática
+
+                processamento de dados
+
+                pipelines
+
+                big data
+
+                streams
+
+                IA / ML
+
+        PROGRAMAÇÃO FUNCIONAL EM PYTHON:
+
+            Python não força o paradigma, mas oferece:
+
+                funções como objetos
+
+                funções de alta ordem
+
+                lambdas
+
+                iteráveis
+
+                geradores
+
+                funções built-in funcionais
+
+            Em Python, programação funcional é estilo, não dogma.
+
+        FUNÇÕES E MÉTODOS FUNCIONAIS DO PYTHON:
+
+            - Agora o coração do tema.
+
+            map():
+
+                - Aplica uma função a cada elemento de um iterável.
+
+                    map(funcao, iteravel)
+
+                Exemplo:
+
+                    nums = [1, 2, 3]
+                    resultado = map(lambda x: x * 2, nums)
+                    print(list(resultado))  # [2, 4, 6]
+
+                Retorna um iterador, não lista.
+
+            filter():
+
+                - Filtra elementos com base em uma condição.
+
+                    filter(funcao, iteravel)
+
+                EX:
+
+                    pares = filter(lambda x: x % 2 == 0, nums)
+                    print(list(pares))  # [2]
+
+            sum():
+
+                    sum(iteravel)
+
+                EX:
+
+                    sum([1, 2, 3])  # 6
+
+                Muito usado com geradores.
+
+            any() e all():
+
+                any:
+
+                    - Retorna True se algum elemento for verdadeiro.
+
+                        any([0, False, 3])  # True
+
+                all:
+
+                    - Retorna True se todos forem verdadeiros.
+
+                        all([1, 2, 3])  # True
+
+                Ambos usam curto-circuito.
+
+            reduce() (função especial):
+
+                Lib:
+
+                    from functools import reduce
+
+                - Reduz um iterável a um único valor.
+
+                EX:
+
+                    reduce(lambda a, b: a + b, [1, 2, 3, 4])  # 10
+
+            lambda como programação funcional:
+
+                lambda é Função anônima, de uma expressão.
+                
+                Não tem:
+
+                    múltiplas linhas
+
+                    return explícito
+
+                    statements complexos
+
+            sorted() com key:
+
+                sorted(pessoas, key=lambda p: p["idade"])
+
+            zip() e enumerate():
+
+                . zip
+
+                    zip([1,2], [3,4]) → (1,3), (2,4)
+
+                . enumerate
+
+                    for i, v in enumerate(lista):
+                        ...
+
+                Muito usados em estilo funcional.
+
+        LIST COMPREHENSION (FUNCIONAL HÍBRIDO):
+
+                [x * 2 for x in nums if x % 2 == 0]
+
+            Muitas vezes é mais legível que map/filter
+
+        TÉCNICAS FUNCIONAIS (COM EXEMPLOS):
+
+            PIPELINE DE DADOS:
+
+                resultado = sum(
+                    x * x
+                    for x in nums
+                    if x % 2 == 0
+                )
+
+            FUNÇÕES COMO ARGUMENTO:
+
+                def aplicar(f, dados):
+                    return map(f, dados)
+
+            IMUTABILIDADE (CONCEITO):
+
+                Em funcional:
+
+                    . evite modificar dados
+
+                    . produza novos
+
+                EX:
+
+                    nova_lista = [x+1 for x in lista]
+
+        QUANDO USAR PROGRAMAÇÃO FUNCIONAL:
+
+            Use quando:
+
+                transformar dados
+
+                pipelines
+
+                processamento em lote
+
+                dados imutáveis
+
+                leitura clara
+
+            Evite quando:
+
+                lógica complexa
+
+                muitos estados intermediários
+
+                efeitos colaterais
+
+                lambdas gigantes
+
+        OUTRAS COISAS IMPORTANTES (QUE MUITOS ESQUECEM):
+
+            operator module (add, mul, etc.)
+
+            lib itertools
+
+            curto-circuito (any, all)
+
+            lazy evaluation
+
+            geradores + funcional = ouro
+
+        ERROS COMUNS:
+
+            . Usar lambda gigante
+            . Abusar de reduce
+            . Código ilegível só “pra ser funcional”
+            . Converter tudo em lista sem necessidade
+            . Ignorar curto-circuito
+
+        DICAS:
+
+            prefira legibilidade
+
+            use generator expressions
+
+            combine sum, any, all
+
+            use map/filter quando ficarem claros
+
+            se ficou confuso → volte para for
+
+        FRASES-CHAVE PARA MEMORIZAR:
+
+            . Funcional transforma dados
+            . Funções são valores
+            . Menos estado, menos bugs
+            . Lazy é poderoso
+            . Clareza > estilo
+
+            - Use programação funcional para clareza e fluxo, não para mostrar 
+            que sabe programação funcional.
 
     =====================================================================
 
@@ -13953,6 +15597,8 @@ Um pouco sobre Estruturas de dados:
 
     hash tables
 
+    LRU Cache
+
     grafos
 
     Busca em profundidade
@@ -13972,6 +15618,10 @@ Um pouco de ambientes:
     Python com ambientes virtuais (virtualenv, poetry, pdb):
 
     Banco de dados e ORM com Python:
+
+    Código limpo com python:
+
+    Padrões de projeto com python:
 
     Python com VMs:
 
