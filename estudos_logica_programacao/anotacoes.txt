@@ -15431,9 +15431,1094 @@ UM POUCO SOBRE LÓGICA DE PROGRAMAÇÃO:
 
     Fallback:
 
+        - Fallback é uma estratégia de ter um plano alternativo quando a opção 
+        principal falha.
+
+        Em outras palavras:
+
+            tenta A → se falhar → usa B
+
+        Fallback não é erro, é previsão de erro.
+
+        POR QUE FALLBACK EXISTE?
+
+            Porque na vida real:
+
+                arquivos não existem
+
+                rede cai
+
+                dados vêm errados
+
+                usuário erra
+
+                API responde mal
+
+                recurso acaba
+
+            - Código sem fallback quebra.
+
+            - Código com fallback se adapta.
+
+        MODELO MENTAL (GUARDE ISSO)
+
+            Fallback = degradação controlada
+
+            O sistema:
+
+                não entrega o melhor cenário
+
+                mas continua funcionando
+
+        Fallback SIMPLES (VALORES PADRÃO)
+
+            . Exemplo clássico:
+
+                valor = entrada if entrada is not None else 0
+
+            Ou usando or:
+
+                valor = entrada or 0
+
+            Muito comum para:
+
+                config
+
+                input
+
+                defaults
+
+        Fallback COM EXCEÇÕES (TRY / EXCEPT):
+
+            . Arquivo com fallback
+
+                Se não existir → usa padrão.
+
+                    try:
+                        with open("config.txt") as f:
+                            config = f.read()
+                    except FileNotFoundError:
+                        config = "config padrão"
+
+            . Fallback EM FUNÇÕES
+
+                Função sempre retorna algo válido.
+
+                    def dividir(a, b):
+                        try:
+                            return a / b
+                        except ZeroDivisionError:
+                            return 0
+
+            . Fallback COM FUNÇÕES ALTERNATIVAS
+
+                Muito usado em:
+
+                    algoritmos
+
+                    APIs
+
+                    serviços externos
+
+                ex:
+
+                    def metodo_principal():
+                        raise Exception("falhou")
+
+                    def metodo_backup():
+                        return "resultado alternativo"
+
+                    try:
+                        resultado = metodo_principal()
+                    except:
+                        resultado = metodo_backup()
+
+            . Fallback EM DICIONÁRIOS:
+
+                . get:
+
+                    idade = dados.get("idade", 0)
+
+                . setdefault:
+
+                    dados.setdefault("contador", 0)
+
+                Evita KeyError.
+
+            . Fallback EM CONFIGURAÇÕES (PADRÃO PROFISSIONAL):
+
+                Ordem comum:
+
+                    1. variável de ambiente
+                    2. arquivo
+                    3. valor padrão
+
+                EX:
+
+                    import os
+
+                    DEBUG = os.getenv("DEBUG", "False")
+
+            . Fallback EM LISTAS E ITERÁVEIS
+
+                Evita IndexError.
+
+                    primeiro = lista[0] if lista else None
+
+            . Fallback EM EXPRESSÕES FUNCIONAIS
+
+                next(..., default) é fallback elegante.
+
+                    resultado = next((x for x in lista if x > 10), 0)
+
+            . Fallback EM PIPELINES:
+
+                - Pipeline nunca para completamente.
+
+                    def processar(dado):
+                        try:
+                            return etapa1(dado)
+                        except:
+                            return etapa_backup(dado)
+
+        Fallback ≠ SILENCIAR ERRO (CONFUSÃO COMUM):
+
+            Ruim:
+
+                try:
+                    ...
+                except:
+                    pass
+
+            Bom:
+
+                try:
+                    ...
+                except Exception:
+                    usar_alternativa()
+
+            Fallback precisa:
+
+                . intenção clara
+
+                . comportamento definido
+
+        ERROS COMUNS:
+
+            . Fallback que esconde bug
+            . except: genérico demais
+            . Fallback errado (resultado inválido)
+            . Fallback caro demais
+            . Fallback sem log
+
+        DICAS:
+
+            fallback deve ser simples
+
+            fallback deve ser seguro
+            
+            fallback deve ser documentado
+            
+            fallback deve ser raro, não rotina
+            
+            fallback não substitui correção
+
+        FRASES-CHAVE PARA MEMORIZAR:
+
+            . Fallback é plano B
+            . Fallback não é gambiarra
+            . Erro previsto é robustez
+            . Sistema não pode morrer
+            . Falhar com controle
+
+            Nunca confie que tudo vai funcionar —
+            mas sempre saiba o que fazer quando não funcionar.
+
     =====================================================================
 
-    Exceções, assertations e testes de software:
+    Exceções, raise, assertations e testes de software:
+
+        - Exceção é um evento anormal que interrompe o fluxo normal do programa.
+
+        Ela indica que:
+
+            . algo inesperado aconteceu
+
+            . o programa não consegue continuar normalmente
+
+        Exemplos:
+
+            dividir por zero
+
+            acessar índice inválido
+
+            arquivo inexistente
+
+            tipo incorreto
+
+        PARA QUE SERVEM EXCEÇÕES:
+
+            Exceções existem para:
+
+                . separar erro de lógica normal
+
+                . evitar verificações infinitas com if
+
+                . propagar falhas corretamente
+
+                . permitir recuperação (fallback)
+
+                Exceção não é bug, é sinal de erro.
+
+        try / except:
+
+            Forma básica
+
+                try:
+                    x = int("abc")
+                except:
+                    x = 0
+
+            Fluxo:
+
+                1. tenta executar o try
+                2. se falhar → entra no except
+                3. se não falhar → ignora o except
+
+            PS: evite usar apenas except, por que é considerado máprática e também
+            ofusca bugs e erros
+
+        try / except / else:
+
+            - Quando você quer executar algo somente se NÃO houve erro.
+
+            ex:
+
+                try:
+                    x = int("10")
+                except ValueError:
+                    print("Erro")
+                else:
+                    print("Conversão OK:", x)
+
+            ps: else não executa se houver exceção.
+
+        try / except / finally:
+
+            O papel do finally: Sempre executa, com erro ou sem erro.
+
+                try:
+                    f = open("a.txt")
+                except FileNotFoundError:
+                    print("Arquivo não existe")
+                finally:
+                    print("Encerrando operação")
+
+            Muito usado para:
+
+                fechar recursos
+
+                liberar conexões
+
+                limpar estado
+
+        try / except / else / finally:
+
+            Forma completa:
+
+                try:
+                    x = int("5")
+                except ValueError:
+                    print("Erro")
+                else:
+                    print("Tudo certo")
+                finally:
+                    print("Fim")
+
+            Ordem:
+
+                1. try
+                2. except (se erro)
+                3. else (se não erro) 
+                4. finally (sempre)
+
+        try / except / finally (sem else):
+
+            - Útil quando você sempre precisa limpar algo.
+
+                try:
+                    x = int("x")
+                except ValueError:
+                    x = 0
+                finally:
+                    print("Valor:", x)
+
+        except ESPECÍFICO (MUITO IMPORTANTE):
+
+            Ruim:
+
+                except:
+                    ...
+
+            Bom:
+
+                except ValueError:
+                    ...
+
+            Exceções específicas:
+
+                documentam o erro
+
+                evitam esconder bugs
+
+                tornam código seguro
+
+        except COM MÚLTIPLAS EXCEÇÕES:
+
+            - Muito comum em validação de dados.
+
+                except (ValueError, TypeError):
+                    print("Erro de conversão")
+
+        ALIAS COM except:
+
+            EX:
+
+                except ValueError as e:
+                    print("Erro:", e)
+
+            e contém:
+
+                mensagem
+
+                tipo
+
+                contexto
+
+        raise:
+
+            - raise lança uma exceção manualmente.
+
+            EX:
+
+                raise ValueError("valor inválido")
+
+            Você força o erro.
+
+            POR QUE USAR raise
+
+                validar regras de negócio
+
+                garantir contratos
+
+                parar execução inválida
+
+                comunicar erro para quem chama
+
+            raise = controle consciente de falha.
+
+            raise EM FUNÇÕES:
+
+                EX:
+
+                    def sacar(valor):
+                        if valor <= 0:
+                            raise ValueError("valor inválido")
+                        return valor
+
+                Melhor que retornar None silenciosamente.
+
+            RELANÇAR EXCEÇÃO:
+
+                - Mantém traceback original.
+
+                    try:
+                        ...
+                    except Exception:
+                        raise
+
+            raise ... from ...:
+
+                - Exception chaining (encadeamento de exceções)
+
+                Sintaxe:
+
+                    raise NovaExcecao(...) from excecao_original
+
+                Significa:
+
+                    “Estou levantando um novo erro, mas ele foi causado por 
+                    outro.”
+
+                POR QUE ISSO EXISTE?
+
+                    Porque às vezes você:
+
+                    captura uma exceção técnica
+
+                    quer traduzir para uma exceção de domínio
+
+                    sem perder a causa original
+
+                EXEMPLO SEM from (PERDE CONTEXTO):
+
+                    EX:
+
+                        try:
+                            int("abc")
+                        except ValueError:
+                            raise RuntimeError("Erro ao converter")
+
+                    Problema:
+
+                        você perde a causa original
+
+                        traceback fica pobre
+
+                EXEMPLO COM raise ... from ...:
+
+                    try:
+                        int("abc")
+                    except ValueError as e:
+                        raise RuntimeError("Erro ao converter") from e
+
+                Agora o Python mostra:
+
+                    erro original (ValueError)
+
+                    erro atual (RuntimeError)
+
+                    relação entre eles
+
+                    - Debug muito melhor.
+
+                COMO O TRACEBACK FICA (CONCEITO):
+
+                    ValueError: invalid literal for int()
+
+                    The above exception was the direct cause of the following exception:
+
+                    RuntimeError: Erro ao converter
+
+                Isso é ouro para manutenção.
+
+                raise ... from None (SUPRIMIR CONTEXTO):
+
+                    - Às vezes você não quer mostrar a causa original.
+
+                        try:
+                            int("abc")
+                        except ValueError:
+                            raise RuntimeError("Erro genérico") from None
+
+                    Resultado:
+
+                        . erro original some
+
+                        . só aparece o erro novo
+
+                        PS: Use com cuidado (UX / segurança).
+
+                USO PROFISSIONAL DE raise from:
+
+                    - Tradução de erro técnico → erro de domínio
+
+                        class ErroDeNegocio(Exception):
+                                pass
+
+                            try:
+                                open("config.txt")
+                            except FileNotFoundError as e:
+                                raise ErroDeNegocio("Configuração ausente") from e
+
+                    Camada de negócio não depende de erro técnico.
+
+                EXCEÇÕES ANINHADAS:
+
+                    - Um try/except dentro de outro try/except.
+
+                    Usado quando:
+
+                        etapas têm falhas diferentes
+
+                        cada falha tem tratamento próprio
+
+                    EXEMPLO SIMPLES DE ANINHAMENTO:
+
+                        EX:
+
+                            try:
+                                x = int(input())
+                                try:
+                                    y = 10 / x
+                                except ZeroDivisionError:
+                                    y = 0
+                            except ValueError:
+                                y = 0
+
+                        - Cada erro tratado no nível correto.
+
+                    POR QUE NÃO FAZER UM TRY GIGANTE?
+
+                        Ruim:
+
+                            try:
+                                x = int(input())
+                                y = 10 / x
+                            except:
+                                y = 0
+
+                        Problema:
+
+                            trata erros diferentes da mesma forma
+
+                            esconde bugs
+
+                            lógica confusa
+
+                    EXCEÇÕES ANINHADAS + raise from:
+
+                        EX:
+
+                            try:
+                                try:
+                                    int("abc")
+                                except ValueError as e:
+                                    raise TypeError("Tipo inválido") from e
+                            except TypeError as final:
+                                print(final)
+
+                        Muito usado em:
+
+                            parsing
+
+                            validação
+
+                            pipelines
+
+                    PADRÃO PROFISSIONAL (CAMADAS):
+
+                        Entrada do usuário
+                        ↓
+                        Validação (ValueError)
+                        ↓
+                        Regra de negócio (Exceção própria)
+                        ↓
+                        Camada externa trata tudo
+
+                    Código:
+
+                        try:
+                            processar()
+                        except ErroDeNegocio:
+                            ...
+                        except Exception:
+                            ...
+
+                QUANDO USAR raise from:
+
+                    Use quando:
+
+                        traduz exceções
+
+                        muda camada
+
+                        quer preservar causa
+
+                    Não use quando:
+
+                        erro já é semântico
+
+                        causa não importa
+
+                        poluir traceback
+
+        assert:
+
+            - assert verifica uma condição e lança erro se for falsa.
+
+            EX:
+
+                assert x > 0
+
+            Se falso → AssertionError
+
+            PARA QUE SERVE assert:
+
+                . verificar suposições internas
+                . validar invariantes
+                . testar contratos
+                . debug
+
+                assert não é validação de usuário.
+
+            assert COM MENSAGEM:
+
+                EX:
+
+                    assert x > 0, "x deve ser positivo"
+
+            IMPORTANTE SOBRE assert:
+
+                - Em Python:
+
+                    python -O script.py
+
+                assert pode ser removido.
+
+                Nunca use assert para lógica crítica.
+
+        HIERARQUIA DE EXCEÇÕES EM PYTHON:
+
+            TODAS AS EXCEÇÕES VÊM DE UM ÚNICO LUGAR:
+
+                - Toda exceção em Python herda, direta ou indiretamente, 
+                de BaseException.
+
+                Hierarquia raiz:
+
+                    BaseException
+
+                Nada escapa disso.
+
+            CAMADAS DA HIERARQUIA (VISÃO GERAL):
+
+                EX:
+
+                    BaseException
+                    ├── SystemExit
+                    ├── KeyboardInterrupt
+                    ├── GeneratorExit
+                    └── Exception
+                        ├── ArithmeticError
+                        │    ├── ZeroDivisionError
+                        │    └── OverflowError
+                        ├── LookupError
+                        │    ├── IndexError
+                        │    └── KeyError
+                        ├── ValueError
+                        ├── TypeError
+                        ├── FileNotFoundError
+                        ├── IOError / OSError
+                        ├── ImportError
+                        ├── AttributeError
+                        └── RuntimeError
+ 
+                Regra importante:
+
+                    . você quase sempre captura coisas que herdam de Exception
+
+                    . não capture BaseException
+
+            BaseException (NUNCA CAPTURE):
+
+                EX:
+
+                    except BaseException:
+                        ...
+
+                ERRADO na maioria dos casos.
+
+                Por quê?
+
+                    Porque BaseException inclui:
+
+                        KeyboardInterrupt (Ctrl+C)
+
+                        SystemExit (sys.exit)
+
+                    Capturar isso impede o programa de:
+
+                        encerrar
+
+                        ser interrompido corretamente
+
+            Exception (A BASE DO QUE VOCÊ USA):
+
+                Padrão correto:
+
+                    except Exception:
+                        ...
+
+                Isso captura:
+
+                    erros de lógica
+
+                    erros de IO
+
+                    erros de tipo
+
+                    erros de valor
+
+                90% dos casos usam Exception ou subclasses.
+
+            PRINCIPAIS EXCEÇÕES BUILT-IN (AS MAIS USADAS):
+
+                . ValueError:
+
+                    - Valor correto, mas conteúdo inválido.
+
+                        int("abc")
+
+                . TypeError
+
+                    - Tipo errado.
+
+                        "1" + 2
+
+                . IndexError
+
+                    - Índice inválido.
+
+                        lista = [1, 2, 3, 4, 5]
+                        lista[10]
+
+                . KeyError
+
+                    - Chave inexistente.
+
+                        d = {"nome": "João", "idade": 22}
+                        d["x"]
+
+                . ZeroDivisionError
+
+                    - Erro de divisão por zero
+
+                        10 / 0
+
+                . FileNotFoundError
+
+                    open("inexistente.txt")
+
+                . AttributeError
+
+                    None.upper()
+
+                . ImportError
+
+                    import modulo_inexistente
+
+            AGRUPANDO EXCEÇÕES POR CATEGORIA:
+
+                Categoria aritmética:
+
+                    ArithmeticError
+                    ├── ZeroDivisionError
+                    ├── OverflowError
+
+                Categoria de acesso
+
+                    LookupError
+                     ├── IndexError
+                     ├── KeyError
+
+                Isso permite capturar famílias de erros:
+
+                    except LookupError:
+                        ...
+
+            ORDEM DOS except (MUITO IMPORTANTE):
+
+                Errado:
+
+                    except Exception:
+                        ...
+                    except ValueError:
+                        ...
+
+                Correto:
+
+                    except ValueError:
+                        ...
+                    except Exception:
+                        ...
+
+                Sempre do mais específico para o mais genérico.
+
+        COMO CRIAR SUAS PRÓPRIAS EXCEÇÕES (CUSTOM):
+
+            - Exceções customizadas devem herdar de Exception, nunca de 
+            BaseException.
+
+            . Exceção simples
+
+                    class SaldoInsuficienteError(Exception):
+                        pass
+
+                Uso:
+
+                    raise SaldoInsuficienteError("Saldo insuficiente")
+
+            EXCEÇÃO CUSTOMIZADA COM DADOS:
+
+                EX:
+
+                    class IdadeInvalidaError(Exception):
+                        def __init__(self, idade):
+                            self.idade = idade
+                            super().__init__(f"Idade inválida: {idade}")
+
+                Uso:
+
+                    if idade < 0:
+                        raise IdadeInvalidaError(idade)
+
+                Muito usado em regras de negócio.
+
+            POR QUE CRIAR EXCEÇÕES PRÓPRIAS?
+
+                Porque:
+
+                    tornam o erro semântico
+
+                    documentam regras do domínio
+
+                    facilitam captura específica
+
+                    evitam ValueError genérico
+
+                Exemplo ruim:
+
+                    raise ValueError("saldo inválido")
+
+                Exemplo bom:
+
+                    raise SaldoInsuficienteError()
+
+            CAPTURANDO EXCEÇÕES CUSTOMIZADAS:
+
+                - Código mais claro, mais robusto.
+
+                    try:
+                        sacar(1000)
+                    except SaldoInsuficienteError as e:
+                        print("Erro de negócio:", e)
+
+            EXCEÇÕES VS RETORNO DE ERRO:
+
+                Ruim:
+
+                    def dividir(a, b):
+                        if b == 0:
+                            return None
+
+                Bom:
+
+                    def dividir(a, b):
+                        if b == 0:
+                            raise ZeroDivisionError()
+
+                Exceções quebram o fluxo — retornos não.
+
+            CRIANDO UMA “CAMADA” DE EXCEÇÕES (PADRÃO PROFISSIONAL):
+
+                class AppError(Exception):
+                    pass
+
+                class AuthError(AppError):
+                    pass
+
+                class PermissaoError(AuthError):
+                    pass
+
+            Agora você pode capturar:
+
+                except AppError:
+                    ...
+
+            Isso é arquitetura de exceções.
+
+
+        TESTES DE SOFTWARE:
+
+            - Testes são códigos que verificam automaticamente se outros 
+            códigos funcionam corretamente.
+    
+            Eles servem para:
+
+                evitar regressões
+
+                garantir comportamento
+
+                documentar o sistema
+
+                dar confiança para refatorar
+
+            POR QUE USAR TESTES:
+
+                Sem testes:
+
+                    medo de mudar código
+
+                    bugs reaparecem
+
+                    manutenção cara
+
+                Com testes:
+
+                    segurança
+
+                    previsibilidade
+
+                    qualidade
+
+                Teste é investimento, não custo.
+
+            TESTES MANUAIS COM LOOPS:
+
+                - Simples, mas poderoso.
+
+                    for entrada, esperado in [(2,4), (3,9)]:
+                        assert quadrado(entrada) == esperado
+
+            DOCTEST:
+
+                Testes dentro da documentação:
+
+                    def soma(a, b):
+                        """
+                        >>> soma(2, 3)
+                        5
+                        """
+                        return a + b
+
+                Executa:
+
+                    python -m doctest arquivo.py
+
+                Bom para exemplos simples.
+
+            UNITTEST:
+
+                Framework padrão do Python:
+
+                    import unittest
+
+                    class TesteSoma(unittest.TestCase):
+                        def test_soma(self):
+                            self.assertEqual(2 + 3, 5)
+
+                Estruturado, verboso, clássico.
+
+            PYTEST:
+
+                - Framework moderno (o mais usado hoje)
+
+                    def test_soma():
+                        assert 2 + 3 == 5
+
+                Vantagens:
+
+                    simples
+
+                    poderoso
+
+                    fixtures
+
+                    ótimo para projetos reais
+
+            MOCK:
+
+                Simular:
+
+                    arquivos
+
+                    rede
+
+                    banco
+
+                    APIs
+                
+                EX:
+
+                    from unittest.mock import Mock
+
+                    m = Mock()
+                    m()  # simula chamada
+
+                Testa código sem dependências externas.
+
+        OUTROS TIPOS DE TESTE:
+
+            teste unitário
+
+            teste de integração
+
+            teste de sistema
+
+            teste de regressão
+
+            teste de carga
+
+            teste de aceitação
+
+            PS: Nem todo teste é unitário.
+
+        OUTRAS COISAS IMPORTANTES:
+
+            exceções são parte da API
+
+            teste documenta comportamento
+
+            erro esperado também é teste
+
+            cobertura não é qualidade
+
+            teste ruim é pior que nenhum
+
+        ERROS COMUNS:
+
+            . except: genérico
+            . Engolir erro com pass
+            . Usar assert para validação de usuário
+            . Não testar erro esperado
+            . Testes frágeis demais
+            . Criar exceção herdando de BaseException
+            . Usar só ValueError pra tudo
+            . except: genérico
+            . Exceção sem mensagem
+            . Exceção para fluxo normal
+
+
+        DICAS:
+
+            capture exceções específicas
+
+            use raise para contrato
+
+            use assert para suposições internas
+
+            teste casos de erro
+
+            escreva testes pequenos
+
+            Exceção = evento raro
+
+            Use nomes claros
+
+            Capture específico
+
+            Lance (raise) cedo
+
+            Documente exceções como parte da API
+
+
+        FRASES-CHAVE PARA MEMORIZAR
+
+            . Exceção não é bug
+            . raise é contrato
+            . assert é suposição
+            . Teste dá confiança
+            . Código sem teste é aposta
+            . Toda exceção herda de BaseException
+            . Capture Exception, não BaseException
+            . Específico antes do genérico
+            . Exceção é semântica
+            . Domínio pede exceção própria
+
+
+            Se um erro é possível, ele deve ser tratado ou testado — nunca 
+            ignorado.
 
     =====================================================================
 
@@ -15507,6 +16592,10 @@ UM POUCO SOBRE LÓGICA DE PROGRAMAÇÃO:
     =====================================================================
 
     Pillow:
+
+    =====================================================================
+
+    io:
 
     =====================================================================
 
