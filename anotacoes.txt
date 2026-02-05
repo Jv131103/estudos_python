@@ -18747,6 +18747,186 @@ UM POUCO SOBRE LÓGICA DE PROGRAMAÇÃO:
 
     Pathlib e glob:
 
+        - pathlib é um módulo da biblioteca padrão que trata caminhos como 
+        objetos, não como strings.
+
+        Em vez disso:
+
+            "/home/user/projeto/arquivo.txt"
+
+        Você trabalha com isso:
+
+            Path("arquivo.txt")
+
+        Resultado:
+
+            código mais limpo
+
+            menos bugs
+
+            multiplataforma automático (Windows/Linux/macOS)
+
+        Jeito antigo (os.path):
+
+            import os
+
+            caminho = os.path.join(os.getcwd(), "dados", "arquivo.txt")
+
+        Jeito moderno (pathlib)
+
+            from pathlib import Path
+
+            caminho = Path.cwd() / "dados" / "arquivo.txt"
+
+        Muito mais legível.
+
+        Importação básica:
+
+            from pathlib import Path
+
+        Criando caminhos:
+
+            Pasta atual
+
+                Path.cwd()
+
+            Pasta home do usuário
+
+                Path.home()
+
+            Caminho relativo
+            
+                p = Path("dados/arquivo.txt")
+
+            Caminho absoluto
+
+                p = Path("/tmp/arquivo.txt")
+
+        Testes importantes (arquivo ou pasta?):
+
+            p.exists()     # existe?
+            p.is_file()    # é arquivo?
+            p.is_dir()     # é pasta?
+
+        Exemplo:
+
+            p = Path("config.py")
+
+            if p.exists():
+                print("Existe")
+
+        Criar pastas (limpo e seguro):
+
+            Path("backup").mkdir(exist_ok=True)
+
+        Criar hierarquia:
+
+            Path("logs/2026/fev").mkdir(parents=True, exist_ok=True)
+
+        Ler e escrever arquivos (muito elegante):
+
+            Ler texto
+
+                texto = Path("arquivo.txt").read_text(encoding="utf-8")
+
+            Escrever texto
+                
+                Path("arquivo.txt").write_text("Olá mundo", encoding="utf-8")
+
+            Sem open(), sem close().
+
+        Partes do caminho:
+
+            p = Path("/home/renato/projeto/main.py")
+
+            print(p.name)        # main.py
+            print(p.stem)        # main
+            print(p.suffix)      # .py
+            print(p.parent)      # /home/renato/projeto
+            print(p.parents[0])  # projeto
+
+        Iterar arquivos de uma pasta:
+
+            for item in Path.cwd().iterdir():
+                print(item)
+
+        Somente arquivos .py:
+
+            for py in Path.cwd().iterdir():
+                if py.suffix == ".py":
+                    print(py)
+
+        Agora entra o glob
+
+            glob serve para buscar arquivos por padrão (wildcards).
+
+            Exemplo mental:
+
+                *.py
+
+                data_*.csv
+
+                **/*.txt
+
+        Path.glob():
+
+            from pathlib import Path
+
+            for arquivo in Path.cwd().glob("*.py"):
+                print(arquivo)
+
+        . Busca somente na pasta atual.
+
+        Busca recursiva (subpastas)
+
+            for arquivo in Path.cwd().glob("**/*.py"):
+                print(arquivo)
+
+        . ** = tudo, recursivo.
+
+        1. Listar todos os .py (menos venv):
+
+            from pathlib import Path
+
+            for p in Path.cwd().glob("**/*.py"):
+                if "venv" not in p.parts:
+                    print(p)
+
+        2. Criar backup de arquivos .txt
+
+            from pathlib import Path
+            import shutil
+
+            backup = Path("backup")
+            backup.mkdir(exist_ok=True)
+
+            for arquivo in Path.cwd().glob("*.txt"):
+                shutil.copy2(arquivo, backup / arquivo.name)
+
+        3. Contar arquivos por extensão
+
+            from pathlib import Path
+
+            contador = {}
+
+            for p in Path.cwd().glob("**/*"):
+                if p.is_file():
+                    contador[p.suffix] = contador.get(p.suffix, 0) + 1
+
+            print(contador)
+
+        Erros comuns:
+
+            Misturar string com Path:
+
+                Path("dados") + "arquivo.txt"  # ERRO
+
+            Correto:
+
+                Path("dados") / "arquivo.txt"
+
+            Esquecer que glob() retorna Path, não string.
+
     =====================================================================
 
     zipfile, tarfile:
@@ -18808,43 +18988,870 @@ UM POUCO SOBRE LÓGICA DE PROGRAMAÇÃO:
 
 Um pouco sobre POO:
 
-    Objetos e classes
+    Objetos e classes:
 
-    Variáveis de classe e Construtor
+        O QUE É UMA CLASSE?
 
-    Métodos
+            - Classe é um molde.
 
-    atributos e propriedades de classe
+            - É como um modelo que define como algo deve ser.
 
-    atributos privados, protegidos e públicos
+        Nada existe de verdade ainda.
 
-    métodos privados, protegidos e públicos
+        É só a ideia da coisa.
 
-    Encapsulamento
+        Exemplo do mundo real:
 
-    Composição, herança e delegação
+            . Planta de uma casa → classe
 
-    Polimorfismo
+            . Casa construída → objeto
 
-    Sub-tipagem
+            A planta:
 
-    Métodos de classe
+                define quantos quartos
 
-    Métodos abstratos
+                define banheiro, cozinha
 
-    Métodos estáticos
+                define estrutura
 
-    self e cls
+            Mas não é a casa real.
 
-    Métodos mágicos
+        Em Python:
 
-    DataClass
+            Sintaxe:
 
-    Setups, interfaces e Managers
+                class Pessoa:
+                    pass
 
-    SOLID
+            Isso significa:
 
-    Lib dataclasses
+                Existe um molde chamado Pessoa
+
+                Mas ainda não criamos nenhuma pessoa de verdade
+
+        O QUE É UM OBJETO?
+
+            - Objeto é algo criado a partir da classe.
+
+            - É a coisa real, concreta.
+
+        Se a classe é o molde,
+
+        o objeto é o que você usa de verdade no programa.
+
+        Criando um objeto em Python:
+
+            p1 = Pessoa()
+
+        Agora sim:
+
+            Pessoa → classe
+
+            p1 → objeto (instância)
+
+        Instância = objeto criado a partir de uma classe.
+
+        CLASSE vs OBJETO (NÃO CONFUNDIR!):
+
+            | Classe                 | Objeto          |
+            | ---------------------- | --------------- |
+            | Molde                  | Coisa real      |
+            | Não ocupa memória útil | Ocupa memória   |
+            | Definição              | Uso             |
+            | `class Pessoa`         | `p1 = Pessoa()` |
+
+            Erro clássico: achar que classe e objeto são a mesma coisa.
+
+            Não são. Nunca.
+
+        ATRIBUTOS — DADOS DO OBJETO:
+
+            Atributos são:
+
+                características
+
+                informações
+
+                dados do objeto
+
+        Exemplo:
+
+            Pessoa tem:
+
+                nome
+
+                idade
+
+        Criando atributos com __init__:
+
+            class Pessoa:
+                def __init__(self, nome, idade):
+                    self.nome = nome
+                    self.idade = idade
+
+        Aqui tem MUITA coisa importante, então vamos quebrar.
+
+        O que é __init__?
+
+            . É um método especial
+            . Executa automaticamente quando o objeto é criado
+            . Serve para montar o objeto por dentro
+
+        É como “ligar” o objeto.
+
+        O que é self?
+
+            - self é o próprio objeto
+
+            - Dá ideia de próprio ou eu na execução
+
+            Quando você escreve:
+
+                self.nome = nome
+
+            Você está dizendo:
+
+                “Este objeto vai ter um atributo chamado nome”
+
+                OU Inconcientemente como uma pessoa
+ 
+                "Eu como objeto terei um atributo chamado nome"
+
+        Criando o objeto agora:
+
+            EX:
+
+                p1 = Pessoa("Renato", 25)
+
+            Dentro do Python acontece:
+
+                self.nome = "Renato"
+
+                self.idade = 25
+
+        Acessando os atributos:
+
+            print(p1.nome)
+            print(p1.idade)
+
+        MÉTODOS — AÇÕES DO OBJETO:
+
+            Métodos são:
+
+                funções
+
+                que vivem dentro da classe
+
+                e trabalham com o objeto
+
+            Exemplo:
+
+                class Pessoa:
+                    def __init__(self, nome, idade):
+                        self.nome = nome
+                        self.idade = idade
+
+                    def falar(self):
+                        print(f"Meu nome é {self.nome}")
+
+            Usando:
+
+                p1 = Pessoa("Renato", 25)
+                p1.falar()
+
+            Importante:
+
+                Método SEMPRE recebe self
+
+                Você chama com objeto.metodo()
+
+        POR QUE USAR CLASSES E OBJETOS?
+
+            Sem POO:
+
+                código espalhado
+
+                difícil de manter
+
+                difícil de entender
+
+            Com POO:
+
+                código organizado
+
+                cada coisa cuida de si
+
+                mais fácil crescer o projeto
+
+        Projetos grandes SEM POO viram bagunça.
+
+        ERROS MAIS COMUNS:
+
+            . Esquecer o self
+            . Criar classe e tentar usar sem criar objeto
+            . Confundir atributo com variável comum
+            . Tentar acessar atributo sem objeto.
+
+            Exemplo errado:
+
+                print(nome)  # ERRADO
+
+            Certo:
+
+                print(p1.nome)  # CORRETO
+
+        DETAHLES ADICIONAIS:
+
+            1) Por que nomes de classes começam com MAIÚSCULA?
+
+                - Não é “obrigação” do Python, é convenção (PEP 8). Em Python:
+
+                    Classe: CamelCase (Primeira letra maiúscula)
+
+                    Variável / função / método: snake_case (minúsculas com _)
+
+                Por que isso existe (na prática)?
+
+                    1. Leitura instantânea do código
+                        Quando você vê Pessoa(...), seu cérebro bate o olho e 
+                        entende: “isso é uma classe sendo instanciada”
+
+                    2. Evita confusão entre “coisa” (tipo/estrutura) e 
+                    “ação/valor” (função/variável).
+    
+                    3. Padrão de equipe / projetos grandes
+                        Python é muito usado em times. Seguir convenção deixa 
+                        seu código “profissional” e fácil de manter.
+
+                Funciona assim:
+
+                    class Pessoa:          # Classe (CamelCase)
+                        pass
+
+                    def criar_pessoa():    # Função (snake_case)
+                        pass
+
+                    nome_usuario = "Renato"  # Variável (snake_case)
+
+                - Se você chamar uma classe de pessoa, o Python aceita, mas 
+                fica “estranho” e aumenta a chance de confusão.
+
+            2) Objetos vs Variáveis (esse aqui é crucial)
+
+                A verdade simples:
+
+                    Variável é um NOME (uma etiqueta)
+
+                    Objeto é a COISA na memória
+
+                A variável “aponta” (referencia) um objeto.
+
+                    Exemplo:
+
+                        x = 10
+
+                    . x = variável (nome)
+
+                    . 10 = objeto inteiro (um int)
+
+                    Com classe:
+
+                        class Pessoa:
+                            def __init__(self, nome):
+                                self.nome = nome
+
+                        p1 = Pessoa("Renato")
+
+                    . p1 = variável (nome/etiqueta)
+
+                    . Pessoa("Renato") = objeto (instância) na memória
+
+                    Então: p1 não é o objeto.
+
+                    p1 é só o “apelido” que aponta pro objeto.
+
+            3) Por que isso importa? (duas variáveis podem apontar pro MESMO 
+            objeto)
+
+                EX:
+
+                    p1 = Pessoa("Renato")
+                    p2 = p1
+
+                Agora:
+
+                    p1 e p2 são variáveis diferentes
+
+                    mas apontam pro mesmo objeto
+
+                Se mudar por p2, muda por p1 também:
+
+                    p2.nome = "João"
+                    print(p1.nome)  # "João"
+
+                Porque o objeto é o mesmo — só tem duas etiquetas nele.
+
+            4) “Variável igual” não significa “objeto igual”
+
+                Exemplo com lista (bem visual):
+
+                    a = [1, 2]
+                    b = a
+                    b.append(3)
+
+                    print(a)  # [1, 2, 3]
+
+                Mesma ideia: a e b apontam pro mesmo objeto lista.
+
+        Python é realmente Orientado a Objetos?
+
+            Sim, Python TEM POO de verdade.
+
+            Mas não é OO “puro”
+
+            E é exatamente isso que confunde muita gente
+
+            1. O que significa “linguagem orientada a objetos”?
+
+                Uma linguagem OO, em essência, precisa permitir:
+
+                    Objetos
+
+                    Classes
+
+                    Encapsulamento
+
+                    Herança
+
+                    Polimorfismo
+
+                Python tem todos esses pontos.
+
+                Então, tecnicamente, é OO.
+
+            2. Então por que dizem que Python “não é OO de verdade”?
+
+                - Porque muita gente confunde OO obrigatório com OO existente.
+
+                Em linguagens como o Java, por exemplo,
+                tudo precisa estar classe, não existe função solta e 
+                não existe código fora de objeto (na prática).
+
+                A linguagem Java força OO
+
+                Python (OO opcional e flexível)
+
+                    No Python:
+
+                        print("Hello")
+
+                    . Funções soltas existem
+                    . Código procedural existe
+                    . OO é uma ferramenta, não uma prisão
+
+                    Python permite, não obriga.
+
+            3. Python é diferente porque o MODELO DE OBJETOS é diferente
+
+                Aqui está o ponto mais importante.
+
+                Em Python:
+
+                    Tudo é objeto.
+
+                        x = 10
+                        print(type(x))   # <class 'int'>
+
+                int é uma classe
+
+                10 é um objeto
+
+                funções são objetos
+
+                classes são objetos
+
+                Classe também é objeto:
+
+                    - UMA CLASSE QUALQUER é um objeto da classe type
+
+            4. “Python não serve para POO” — de onde vem isso?
+
+                Vem principalmente de 3 fontes:
+
+                    1. Abuso de código procedural
+
+                        Muita gente escreve Python assim:
+
+                            def faz_tudo():
+                                pass
+
+                        E nunca cria classes.
+
+                        A culpa não é da linguagem — é do uso.
+
+                    2. Falta de encapsulamento forte:
+
+                        Em Python:
+
+                            self._idade
+
+                        O _ é convenção, não trava real.
+
+                        Alguns acham isso “POO fraca”.
+                        
+                        Na verdade é confiança no programador.
+
+                Python não liga para o tipo, liga para o comportamento.
+
+                Isso é polimorfismo dinâmico, não ausência de POO.
+
+        Python não é menos orientado a objetos.
+    
+        Ele é menos dogmático.
+
+    ==========================================================================
+
+    Variáveis de classe e Construtor:
+
+        O CONSTRUTOR (__init__) — O NASCIMENTO DO OBJETO:
+
+            - O __init__ é o método construtor
+
+            Ele roda automaticamente quando o objeto é criado.
+
+            EX:
+
+                class Pessoa:
+                    def __init__(self, nome):
+                        self.nome = nome
+
+            Quando você faz:
+
+                p1 = Pessoa("Renato")
+
+            O Python faz internamente:
+
+                1. cria o objeto vazio
+                2. chama __init__(self, "Renato")
+                3. inicializa os atributos
+
+                - Sem __init__, o objeto nasce “pelado”.
+
+        ATRIBUTOS DE INSTÂNCIA (do objeto):
+
+            - Atributos que pertencem a cada objeto individualmente
+
+            EX:
+
+                class Pessoa:
+                    def __init__(self, nome):
+                        self.nome = nome
+
+            Criando objetos:
+
+                p1 = Pessoa("Renato")
+                p2 = Pessoa("Ana")
+
+            Resultado:
+
+                p1.nome → "Renato"
+
+                p2.nome → "Ana"
+
+            Cada objeto tem seus próprios dados.
+
+        VARIÁVEIS DE CLASSE:
+
+            Variável de classe pertence à classe, não aos objetos 
+            individualmente.
+
+            . Ela é compartilhada por todos.
+
+            Exemplo simples:
+
+                class Pessoa:
+                    especie = "Humano"   # variável de classe
+
+                    def __init__(self, nome):
+                        self.nome = nome
+
+            Usando:
+
+                p1 = Pessoa("Renato")
+                p2 = Pessoa("Ana")
+
+                print(p1.especie)
+                print(p2.especie)
+
+            Ambos imprimem:
+
+                Humano
+
+            - Porque especie não está no objeto, está na classe.
+
+        Onde cada coisa vive na memória?
+
+            Atributo de instância:
+
+                    self.nome
+
+                . vive dentro do objeto
+
+                . cada objeto tem o seu
+
+            Variável de classe:
+
+                    Pessoa.especie
+
+                . vive na classe
+
+                . todos os objetos compartilham
+
+        A REGRA DE OURO:
+
+            - Acesso não muda propriedade
+
+            Mesmo que você escreva:
+
+                p1.especie
+
+            Isso não transforma especie em atributo do objeto.
+
+            É só um atalho para Pessoa.especie.
+
+        O ERRO CLÁSSICO:
+
+            Veja esse código:
+
+                class Pessoa:
+                    contador = 0
+
+                    def __init__(self):
+                        self.contador += 1
+
+            Criando objetos:
+
+                p1 = Pessoa()
+                p2 = Pessoa()
+
+                print(Pessoa.contador)
+
+            Resultado: 0
+            “Ué, não deveria ser 2?”
+
+            O que aconteceu?
+
+                self.contador += 1
+
+            Isso cria um atributo novo no objeto, NÃO altera a variável de 
+            classe.
+
+        JEITO CERTO de mexer em variável de classe:
+
+            EX:
+
+                class Pessoa:
+                    contador = 0
+
+                    def __init__(self):
+                        Pessoa.contador += 1
+
+            Agora sim:
+
+                p1 = Pessoa()
+                p2 = Pessoa()
+
+                print(Pessoa.contador)  # 2
+
+            Sempre acesse variável de classe pelo nome da classe.
+
+        Construtor com valores padrão:
+
+            ex:
+
+                class Produto:
+                    def __init__(self, nome, preco=0.0):
+                        self.nome = nome
+                        self.preco = preco
+
+            Uso:
+            
+                p1 = Produto("Caneta")
+                p2 = Produto("Caderno", 15.0)
+
+
+    ==========================================================================
+
+    Métodos:
+
+        Método é uma função que pertence a uma classe e atua sobre um objeto ou 
+        sobre a própria classe.
+
+        Diferença-chave:
+
+            Função → existe sozinha
+
+            Método → vive dentro de uma classe
+
+        Função comum:
+
+            def somar(a, b):
+                return a + b
+
+        Método:
+
+            class Calculadora:
+                def somar(self, a, b):
+                    return a + b
+
+        MÉTODO DE INSTÂNCIA:
+
+            Método que trabalha com dados do objeto
+            
+            Recebe self
+
+            Exemplo básico:
+
+                class Pessoa:
+                    def __init__(self, nome):
+                        self.nome = nome
+
+                    def falar(self):
+                        print(f"Meu nome é {self.nome}")
+
+            Uso:
+
+                p1 = Pessoa("Renato")
+                p1.falar()
+
+            O Python faz isso internamente:
+
+                Pessoa.falar(p1)
+
+        - self é o próprio objeto passado automaticamente.
+
+        REGRA DE OURO DOS MÉTODOS:
+
+            Todo método de instância precisa de self
+
+            e todo acesso a atributos precisa de self.
+
+            ERRADO:
+
+                print(nome)
+
+            CERTO:
+
+                print(self.nome)
+
+        MÉTODOS COM PARÂMETROS:
+
+            class ContaBancaria:
+                def __init__(self, saldo):
+                    self.saldo = saldo
+
+                def depositar(self, valor):
+                    self.saldo += valor
+
+                def sacar(self, valor):
+                    self.saldo -= valor
+        
+            . uso:
+
+                conta = ContaBancaria(100)
+                conta.depositar(50)
+                print(conta.saldo)  # 150
+
+        MÉTODOS QUE RETORNAM VALORES:
+
+            ex:
+
+                class Aluno:
+                    def __init__(self, nota):
+                        self.nota = nota
+
+                    def aprovado(self):
+                        return self.nota >= 6
+
+            Uso:
+
+                a1 = Aluno(7)
+                print(a1.aprovado())  # True
+
+            - Método não precisa imprimir — pode só retornar.
+
+        MÉTODO QUE CHAMA OUTRO MÉTODO:
+
+            EX:
+
+                class Usuario:
+                    def logar(self):
+                        self._verificar_senha()
+                        print("Usuário logado")
+
+                    def _verificar_senha(self):
+                        print("Senha verificada")
+
+            - self permite que métodos conversem entre si.
+
+        MÉTODOS DE CLASSE (@classmethod):
+
+            Método que trabalha com a classe, não com o objeto
+            
+            Recebe cls
+
+            Exemplo clássico:
+
+                class Usuario:
+                    total = 0
+
+                    def __init__(self):
+                        Usuario.total += 1
+
+                    @classmethod
+                    def total_usuarios(cls):
+                        return cls.total
+
+            Uso:
+
+                u1 = Usuario()
+                u2 = Usuario()
+
+                print(Usuario.total_usuarios())
+
+            Use quando:
+
+                . o método depende da classe
+
+                . não de um objeto específico
+
+        MÉTODOS ESTÁTICOS (@staticmethod):
+
+            - Método que não depende nem do objeto nem da classe
+
+            É basicamente:
+
+                uma função
+
+                organizada dentro da classe
+
+            Exemplo:
+
+                class Matematica:
+                    @staticmethod
+                    def somar(a, b):
+                        return a + b
+
+            Uso:
+
+                print(Matematica.somar(2, 3))
+
+            Não usa self nem cls.
+
+        QUANDO USAR CADA TIPO?
+
+            | Tipo      | Usa    | Quando                   |
+            | --------- | ------ | ------------------------ |
+            | Instância | `self` | mexe nos dados do objeto |
+            | Classe    | `cls`  | mexe nos dados da classe |
+            | Estático  | nada   | lógica auxiliar          |
+
+        ERROS CLÁSSICOS:
+
+            . Esquecer self
+            . Tentar acessar atributo sem self.
+            . Usar @staticmethod quando precisa de self
+            . Colocar lógica de objeto em método de classe
+
+    ==========================================================================
+
+    Funções com classes e vice-versa:
+
+    ==========================================================================
+
+    atributos e propriedades de classe:
+
+    ==========================================================================
+
+    atributos privados, protegidos e públicos:
+
+    ==========================================================================
+
+    métodos privados, protegidos e públicos:
+
+    ==========================================================================
+
+    métodos get e setter e property:
+
+    ==========================================================================
+
+    Encapsulamento:
+
+    ==========================================================================
+
+    Composição, herança (simples e múltipla) e delegação:
+
+    ==========================================================================
+
+    Polimorfismo:
+
+    ==========================================================================
+
+    Sub-tipagem:
+
+    ==========================================================================
+
+    Métodos de classe:
+
+    ==========================================================================
+
+    Métodos abstratos:
+
+    ==========================================================================
+
+    Métodos estáticos:
+
+    ==========================================================================
+
+    self e cls:
+
+    ==========================================================================
+
+    classes como objetos:
+
+    ==========================================================================
+
+    classes aninhadas:
+
+    ==========================================================================
+
+    mixins:
+
+    ==========================================================================
+
+    Métodos mágicos:
+
+    ==========================================================================
+
+    Duck Typing:
+
+    ==========================================================================
+
+    DataClass:
+
+    ==========================================================================
+
+    Setups, interfaces e Managers:
+
+    ==========================================================================
+
+    SOLID:
+
+    ==========================================================================
+
+    Lib dataclasses:
+
+    ==========================================================================
 
 Um pouco sobre Estruturas de dados:
 
@@ -18897,6 +19904,17 @@ Um pouco sobre Estruturas de dados:
     Busca A*
 
     Algoritmo de Dijkstra
+
+Um pouco de python em baixo nível:
+
+    bytes
+
+    bytearray
+
+    struct
+
+    operadores bitwise
+
 
 Um pouco de ambientes:
 
