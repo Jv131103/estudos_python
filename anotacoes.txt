@@ -19767,25 +19767,1185 @@ Um pouco sobre POO:
 
     Funções com classes e vice-versa:
 
+        FUNÇÃO ≠ MÉTODO (mas parecem)
+
+            Função
+
+                Vive fora da classe
+
+                Não tem self
+
+                Não pertence a nenhum objeto
+
+                EX:
+
+                    def somar(a, b):
+                        return a + b
+
+            Método
+
+                Vive dentro da classe
+
+                Pertence à classe
+
+                Geralmente recebe self
+
+                EX:
+
+                    class Calculadora:
+                        def somar(self, a, b):
+                            return a + b
+
+                - Método é uma função especial, com contexto de objeto ou classe.
+
+        FUNÇÕES USANDO OBJETOS (função “conversa” com classe)
+
+            Isso é muito comum e totalmente correto.
+
+            Exemplo:
+
+                class Pessoa:
+                    def __init__(self, nome):
+                        self.nome = nome
+
+            Função externa usando objeto:
+
+                def apresentar(pessoa):
+                    print(f"Olá, meu nome é {pessoa.nome}")
+
+            Uso:
+
+                p1 = Pessoa("Renato")
+                apresentar(p1)
+
+            A função:
+
+                . não pertence à classe
+
+                . mas usa o objeto normalmente
+
+            Isso funciona porque:
+
+                Python liga mais para comportamento do que para “onde a função 
+                mora”.
+
+        QUANDO USAR FUNÇÃO E NÃO MÉTODO?
+
+            Use função quando:
+
+                a lógica não pertence ao objeto
+
+                é utilitária
+
+                pode ser reutilizada por várias classes
+
+            Exemplo:
+
+                def validar_email(email):
+                    return "@" in email
+
+            Não faz sentido isso estar dentro de Usuario.
+
+        CLASSES USANDO FUNÇÕES (delegação):
+
+            Classe pode chamar funções externas tranquilamente.
+
+            EX:
+
+                def calcular_imposto(valor):
+                    return valor * 0.15
+
+
+                class Produto:
+                    def __init__(self, preco):
+                        self.preco = preco
+
+                    def preco_final(self):
+                        return self.preco + calcular_imposto(self.preco)
+
+            - A classe não precisa saber como o imposto funciona — só usa.
+
+            Isso é:
+
+                baixo acoplamento
+
+                código mais limpo
+
+                mais fácil de testar
+
+        FUNÇÃO DENTRO DA CLASSE ≠ MÉTODO DE INSTÂNCIA
+
+            Olha esse detalhe importante:
+
+                class Exemplo:
+                    def funcao(self):
+                        print("Sou método")
+
+            VS
+
+                class Exemplo:
+                    @staticmethod
+                    def funcao():
+                        print("Sou função organizada na classe")
+
+            Diferença:
+
+                . Método de instância → usa self
+
+                . Staticmethod → é só uma função dentro da classe
+
+        CLASSE COMO PARÂMETRO DE FUNÇÃO
+
+            Classe também é objeto em Python.
+
+                class Pessoa:
+                    pass
+
+
+                def criar_instancia(classe):
+                    return classe()
+
+            Uso:
+
+                p = criar_instancia(Pessoa)
+
+            Isso é base para:
+
+                fábricas (factory)
+
+                frameworks
+
+                injeção de dependência
+
+        FUNÇÕES QUE CRIAM OBJETOS:
+
+            Muito usado em Python.
+
+                class Usuario:
+                    def __init__(self, nome):
+                        self.nome = nome
+
+
+                def criar_usuario(nome):
+                    return Usuario(nome)
+
+            - Em Python, nem sempre você precisa de factory class como em Java.
+
+        QUANDO VIRAR MÉTODO?
+
+            - Se a lógica depende do estado do objeto → método
+            - Se a lógica é geral → função
+
+            Comparação clara:
+
+                Ruim:
+
+                    def sacar(conta, valor):
+                        conta.saldo -= valor
+
+                Bom:
+
+                    class Conta:
+                        def sacar(self, valor):
+                            self.saldo -= valor
+
     ==========================================================================
 
     atributos e propriedades de classe:
+
+        - Atributo é uma informação associada a um objeto ou a uma classe
+
+        Existem dois tipos principais:
+
+            Atributo de instância
+
+            Atributo de classe
+
+        ATRIBUTOS DE INSTÂNCIA:
+
+            Pertencem a cada objeto
+
+            Criados normalmente no __init__
+
+            Cada objeto tem o seu
+
+            EX:
+
+                class Pessoa:
+                    def __init__(self, nome):
+                        self.nome = nome
+
+            Uso:
+
+                p1 = Pessoa("Renato")
+                p2 = Pessoa("Ana")
+
+                print(p1.nome)  # Renato
+                print(p2.nome)  # Ana
+
+            - self.nome vive dentro do objeto.
+
+        ATRIBUTOS DE CLASSE:
+
+            Pertencem à classe
+
+            São compartilhados por todos os objetos
+
+            EX:
+
+                class Pessoa:
+                    especie = "Humano"
+
+            Uso:
+
+                p1 = Pessoa()
+                p2 = Pessoa()
+
+                print(p1.especie)
+                print(p2.especie)
+
+            Ambos veem o mesmo valor.
+
+            Regra importante:
+
+                Pessoa.especie   # forma correta
+                p1.especie       # só um atalho
+
+            - O dono real é a classe, não o objeto.
+
+        AGORA ENTRA A PARTE NOBRE: PROPRIEDADES (@property):
+
+            O problema que a propriedade resolve:
+
+                Imagine isso:
+
+                    class Produto:
+                        def __init__(self, preco):
+                            self.preco = preco
+
+                Alguém pode fazer:
+
+                    p = Produto(-100)
+
+                Preço negativo → objeto inválido.
+
+            PROPRIEDADE = ATRIBUTO COM CONTROLE
+
+                Você acessa como atributo,
+                mas executa código por trás.
+
+                Exemplo com @property:
+
+                    class Produto:
+                        def __init__(self, preco):
+                            self._preco = preco
+
+                        @property
+                        def preco(self):
+                            return self._preco
+
+                Uso:
+
+                    p = Produto(10)
+                    print(p.preco)
+
+                - Parece atributo, mas é método.
+
+            SETTER — CONTROLANDO MODIFICAÇÃO:
+
+                class Produto:
+                    def __init__(self, preco):
+                        self._preco = preco
+
+                    @property
+                    def preco(self):
+                        return self._preco
+
+                    @preco.setter
+                    def preco(self, valor):
+                        if valor < 0:
+                            raise ValueError("Preço não pode ser negativo")
+                        self._preco = valor
+
+                Uso:
+
+                    p = Produto(10)
+                    p.preco = 20      # ok
+                    p.preco = -5      # erro
+
+                - Encapsulamento real, sem quebrar a interface.
+
+        POR QUE USAR _preco E NÃO __preco:
+
+            _preco → convenção (uso interno) (IDEIA DE ATRIBUTO PROTEGIDO)
+
+            __preco → name mangling (mais rígido) (IDEIA DE ATRIBUTO PRIVADO)
+
+            - Em Python, _ é o padrão mais usado.
+
+    ==========================================================================
+
+    Encapsulamento:
+
+        Encapsulamento é esconder a implementação interna e expor apenas o que 
+        pode ser usado com segurança.
+
+        Em português direto:
+
+            você protege o estado interno
+
+            controla como os dados são acessados
+
+            evita uso errado do objeto
+
+        Analogia perfeita:
+
+            Você dirige um carro usando:
+
+                volante
+
+                pedais
+
+            Você não mexe diretamente:
+
+                no motor
+
+                nos pistões
+
+                no sistema elétrico
+
+            Isso é encapsulamento.
+
+        POR QUE ENCAPSULAMENTO É TÃO IMPORTANTE?
+
+            Sem encapsulamento:
+
+                qualquer parte do código pode quebrar o objeto
+
+                bugs silenciosos
+
+                manutenção difícil
+
+            Com encapsulamento:
+
+                regras centralizadas
+
+                menos bugs
+
+                código previsível
+
+                refatoração segura
+
+            Encapsulamento é sobre segurança e clareza.
+
+        COMO O PYTHON IMPLEMENTA ENCAPSULAMENTO?
+
+            Aqui vem a parte que confunde muita gente
+
+            Python não usa private, protected, public como Java.
+
+            Python usa:
+
+                Convenções
+                Name mangling
+                Propriedades (@property)
+
+        ATRIBUTOS PÚBLICOS (SEM PROTEÇÃO):
+
+            EX:
+
+                class Pessoa:
+                    def __init__(self, idade):
+                        self.idade = idade
+
+            Uso:
+
+                p = Pessoa(20)
+                p.idade = -50   # Não permitido
+
+            Isso não é encapsulamento.
+
+        ATRIBUTO “PROTEGIDO” (_atributo):
+
+            - Convenção mais usada em Python
+
+                class Pessoa:
+                    def __init__(self, idade):
+                        self._idade = idade
+
+            O _ significa:
+
+                “Isso é interno. Use com cuidado.”
+
+            Não impede acesso, mas avisa.
+
+                p._idade = -10  # tecnicamente possível, mas errado
+
+        ENCAPSULAMENTO REAL COM @property:
+
+            Aqui começa a POO de verdade em Python.
+
+                class Pessoa:
+                    def __init__(self, idade):
+                        self._idade = idade
+
+                    @property
+                    def idade(self):
+                        return self._idade
+
+                    @idade.setter
+                    def idade(self, valor):
+                        if valor < 0:
+                            raise ValueError("Idade não pode ser negativa")
+                        self._idade = valor
+
+                Uso:
+
+                    p = Pessoa(20)
+                    p.idade = 30     # ok
+                    p.idade = -5     # erro
+            
+            Você:
+
+                protege o estado
+
+                mantém interface simples
+
+                evita acesso direto
+
+        ATRIBUTO “PRIVADO” (__atributo) — NAME MANGLING:
+
+            EX:
+
+                class Pessoa:
+                    def __init__(self, idade):
+                        self.__idade = idade
+
+            Internamente, Python transforma em:
+
+                _Pessoa__idade
+
+            Isso é chamado name mangling.
+
+            Acesso direto NÃO funciona:
+
+                p.__idade  # AttributeError
+
+            Mas ainda é possível (não recomendado):
+
+                p._Pessoa__idade
+
+            - __ não é segurança absoluta, é proteção contra uso acidental.
+
+        _ vs __ — QUAL USAR?
+
+            | Situação                  | Use          |
+            | ------------------------- | ------------ |
+            | Uso interno comum         | `_atributo`  |
+            | Evitar colisão em herança | `__atributo` |
+            | API pública               | sem `_`      |
+
+        ENCAPSULAMENTO NÃO É “ESCONDER TUDO”:
+
+            Erro comum:
+
+                “Vou deixar tudo privado”
+
+            Isso vira código:
+
+                rígido
+
+                chato de usar
+
+                cheio de getters inúteis
+
+            Encapsulamento bom:
+
+                esconde o que pode quebrar
+
+                expõe o que faz sentido
+
+        EXEMPLO REALISTA (ANTES vs DEPOIS):
+
+            . Sem encapsulamento
+
+                class Conta:
+                    def __init__(self, saldo):
+                        self.saldo = saldo
+
+            . Com encapsulamento
+
+                class Conta:
+                    def __init__(self, saldo):
+                        self._saldo = saldo
+
+                    @property
+                    def saldo(self):
+                        return self._saldo
+
+                    def sacar(self, valor):
+                        if valor > self._saldo:
+                            raise ValueError("Saldo insuficiente")
+                        self._saldo -= valor
+
+            - Agora ninguém “fura” regra.
 
     ==========================================================================
 
     atributos privados, protegidos e públicos:
 
+        PRIMEIRO: PYTHON NÃO TEM public / protected / private FORMAIS:
+
+            Isso é fundamental entender logo de cara.
+
+            Python não implementa controle de acesso rígido como Java ou C++.
+
+            O que existe em Python é:
+
+                convenção
+
+                sinalização de intenção
+
+                proteção contra uso acidental
+
+                não contra ataque deliberado
+
+            Encapsulamento em Python é social, não policial.
+
+        ATRIBUTOS PÚBLICOS:
+
+            Sem _
+
+            Parte da API oficial da classe
+
+            Podem ser usados livremente
+
+            EX:
+
+                class Pessoa:
+                    def __init__(self, nome):
+                        self.nome = nome
+
+            Uso:
+
+                p = Pessoa("Renato")
+                p.nome = "Ana"
+
+            Quando usar?
+
+                Dados simples
+
+                Sem regra
+
+                Sem impacto crítico
+
+            - Atributo público é um contrato
+
+            Se você mudar depois, quebra código de quem usa.
+
+        ATRIBUTOS PROTEGIDOS (_atributo):
+
+            - O MAIS USADO EM PYTHON
+
+                class Pessoa:
+                    def __init__(self, idade):
+                        self._idade = idade
+
+            O _ significa:
+
+                “Isso é interno. Você pode usar, mas não deveria.”
+
+                Python não bloqueia:
+
+                    p._idade = -10  # possível, mas errado
+
+            Por que isso existe então?
+
+                Comunicação entre desenvolvedores
+
+                Leitura de código clara
+
+                Base para @property
+
+                Compatibilidade com herança
+
+            - _ é design, não segurança.
+
+        ATRIBUTOS PRIVADOS (__atributo) — NAME MANGLING:
+
+            Aqui começa a confusão.
+
+                class Pessoa:
+                    def __init__(self, idade):
+                        self.__idade = idade
+
+            Python transforma isso internamente em:
+
+                _Pessoa__idade
+
+            Isso é name mangling.
+
+            O que o name mangling faz?
+
+                Evita colisão de nomes em herança
+
+                Dificulta acesso acidental
+
+                NÃO é criptografia
+
+            Acesso direto falha:
+
+                p.__idade  # AttributeError
+
+            Mas ainda existe:
+
+                p._Pessoa__idade  # funciona, mas não use isso de forma alguma
+
+            Isso prova:
+
+                __ não é privado de verdade, é “quase privado”.
+
+            ENTÃO POR QUE __ EXISTE?
+
+                Principal motivo real: EVITAR CONFLITO EM HERANÇA
+
+                    class A:
+                        def __init__(self):
+                            self.__valor = 10
+
+                    class B(A):
+                        def __init__(self):
+                            super().__init__()
+                            self.__valor = 20
+
+                Aqui:
+
+                    A.__valor → _A__valor
+
+                    B.__valor → _B__valor
+
+                . Não colidem.
+                . Cada classe protege seu estado interno.
+
+        _ vs __ — REGRA PROFISSIONAL:
+
+            | Caso                       | Use                    |
+            | -------------------------- | ---------------------- |
+            | Uso interno normal         | `_atributo`            |
+            | Base para `@property`      | `_atributo`            |
+            | Código OO comum            | `_atributo`            |
+            | Evitar conflito em herança | `__atributo`           |
+            | “Esconder” dado crítico    | `_atributo + property` |
+
+        O MAIOR ERRO: ACHAR QUE __ É “BOA PRÁTICA SEMPRE”:
+
+            Errado:
+
+                class Usuario:
+                    def __init__(self):
+                        self.__nome = "Renato"
+                        self.__email = "x@y.com"
+                        self.__idade = 30
+
+            Isso causa:
+
+                código rígido
+
+                herança difícil
+
+                testes mais chatos
+
+                manutenção pior
+
+            Python não foi feito para isso.
+
+        ENCAPSULAMENTO CERTO EM PYTHON (PADRÃO REAL):
+
+            O padrão mais usado na prática:
+
+                class Produto:
+                    def __init__(self, preco):
+                        self._preco = preco
+
+                    @property
+                    def preco(self):
+                        return self._preco
+
+                    @preco.setter
+                    def preco(self, valor):
+                        if valor < 0:
+                            raise ValueError("Preço inválido")
+                        self._preco = valor
+
+            . Protege
+            . Claro
+            . Pythonic
+            . Fácil de manter
+
+        REGRA DE OURO DEFINITIVA:
+
+            Público:
+            - faz parte da API
+            - compromisso com o usuário
+
+            Protegido (_):
+            - uso interno
+            - padrão Python
+
+            Privado (__):
+            - evite conflito em herança
+            - uso raro
+
     ==========================================================================
 
     métodos privados, protegidos e públicos:
 
+        PRIMEIRO: MÉTODOS SEGUEM A MESMA LÓGICA DOS ATRIBUTOS
+
+            Em Python, não existe palavra-chave para controle de acesso de 
+            métodos.
+
+            O que existe é:
+
+                convenção
+
+                intenção
+
+                encapsulamento por design
+
+            Exatamente igual aos atributos.
+
+        MÉTODOS PÚBLICOS:
+
+            Sem _
+
+            Parte da API oficial da classe
+
+            Feitos para serem chamados de fora
+
+            EX:
+
+                class Conta:
+                    def sacar(self, valor):
+                        print(f"Sacando {valor}")
+
+            Uso:
+
+                c = Conta()
+                c.sacar(100)
+
+            Quando usar?
+
+                ações principais do objeto
+
+                comportamento que o usuário pode chamar
+
+            Método público = contrato
+
+                Se você mudar a assinatura, quebra código externo.
+
+        MÉTODOS PROTEGIDOS (_metodo):
+
+            - O MAIS USADO EM PYTHON
+
+                class Conta:
+                    def sacar(self, valor):
+                        if self._saldo_suficiente(valor):
+                            self._debitar(valor)
+
+                    def _saldo_suficiente(self, valor):
+                        return True
+
+                    def _debitar(self, valor):
+                        print("Debitado")
+
+            O _ significa:
+
+                “Método interno.
+                Use apenas dentro da classe ou subclasses.”
+
+            Python não impede:
+
+                c._debitar(50)  # tecnicamente possível, mas errado
+
+            - O _ é aviso, não trava.
+
+            POR QUE MÉTODOS PROTEGIDOS SÃO IMPORTANTES?
+
+                Eles permitem:
+
+                    dividir lógica complexa
+
+                    esconder detalhes
+
+                    facilitar manutenção
+
+                    permitir extensão por herança
+
+                Código fica legível sem expor implementação.
+
+        MÉTODOS PRIVADOS (__metodo) — NAME MANGLING:
+
+            EX:
+
+                class Cofre:
+                    def abrir(self):
+                        self.__verificar_senha()
+
+                    def __verificar_senha(self):
+                        print("Senha verificada")
+            
+            Uso:
+
+                c = Cofre()
+                c.abrir()
+
+            Tentativa direta:
+
+                c.__verificar_senha()  # AttributeError
+
+            Internamente:
+
+                _Cofre__verificar_senha
+
+            PARA QUE SERVE MÉTODO PRIVADO DE VERDADE?
+
+                - Evitar colisão em herança, não esconder de usuário malicioso.
+
+                Exemplo clássico:
+
+                    class A:
+                        def __processar(self):
+                            print("A")
+
+                    class B(A):
+                        def __processar(self):
+                            print("B")
+
+                Aqui:
+
+                    _A__processar
+
+                    _B__processar
+
+                - Não entram em conflito.
+
+        ERRO COMUM: USAR __ EM TUDO:
+
+            Má prática:
+
+                class Usuario:
+                    def __validar_email(self): ...
+                    def __gerar_token(self): ...
+                    def __logar(self): ...
+
+            Problemas:
+
+                herança quebrada
+
+                testes difíceis
+
+                manutenção pior
+
+                código rígido
+
+            Python não foi feito para isso.
+
+        PADRÃO PYTHONIC (O QUE SE USA NA VIDA REAL):
+
+            O padrão mais usado é:
+
+                métodos públicos → interface
+
+                métodos protegidos (_) → implementação
+
+                métodos privados (__) → casos raros (herança)
+
+            Exemplo profissional:
+
+                class Pedido:
+                    def finalizar(self):
+                        self._calcular_total()
+                        self._registrar()
+
+                    def _calcular_total(self):
+                        print("Total calculado")
+
+                    def _registrar(self):
+                        print("Pedido registrado")
+
+            . Limpo
+            . Claro
+            . Seguro
+            . Extensível
+
+        MÉTODOS PRIVADOS + @property:
+
+            Muito comum:
+
+                class Produto:
+                    def __init__(self, preco):
+                        self._preco = preco
+
+                    @property
+                    def preco(self):
+                        return self._preco
+
+                    def _validar_preco(self, valor):
+                        if valor < 0:
+                            raise ValueError("Preço inválido")
+
+                    @preco.setter
+                    def preco(self, valor):
+                        self._validar_preco(valor)
+                        self._preco = valor
+
+            O método protegido organiza a regra.
+
+        REGRA DE OURO DEFINITIVA (GUARDA ISSO)
+
+            Método público:
+            - API
+            - usado de fora
+
+            Método protegido (_):
+            - implementação
+            - padrão Python
+
+            Método privado (__):
+            - evitar conflito em herança
+            - uso raro
+
     ==========================================================================
 
-    métodos get e setter e property:
+    métodos get e setter e property (mais afundo):
 
-    ==========================================================================
+        PROBLEMA QUE GET / SET TENTAM RESOLVER:
 
-    Encapsulamento:
+            Sem encapsulamento:
+
+                class Produto:
+                    def __init__(self, preco):
+                        self.preco = preco
+
+            Problemas:
+
+                qualquer valor entra
+
+                regras espalhadas
+
+                objeto pode ficar inválido
+
+                EX:
+
+                    p = Produto(-100)
+
+            Getter/Setter existem para proteger o estado interno.
+
+        GET E SET “CLÁSSICOS”:
+
+            Como seria:
+
+                class Produto:
+                    def __init__(self, preco):
+                        self._preco = preco
+
+                    def get_preco(self):
+                        return self._preco
+
+                    def set_preco(self, valor):
+                        if valor < 0:
+                            raise ValueError("Preço inválido")
+                        self._preco = valor
+
+            Uso:
+
+                p = Produto(10)
+                p.set_preco(20)
+                print(p.get_preco())
+
+            Por que isso é ruim em Python?
+
+                verboso
+
+                quebra a ideia de atributo
+
+                código feio para quem lê Python
+
+            - Isso é aceitável, mas não é pythonic.
+
+        O CONCEITO-CHAVE DO @property:
+
+            - @property permite acessar método COMO SE FOSSE atributo
+
+            Você escreve:
+
+                p.preco
+
+            Mas o Python executa:
+
+                Produto.preco(p)
+
+            Interface limpa + controle interno.
+
+        GETTER COM @property (FORMA CERTA):
+
+            ex:
+
+                class Produto:
+                    def __init__(self, preco):
+                        self._preco = preco
+
+                    @property
+                    def preco(self):
+                        return self._preco
+
+            Uso:
+
+                p = Produto(10)
+                print(p.preco)
+
+            Importante:
+
+                nome do método = nome do atributo público
+
+                _preco é o dado real
+
+        SETTER COM @<property>.setter:
+
+            EX:
+
+                class Produto:
+                    def __init__(self, preco):
+                        self._preco = preco
+
+                    @property
+                    def preco(self):
+                        return self._preco
+
+                    @preco.setter
+                    def preco(self, valor):
+                        if valor < 0:
+                            raise ValueError("Preço inválido")
+                        self._preco = valor
+
+            Uso:
+
+                p = Produto(10)
+                p.preco = 20     # chama setter
+                p.preco = -5     # erro
+
+            Visualmente é atributo, semanticamente é método.
+
+        O ERRO Nº 1 COM @property
+
+            Fazer isso:
+
+                class Produto:
+                    @property
+                    def preco(self):
+                        return self.preco   # recursão infinita
+
+            Sempre use atributo interno (_preco).
+
+        PROPERTY SOMENTE LEITURA:
+
+            - Encapsulamento forte sem setter:
+
+                class Conta:
+                    def __init__(self, saldo):
+                        self._saldo = saldo
+
+                    @property
+                    def saldo(self):
+                        return self._saldo
+
+            Uso:
+
+                c = Conta(100)
+                c.saldo = 200  # AttributeError
+
+            Muito usado para:
+
+                IDs
+
+                status
+
+                valores calculados
+
+        PROPERTY CALCULADA (NÃO EXISTE ATRIBUTO REAL):
+
+            EX:
+
+                class Retangulo:
+                    def __init__(self, largura, altura):
+                        self.largura = largura
+                        self.altura = altura
+
+                    @property
+                    def area(self):
+                        return self.largura * self.altura
+
+            Uso:
+
+                r = Retangulo(10, 5)
+                print(r.area)
+
+            area:
+
+                não é armazenada
+
+                é sempre consistente
+
+                não pode ser “setada”
+
+        PROPERTY + MÉTODOS PROTEGIDOS (PADRÃO PROFISSIONAL):
+
+            class Usuario:
+                def __init__(self, email):
+                    self._email = email
+
+                @property
+                def email(self):
+                    return self._email
+
+                def _validar_email(self, valor):
+                    if "@" not in valor:
+                        raise ValueError("Email inválido")
+
+                @email.setter
+                def email(self, valor):
+                    self._validar_email(valor)
+                    self._email = valor
+
+        PROPERTY vs MÉTODO — QUANDO USAR CADA UM?
+
+            | Situação        | Use         |
+            | --------------- | ----------- |
+            | Leitura simples | `@property` |
+            | Valor derivado  | `@property` |
+            | Regra simples   | `@property` |
+            | Ação / comando  | método      |
+            | Operação pesada | método      |
+
+        PROPERTY NÃO É CAMUFLAGEM!
+
+            Erro conceitual comum:
+
+                “Vou usar property pra esconder tudo”
+
+            Use @property quando:
+
+                conceitualmente é um atributo
+
+                não quando é uma ação
+
+        REGRA DE OURO DEFINITIVA:
+
+            Dado interno → _atributo
+            Interface pública → property
+            Regra → setter ou método protegido
+            Nunca exponha estado crítico direto
 
     ==========================================================================
 
@@ -19833,7 +20993,7 @@ Um pouco sobre POO:
 
     ==========================================================================
 
-    Duck Typing:
+    factory:
 
     ==========================================================================
 
