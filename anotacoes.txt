@@ -21670,21 +21670,1134 @@ Um pouco sobre POO:
 
     Sub-tipagem:
 
+        Sub-tipagem é quando um tipo pode ser substituído por outro sem quebrar 
+        o comportamento esperado do programa.
+
+        Ou seja:
+
+            se B é subtipo de A
+
+            então B pode ser usado onde A é esperado
+
+            sem causar erro lógico
+
+        Forma curta (pra guardar):
+
+            Se funciona com o pai, deve funcionar com o filho.
+
+        SUB-TIPAGEM ≠ HERANÇA (ISSO É CRUCIAL)
+
+            Erro comum:
+
+                “Se herda, é subtipo”
+
+            NÃO NECESSARIAMENTE.
+
+                Herança:
+
+                    . é mecanismo sintático
+
+                Sub-tipagem:
+
+                    . é relação semântica (de significado)
+
+                - Toda sub-tipagem pode usar herança
+                - Mas nem toda herança gera uma boa sub-tipagem
+
+        EXEMPLO DE BOA SUB-TIPAGEM:
+
+            EX:
+                class Animal:
+                    def falar(self):
+                        print("Som genérico")
+
+
+                class Cachorro(Animal):
+                    def falar(self):
+                        print("Au au")
+
+            Uso:
+
+                def fazer_animal_falar(animal: Animal):
+                    animal.falar()
+
+            Funciona com:
+
+                fazer_animal_falar(Animal())
+                fazer_animal_falar(Cachorro())
+
+            . Substituição segura
+            . Polimorfismo correto
+            . Sub-tipagem válida
+
+        EXEMPLO DE SUB-TIPAGEM QUEBRA (HERANÇA ERRADA):
+
+            Clássico erro OO:
+
+                class Retangulo:
+                    def set_largura(self, l):
+                        self.largura = l
+
+                    def set_altura(self, a):
+                        self.altura = a
+
+                    def area(self):
+                        return self.largura * self.altura
+
+            Agora:
+
+                class Quadrado(Retangulo):
+                    def set_largura(self, l):
+                        self.largura = l
+                        self.altura = l
+
+                    def set_altura(self, a):
+                        self.altura = a
+                        self.largura = a
+
+            Teste:
+
+                def calcular_area(r: Retangulo):
+                    r.set_largura(10)
+                    r.set_altura(5)
+                    return r.area()
+
+            Resultado:
+
+                Retângulo → 50
+
+                Quadrado → 25
+
+            Herança existe, mas sub-tipagem quebrou.
+
+            POR QUE ISSO QUEBRA?
+
+                Porque o contrato implícito foi violado.
+
+                O contrato do pai dizia:
+
+                    largura e altura são independentes
+
+                O filho mudou isso.
+
+                Quebrou expectativa do código cliente.
+
+        SUB-TIPAGEM E PRINCÍPIO DE LISKOV (LSP)
+
+            Sub-tipagem correta segue:
+
+                Princípio da Substituição de Liskov
+
+            Em termos práticos:
+
+                - Não exigir mais do que o pai
+                - Não entregar menos do que o pai
+                - Não mudar o significado dos métodos
+
+        FORMAS DE SUB-TIPAGEM EM PYTHON
+
+            Python aceita três grandes formas:
+
+                1. Sub-tipagem nominal (herança)
+
+                    EX:
+
+                        class A:
+                            pass
+
+                        class B(A):
+                            pass
+
+                    - Baseada em herança explícita
+
+                2. Sub-tipagem estrutural (duck typing)
+
+                    EX:
+
+                        class Impressora:
+                            def imprimir(self):
+                                print("Imprimindo")
+
+                        def usar_impressora(obj):
+                            obj.imprimir()
+
+                    Qualquer objeto com imprimir() serve.
+
+                    - Isso é sub-tipagem sem herança.
+
+                3. Sub-tipagem por contrato (ABC):
+
+                    EX:
+
+                        from abc import ABC, abstractmethod
+
+                        class Pagamento(ABC):
+                            @abstractmethod
+                            def pagar(self):
+                                pass
+
+                    Implementações:
+
+                        class Pix(Pagamento):
+                            def pagar(self):
+                                print("PIX")
+
+                    . Sub-tipagem explícita
+                    . Contrato garantido
+
+        SUB-TIPAGEM + COMPOSIÇÃO (DESIGN MADURO):
+
+            ex:
+
+                class Email:
+                    def enviar(self):
+                        print("Email enviado")
+
+
+                class SMS:
+                    def enviar(self):
+                        print("SMS enviado")
+
+
+                class Sistema:
+                    def __init__(self, canal):
+                        self.canal = canal
+
+                    def notificar(self):
+                        self.canal.enviar()
+
+            - Sistema depende do comportamento, não do tipo.
+
+            Isso é:
+
+                sub-tipagem estrutural
+
+                polimorfismo
+
+                baixo acoplamento
+
+        ERROS CLÁSSICOS COM SUB-TIPAGEM:
+
+            . Herança só para reaproveitar código
+            . Subclasse restringir comportamento do pai
+            . Mudar significado de método herdado
+            . Forçar isinstance
+
+        REGRA DE OURO DA SUB-TIPAGEM:
+
+            Se você precisa perguntar "que tipo é esse?", sua sub-tipagem está 
+            errada.
+
+        QUANDO NÃO USAR HERANÇA?
+
+            Quando:
+
+                o “é um” não é verdadeiro
+
+                comportamento muda semanticamente
+
+                invariantes do pai são quebradas
+
+            Use composição.
+
     ==========================================================================
 
     Métodos de classe:
+
+        - Método de classe é um método que pertence à classe, não ao objeto.
+
+        Ele:
+
+            recebe cls (a classe)
+
+            NÃO recebe self
+
+            opera sobre atributos da classe
+
+            pode criar objetos da classe
+
+        Sintaxe básica:
+
+            class Exemplo:
+                @classmethod
+                def metodo(cls):
+                    print(cls)
+
+        - cls é a classe, assim como self é o objeto.
+
+        COMPARAÇÃO RÁPIDA (ESSENCIAL):
+
+            | Tipo                | Recebe | Atua sobre      |
+            | ------------------- | ------ | --------------- |
+            | Método de instância | `self` | objeto          |
+            | Método de classe    | `cls`  | classe          |
+            | Método estático     | nada   | nada específico |
+
+            Se você entende essa tabela, já evita 80% dos erros.
+
+        EXEMPLO CLÁSSICO: ATRIBUTO DE CLASSE
+
+            Cód:
+
+                class Usuario:
+                    total = 0
+
+                    def __init__(self, nome):
+                        self.nome = nome
+                        Usuario.total += 1
+
+                    @classmethod
+                    def total_usuarios(cls):
+                        return cls.total
+
+            Uso:
+
+                u1 = Usuario("Ana")
+                u2 = Usuario("Renato")
+
+                print(Usuario.total_usuarios())
+
+            O método:
+
+                não depende de um usuário específico
+
+                depende da classe Usuario
+
+        POR QUE NÃO USAR MÉTODO DE INSTÂNCIA AQUI?
+
+            Ruim:
+
+                def total_usuarios(self):
+                    return Usuario.total
+
+            Problemas:
+
+                self não faz sentido
+
+                sugere que o método depende do objeto
+
+                design confuso
+
+            Semântica importa em POO.
+
+        MÉTODO DE CLASSE COMO “CONSTRUTOR ALTERNATIVO”:
+
+            Esse é o uso mais elegante de @classmethod.
+
+                class Pessoa:
+                    def __init__(self, nome, idade):
+                        self.nome = nome
+                        self.idade = idade
+
+                    @classmethod
+                    def criar_crianca(cls, nome):
+                        return cls(nome, 0)
+
+            Uso:
+
+                p = Pessoa.criar_crianca("Lucas")
+
+            Note:
+
+                não chama Pessoa(...) diretamente
+
+                chama cls(...)
+
+                funciona em subclasses
+
+        POR QUE USAR cls E NÃO O NOME DA CLASSE?
+
+            EX:
+
+                return cls(nome, 0)
+
+            E não:
+
+                return Pessoa(nome, 0)
+
+            Porque assim:
+
+                class Funcionario(Pessoa):
+                    pass
+
+                f = Funcionario.criar_crianca("João")
+
+            Retorna um Funcionario, não Pessoa.
+
+            Isso é:
+
+                polimorfismo
+
+                sub-tipagem correta
+
+                design robusto
+
+        MÉTODOS DE CLASSE VS FUNÇÕES DE FÁBRICA
+
+            Função fábrica:
+
+                def criar_pessoa(nome):
+                    return Pessoa(nome, 0)
+
+            Método de classe:
+
+                @classmethod
+                def criar_crianca(cls, nome):
+                    return cls(nome, 0)
+
+            - Prefira método de classe quando:
+
+                . a lógica pertence ao conceito da classe
+
+                . você quer respeitar herança
+
+        MÉTODOS DE CLASSE EM HERANÇA
+
+            EX:
+
+                class Config:
+                    versao = "1.0"
+
+                    @classmethod
+                    def info(cls):
+                        return f"Versão {cls.versao}"
+
+            Subclasse:
+
+                class ConfigDev(Config):
+                    versao = "1.0-dev"
+
+            Uso:
+
+                print(Config.info())
+                print(ConfigDev.info())
+
+            - O método se adapta automaticamente à subclasse.
+
+        ERRO COMUM: CONFUNDIR COM @staticmethod:
+
+            Errado:
+
+                @staticmethod
+                def total():
+                    return Usuario.total
+
+            Problemas:
+
+                perde polimorfismo
+
+                ignora herança
+
+                design pobre
+
+            - Use @staticmethod só quando não precisa nem de classe nem de 
+            objeto.
+
+        MÉTODO DE CLASSE + ENCAPSULAMENTO:
+
+            - Muito usado para alterar configuração global:
+
+                class Sistema:
+                    _modo = "producao"
+
+                    @classmethod
+                    def mudar_modo(cls, modo):
+                        cls._modo = modo
+
+            . Centraliza regras
+            . Evita espalhar estado global
+
+        QUANDO USAR @classmethod? (REGRA DE OURO)
+
+            Use método de classe quando:
+
+                - O método depende da classe, não do objeto
+                - Atua sobre atributos de classe
+                - Cria instâncias de forma alternativa
+                - Deve funcionar bem em subclasses
+
+        QUANDO NÃO USAR?
+
+            Quando:
+
+                mexe em dados do objeto
+
+                representa uma ação individual
+
+                poderia ser função externa simples
 
     ==========================================================================
 
     Métodos abstratos:
 
+        - Método abstrato é um método que NÃO tem implementação e OBRIGA as 
+        subclasses a implementarem.
+
+        Ou seja:
+
+            a classe pai define o contrato
+
+            as classes filhas implementam o comportamento
+
+        É promessa, não execução.
+
+        POR QUE MÉTODOS ABSTRATOS EXISTEM?
+
+            Eles resolvem um problema clássico:
+
+                Sem método abstrato:
+
+                    você espera que a subclasse implemente algo
+
+                    mas nada obriga
+
+                    erro aparece só em runtime (ou pior: lógico)
+
+                Com método abstrato:
+
+                    contrato explícito
+
+                    erro aparece cedo
+
+                    arquitetura segura
+
+                Método abstrato = contrato de comportamento.
+
+        CLASSE ABSTRATA ≠ CLASSE NORMAL:
+
+            Para ter métodos abstratos, usamos ABC (Abstract Base Class).
+
+                from abc import ABC, abstractmethod
+
+            Classe abstrata básica:
+
+                from abc import ABC, abstractmethod
+
+                class Animal(ABC):
+
+                    @abstractmethod
+                    def falar(self):
+                        pass
+
+            Aqui:
+
+                Animal é abstrata
+
+                falar é método abstrato
+
+                não pode ser instanciada
+
+                EX:
+
+                    Animal()  # TypeError
+
+        IMPLEMENTANDO O MÉTODO ABSTRATO NA SUBCLASSE:
+
+            EX:
+
+                class Cachorro(Animal):
+                    def falar(self):
+                        print("Au au")
+
+            Agora sim:
+
+                c = Cachorro()
+                c.falar()
+
+            A subclasse cumpriu o contrato.
+
+        O QUE ACONTECE SE NÃO IMPLEMENTAR?
+
+            EX:
+
+                class Gato(Animal):
+                    pass
+
+            SAÍDA:
+
+                Gato()  # TypeError
+
+            Erro:
+
+                Can't instantiate abstract class Gato with abstract method falar
+
+            Python protege a arquitetura.
+
+        MÉTODO ABSTRATO NÃO É “MÉTODO VAZIO”:
+
+            Erro comum:
+
+                class Animal:
+                    def falar(self):
+                        pass
+
+            . Isso não é método abstrato.
+            . Não obriga ninguém.
+
+            @abstractmethod é obrigatório.
+
+        MÉTODOS ABSTRATOS COM IMPLEMENTAÇÃO (SIM, PODE!):
+
+            Pouca gente sabe disso:
+
+                class Servico(ABC):
+
+                    @abstractmethod
+                    def executar(self):
+                        print("Log base")
+
+            Subclasse:
+
+                class ServicoEmail(Servico):
+                    def executar(self):
+                        super().executar()
+                        print("Email enviado")
+
+            O método:
+
+                tem implementação base
+
+                mas continua obrigatório
+
+            Isso é template method.
+
+        MÉTODOS ABSTRATOS + POLIMORFISMO:
+
+            EX:
+
+                class Pagamento(ABC):
+                    @abstractmethod
+                    def pagar(self):
+                        pass
+
+            Implementações:
+
+                class Pix(Pagamento):
+                    def pagar(self):
+                        print("Pagamento via PIX")
+
+
+                class Cartao(Pagamento):
+                    def pagar(self):
+                        print("Pagamento via cartão")
+
+            Uso:
+
+                def processar_pagamento(pagamento: Pagamento):
+                    pagamento.pagar()
+
+            - Código não conhece a implementação
+            - Só conhece o contrato
+
+        MÉTODOS ABSTRATOS VS DUCK TYPING:
+
+            Duck typing:
+
+                - flexível
+                . sem contrato explícito
+
+            Métodos abstratos:
+
+                - contrato claro
+                - erro cedo
+                . mais formal
+
+            Em sistemas grandes, ABC ganha.
+
+        ABC NÃO É HERANÇA POR REAPROVEITAMENTO:
+
+            Regra de ouro:
+
+                Classe abstrata não existe para reaproveitar código, mas para 
+                definir regras.
+
+            Se você quer reaproveitar:
+
+                use composição
+
+                ou mixins
+
+        MÉTODOS ABSTRATOS EM MÉTODOS DE CLASSE E ESTÁTICOS:
+
+            Sim, isso existe:
+
+                class Repositorio(ABC):
+                    @abstractmethod
+                    def salvar(self, dado):
+                        pass
+
+                    @classmethod
+                    @abstractmethod
+                    def criar(cls):
+                        pass
+
+            A subclasse é obrigada a implementar ambos.
+
+        ERROS COMUNS:
+
+            . Achar que pass cria método abstrato
+            . Esquecer de herdar de ABC
+            . Criar ABC só para reaproveitar código
+            . Usar abstractmethod em tudo
+
+        QUANDO USAR MÉTODOS ABSTRATOS?
+
+            - Existe um contrato claro
+            - Múltiplas implementações possíveis
+            - Código cliente não deve conhecer detalhes
+            - Arquitetura precisa ser protegida
+
+            Não use quando:
+
+                só existe uma implementação
+
+                o comportamento não varia
+
+                o custo de complexidade não compensa    
+
     ==========================================================================
 
     Métodos estáticos:
 
+        Método estático é uma função colocada dentro da classe que NÃO depende 
+        nem do objeto (self) nem da classe (cls).
+
+        Ele:
+
+            não recebe self
+
+            não recebe cls
+
+            não acessa atributos de instância
+
+            não acessa atributos de classe (diretamente)
+
+        É uma função organizada dentro da classe.
+
+        Sintaxe:
+
+            class Matematica:
+                @staticmethod
+                def somar(a, b):
+                    return a + b
+
+        Uso:
+
+            Matematica.somar(2, 3)
+
+        COMPARAÇÃO CLARA (ESSENCIAL):
+
+            | Tipo      | Recebe | Depende de |
+            | --------- | ------ | ---------- |
+            | Instância | `self` | objeto     |
+            | Classe    | `cls`  | classe     |
+            | Estático  | nada   | nada       |
+
+            Se você entende essa tabela, não erra mais.
+
+        POR QUE ISSO EXISTE?
+
+            Porque às vezes você quer:
+
+                lógica relacionada ao conceito
+
+                mas que não pertence ao estado
+
+                nem da instância nem da classe
+
+            Organização sem acoplamento.
+
+        EXEMPLO BOM DE USO (UTILITÁRIO LÓGICO):
+
+            EX:
+
+                class ValidadorCPF:
+                    @staticmethod
+                    def validar(cpf):
+                        return len(cpf) == 11
+
+            Uso:
+
+                ValidadorCPF.validar("12345678901")
+
+            A validação:
+
+                faz sentido perto do conceito “CPF”
+
+                não depende de objeto
+
+                não precisa de herança
+
+        EXEMPLO RUIM (ANTI-PADRÃO)
+
+            Errado:
+
+                class Usuario:
+                    @staticmethod
+                    def login(usuario, senha):
+                        ...
+
+            Problema:
+
+                isso deveria ser método de instância
+
+                ou função externa
+
+                ou método de classe
+
+            Staticmethod aqui esconde erro de design.
+
+        MÉTODOS ESTÁTICOS VS FUNÇÕES NORMAIS:
+
+            Função normal:
+
+                def calcular_desconto(valor):
+                    return valor * 0.9
+
+            Método estático:
+
+                class Desconto:
+                    @staticmethod
+                    def calcular(valor):
+                        return valor * 0.9
+
+            Diferença NÃO é técnica, é semântica.
+
+            Use método estático quando:
+
+                a função pertence conceitualmente à classe
+
+                melhora leitura e organização
+
+        MÉTODO ESTÁTICO EM HERANÇA (CUIDADO!):
+
+            EX:
+
+                class A:
+                    @staticmethod
+                    def info():
+                        return "A"
+
+
+                class B(A):
+                    pass
+
+            Uso:
+
+                B.info()
+
+            . Funciona
+            . Mas não é polimórfico
+
+            @staticmethod não conhece cls, então:
+
+                não se adapta à subclasse
+
+                não é ideal para hierarquia OO
+
+        STATICMETHOD VS CLASSMETHOD (REGRA DE OURO):
+
+            Se precisa da classe → classmethod
+            Se não precisa de nada → staticmethod
+            Se precisa do objeto → método de instância
+
+            ps: Nunca escolha pelo “gosto”, escolha pelo acoplamento.
+
+        USOS REAIS E LEGÍTIMOS:
+
+            . validações
+            . parsers
+            . helpers conceituais
+            . cálculos puros
+            . conversões de formato
+
+            Exemplo:
+
+                class Conversor:
+                    @staticmethod
+                    def celsius_para_fahrenheit(c):
+                        return c * 1.8 + 32
+
+        ERROS CLÁSSICOS (ANOTA!):
+
+            . Usar staticmethod para acessar atributo
+            . Usar staticmethod para lógica do objeto
+            . Usar staticmethod para “evitar self”
+            . Criar classe só para ter staticmethods
+
+            - Se virou “classe de funções”, algo está errado.
+
+        REGRA PROFISSIONAL DEFINITIVA:
+
+            @staticmethod:
+                - função pura
+                - sem estado
+                - ligada conceitualmente à classe
+                - uso pontual e consciente
+
     ==========================================================================
 
     self e cls:
+
+        - self e cls NÃO são palavras-chave do Python.
+
+        Eles são:
+
+            . parâmetros comuns
+            . nomes por convenção
+            . escolhidos por clareza
+
+        Você poderia escrever:
+
+            def metodo(banana):
+                ...
+
+        Mas ninguém faz isso porque:
+            
+            - OO é comunicação entre humanos, não só com a máquina.
+
+        O QUE É self (CONCEITO, NÃO SINTAXE):
+
+            Definição correta:
+
+                self é a referência ao objeto que está chamando o método.
+
+            Quando você escreve:
+
+                obj.metodo()
+
+            O Python executa:
+
+                Classe.metodo(obj)
+
+            - obj vira o self.
+
+            Exemplo claro:
+
+                class Pessoa:
+                    def falar(self):
+                        print(self)
+
+            Uso:
+
+                p1 = Pessoa()
+                p2 = Pessoa()
+
+                p1.falar()
+                p2.falar()
+
+            Resultado:
+
+                self em p1.falar() → p1
+
+                self em p2.falar() → p2
+
+            . O método é o mesmo, o self muda.
+
+            POR QUE self EXISTE?
+
+                Sem self, isso seria impossível:
+
+                    class Conta:
+                        def depositar(self, valor):
+                            self.saldo += valor
+
+                Como o método saberia qual saldo alterar?
+
+                self resolve isso:
+
+                    cada objeto carrega seu próprio estado
+
+                    o método sabe em qual objeto atuar
+
+            ERRO CONCEITUAL COMUM SOBRE self:
+
+                Errado:
+
+                    “self é o objeto”
+
+                Errado:
+
+                    “self cria o objeto”
+
+                Correto:
+
+                    self é uma REFERÊNCIA para o objeto já criado
+
+                O objeto nasce antes do método rodar.
+
+            self NÃO É OPCIONAL (EM MÉTODO DE INSTÂNCIA)
+
+                Errado:
+
+                    class Teste:
+                        def metodo():
+                            pass
+
+                Isso gera erro ao chamar:
+
+                    Teste().metodo()  # TypeError
+
+                O Python sempre passa o objeto automaticamente.
+
+        O QUE É cls (CONCEITO REAL):
+
+            cls é a referência à classe que chamou o método de classe.
+
+            Quando você escreve:
+
+                Classe.metodo()
+
+            O Python executa:
+
+                Classe.metodo(Classe)
+
+            A classe vira o cls.
+
+            Exemplo simples:
+
+                class Exemplo:
+                    @classmethod
+                    def quem_sou_eu(cls):
+                        print(cls)
+
+            Uso:
+
+                Exemplo.quem_sou_eu()
+
+            Saída:
+
+                <class '__main__.Exemplo'>
+
+            cls é a classe, não uma instância.
+
+            cls EM HERANÇA (PONTO CRÍTICO):
+
+                ex:
+
+                    class Base:
+                        @classmethod
+                        def quem_sou(cls):
+                            print(cls)
+
+
+                    class Filha(Base):
+                        pass
+
+                Uso:
+
+                    Base.quem_sou()
+                    Filha.quem_sou()
+
+                Saída:
+
+                    <class '__main__.Base'>
+                    <class '__main__.Filha'>
+
+                O mesmo método se adapta à subclasse
+
+                Isso é:
+
+                    polimorfismo
+
+                    sub-tipagem
+
+                    design correto
+
+            POR QUE NÃO USAR O NOME DA CLASSE NO LUGAR DE cls?
+
+                Errado:
+
+                    class Pessoa:
+                        @classmethod
+                        def criar(cls):
+                            return Pessoa()
+
+                Problema:
+
+                    class Funcionario(Pessoa):
+                        pass
+
+                    Funcionario.criar()  # cria Pessoa, não Funcionario
+
+                Certo:
+
+                    return cls()
+
+                . cls respeita herança.
+                . Nome fixo da classe quebra OO.
+
+        SELF VS CLS (DIFERENÇA DEFINITIVA):
+
+            | Aspecto                  | `self`            | `cls`                |
+            | ------------------------ | ----------------- | -------------------- |
+            | Referência               | objeto            | classe               |
+            | Tipo de método           | instância         | classe               |
+            | Atua sobre               | estado individual | estado compartilhado |
+            | Polimórfico              | sim               | sim                  |
+            | Recebido automaticamente | sim               | sim                  |
+
+        ONDE self E cls NÃO APARECEM?
+
+            Métodos estáticos
+
+            Porque:
+
+                não dependem de objeto
+
+                não dependem de classe
+
+        ERRO CLÁSSICO: USAR self QUANDO DEVERIA SER cls:
+
+            Errado:
+
+                class Sistema:
+                    modo = "prod"
+
+                    def mudar_modo(self, modo):
+                        self.modo = modo
+
+            Isso cria:
+
+                atributo de instância
+
+                bug silencioso
+
+            Certo:
+
+                @classmethod
+                def mudar_modo(cls, modo):
+                    cls.modo = modo
+
+        REGRA DE OURO ABSOLUTA:
+
+            self → objeto → estado individual
+            cls  → classe → estado compartilhado
+
+            - Se você errar isso, o design quebra, mesmo que o código rode.
+
+        VISÃO MENTAL (MUITO IMPORTANTE)
+
+            Método não pertence ao objeto
+
+            Método pertence à classe
+
+            self / cls dizem quem está usando o método
+
+        RESUMO DE CADERNO (VERSÃO CONCEITUAL)
+
+            self:
+            - referência ao objeto
+            - passado automaticamente
+            - usado em métodos de instância
+
+            cls:
+            - referência à classe
+            - passado automaticamente
+            - usado em métodos de classe
+
+            Não são palavras-chave
+            São convenções fundamentais
 
     ==========================================================================
 
