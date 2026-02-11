@@ -22801,15 +22801,881 @@ Um pouco sobre POO:
 
     ==========================================================================
 
-    classes como objetos:
+    Hierarquia de classes no python e object:
+
+        Toda classe em Python herda de object.
+
+        Mesmo que você não escreva isso.
+
+        Exemplo:
+        
+            class Pessoa:
+                pass
+
+
+        Internamente é como se fosse:
+
+            class Pessoa(object):
+                pass
+
+        Vamos provar:
+
+            print(Pessoa.__mro__)
+
+        Saída:
+
+            (<class '__main__.Pessoa'>, <class 'object'>)
+
+        - Toda classe termina em object.
+
+        O QUE É object?
+
+            - object é a classe base universal do Python.
+
+            Ela fornece:
+
+                identidade
+
+                comparação básica
+
+                métodos mágicos fundamentais
+
+                estrutura interna de objetos
+
+        CADEIA COMPLETA DA HIERARQUIA
+
+            Exemplo:
+
+                class Animal:
+                    pass
+
+                class Cachorro(Animal):
+                    pass
+
+            MRO:
+
+                print(Cachorro.__mro__)
+
+            Resultado:
+
+                (Cachorro, Animal, object)
+
+            Hierarquia:
+
+                object
+                  ↑
+                Animal
+                  ↑
+                Cachorro
+
+        O QUE SIGNIFICA ESSA HIERARQUIA?
+
+            Quando você chama:
+
+                c.falar()
+
+            O Python procura o método na seguinte ordem:
+
+                Cachorro
+
+                Animal
+
+                object
+
+            Isso é o MRO (Method Resolution Order).
+
+        POR QUE object É IMPORTANTE?
+
+            Porque ele define métodos que todos os objetos têm.
+
+            Exemplo:
+
+                class Pessoa:
+                    pass
+
+                p = Pessoa()
+                print(dir(p))
+
+            Você verá:
+
+                __str__
+
+                __repr__
+
+                __eq__
+
+                __hash__
+
+                etc.
+
+            Todos vêm de object.
+
+        MÉTODOS FUNDAMENTAIS DE object:
+
+            Alguns exemplos:
+
+                | Método      | Função                 |
+                | ----------- | ---------------------- |
+                | `__str__`   | representação amigável |
+                | `__repr__`  | representação técnica  |
+                | `__eq__`    | comparação             |
+                | `__hash__`  | hash                   |
+                | `__class__` | referência à classe    |
+
+                Toda classe herda isso automaticamente.
+
+        HIERARQUIA EM HERANÇA MÚLTIPLA:
+
+            EX:
+
+                class A:
+                    pass
+
+                class B(A):
+                    pass
+
+                class C(A):
+                    pass
+
+                class D(B, C):
+                    pass
+
+            MRO:
+
+                print(D.mro())
+
+            Saída:
+
+                [D, B, C, A, object]
+
+            Hierarquia:
+
+                object
+                   ↑
+                   A
+                 ↑   ↑
+                 B   C
+                   ↑
+                   D
+
+            - object está sempre no topo.
+
+        object É INSTÂNCIA DE QUEM?
+
+            Agora fica interessante
+
+                print(type(object))
+
+            Saída:
+
+                <class 'type'>
+
+            object é instância de type.
+
+        O CÍRCULO FECHADO DO PYTHON:
+
+            Agora o sistema completo:
+
+                objeto → instância de classe
+                classe → instância de type
+                object → instância de type
+                type   → instância de type
+
+            Python é auto-consistente.
+
+        SUPER() E HIERARQUIA:
+
+            Quando você usa:
+
+                super().metodo()
+
+            O Python:
+
+                segue o MRO
+
+                sobe a hierarquia
+
+                nunca pula object
+
+                nunca quebra a cadeia
+
+            - É por isso que misturar chamada direta com super() é perigoso.
+
+        POR QUE object É ESSENCIAL PARA A POO EM PYTHON?
+
+            Sem object:
+
+                não haveria estrutura comum
+
+                não haveria MRO consistente
+
+                não haveria métodos mágicos universais
+
+                não haveria sistema unificado
+
+            object é a raiz da árvore.
+
+        HIERARQUIA COMPLETA VISUAL
+
+            Estrutura geral:
+
+                type
+                  ↑
+                object
+                  ↑
+                SuaClasse
+                  ↑
+                SuaSubClasse
+
+            Tudo parte de object.
+
+        REGRA DE OURO CONCEITUAL:
+
+            Toda classe herda de object
+            Toda instância herda comportamento básico
+            Toda hierarquia termina em object
+
+            Se você entende isso:
+
+                entende MRO
+
+                entende super()
+
+                entende polimorfismo real
 
     ==========================================================================
 
     classes aninhadas:
 
+        Classe aninhada é uma classe definida dentro de outra classe.
+
+        Exemplo básico:
+
+            class Externa:
+                class Interna:
+                    pass
+
+        Aqui:
+
+            Interna está definida dentro de Externa
+
+            mas ainda é uma classe normal
+
+        COMO ACESSAR UMA CLASSE ANINHADA?
+
+            obj = Externa.Interna()
+
+        Repare:
+
+            Interna pertence ao namespace da classe Externa
+
+            mas não depende automaticamente de uma instância
+
+        Em Python:
+
+            a classe interna não tem acesso automático à instância externa
+
+            é apenas uma classe no escopo da outra
+
+        EXEMPLO REAL:
+
+            class Empresa:
+                class Funcionario:
+                    def __init__(self, nome):
+                        self.nome = nome
+
+        Uso:
+
+            f = Empresa.Funcionario("Renato")
+            print(f.nome)
+
+        A classe Funcionario não sabe nada sobre Empresa.
+
+        QUANDO FAZ SENTIDO USAR CLASSES ANINHADAS?
+
+            Use quando:
+
+                . a classe interna só faz sentido no contexto da externa
+                . você quer organizar namespace
+                . quer deixar claro que ela não deve ser usada isoladamente
+
+                Exemplo:
+
+                    class Pedido:
+                        class Status:
+                            PENDENTE = "pendente"
+                            PAGO = "pago"
+                            ENVIADO = "enviado"
+
+                Uso:
+
+                    print(Pedido.Status.PAGO)
+
+            Organizado e sem poluir escopo global.
+
+        CLASSE ANINHADA NÃO HERDA NADA DA EXTERNA:
+
+            Errado:
+
+                class A:
+                    x = 10
+
+                    class B:
+                        print(x)  # ❌ erro
+
+            Porque:
+
+                escopo de classe não funciona como função
+
+                não há acesso automático
+
+            Se quiser acessar, precisa passar referência.
+
+        CLASSE ANINHADA COM INSTÂNCIA DA EXTERNA
+
+            Se você quiser que a interna conheça a externa:
+
+                class Externa:
+                    def __init__(self, valor):
+                        self.valor = valor
+
+                    class Interna:
+                        def __init__(self, externa):
+                            self.externa = externa
+
+                        def mostrar(self):
+                            print(self.externa.valor)
+
+            Uso:
+
+                e = Externa(42)
+                i = Externa.Interna(e)
+                i.mostrar()
+
+            - Aqui existe ligação explícita.
+
+        CLASSES ANINHADAS SÃO APENAS NOMES AGRUPADOS:
+
+            Conceitualmente:
+
+                class A:
+                    class B:
+                        pass
+
+            É praticamente equivalente a:
+
+                class B:
+                    pass
+
+                class A:
+                    B = B
+
+            É organização, não encapsulamento real.
+
+        QUANDO NÃO USAR:
+
+            . Para simular “inner class Java”
+            . Para forçar encapsulamento
+            . Quando a classe faz sentido isoladamente
+
+        EXEMPLO PROFISSIONAL
+
+            Enums organizados:
+
+                class Usuario:
+                    class Tipo:
+                        ADMIN = "admin"
+                        COMUM = "comum"
+
+            Ou:
+
+                class Sistema:
+                    class Config:
+                        DEBUG = True
+                        TIMEOUT = 30
+
+            Ajuda na organização sem criar múltiplos arquivos.
+
+        CLASSES ANINHADAS E META-PROGRAMAÇÃO
+
+            Como classes são objetos:
+
+                classe interna é atributo da externa
+
+                pode ser modificada
+
+                pode ser substituída
+
+            ex:
+
+                print(Externa.__dict__)
+
+            Você verá Interna lá dentro.
+
+        DIFERENÇA ENTRE CLASSE ANINHADA E FUNÇÃO DENTRO DE CLASSE:
+
+            Classe aninhada:
+
+                é objeto classe
+
+                tem seu próprio namespace
+
+                pode ter herança própria
+
+            Função dentro da classe:
+
+                vira método
+
+                sofre binding de self
+        
+        REGRA DE OURO:
+
+            Classe aninhada = organização de namespace
+            Não é encapsulamento real
+            Não tem acesso automático à externa
+
+    ==========================================================================
+
+    Enums, enum manual vs lib enum e técnica de execução de próxima estapa com match:
+
+        - Enum é um conjunto fixo de valores nomeados.
+
+        Serve para:
+
+            . evitar strings soltas
+            . evitar números mágicos
+            . melhorar legibilidade
+            . proteger contra erro de digitação
+
+        ENUM “MANUAL” (FORMA SIMPLES):
+
+            Forma comum usando constantes:
+
+                class StatusPedido:
+                    PENDENTE = "pendente"
+                    PAGO = "pago"
+                    ENVIADO = "enviado"
+
+            Uso:
+
+                status = StatusPedido.PAGO
+
+            Problemas:
+
+                . É só string
+                . Pode comparar errado
+                . Não tem validação
+                . Não tem segurança de tipo
+
+        ENUM COM A BIBLIOTECA enum:
+
+            Python tem módulo nativo:
+
+                from enum import Enum
+
+            Criando um Enum correto:
+
+                from enum import Enum
+
+                class StatusPedido(Enum):
+                    PENDENTE = 1
+                    PAGO = 2
+                    ENVIADO = 3
+
+            Uso:
+
+                status = StatusPedido.PAGO
+
+        Comparação correta:
+
+            if status == StatusPedido.PAGO:
+                print("Pagamento confirmado")
+
+        POR QUE Enum É MELHOR QUE MANUAL?
+
+            . Evita strings soltas
+            . Evita erro de digitação
+            . Tem identidade própria
+            . É iterável
+            . Integra bem com match
+            . Funciona melhor com type hints
+
+        TIPOS DE ENUMS ÚTEIS:
+
+            . Enum normal
+
+                class Cor(Enum):
+                    VERMELHO = 1
+                    AZUL = 2
+
+            . IntEnum (comporta como int)
+
+                from enum import IntEnum
+
+                class Prioridade(IntEnum):
+                    BAIXA = 1
+                    ALTA = 2
+
+            Pode comparar com número:
+
+                Prioridade.ALTA > 1
+
+            . StrEnum (Python 3.11+)
+
+                from enum import StrEnum
+
+                class Nivel(StrEnum):
+                    ADMIN = "admin"
+                    USER = "user"
+
+        ENUM COMO MÁQUINA DE ESTADOS
+
+            Agora entra a parte interessante.
+
+            Imagine fluxo:
+
+                PENDENTE → PAGO → ENVIADO → ENTREGUE
+
+            Enum:
+
+                class Status(Enum):
+                    PENDENTE = 1
+                    PAGO = 2
+                    ENVIADO = 3
+                    ENTREGUE = 4
+
+        USANDO match PARA PRÓXIMA ETAPA
+
+            ex:
+
+                def proximo_status(status):
+                    match status:
+                        case Status.PENDENTE:
+                            return Status.PAGO
+                        case Status.PAGO:
+                            return Status.ENVIADO
+                        case Status.ENVIADO:
+                            return Status.ENTREGUE
+                        case Status.ENTREGUE:
+                            return Status.ENTREGUE
+
+            Uso:
+
+                status = Status.PENDENTE
+                status = proximo_status(status)
+                print(status)
+
+        ENUM + MÉTODO DENTRO DO ENUM (NÍVEL PROFISSIONAL):
+
+            Pouca gente usa isso
+
+                class Status(Enum):
+                    PENDENTE = 1
+                    PAGO = 2
+                    ENVIADO = 3
+
+                    def proximo(self):
+                        match self:
+                            case Status.PENDENTE:
+                                return Status.PAGO
+                            case Status.PAGO:
+                                return Status.ENVIADO
+                            case Status.ENVIADO:
+                                return Status.ENVIADO
+
+            Uso:
+
+                status = Status.PENDENTE
+                status = status.proximo()
+
+            - Agora o comportamento está no próprio estado.
+
+            Isso é design elegante.
+
+        ENUM vs STRING (COMPARAÇÃO REAL):
+
+            String:
+                
+                if status == "pago":
+                
+                
+                Problema:
+                
+                    typo quebra tudo
+                
+                    difícil refatorar
+                
+                    sem autocomplete
+
+            Enum:
+
+                if status == Status.PAGO:
+
+                Solução:
+
+                    . Seguro
+                    . Auto-complete
+                    . Refatorável
+                    . Mais claro
+
+        ERROS COMUNS
+
+            . Comparar enum com string
+            . Usar .value sem necessidade
+            . Misturar Enum manual com Enum real
+            . Criar enum para coisa que muda toda hora
+
+        REGRA DE OURO:
+
+            Use Enum quando:
+            - valores são fixos
+            - representam estados
+            - representam categorias
+            - precisam ser seguros
+
+            Use match quando:
+            - fluxo depende de estado
+            - lógica por etapa
+
     ==========================================================================
 
     mixins:
+
+        Mixin é uma classe pequena criada apenas para adicionar comportamento a 
+        outra classe.
+
+        Ela:
+
+            não representa “é um”
+
+            não é classe principal
+
+            não deve ser instanciada sozinha
+
+            geralmente não possui estado próprio
+
+        Mixin é comportamento reutilizável.
+
+        O PROBLEMA QUE MIXINS RESOLVEM
+
+            Imagine que várias classes precisam:
+
+                log
+
+                serialização
+
+                validação
+
+                autenticação
+
+                cache
+
+            Sem mixins:
+
+                código duplicado
+
+                herança gigante
+
+                acoplamento
+
+            Com mixins:
+
+                comportamento modular
+
+                reutilização limpa
+
+                herança controlada
+        
+        EXEMPLO SIMPLES DE MIXIN:
+
+            EX:
+
+                class LogMixin:
+                    def log(self, mensagem):
+                        print(f"[LOG] {mensagem}")
+
+            Classe usando o mixin:
+
+                class Servico(LogMixin):
+                    def executar(self):
+                        self.log("Executando serviço")
+
+            Uso:
+
+                s = Servico()
+                s.executar()
+
+            - Servico ganhou comportamento sem herdar de uma classe “base pesada”.
+
+        POR QUE NÃO É HERANÇA NORMAL?
+
+            Herança normal significa:
+
+                Cachorro é um Animal
+
+            Mixin significa:
+
+                Servico tem comportamento de log
+
+            Relação não é “é um”, é “tem capacidade”.
+
+        MIXIN NÃO DEVE TER CONSTRUTOR COMPLEXO:
+
+            Ruim:
+
+                class LogMixin:
+                    def __init__(self):
+                        self.arquivo = open("log.txt")
+
+            Problema:
+
+                pode quebrar MRO
+
+                pode conflitar com super()
+
+                difícil composição
+
+            Bom:
+
+                class LogMixin:
+                    def log(self, msg):
+                        print(msg)
+
+            Mixins devem ser simples e independentes.
+
+        HERANÇA MÚLTIPLA COM MIXINS:
+
+            EX:
+
+                class LogMixin:
+                    def log(self, msg):
+                        print(f"[LOG] {msg}")
+
+
+                class SaveMixin:
+                    def save(self):
+                        print("Salvo")
+
+
+                class Usuario(LogMixin, SaveMixin):
+                    pass
+
+            Uso:
+
+                u = Usuario()
+                u.log("Criado")
+                u.save()
+
+            Isso é herança múltipla bem usada.
+
+        ORDEM IMPORTA (MRO):
+
+            class A:
+                def metodo(self):
+                    print("A")
+
+
+            class B:
+                def metodo(self):
+                    print("B")
+
+
+            class C(A, B):
+                pass
+
+            print(C.mro())
+
+        O primeiro mixin tem prioridade.
+
+        Regra prática:
+
+            Mixins vêm antes da classe base principal.
+
+        MIXIN VS COMPOSIÇÃO:
+
+            Mixin:
+
+                reutiliza via herança
+
+                adiciona comportamento direto
+
+            Composição:
+
+                objeto contém outro objeto
+
+                delega comportamento
+
+            Exemplo composição:
+
+                class Logger:
+                    def log(self, msg):
+                        print(msg)
+
+                class Servico:
+                    def __init__(self):
+                        self.logger = Logger()
+
+            Mixins são mais simples quando comportamento é pequeno.
+
+        MIXIN PROFISSIONAL (EXEMPLO REALISTA):
+
+            EX:
+
+                class SerializacaoMixin:
+                    def to_dict(self):
+                        return self.__dict__
+
+                class Usuario(SerializacaoMixin):
+                    def __init__(self, nome):
+                        self.nome = nome
+
+            USO:
+
+                u = Usuario("Renato")
+                print(u.to_dict())
+
+            - Comportamento reutilizável e limpo.
+
+        ERROS CLÁSSICOS COM MIXINS
+
+            . Transformar mixin em classe base principal
+            . Colocar estado complexo
+            . Criar dependência forte entre mixins
+            . Não entender MRO
+
+        REGRA DE OURO DOS MIXINS
+
+            Guarda isso:
+
+                Mixin:
+                    - pequeno
+                    - sem estado complexo
+                    - foco único
+                    - não representa domínio
+                    - reutilizável
+
+        PADRÃO DE NOMENCLATURA
+
+            Por convenção:
+
+                LogMixin
+                SerializableMixin
+                CacheMixin
+                AuthMixin
+
+            - Nome termina com Mixin.
+
+        DIFERENÇA FINAL: MIXIN ≠ INTERFACE:
+
+            Interface (via ABC):
+
+                define contrato
+
+            Mixin:
+
+                adiciona implementação
+
+            Podem ser combinados.
 
     ==========================================================================
 
