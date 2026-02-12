@@ -9,7 +9,7 @@ Crie um Enum Semaforo com:
 
 E use match para definir próxima cor.
 """
-
+    
 from enum import Enum
 
 

@@ -23679,29 +23679,1048 @@ Um pouco sobre POO:
 
     ==========================================================================
 
-    Métodos mágicos:
+    Métodos mágicos (DUnder Methods) — O DATA MODEL DO PYTHON:
+
+        Eles explicam:
+
+            como + funciona
+
+            como print(obj) funciona
+
+            como len(obj) funciona
+
+            como obj[0] funciona
+
+            como obj1 == obj2 funciona
+
+            como objetos se comportam como números, listas, funções…
+
+        Se você entende isso, você entende o modelo interno do Python.
+
+        O QUE SÃO MÉTODOS MÁGICOS?
+
+            São métodos especiais que começam e terminam com:
+
+                __
+
+            Exemplo:
+
+                __init__
+                __str__
+                __repr__
+                __len__
+                __add__
+                __eq__
+
+            Eles são chamados automaticamente pelo Python.
+
+        POR QUE EXISTEM?
+
+            Python tem um modelo chamado Data Model.
+
+            Em vez de “operadores serem especiais”, Python transforma 
+            operadores em chamadas de método.
+
+            Exemplo:
+
+                a + b
+
+            Internamente vira:
+
+                a.__add__(b)
+
+            Operador é açúcar sintático.
+
+        PRINCIPAIS CATEGORIAS DE MÉTODOS MÁGICOS
+
+            CONSTRUÇÃO DE OBJETOS
+
+                __new__
+
+                    Cria o objeto (raramente usado).
+
+                __init__
+
+                    Inicializa o objeto.
+
+                    EX:
+
+                        class Pessoa:
+                            def __init__(self, nome):
+                                self.nome = nome
+
+                Fluxo:
+
+                    __new__
+
+                    __init__
+
+            REPRESENTAÇÃO
+
+                __str__
+
+                    Usado por print(obj)
+
+                    EX:
+
+                        def __str__(self):
+                            return f"Pessoa: {self.nome}"
+
+                __repr__
+
+                    Representação técnica.
+
+                        EX:
+
+                            def __repr__(self):
+                                return f"Pessoa({self.nome})"
+
+                Regra:
+
+                    __repr__ → para dev
+
+                    __str__ → para usuário
+
+            OPERADORES MATEMÁTICOS
+
+                __add__
+
+                    EX:
+
+                        class Numero:
+                            def __init__(self, valor):
+                                self.valor = valor
+
+                            def __add__(self, outro):
+                                return Numero(self.valor + outro.valor)
+
+                    Uso:
+
+                        n1 + n2
+
+                Outros importantes:
+
+                    | Operador | Método        |
+                    | -------- | ------------- |
+                    | `-`      | `__sub__`     |
+                    | `*`      | `__mul__`     |
+                    | `/`      | `__truediv__` |
+                    | `==`     | `__eq__`      |
+                    | `<`      | `__lt__`      |
+                    | `>`      | `__gt__`      |
+
+            TAMANHO E ITERAÇÃO
+
+                __len__
+
+                    EX:
+
+                        def __len__(self):
+                            return 10
+
+                    Uso:
+
+                        len(obj)
+
+                __iter__ e __next__:
+
+                    Permitem usar em loop:
+
+                        for x in obj:
+
+            ACESSO POR ÍNDICE
+
+                __getitem__
+
+                    EX:
+
+                        def __getitem__(self, index):
+                            return self.dados[index]
+
+                    Uso:
+
+                        obj[0]
+
+                __setitem__
+
+                    obj[0] = 5
+
+            COMPARAÇÃO
+
+                __eq__
+
+                    EX:
+
+                        def __eq__(self, outro):
+                            return self.valor == outro.valor
+
+                    Uso:
+
+                        obj1 == obj2
+
+            OBJETO COMO FUNÇÃO
+
+                __call__
+
+                    EX:
+
+                        class Saudacao:
+                            def __call__(self):
+                                print("Olá")
+
+                    Uso:
+
+                        s = Saudacao()
+                        s()
+
+                    Objeto vira callable.
+
+            CONTEXTO (with)
+
+                __enter__
+
+                __exit__
+
+                Permitem:
+
+                    with obj:
+
+                Exemplo simplificado:
+
+                    class Contexto:
+                        def __enter__(self):
+                            print("Entrando")
+
+                        def __exit__(self, exc_type, exc, tb):
+                            print("Saindo")
+
+            ATRIBUTOS DINÂMICOS
+
+                __getattr__
+
+                    Chamado quando atributo não existe.
+
+                __setattr__
+
+                    Intercepta atribuições.
+
+        REGRA DE OURO DOS MÉTODOS MÁGICOS
+
+            Use para modelar comportamento natural
+                
+            Não use para surpreender o leitor
+
+            - Se + não faz sentido semântico, não implemente.
+
+        ERROS COMUNS
+
+            . Implementar operador sem sentido
+            . Esquecer de retornar novo objeto
+            . Quebrar imutabilidade sem perceber
+            . Abusar de getattr
 
     ==========================================================================
 
     factory:
 
+        Factory é sobre controlar como objetos são criados.
+
+        Não é só “criar objeto” — é desacoplar a criação do uso.
+
+        O PROBLEMA QUE FACTORY RESOLVE:
+
+            Sem factory:
+
+                if tipo == "pix":
+                    pagamento = Pix()
+                elif tipo == "cartao":
+                    pagamento = Cartao()
+
+            Problemas:
+
+                . Código cheio de if
+                . Alto acoplamento
+                . Difícil de expandir
+                . Viola princípio aberto/fechado
+
+            Factory centraliza essa lógica.
+
+        FACTORY SIMPLES (FUNÇÃO FÁBRICA):
+
+            Forma mais simples:
+
+                class Pix:
+                    def pagar(self):
+                        print("Pagamento via PIX")
+
+                class Cartao:
+                    def pagar(self):
+                        print("Pagamento via Cartão")
+
+
+                def criar_pagamento(tipo):
+                    if tipo == "pix":
+                        return Pix()
+                    elif tipo == "cartao":
+                        return Cartao()
+                    else:
+                        raise ValueError("Tipo inválido")
+
+            Uso:
+
+                p = criar_pagamento("pix")
+                p.pagar()
+
+                . Simples
+                . Já desacopla
+                . Ainda depende de if
+
+        FACTORY COM DICIONÁRIO (PYTHONIC):
+
+            Melhorando:
+
+                class Pix:
+                    def pagar(self):
+                        print("PIX")
+
+                class Cartao:
+                    def pagar(self):
+                        print("Cartão")
+
+
+                MAPA = {
+                    "pix": Pix,
+                    "cartao": Cartao,
+                }
+
+                def criar_pagamento(tipo):
+                    try:
+                        return MAPA[tipo]()
+                    except KeyError:
+                        raise ValueError("Tipo inválido")
+
+            Aqui estamos usando classes como objetos.
+
+            Isso só funciona porque:
+
+                Classes são objetos de primeira classe em Python.
+
+        FACTORY COMO MÉTODO DE CLASSE
+
+            Agora nível mais OO:
+
+                class Pagamento:
+                    @classmethod
+                    def criar(cls, tipo):
+                        if tipo == "pix":
+                            return Pix()
+                        elif tipo == "cartao":
+                            return Cartao()
+                        else:
+                            raise ValueError("Tipo inválido")
+
+            Uso:
+
+                p = Pagamento.criar("pix")
+
+        FACTORY METHOD (PADRÃO CLÁSSICO)
+
+            Exemplo:
+
+                from abc import ABC, abstractmethod
+
+                class PagamentoFactory(ABC):
+                    @abstractmethod
+                    def criar(self):
+                        pass
+
+
+                class PixFactory(PagamentoFactory):
+                    def criar(self):
+                        return Pix()
+
+
+                class CartaoFactory(PagamentoFactory):
+                    def criar(self):
+                        return Cartao()
+
+            Uso:
+
+                factory = PixFactory()
+                pagamento = factory.criar()
+
+            Aqui você delega a criação.
+
+        ABSTRACT FACTORY (NÍVEL MAIS AVANÇADO)
+
+            Quando você cria famílias de objetos relacionados.
+
+            Exemplo conceitual:
+
+            Tema claro:
+
+                BotãoClaro
+
+                JanelaClaro
+
+            Tema escuro:
+
+                BotaoEscuro
+
+                JanelaEscura
+
+            Factory escolhe a família inteira.
+
+        FACTORY + ENUM
+
+            Combinando com enum:
+
+                from enum import Enum
+
+                class TipoPagamento(Enum):
+                    PIX = "pix"
+                    CARTAO = "cartao"
+
+            Factory:
+
+                def criar_pagamento(tipo: TipoPagamento):
+                    mapa = {
+                        TipoPagamento.PIX: Pix,
+                        TipoPagamento.CARTAO: Cartao
+                    }
+                    return mapa[tipo]()
+
+            . Seguro
+            . Tipado
+            . Sem strings mágicas
+
+        POR QUE FACTORY É IMPORTANTE?
+
+            Porque separa:
+
+                Quem usa o objeto
+
+                De como o objeto é criado
+
+            Isso melhora:
+
+                . Testabilidade
+                . Extensibilidade
+                . Arquitetura
+                . Substituição de implementações
+
+        FACTORY VS CONSTRUTOR DIRETO
+
+            Construtor direto:
+
+                p = Pix()
+
+            Factory:
+
+                p = criar_pagamento(tipo)
+
+            - Factory permite decidir em runtime.
+
+        REGRA DE OURO:
+
+            Use factory quando:
+                - criação é complexa
+                - há múltiplos tipos
+                - há lógica de decisão
+                - quer reduzir acoplamento
+
+            Não use quando:
+
+                - só existe um tipo
+                - não há lógica extra
+
     ==========================================================================
 
     DataClass:
+
+        dataclass parece mágica — mas é só automação inteligente.
+
+        O PROBLEMA QUE DATACLASS RESOLVE:
+
+            Sem dataclass:
+
+                class Pessoa:
+                    def __init__(self, nome, idade):
+                        self.nome = nome
+                        self.idade = idade
+
+                    def __repr__(self):
+                        return f"Pessoa(nome={self.nome}, idade={self.idade})"
+
+                    def __eq__(self, other):
+                        return self.nome == other.nome and self.idade == other.idade
+
+            Muito código repetitivo.
+
+            Boilerplate
+
+        SOLUÇÃO: @dataclass
+
+            EX:
+
+                from dataclasses import dataclass
+
+                @dataclass
+                class Pessoa:
+                    nome: str
+                    idade: int
+
+            Pronto.
+
+            O Python automaticamente cria:
+
+                - __init__
+                - __repr__
+                - __eq__
+
+            Sem você escrever nada.
+
+        O QUE ACONTECE POR BAIXO?
+
+            Quando você escreve:
+
+                @dataclass
+                class Pessoa:
+
+            O decorator:
+
+                lê os annotations (nome: str)
+
+                gera métodos automaticamente
+
+                modifica a classe
+
+            Dataclass é metaprogramação leve.
+
+        ATRIBUTOS COM VALOR PADRÃO:
+
+            EX:
+
+                @dataclass
+                class Produto:
+                    nome: str
+                    preco: float = 0.0
+
+            Regras:
+
+                campos com valor padrão vêm depois
+
+                igual função normal
+
+        __post_init__ (MUITO IMPORTANTE)
+
+            Se precisar de validação:
+
+                @dataclass
+                class Pessoa:
+                    nome: str
+                    idade: int
+
+                    def __post_init__(self):
+                        if self.idade < 0:
+                            raise ValueError("Idade inválida")
+
+            Fluxo:
+
+                __init__ automático roda
+
+                __post_init__ roda depois
+
+        DATACLASS IMUTÁVEL (frozen):
+
+            EX:
+
+                @dataclass(frozen=True)
+                class Coordenada:
+                    x: int
+                    y: int
+
+            Agora:
+
+                c.x = 10  # erro
+
+            Excelente para:
+
+                value objects
+
+                configurações
+
+                segurança
+
+        DATACLASS E COMPARAÇÃO:
+
+            EX:
+
+                p1 = Pessoa("Ana", 20)
+                p2 = Pessoa("Ana", 20)
+
+                print(p1 == p2)  # True
+
+            Comparação é baseada nos campos.
+
+        DATACLASS E ORDERING
+            
+            EX:
+
+                @dataclass(order=True)
+                class Pessoa:
+                    nome: str
+                    idade: int
+
+            Agora pode usar:
+
+                p1 < p2
+
+            Ordenação baseada na ordem dos campos.
+
+        FIELD (CONFIGURAÇÃO AVANÇADA)
+
+            EX:
+
+                from dataclasses import field
+
+                @dataclass
+                class Usuario:
+                    nome: str
+                    ativo: bool = field(default=True)
+
+            Campo que não entra no init:
+
+                id: int = field(init=False)
+
+            Campo com lista (cuidado com mutáveis!)
+
+                Errado:
+
+                    itens: list = []
+
+                Certo:
+
+                    itens: list = field(default_factory=list)
+
+                Isso evita compartilhar lista entre instâncias.
+
+            
+        DATACLASS COMO VALUE OBJECT:
+
+            Dataclass é perfeita para:
+
+                . DTO (Data Transfer Object)
+                . Configurações
+                . Respostas de API
+                . Representar dados puros
+
+            Não é ideal para:
+
+                . Classes com muita lógica
+                . Herança complexa
+
+        DATACLASS VS CLASSE NORMAL:
+
+            | Classe normal      | Dataclass             |
+            | ------------------ | --------------------- |
+            | Muito boilerplate  | Automático            |
+            | Controle total     | Foco em dados         |
+            | Melhor para lógica | Melhor para estrutura |
+
+        DATACLASS + HERANÇA:
+
+            Funciona:
+
+                @dataclass
+                class Pessoa:
+                    nome: str
+
+                @dataclass
+                class Funcionario(Pessoa):
+                    salario: float
+
+        DATACLASS + ENUM:
+
+            EX:
+
+                from enum import Enum
+
+                class Nivel(Enum):
+                    ADMIN = 1
+                    USER = 2
+
+                @dataclass
+                class Usuario:
+                    nome: str
+                    nivel: Nivel
+
+        REGRA DE OURO:
+
+            Se a classe representa dados,
+            provavelmente é dataclass.
+
+
+            Se representa comportamento complexo,
+            talvez não seja.
 
     ==========================================================================
 
     Setups, interfaces e Managers:
 
+        Isso conecta:
+
+            inicialização de sistema (setup)
+
+            contratos de comportamento (interfaces)
+
+            coordenação de objetos (managers)
+
+        SETUP — O PONTO DE ENTRADA DO SISTEMA:
+
+            Setup é a fase onde você configura, instancia e conecta 
+            dependências do sistema.
+
+            Ele resolve:
+
+                Quem cria o quê?
+
+                Quem depende de quem?
+
+                Como tudo começa?
+
+            Exemplo simples de setup
+
+                Sem organização:
+
+                    db = Database()
+                    service = Service(db)
+                    controller = Controller(service)
+
+                Isso espalhado pelo código vira caos.
+
+            Setup organizado:
+
+                def setup():
+                    db = Database()
+                    service = Service(db)
+                    controller = Controller(service)
+                    return controller
+
+            Uso:
+
+                app = setup()
+                app.run()
+
+            Setup centraliza criação e dependências.
+
+            Setup é primo da Factory:
+
+                Diferença:
+
+                    Factory cria um objeto
+
+                    Setup monta o sistema inteiro
+
+        INTERFACES EM PYTHON
+
+            Python não tem interface como Java.
+
+            Mas temos duas formas:
+
+                1. Duck typing (implícito)
+
+                    Se tem o método, funciona.
+
+                        def processar(pagamento):
+                            pagamento.pagar()
+
+
+                    Sem herança, sem contrato explícito.
+
+                2. Interface formal com ABC
+
+                    from abc import ABC, abstractmethod
+
+                    class Repositorio(ABC):
+                        @abstractmethod
+                        def salvar(self, dado):
+                            pass
+
+            Implementações:
+
+                class RepoBanco(Repositorio):
+                    def salvar(self, dado):
+                        print("Salvando no banco")
+
+                class RepoMemoria(Repositorio):
+                    def salvar(self, dado):
+                        print("Salvando na memória")
+
+            Agora existe contrato explícito.
+
+            Quando usar interface formal?
+
+                Use quando:
+
+                projeto é grande
+
+                múltiplas implementações
+
+                equipe grande
+
+                quer segurança arquitetural
+
+        MANAGERS — O ORQUESTRADOR:
+
+            Classe responsável por coordenar várias partes do sistema.
+
+            Não é:
+
+                classe de domínio
+
+                entidade de negócio
+
+            É:
+
+                organizador
+
+                controlador
+
+                mediador
+
+            Exemplo simples:
+
+                class UsuarioManager:
+                    def __init__(self, repositorio):
+                        self.repo = repositorio
+
+                    def criar_usuario(self, nome):
+                        usuario = {"nome": nome}
+                        self.repo.salvar(usuario)
+                        return usuario
+
+            Uso com setup:
+
+                def setup():
+                    repo = RepoMemoria()
+                    manager = UsuarioManager(repo)
+                    return manager
+
+            Manager ajuda a:
+
+                . Centralizar regras
+                . Evitar lógica espalhada
+                . Facilitar testes
+                . Controlar dependências
+
+        SETUP + INTERFACE + MANAGER (ARQUITETURA LIMPA)
+
+            Fluxo ideal:
+
+                Setup
+                  ↓
+                Manager
+                  ↓
+                Interface
+                  ↓
+                Implementação concreta
+
+        POR QUE ISSO É IMPORTANTE?
+
+            Porque permite:
+
+                Trocar banco por memória
+                Trocar API por mock
+                Testar isoladamente
+                Aplicar SOLID
+                Escalar projeto
+
+        ERROS COMUNS
+
+            . Manager virar “classe Deus”
+            . Setup espalhado
+            . Interface sem necessidade
+            . Misturar lógica de domínio com infraestrutura
+
+        REGRA DE OURO
+
+            Setup monta
+            Interface define
+            Manager coordena
+
     ==========================================================================
 
     SOLID:
 
+        SOLID é um acrônimo para 5 princípios:
+
+            | Letra | Princípio             |
+            | ----- | --------------------- |
+            | S     | Single Responsibility |
+            | O     | Open/Closed           |
+            | L     | Liskov Substitution   |
+            | I     | Interface Segregation |
+            | D     | Dependency Inversion  |
+
+        S — Single Responsibility Principle (SRP)
+
+            Uma classe deve ter apenas uma razão para mudar.
+
+            Código ruim:
+
+                class Usuario:
+                    def salvar_no_banco(self): ...
+                    def enviar_email(self): ...
+                    def validar_dados(self): ...
+
+            Problema:
+
+                Lógica misturada
+
+                Múltiplos motivos para mudar
+
+            Código melhor:
+
+                class Usuario:
+                    def __init__(self, nome):
+                        self.nome = nome
+
+
+                class UsuarioRepositorio:
+                    def salvar(self, usuario): ...
+
+
+                class UsuarioEmailService:
+                    def enviar_boas_vindas(self, usuario): ...
+
+            Cada classe tem uma responsabilidade.
+
+        O — Open/Closed Principle (OCP)
+
+            Classes devem estar abertas para extensão, mas fechadas para 
+            modificação.
+
+            Errado:
+
+                def calcular_desconto(tipo):
+                    if tipo == "vip":
+                        return 0.2
+                    elif tipo == "normal":
+                        return 0.1
+
+            Toda vez que surgir tipo novo, você modifica.
+
+            Melhor (polimorfismo):
+
+                class Desconto:
+                    def calcular(self):
+                        pass
+
+
+                class DescontoVIP(Desconto):
+                    def calcular(self):
+                        return 0.2
+
+            Agora você estende, não modifica.
+
+        L — Liskov Substitution Principle (LSP)
+
+            Subclasses devem poder substituir a classe base sem quebrar o 
+            comportamento.
+
+            Erro clássico:
+
+                Quadrado herdando de Retângulo e quebrando contrato.
+
+                - Herança ≠ substituição válida.
+
+            Regra prática:
+
+                Não mude significado do método
+
+                Não exija mais que o pai
+
+                Não entregue menos que o pai
+
+        I — Interface Segregation Principle (ISP)
+
+            Clientes não devem depender de métodos que não usam.
+
+            Interface gigante:
+
+                class Trabalhador:
+                    def trabalhar(self): ...
+                    def comer(self): ...
+
+            Robô não come.
+
+            Melhor:
+
+                class Trabalha:
+                    def trabalhar(self): ...
+
+
+                class Come:
+                    def comer(self): ...
+
+            Interfaces pequenas e específicas.
+
+        D — Dependency Inversion Principle (DIP)
+
+            Dependa de abstrações, não de implementações concretas.
+
+            Errado:
+
+                class UsuarioManager:
+                    def __init__(self):
+                        self.repo = RepoBanco()
+
+            Alta dependência.
+
+            Melhor:
+
+                class UsuarioManager:
+                    def __init__(self, repo):
+                        self.repo = repo
+            
+            E no setup:
+
+                repo = RepoBanco()
+                manager = UsuarioManager(repo)
+
+            Inversão de dependência.
+
+        SOLID EM PYTHON (IMPORTANTE)
+
+            Você aplica SOLID usando:
+
+                Duck typing
+
+                ABC (quando necessário)
+
+                Composição
+
+                Factory
+
+                Setup organizado
+
+            Não precisa exagerar em abstrações.
+
+        REGRA DE OURO
+
+            Se o código:
+
+                . Cresce sem virar bagunça
+                . Permite trocar implementações
+                . É fácil de testar
+                . Evita if gigante
+
+            Você está aplicando SOLID.
+
+
     ==========================================================================
 
-    Lib dataclasses:
-
-    ==========================================================================
 
 Um pouco sobre Estruturas de dados:
 
@@ -23720,8 +24739,6 @@ Um pouco sobre Estruturas de dados:
     algoritmos de busca
 
     algoritmo de Ordenações
-
-    BFS × DFS
 
     pilhas
 
@@ -23744,6 +24761,8 @@ Um pouco sobre Estruturas de dados:
     LRU Cache
 
     grafos
+
+    BFS × DFS
 
     Busca em profundidade
 
@@ -23772,7 +24791,11 @@ Um pouco de ambientes:
 
     Python com ambientes virtuais (virtualenv, poetry, pdb):
 
-    Banco de dados e ORM com Python:
+    Banco de dados e ORM com Python (SQLITE, MYSQL, POSTGRESS E MONGODB):
+
+    Padrão MVC:
+
+    Padrão MVT:
 
     Código limpo com python:
 
