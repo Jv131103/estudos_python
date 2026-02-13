@@ -18931,13 +18931,722 @@ UM POUCO SOBRE LÓGICA DE PROGRAMAÇÃO:
 
     zipfile, tarfile:
 
+        Agora entramos em compactação profissional de arquivos:
+
+            zipfile → formato .zip
+
+            tarfile → .tar, .tar.gz, .tar.bz2
+
+        Essas libs são padrão da biblioteca do Python. Nada de instalar.
+
+        zipfile (ZIP)
+
+            ZIP é:
+
+                compatível com Windows
+
+                simples
+
+                muito usado em automações
+
+            Criar um ZIP
+
+                EX:
+
+                    import zipfile
+
+                    with zipfile.ZipFile("backup.zip", "w") as z:
+                        z.write("arquivo.txt")
+
+                "w" = write (cria novo)
+
+            Adicionar vários arquivos:
+
+                EX:
+
+                    import zipfile
+                    from pathlib import Path
+
+                    with zipfile.ZipFile("backup.zip", "w") as z:
+                        for arquivo in Path.cwd().glob("*.txt"):
+                            z.write(arquivo)
+
+            Adicionar pasta inteira (forma correta)
+
+                EX:
+
+                    import zipfile
+                    from pathlib import Path
+
+                    with zipfile.ZipFile("backup.zip", "w") as z:
+                        for arquivo in Path("meu_projeto").rglob("*"):
+                            if arquivo.is_file():
+                                z.write(arquivo)
+
+                .rglob("*") = recursivo
+
+            Ler um ZIP:
+
+                import zipfile
+
+                with zipfile.ZipFile("backup.zip", "r") as z:
+                    print(z.namelist())  # lista arquivos
+
+            Extrair tudo:
+
+                with zipfile.ZipFile("backup.zip", "r") as z:
+                    z.extractall("destino")
+
+            Extrair arquivo específico:
+
+                z.extract("arquivo.txt")
+
+            Compressão (nível profissional)
+
+                EX:
+
+                    with zipfile.ZipFile(
+                        "backup.zip",
+                        "w",
+                        compression=zipfile.ZIP_DEFLATED
+                    ) as z:
+                        z.write("arquivo.txt")
+
+                Tipos:
+
+                    ZIP_STORED (sem compressão)
+
+                    ZIP_DEFLATED (mais comum)
+
+                    ZIP_BZIP2
+
+                    ZIP_LZMA
+
+        tarfile (TAR e TAR.GZ)
+
+            .tar é:
+
+                muito usado em Linux
+
+                comum para backups
+
+                suporta compressão gzip e bzip2
+
+            Criar .tar
+
+                import tarfile
+
+                with tarfile.open("backup.tar", "w") as tar:
+                    tar.add("arquivo.txt")
+
+            Criar .tar.gz
+
+                with tarfile.open("backup.tar.gz", "w:gz") as tar:
+                    tar.add("meu_projeto")
+
+            Modos:
+
+                "w" → tar simples
+
+                "w:gz" → tar.gz
+
+                "w:bz2" → tar.bz2
+
+                "r" → ler
+
+            Listar conteúdo:
+
+                with tarfile.open("backup.tar.gz", "r:gz") as tar:
+                    print(tar.getnames())
+
+            Extrair:
+
+                with tarfile.open("backup.tar.gz", "r:gz") as tar:
+                    tar.extractall("destino")
+
+        Diferença ZIP vs TAR:
+
+            | ZIP                          | TAR                         |
+            | ---------------------------- | --------------------------- |
+            | Mais comum no Windows        | Mais comum no Linux         |
+            | Compacta arquivo por arquivo | Agrupa tudo antes           |
+            | Fácil de usar                | Melhor para grandes backups |
+
+        Mini Projeto Profissional:
+
+            Criar backup automático do projeto
+
+                from pathlib import Path
+                import zipfile
+                from datetime import datetime
+
+                data = datetime.now().strftime("%Y%m%d_%H%M%S")
+                nome_backup = f"backup_{data}.zip"
+
+                with zipfile.ZipFile(
+                    nome_backup,
+                    "w",
+                    compression=zipfile.ZIP_DEFLATED
+                ) as z:
+                    for arquivo in Path.cwd().rglob("*"):
+                        if ".git" in arquivo.parts or "venv" in arquivo.parts:
+                            continue
+                        if arquivo.is_file():
+                            z.write(arquivo)
+
+                print("Backup criado:", nome_backup)
+
+        Segurança Importante (nível avançado):
+
+            extractall() pode ser perigoso se o zip vier da internet
+
+            Ataque chamado Zip Slip (path traversal).
+
+            Forma segura:
+
+                from pathlib import Path
+
+                with zipfile.ZipFile("backup.zip") as z:
+                    for member in z.namelist():
+                        destino = Path("destino") / member
+                        if not destino.resolve().startswith(Path("destino").resolve()):
+                            raise Exception("Arquivo malicioso detectado")
+                        z.extract(member, "destino")
+
     =====================================================================
 
     Json:
 
+        JSON = JavaScript Object Notation
+
+        É um formato de dados texto, leve e universal.
+
+        Exemplo:
+
+            {
+                "nome": "Renato",
+                "idade": 25,
+                "ativo": true,
+                "habilidades": ["Python", "SQL", "Linux"]
+            }
+
+        Mapeamento JSON ↔ Python:
+
+            | JSON   | Python      |
+            | ------ | ----------- |
+            | object | dict        |
+            | array  | list        |
+            | string | str         |
+            | number | int / float |
+            | true   | True        |
+            | false  | False       |
+            | null   | None        |
+
+        Importação:
+
+            import json
+
+        Converter Python → JSON
+
+            . json.dumps() (string)
+
+                import json
+
+                dados = {
+                    "nome": "Renato",
+                    "idade": 25,
+                    "ativo": True
+                }
+
+                json_string = json.dumps(dados)
+                print(json_string)
+
+            Saída:
+
+                {"nome": "Renato", "idade": 25, "ativo": true}
+
+
+            dumps = dump string
+
+            . Formatar bonito (indent)
+
+                json_string = json.dumps(dados, indent=4)
+                print(json_string)
+
+            Muito usado para logs e debug.
+
+        Salvar JSON em arquivo
+
+            json.dump() (arquivo)
+
+                with open("dados.json", "w", encoding="utf-8") as f:
+                    json.dump(dados, f, indent=4)
+
+            - dump = dump file
+
+        Ler JSON
+
+            . Ler string JSON
+
+                json_string = '{"nome": "Renato", "idade": 25}'
+
+                dados = json.loads(json_string)
+                print(dados["nome"])
+
+            - loads = load string
+
+            . Ler de arquivo:
+
+                with open("dados.json", "r", encoding="utf-8") as f:
+                    dados = json.load(f)
+
+                print(dados)
+
+            - load = load file
+
+        Exemplo Real: Configuração
+
+            config.json
+
+                {
+                    "debug": true,
+                    "port": 8000,
+                    "database": {
+                        "host": "localhost",
+                        "user": "admin"
+                    }
+                }
+
+            Python:
+
+                import json
+
+                with open("config.json") as f:
+                    config = json.load(f)
+
+                print(config["database"]["host"])
+
+        Erros comuns:
+
+            JSON não aceita vírgula final
+
+                ERRADO:
+
+                    {
+                        "nome": "Renato",
+                    }
+
+            JSON usa true/false minúsculo
+
+                Correto:
+
+                    true
+                    false
+
+            JSON não aceita comentário
+
+                ERRADO:
+
+                    // comentário
+
+        Conversões importantes
+
+            Garantir UTF-8 correto
+
+                json.dump(dados, f, ensure_ascii=False, indent=4)
+
+            Sem isso, caracteres especiais podem virar:
+
+                \u00e7
+
+        Manipular JSON como banco simples
+
+            Adicionar dado:
+
+                with open("dados.json") as f:
+                    dados = json.load(f)
+
+                dados["email"] = "renato@email.com"
+
+                with open("dados.json", "w") as f:
+                    json.dump(dados, f, indent=4)
+
+            Ordenar chaves
+
+                json.dumps(dados, indent=4, sort_keys=True)
+
+        Caso profissional: API request
+
+            import requests
+
+            res = requests.get("https://api.github.com/users/octocat")
+            dados = res.json()
+
+            print(dados["login"])
+
+        requests já usa json internamente.
+
+        Quando usar JSON
+
+            Use JSON para:
+
+                Configurações
+
+                Troca de dados via API
+
+                Armazenamento simples
+
+                Logs estruturados
+
+            Não use JSON para:
+
+                Dados enormes (melhor banco)
+
+                Performance crítica (use msgpack ou outro formato)
+
     =====================================================================
 
     pyautogui:
+
+        Ela controla:
+
+            Mouse
+            Teclado
+            Tela (screenshot)
+            Coordenadas
+            Busca por imagem
+
+        Mas…
+
+            cada sistema (Windows / Linux / macOS) tem particularidades.
+
+        Vou te explicar do jeito certo, técnico e prático.
+
+        Instalação:
+
+            pip install pyautogui
+
+        No Linux pode precisar:
+
+            sudo apt install scrot
+            sudo apt install python3-tk
+            sudo apt install python3-dev
+
+        No macOS:
+
+            precisa liberar permissões em:
+
+                Acessibilidade
+
+                Gravação de tela
+
+        No Windows:
+
+            normalmente funciona direto.
+
+        pyautogui simula ações humanas:
+
+            mover mouse
+
+            clicar
+
+            digitar
+
+            apertar teclas
+
+            tirar screenshot
+
+            localizar imagem na tela
+
+        MUITO IMPORTANTE — Fail Safe:
+
+            Se o mouse for para o canto superior esquerdo da tela, o programa 
+            para.
+
+                import pyautogui
+
+                pyautogui.FAILSAFE = True
+
+            Isso evita que você perca o controle do PC.
+
+        Controle de Mouse:
+
+            Ver posição do mouse (para descobrir coordenadas)
+
+                import pyautogui
+
+                print(pyautogui.position())
+
+
+            Modo interativo:
+
+                import pyautogui
+                import time
+
+                time.sleep(3)
+                print(pyautogui.position())
+
+            (3 segundos para você posicionar o mouse)
+
+            Mover mouse:
+
+                pyautogui.moveTo(500, 300, duration=1)
+
+            Mover relativo:
+
+                pyautogui.moveRel(100, 0)
+
+            Clicar:
+
+                pyautogui.click(500, 300)
+
+            Duplo clique:
+
+                pyautogui.doubleClick()
+
+
+            Clique direito:
+
+                pyautogui.rightClick()
+
+        Teclado:
+
+            Digitar texto
+
+                pyautogui.write("Olá Renato", interval=0.1)
+
+            Apertar tecla
+
+                pyautogui.press("enter")
+
+            Combinação de teclas
+
+                pyautogui.hotkey("ctrl", "c")
+
+        Screenshot:
+
+            pyautogui.screenshot("print.png")
+
+        Salvar região específica:
+
+            pyautogui.screenshot("area.png", region=(0, 0, 300, 300))
+
+        Buscar imagem na tela:
+
+            Isso é poderoso.
+
+                local = pyautogui.locateOnScreen("botao.png", confidence=0.8)
+
+            Para usar confidence, precisa instalar:
+
+                pip install opencv-python
+
+            Se encontrar:
+
+                if local:
+                    pyautogui.click(pyautogui.center(local))
+
+        Mini Projeto 1 — Abrir navegador e pesquisar:
+
+            import pyautogui
+            import time
+            
+            time.sleep(3)  # tempo para você abrir o navegador
+            
+            pyautogui.write("https://google.com")
+            pyautogui.press("enter")
+            
+            time.sleep(3)
+            
+            pyautogui.write("Python automation")
+            pyautogui.press("enter")
+
+        Automação de Login
+
+            Cuidado com senha no código.
+
+                pyautogui.write("usuario")
+                pyautogui.press("tab")
+                pyautogui.write("senha")
+                pyautogui.press("enter")
+
+        
+        Uso profissional
+
+            Use pyautogui para:
+
+                automação repetitiva
+
+                testes manuais automatizados
+
+                bots simples
+
+                tarefas administrativas
+
+            Não use para:
+
+                scraping (use requests/selenium)
+
+                sistemas críticos
+
+                produção web
+
+    =====================================================================
+
+    keyboards:
+
+        Captura e simulação de teclado no sistema
+
+        Ela permite:
+
+            Detectar teclas pressionadas
+            Criar atalhos globais
+            Gravar e reproduzir teclas
+            Simular pressionamento de teclas
+            Criar macros reais
+
+        Instalação:
+
+            pip install keyboard
+
+        Importante:
+
+            Windows
+
+                Funciona direto.
+
+            Linux
+
+                Precisa rodar como root:
+
+                    sudo python script.py
+
+                Porque ela acessa /dev/input.
+
+            macOS
+
+                Suporte limitado / pode não funcionar corretamente.
+
+        keyboard trabalha no nível do sistema, não da aplicação.
+
+        Isso significa:
+
+            Ela captura teclas mesmo fora do seu programa.
+
+            Pode ouvir teclado globalmente.
+
+        Detectar tecla pressionada:
+
+            import keyboard
+
+            keyboard.wait("esc")
+            print("Você apertou ESC!")
+
+        Verificar se tecla está pressionada:
+
+            import keyboard
+
+            if keyboard.is_pressed("space"):
+                print("Espaço pressionado")
+
+        - Cuidado: isso pode gerar loop infinito.
+
+        Criar atalho global:
+
+            import keyboard
+
+            keyboard.add_hotkey("ctrl+shift+a", lambda: print("Atalho acionado!"))
+
+            keyboard.wait()
+
+        Isso funciona mesmo fora do terminal.
+
+        Simular tecla:
+
+            keyboard.write("Olá Renato")
+            keyboard.press("enter")
+
+        Ou:
+
+            keyboard.send("ctrl+c")
+
+        Gravar e reproduzir teclas:
+
+            import keyboard
+
+            print("Gravando... Pressione ESC para parar")
+            gravacao = keyboard.record(until="esc")
+
+            print("Reproduzindo...")
+            keyboard.play(gravacao)
+
+        Isso cria macro real.
+
+        Diferença keyboard vs pyautogui:
+
+            | keyboard            | pyautogui                    |
+            | ------------------- | ---------------------------- |
+            | Só teclado          | Mouse + teclado              |
+            | Global              | Global                       |
+            | Mais rápido         | Mais completo                |
+            | Melhor para atalhos | Melhor para automação visual |
+
+        Segurança e Ética
+
+            Essa lib:
+
+                Pode capturar senha
+
+                Pode criar keylogger
+
+                Pode automatizar coisas sensíveis
+
+            Use apenas para:
+
+                produtividade
+
+                automação pessoal
+
+                testes
+
+            Nunca para espionagem.
+
+        Mini Projeto 1 — Bloqueador de tecla:
+
+            import keyboard
+
+            keyboard.block_key("windows")
+
+            keyboard.wait("esc")
+
+        Bloqueia tecla Windows até apertar ESC.
+
+        Mini Projeto 2 — Macro automática:
+
+            import keyboard
+            import time
+
+            def macro():
+                keyboard.write("print('Automação')")
+                keyboard.press("enter")
+
+            keyboard.add_hotkey("ctrl+alt+m", macro)
+
+            keyboard.wait()
+
+        Problemas comuns:
+
+            PermissionError no Linux
+
+                Precisa rodar com sudo.
+
+            Não funciona no VS Code
+
+                Às vezes o terminal bloqueia captura global.
+
+            Não funciona no macOS moderno
+
+                Restrição de segurança.
 
     =====================================================================
 
@@ -18953,11 +19662,19 @@ UM POUCO SOBRE LÓGICA DE PROGRAMAÇÃO:
 
     =====================================================================
 
+    aiio_http:
+
+    =====================================================================
+
     Selenium:
 
     =====================================================================
 
     playwright:
+
+    =====================================================================
+
+    nodriver:
 
     =====================================================================
 
@@ -24786,6 +25503,8 @@ Um pouco de python em baixo nível:
 
 
 Um pouco de ambientes:
+
+    Versões do python com pyenv:
 
     Python com terminal:
 
