@@ -19652,6 +19652,185 @@ UM POUCO SOBRE LÓGICA DE PROGRAMAÇÃO:
 
     bs4:
 
+        Ela serve para:
+
+            Extrair dados de HTML
+            Limpar HTML
+            Navegar pela estrutura DOM
+            Coletar dados estruturados
+
+        Instalação:
+
+            pip install beautifulsoup4
+
+        E quase sempre você usa junto com:
+
+            pip install requests
+
+        BeautifulSoup não baixa páginas.
+
+        Ela apenas:
+
+            recebe HTML
+
+            transforma em objeto navegável
+
+        Exemplo básico com requests:
+
+            import requests
+            from bs4 import BeautifulSoup
+
+            url = "https://example.com"
+            res = requests.get(url)
+
+            soup = BeautifulSoup(res.text, "html.parser")
+
+            print(soup.title)
+            print(soup.title.text)
+
+        Estrutura interna
+
+            Se o HTML for:
+
+                <html>
+                    <body>
+                        <h1>Título</h1>
+                        <p class="texto">Olá mundo</p>
+                    </body>
+                </html>
+            
+            Você pode acessar:
+
+                soup.h1.text
+                soup.p["class"]
+
+        Buscar elementos
+
+            . find() → primeiro elemento
+
+                soup.find("p")
+
+            . find_all() → lista de elementos
+
+                soup.find_all("p")
+
+            . Buscar por classe
+
+                soup.find("p", class_="texto")
+
+            É class_ com underline (porque class é palavra reservada).
+        
+        Buscar por id
+
+            soup.find(id="main")
+
+        CSS Selectors (forma moderna)
+
+            Mais poderoso:
+
+                soup.select("p.texto")
+                soup.select("#main")
+                soup.select("div > p")
+
+            Muito mais flexível.
+
+        Extrair texto
+
+            EX:
+
+                elemento = soup.find("p")
+                print(elemento.text)
+
+            Ou:
+
+                print(elemento.get_text(strip=True))
+
+        Extrair atributos
+
+            EX:
+
+                link = soup.find("a")
+                print(link["href"])
+
+            Ou:
+            
+                print(link.get("href"))
+
+        Iterar vários elementos
+
+            EX:
+
+                for item in soup.find_all("li"):
+                    print(item.text)
+
+            Exemplo real: pegar todos os links
+
+                for a in soup.find_all("a"):
+                    print(a.get("href"))
+
+        Limpar HTML
+
+            Remover tags:
+
+                for script in soup(["script", "style"]):
+                    script.decompose()
+
+        Parser (muito importante)
+
+            Quando criar soup:
+
+                BeautifulSoup(html, "html.parser")
+
+            Outras opções:
+
+                "lxml" (mais rápido)
+
+                "html5lib" (mais tolerante)
+
+            Se quiser performance:
+
+                pip install lxml
+
+            E usar:
+
+                BeautifulSoup(html, "lxml")
+
+        Mini Projeto 1 — Scraping de títulos:
+
+            import requests
+            from bs4 import BeautifulSoup
+
+            res = requests.get("https://news.ycombinator.com")
+            soup = BeautifulSoup(res.text, "html.parser")
+
+            for titulo in soup.select(".titleline a"):
+                print(titulo.text)
+
+        Mini Projeto 2 — Extrair tabela:
+
+            tabela = soup.find("table")
+
+            for linha in tabela.find_all("tr"):
+                colunas = linha.find_all("td")
+                dados = [col.text for col in colunas]
+                print(dados)
+
+        Problemas comuns
+
+            Página carrega via JavaScript
+
+                requests não pega o conteúdo dinâmico.
+
+                Solução:
+
+                    usar Playwright
+
+                    usar Selenium
+
+            HTML malformado
+
+                Use parser "lxml".
+
     =====================================================================
 
     requests:

@@ -1,0 +1,125 @@
+                    IA
+
+Inteligencia artificial é um campo da ciência da computação 
+que se dedica ao estudo e ao desenvolvimento de máquinas e 
+programas computacionais capazes de reproduzir o comportamento 
+humano na tomada de decisões e na realização de tarefas, desde 
+as mais simples até as mais complexas. É comumente referida 
+pela sigla IA ou AI (em inglês, artificial intelligence).
+
+O funcionamento da inteligência artificial, de maneira 
+simplificada, acontece por meio da coleta e da combinação de 
+um grande volume dados (Big Data) seguido da identificação de 
+determinados padrões nesse conjunto de informações. Com esse 
+processo, que geralmente se dá mediante a utilização de 
+algoritmos pré-programados, o software consegue tomar decisões 
+e realizar tarefas de maneira autônoma.
+
+                Tipos de inteligência
+
+A IA se manifesta de diversas formas, cada uma com suas
+características e aplicações específicas.
+
+Algumas delas são:
+
+    - Aprendizado de máquina: Esse tipo de IA se baseia na
+    análise de dados para identificar padrões e realizar 
+    previsões.
+
+    - Redes Neurais Artificiais: Inspiradas no funcionamento do 
+    cérebro humano, as redes Artificiais são capazes de aprender
+    e tomar decisões complexas.
+
+    - Processamento de Linguagem Natural: Permite que os computadores
+    compreendam e interpretem a linguagem humana.
+
+    - Visão Computacional: Permitem que os computadores "vejam" e
+    interpretem o mundo ao seu redor.
+
+    - Robótica: Combina IA com engenharia para criar máquinas autônomas
+    que podem realizar taarefas complexas.
+
+E ainda existem 2 categorias de IA. A diferença entre elas reside na 
+capacidade da máquina de simular ou possuir inteligência genuína. São 
+elas:
+
+    IA Fraca (IA estreita):
+
+        - simula inteligência: Se concentra em realizar tarefas 
+        específicas com excelência, mas sem a capacidade de pensar
+        ou como compreender como um humano.
+
+        - Foco em tarefas: É especializado em tarefas bem definidas,
+        como reconhecimento facial, tradução de linguas ou jogo de 
+        xadrez.
+
+        - Sem autoconciência: Não possui conciência ou capacidade de
+        raciocínio como um humano, apenas imitando esses processos.
+
+        EX:
+
+            assistentes virtuais, carros autônomos, sistemas de 
+            diagnóstico médico.
+
+    IA Forte (IA generativa):
+
+        - Possuir inteligência: Ainda é um conceito teórico, mas
+        a ideia seria a IA possuir capacidade de pensar, compreender e
+        raciocinar como um humano, ou até mesmo superar a inteligência
+        humana.
+
+        - Conciência e Autoconciência: Seria capaz de possuir conciência
+        de si mesma e do mundo ao seu redor, com a capacidade de
+        experimentar emoções e ter ideias originais.
+
+        - Desafios: A criação de IA forte é um desafio científico e
+        ético significativo.
+
+    RESUMO:
+
+        x=================x======================x=======================x
+        | características |       IA Fraca       |       IA Forte        |
+        x=================x======================x=======================x
+        | objetivo        | Simular inteligência | Possuir inteligência  |
+        | Foco            | Tarefas específicas  | Ampla gama de tarefas |
+        | Autoconciência  | Ausente              | Presente              |
+        | Raciocínio      | Simulado             | Autônomo              |
+        | Exemplo         | assistentes virtuais | Sem exemplos reais    |
+        x-----------------x----------------------x-----------------------x
+
+Retomando a lista de IAs, ainda exploraremos sobre:
+
+    - Aprendizado de máquina (Machine Learning): É um dos tipos mais
+    usados do mercado e nas aplicações atuais. É a base da IA moderna,
+    é um campo de IA que permite aos sistemas aprenderem e melhorarem
+    automaticamente a parteir de experiências. Pode ser supervisionados
+    ou não supervisionados e também por reforço. Isso varia dependendo
+    da natureza dos dados de treinamento e objetivos do sistema.
+
+    - Redes Neurais Artificiais (ANNs): São equações matemáticas 
+    inspiradas pelo funcionamento do cérebro humano. As redes neurais
+    artificiais são um tipo de modelo de aprendizado de máquina composto
+    por neurônios interconectados. As ANNs são capazes de aprender padrões
+    complexos de dados e são particularmente eficazes em tarefas como
+    reconhecimento de imagens e processamento de linguagem natural.
+    Subtipos de redes neurais incluem redes neurais convolucionais
+    (CNNs) para processamento de imagens e redes neurais recorrentes
+    (RNNs) para dados sequenciais, entre outros.
+
+    - Processamento de linguagem natural (NLP): É uma suárea da IA
+    que se concentra na interação entre computadores e linguagem
+    humana. Os sistemas NLP - Do inglês, Natural Language Processing,
+    permitem que os computadores entendam, interpretem e gerem
+    linguagem humana de forma semelhante aos humanos. Através de
+    técnicas como análise sintática e semântica, extraem significado de
+    textos e geram linguagem natural de forma autônoma. Incluem tradução
+    automática, análise de sentimentos, sumarização de textos,
+    chatbots e muito mais.
+
+    - Visão computacional: Permite que os computadores "vejam" e
+    interpretem o mundo ao seu redor. Através de técnicas como
+    reconhecimento de objetos, arestas de imagem, bordas e a segmentação
+    de imagem, os sistemas de visão computacional extraem informações
+    de imagens e vídeos, permitindo a interação com o ambiente físico.
+
+    - Robótica: 
