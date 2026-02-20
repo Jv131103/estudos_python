@@ -122,4 +122,9 @@ Retomando a lista de IAs, ainda exploraremos sobre:
     de imagem, os sistemas de visão computacional extraem informações
     de imagens e vídeos, permitindo a interação com o ambiente físico.
 
-    - Robótica: 
+    - Robótica: A robótica combina IA com engenharia para criar máquinas 
+    autônomas que podem realizar tarefas complexas. Os robôs são capazes
+    de interagir com o ambiente físico, manipular objetos e executar tarefas
+    com alto grau de precisão e repetitividade.
+
+

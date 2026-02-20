@@ -19835,13 +19835,774 @@ UM POUCO SOBRE LÓGICA DE PROGRAMAÇÃO:
 
     requests:
 
+        Se você domina requests, você domina:
+
+            APIs REST
+            Web scraping leve
+            Integrações
+            Bots
+            Microserviços
+            Automação profissional
+
+        Instalação:
+
+            pip install requests
+
+        Conceito:
+
+            requests é uma lib para fazer requisições HTTP:
+
+                . GET
+                . POST
+                . PUT
+                . DELETE
+                . PATCH
+                . HEAD
+
+        GET básico:
+
+            import requests
+
+            res = requests.get("https://api.github.com")
+
+            print(res.status_code)
+            print(res.text)
+
+        Resposta (Response):
+
+            Objeto res tem:
+
+                res.status_code
+                res.text
+                res.json()
+                res.headers
+                res.cookies
+                res.url
+                res.ok
+
+        Trabalhando com JSON:
+
+            EX:
+
+                res = requests.get("https://api.github.com/users/octocat")
+
+                dados = res.json()
+
+                print(dados["login"])
+
+            PS: .json() já converte automaticamente.
+
+        Enviando parâmetros (query string):
+
+            params = {
+                "q": "python",
+                "sort": "stars"
+            }
+
+            res = requests.get(
+                "https://api.github.com/search/repositories",
+                params=params
+            )
+
+            print(res.url)
+
+        POST com JSON:
+
+            EX:
+
+                payload = {
+                    "nome": "Renato",
+                    "idade": 25
+                }
+
+                res = requests.post(
+                    "https://httpbin.org/post",
+                    json=payload
+                )
+
+                print(res.json())
+
+            PS: json= já define header automaticamente.
+
+        Headers personalizados:
+
+            Muito importante para scraping:
+
+                headers = {
+                    "User-Agent": "Mozilla/5.0"
+                }
+
+                res = requests.get("https://example.com", headers=headers)
+
+            Sem isso muitos sites bloqueiam.
+
+        Autenticação:
+
+            from requests.auth import HTTPBasicAuth
+
+            res = requests.get(
+                "https://httpbin.org/basic-auth/user/pass",
+                auth=HTTPBasicAuth("user", "pass")
+            )
+
+        Bearer Token:
+
+            headers = {
+                "Authorization": "Bearer SEU_TOKEN"
+            }
+
+        Sessões (PROFISSIONAL):
+
+            Mantém cookies e conexão aberta.
+
+            EX:
+
+                session = requests.Session()
+
+                session.headers.update({
+                    "User-Agent": "Mozilla/5.0"
+                })
+
+                res = session.get("https://httpbin.org/cookies/set?nome=Renato")
+                res2 = session.get("https://httpbin.org/cookies")
+
+                print(res2.json())
+
+            Sessão é muito mais eficiente.
+        
+        Timeout (OBRIGATÓRIO em produção):
+
+            EX:
+
+                res = requests.get("https://example.com", timeout=5)
+
+            PS: Nunca faça request sem timeout.
+
+        Tratamento de erro:
+
+            try:
+                res = requests.get("https://example.com", timeout=5)
+                res.raise_for_status()
+            except requests.exceptions.RequestException as e:
+                print("Erro:", e)
+
+        Download de arquivo:
+
+            res = requests.get("https://example.com/imagem.jpg")
+
+            with open("imagem.jpg", "wb") as f:
+                f.write(res.content)
+
+        Para arquivos grandes:
+
+            res = requests.get(url, stream=True)
+
+            with open("arquivo.zip", "wb") as f:
+                for chunk in res.iter_content(chunk_size=8192):
+                    f.write(chunk)
+            
+        Proxy:
+
+            proxies = {
+                "http": "http://10.10.1.10:3128",
+                "https": "http://10.10.1.10:1080"
+            }
+
+            res = requests.get(url, proxies=proxies)
+
+        Status Codes importantes:
+
+            | Código | Significado     |
+            | ------ | --------------- |
+            | 200    | OK              |
+            | 201    | Criado          |
+            | 400    | Erro do cliente |
+            | 401    | Não autorizado  |
+            | 403    | Proibido        |
+            | 404    | Não encontrado  |
+            | 500    | Erro servidor   |
+
+        Estrutura de uma requisição requests:
+
+            EX:
+
+                requests.post(
+                    url,
+                    params=None,
+                    data=None,
+                    json=None,
+                    headers=None,
+                    cookies=None,
+                    files=None,
+                    auth=None,
+                    timeout=None,
+                    allow_redirects=True,
+                    proxies=None,
+                    verify=True,
+                    stream=False
+                )
+
+            Agora vamos entender cada parâmetro importante.
+
+            . url (obrigatório)
+
+                É o endereço do recurso.
+
+                    requests.get("https://api.github.com")
+
+            params (Query String)
+
+                Adiciona parâmetros na URL.
+
+                    params = {
+                        "q": "python",
+                        "page": 1
+                    }
+
+                    requests.get("https://api.github.com/search/repositories", params=params)
+
+                Resultado real:
+
+                    https://api.github.com/search/repositories?q=python&page=1
+
+                Usado só em GET normalmente, mas não é um padrão.
+
+            data (Form Data):
+
+                Envia dados como formulário (application/x-www-form-urlencoded).
+
+                    data = {
+                        "username": "renato",
+                        "password": "123"
+                    }
+
+                    requests.post("https://httpbin.org/post", data=data)
+
+                Muito usado em login antigo de site.
+
+            json (JSON Body):
+
+                Envia JSON automaticamente.
+
+                    payload = {
+                        "nome": "Renato",
+                        "idade": 25
+                    }
+
+                    requests.post("https://httpbin.org/post", json=payload)
+
+                Define header automaticamente:
+
+                    Content-Type: application/json
+
+                PS: Nunca misture data e json.
+
+            headers
+
+                Define cabeçalhos HTTP.
+
+                    headers = {
+                        "User-Agent": "Mozilla/5.0",
+                        "Authorization": "Bearer TOKEN",
+                        "Accept": "application/json"
+                    }
+
+                    requests.get(url, headers=headers)
+
+                Essencial para scraping.
+
+            cookies:
+
+                Enviar cookies manualmente.
+
+                    cookies = {
+                        "session_id": "abc123"
+                    }
+
+                    requests.get(url, cookies=cookies)
+
+                Mas o ideal é usar Session().
+
+            files (Upload de arquivo):
+
+                    files = {
+                        "file": open("arquivo.txt", "rb")
+                    }
+
+                    requests.post("https://httpbin.org/post", files=files)
+            
+                Envia como multipart/form-data.
+
+            auth (Autenticação):
+
+                Basic Auth
+
+                    requests.get(url, auth=("usuario", "senha"))
+
+            timeout (MUITO IMPORTANTE):
+
+                    requests.get(url, timeout=5)
+
+                Nunca use requests sem timeout em produção.
+
+            allow_redirects:
+
+                Controla redirecionamento.
+
+                    requests.get(url, allow_redirects=False)
+
+            proxies:
+
+                proxies = {
+                    "http": "http://10.10.1.10:3128",
+                    "https": "http://10.10.1.10:1080"
+                }
+
+                requests.get(url, proxies=proxies)
+
+            verify:
+
+                Controla verificação SSL.
+
+                    requests.get(url, verify=False)
+
+                PS: Nunca use isso em produção.
+
+            stream
+
+                Para download grande.
+
+                    requests.get(url, stream=True)
+
     =====================================================================
 
     curl_cffi:
 
+        O curl_cffi é mais completa que o requests, porque ela usa libcurl 
+        por baixo, que é a mesma engine usada por:
+
+            curl no terminal
+
+            navegadores internamente
+
+            sistemas Unix
+
+            ferramentas profissionais de rede
+
+        E sim — ela consegue inclusive imitar fingerprint de navegador 
+        real, coisa que requests não faz.
+
+        curl_cffi:
+
+            usa libcurl real
+
+            pode simular Chrome / Firefox real
+
+            mais difícil de bloquear
+
+            suporta HTTP/2 melhor
+
+            suporta fingerprint TLS real
+
+        Instalação:
+
+            pip install curl_cffi
+
+        GET simples:
+
+            EX:
+
+                from curl_cffi import requests
+
+                res = requests.get("https://httpbin.org/get")
+
+                print(res.status_code)
+                print(res.text)
+
+            Parece requests… mas não é.
+
+        Imitar navegador real (ponto forte):
+
+            Isso aqui é o diferencial:
+
+                from curl_cffi import requests
+
+                res = requests.get(
+                    "https://example.com",
+                    impersonate="chrome110"
+                )
+
+                print(res.status_code)
+
+            Agora você está simulando Chrome real.
+
+            Opções comuns:
+
+                impersonate="chrome110"
+                impersonate="chrome124"
+                impersonate="firefox"
+                impersonate="edge"
+
+            Isso altera:
+
+                TLS fingerprint
+
+                Cipher suites
+
+                HTTP headers
+
+                Handshake
+
+        POST com JSON:
+
+            res = requests.post(
+                "https://httpbin.org/post",
+                json={"nome": "Renato"},
+                impersonate="chrome"
+            )
+
+            print(res.json())
+
+        Headers personalizados:
+
+            res = requests.get(
+                "https://example.com",
+                headers={
+                    "User-Agent": "Mozilla/5.0"
+                },
+                impersonate="chrome"
+            )
+
+        Timeout:
+
+            res = requests.get(url, timeout=5)
+
+        Proxy:
+
+            res = requests.get(
+                url,
+                proxies={
+                    "http": "http://ip:port",
+                    "https": "http://ip:port"
+                },
+                impersonate="chrome"
+            )
+
+        Cookies:
+
+            session = requests.Session()
+
+            res = session.get(url)
+
+        Sim, também tem Session.
+
+        Observação técnica importante:
+
+            curl_cffi é mais pesado que requests.
+
+            Porque:
+
+                carrega libcurl
+
+                negocia TLS real
+
+                faz handshake mais complexo
+
+            Mas é muito mais realista.
+
+        O que o curl_cffi realmente entrega
+
+            Ele é um binding Python para um fork do curl-impersonate via 
+            CFFI, permitindo requests com fingerprint de navegador 
+            (TLS/JA3 + HTTP/2) muito mais parecido com Chrome/Safari/Firefox 
+            do que requests/httpx.
+
+            Além disso, as docs destacam que ele:
+
+                “imita” a API do requests (pra você migrar fácil)
+
+                suporta HTTP/2
+
+                tem suporte a asyncio
+
+                tem suporte a websocket
+
+        Dois jeitos de usar: curl_cffi.get(...) 
+        vs from curl_cffi import requests:
+
+            A) API direta
+
+                import curl_cffi
+
+                r = curl_cffi.get("https://httpbin.org/get", impersonate="chrome")
+                print(r.status_code, r.text[:80])
+
+            B) “Requests-like” (o que a galera mais usa)
+
+                from curl_cffi import requests
+
+                r = requests.get("https://httpbin.org/get", impersonate="chrome")
+                print(r.status_code)
+
+        impersonate= (o superpoder):
+
+            Usar versão específica (ex.: chrome110)
+
+            EX:
+
+                from curl_cffi import requests
+
+                r = requests.get("https://tls.browserleaks.com/json", impersonate="chrome110")
+                print(r.json().get("ja3n_hash"))
+
+            Usar “latest” automaticamente (recomendado no dia a dia)
+
+                r = requests.get("https://tls.browserleaks.com/json", impersonate="chrome")
+
+            Docs: usar chrome sem número tenta ficar sempre no “último” suportado 
+            conforme o curl_cffi atualiza; também existe safari e safari_ios
+
+        Headers padrão: default_headers
+
+            Quando você usa impersonate=..., ele pode adicionar headers 
+            padrão do “browser” automaticamente.
+
+            Se você quer sobrescrever alguns headers, você pode passar 
+            headers={...}.
+
+            Se você quer desligar totalmente esses headers automáticos:
+
+                from curl_cffi import requests
+
+                r = requests.get(
+                    "https://example.com",
+                    impersonate="chrome",
+                    default_headers=False
+                )
+                
+        Params, JSON, data: igual requests (com extras):
+
+            Query string (params)
+
+                from curl_cffi import requests
+
+                r = requests.get("https://httpbin.org/get", params={"q": "python"}, impersonate="chrome")
+                print(r.json()["args"])
+
+            JSON (json=)
+
+                r = requests.post("https://httpbin.org/post", json={"nome": "Renato"}, impersonate="chrome")
+                print(r.json()["json"])
+
+            Form (data=)
+
+                r = requests.post("https://httpbin.org/post", data={"a": "1", "b": "2"}, impersonate="chrome")
+                print(r.json()["form"])
+
+        Proxies (HTTP e SOCKS):
+
+            EX:
+
+                from curl_cffi import requests
+
+                proxies = {"https": "http://localhost:3128"}
+                r = requests.get("https://tls.browserleaks.com/json", impersonate="chrome110", proxies=proxies)
+
+                proxies = {"https": "socks://localhost:3128"}
+                r = requests.get("https://tls.browserleaks.com/json", impersonate="chrome110", proxies=proxies)
+
+        Session (cookies, conexão reutilizada):
+
+            Ele tem Session no estilo requests (útil pra login + 
+            manter cookies).
+
+                from curl_cffi import requests
+
+                s = requests.Session()
+                s.headers.update({"User-Agent": "MeuBot/1.0"})  # se quiser manual
+                r1 = s.get("https://httpbin.org/cookies/set?x=1", impersonate="chrome")
+                r2 = s.get("https://httpbin.org/cookies", impersonate="chrome")
+                print(r2.json())
+
+        Customização de fingerprint:
+
+            Ainda não é “totalmente implementado”, mas dá pra alterar partes 
+            usando CurlOpt via Curl.setopt(...)
+
+            Exemplo citado nas docs (ordem de pseudo-headers HTTP/2):
+
+                from curl_cffi import Curl, CurlOpt
+
+                c = Curl()
+                c.setopt(CurlOpt.HTTP2_PSEUDO_HEADERS_ORDER, "masp")
+
     =====================================================================
 
-    aiio_http:
+    aiohttp:
+
+        Ela é:
+
+            Assíncrona (async/await)
+            Cliente HTTP rápido
+            Também pode ser servidor web
+            Muito usada para alta concorrência
+            Muito mais eficiente que requests em paralelo
+
+        Antes de tudo: o que é “assíncrono”?
+
+            Com requests:
+
+                for url in urls:
+                    requests.get(url)
+
+            Espera cada requisição terminar.
+
+            Com aiohttp:
+
+                Pode fazer várias requisições ao mesmo tempo sem criar 
+                várias threads.
+    
+            Isso é I/O bound ideal.
+
+        Instalação:
+
+            pip install aiohttp
+
+        GET básico:
+
+            EX:
+
+                import aiohttp
+                import asyncio
+
+                async def main():
+                    async with aiohttp.ClientSession() as session:
+                        async with session.get("https://httpbin.org/get") as response:
+                            print(response.status)
+                            text = await response.text()
+                            print(text[:200])
+
+                asyncio.run(main())
+
+            Tudo que faz I/O precisa de await.
+
+        Trabalhando com JSON:
+
+            import aiohttp
+            import asyncio
+
+            async def main():
+                async with aiohttp.ClientSession() as session:
+                    async with session.get("https://api.github.com/users/octocat") as resp:
+                        data = await resp.json()
+                        print(data["login"])
+
+            asyncio.run(main())
+
+        POST com JSON:
+
+            async def main():
+                async with aiohttp.ClientSession() as session:
+                    async with session.post(
+                        "https://httpbin.org/post",
+                        json={"nome": "Renato"}
+                    ) as resp:
+                        data = await resp.json()
+                        print(data)
+
+            asyncio.run(main())
+
+        Headers:
+
+            headers = {
+                "User-Agent": "MeuBot/1.0"
+            }
+
+            async with session.get(url, headers=headers)
+
+        Timeout:
+
+            timeout = aiohttp.ClientTimeout(total=5)
+
+            async with aiohttp.ClientSession(timeout=timeout) as session:
+                ...
+
+        Concorrência REAL (o diferencial)
+
+            Aqui está o poder real:
+
+                import aiohttp
+                import asyncio
+
+                urls = [
+                    "https://httpbin.org/delay/1",
+                    "https://httpbin.org/delay/1",
+                    "https://httpbin.org/delay/1"
+                ]
+
+                async def fetch(session, url):
+                    async with session.get(url) as resp:
+                        return await resp.text()
+
+                async def main():
+                    async with aiohttp.ClientSession() as session:
+                        tasks = [fetch(session, url) for url in urls]
+                        responses = await asyncio.gather(*tasks)
+
+                    print("Todas terminaram!")
+
+                asyncio.run(main())
+
+            Isso executa as 3 quase no mesmo tempo.
+
+        Controle de conexões (nível empresa):
+
+            EX:
+
+                connector = aiohttp.TCPConnector(limit=10)
+
+                async with aiohttp.ClientSession(connector=connector) as session:
+                    ...
+
+            Limita número de conexões simultâneas.
+
+        Cookies:
+
+            async with session.get("https://httpbin.org/cookies/set?nome=Renato"):
+                ...
+
+            async with session.get("https://httpbin.org/cookies") as resp:
+                print(await resp.json())
+
+        Download grande:
+
+            async with session.get(url) as resp:
+                with open("arquivo.zip", "wb") as f:
+                    while True:
+                        chunk = await resp.content.read(1024)
+                        if not chunk:
+                            break
+                        f.write(chunk)
+
+        Quando usar aiohttp:
+
+            Use quando:
+
+                scraping massivo
+
+                múltiplas APIs
+
+                crawler
+
+                monitoramento
+
+                bots concorrentes
+            
+            Não precisa usar quando:
+
+                faz 1 requisição por vez
+
+                script simples
 
     =====================================================================
 
@@ -19870,6 +20631,14 @@ UM POUCO SOBRE LÓGICA DE PROGRAMAÇÃO:
     =====================================================================
 
     io:
+
+    =====================================================================
+
+    tesseract e pytessaract:
+
+    =====================================================================
+
+    pandas:
 
     =====================================================================
 
