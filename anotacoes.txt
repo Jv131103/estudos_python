@@ -20606,35 +20606,3058 @@ UM POUCO SOBRE LÓGICA DE PROGRAMAÇÃO:
 
     =====================================================================
 
-    Selenium:
+    urllib3:
+
+        A base do requests.
+
+        É mais baixo nível, possui mais controle, maios técnico e verboso.
+
+        Porém, é mais poderoso, Melhor para controle fino de conexões e
+        Base de muitas libs HTTP.
+
+        Instalação:
+
+            Na maioria das vezes já vem instalado (porque o requests 
+            depende dele).
+
+            Mas se precisar:
+
+                pip install urllib3
+
+        urllib3 trabalha com:
+
+            Pool de conexões
+            Reuso de conexão (connection pooling)
+            Controle de retry
+            Controle de timeout granular
+            SSL/TLS
+            Proxy
+
+        GET básico:
+
+            import urllib3
+
+            http = urllib3.PoolManager()
+
+            response = http.request("GET", "https://httpbin.org/get")
+
+            print(response.status)
+            print(response.data.decode("utf-8")[:200])
+
+        response.data vem em bytes.
+
+        POST com JSON:
+
+            import json
+            import urllib3
+
+            http = urllib3.PoolManager()
+
+            payload = json.dumps({"nome": "Renato"}).encode("utf-8")
+
+            response = http.request(
+                "POST",
+                "https://httpbin.org/post",
+                body=payload,
+                headers={"Content-Type": "application/json"}
+            )
+
+            print(response.status)
+
+        Retry automático (superpoder real):
+
+            Aqui está o diferencial técnico.
+
+                from urllib3.util.retry import Retry
+                from urllib3 import PoolManager
+
+                retry = Retry(
+                    total=3,
+                    backoff_factor=1,
+                    status_forcelist=[500, 502, 503, 504]
+                )
+
+                http = PoolManager(retries=retry)
+
+                response = http.request("GET", "https://httpbin.org/status/500")
+                print(response.status)
+
+            Isso tenta novamente automaticamente.
+
+        Timeout granular:
+
+            Diferente do requests, aqui é separado:
+
+                from urllib3.util import Timeout
+                import urllib3
+
+                timeout = Timeout(connect=2.0, read=5.0)
+
+                http = urllib3.PoolManager(timeout=timeout)
+
+                response = http.request("GET", "https://httpbin.org/delay/2")
+                print(response.status)
+
+            Você controla:
+
+                tempo para conectar
+
+                tempo para ler resposta
+
+        Pool de conexões (nível profissional):
+
+            http = urllib3.PoolManager(
+                num_pools=10,
+                maxsize=10
+            )
+
+        Isso controla:
+
+            número de pools
+
+            número máximo de conexões simultâneas
+
+        Essencial para alta performance.
+
+        Proxy:
+
+            EX:
+
+                http = urllib3.ProxyManager("http://localhost:3128")
+
+                response = http.request("GET", "https://httpbin.org/ip")
+                print(response.data.decode())
+
+        Desabilitar verificação SSL:
+
+            EX:
+
+                http = urllib3.PoolManager(cert_reqs="CERT_NONE")
+
+            PS: Nunca faça isso em produção.
+
+        Streaming:
+
+            response = http.request("GET", url, preload_content=False)
+
+            with open("arquivo.zip", "wb") as f:
+                for chunk in response.stream(1024):
+                    f.write(chunk)
+
+            response.release_conn()
+
+        Quando usar urllib3 direto?
+
+            Use quando:
+
+                precisa controle fino de retry
+
+                precisa timeout separado
+
+                quer otimização de conexão
+
+                está construindo lib HTTP
+
+                quer reduzir dependência de requests
+
+        Curiosidade importante:
+
+            Muita gente usa requests sem saber que:
+
+                requests → urllib3 → socket
+
+            Ou seja, dominar urllib3 é entender o que está por baixo.
 
     =====================================================================
 
-    playwright:
+    Selenium:
+
+        Instalação:
+
+            pip install selenium
+
+        ChromeDriver / GeckoDriver / EdgeDriver: como funciona hoje:
+
+            . Selenium 4.6+ introduziu o Selenium Manager: se você tiver 
+            Chrome/Firefox/Edge instalados, muitas vezes o Selenium consegue 
+            resolver/baixar driver automaticamente sem você gerenciar 
+            executável manualmente.
+
+            . Para Firefox, o próprio docs do Selenium recomenda usar o 
+            geckodriver mais recente; e existe compatibilidade mínima por 
+            versão.
+    
+            . Para ChromeDriver, o Chrome for Developers mantém as páginas 
+            de download e “Chrome for Testing” para versões recentes.
+            Acesso em: https://googlechromelabs.github.io/chrome-for-testing/
+
+        Padrão de criação do driver (Selenium 4):
+
+            O padrão “atual” é usar Service(...) + Options(...):
+
+                from selenium import webdriver
+                from selenium.webdriver.chrome.service import Service as ChromeService
+                from selenium.webdriver.chrome.options import Options as ChromeOptions
+
+                opts = ChromeOptions()
+                opts.add_argument("--start-maximized")
+
+                driver = webdriver.Chrome(service=ChromeService(), options=opts)
+
+            E para Firefox:
+
+                from selenium import webdriver
+                from selenium.webdriver.firefox.service import Service as FirefoxService
+                from selenium.webdriver.firefox.options import Options as FirefoxOptions
+
+                opts = FirefoxOptions()
+                # opts.add_argument("-headless")  # se quiser
+                driver = webdriver.Firefox(service=FirefoxService(), options=opts)
+
+        O objeto driver: o que ele é e o que você consegue tirar dele:
+
+            Navegação e estado:
+
+                driver.get(url)
+
+                driver.current_url
+
+                driver.title
+
+                driver.page_source (HTML atual renderizado)
+
+                driver.refresh() (recarrega)
+
+                driver.back() / driver.forward()
+
+            Screenshot
+
+                driver.save_screenshot("tela.png") (ou driver.get_screenshot_as_file(...))
+
+        Localizadores: By, CSS, XPath (e quando usar):
+
+            EX:
+
+                from selenium.webdriver.common.by import By
+
+                driver.find_element(By.ID, "login")
+                driver.find_element(By.NAME, "q")
+                driver.find_element(By.CSS_SELECTOR, "div.card > a.btn")
+                driver.find_element(By.XPATH, "//button[contains(., 'Entrar')]")
+                driver.find_element(By.CLASS_NAME, "btn-primary")
+                driver.find_element(By.LINK_TEXT, "Central de Ajuda")  # textos de link
+                driver.find_element(By.PARTIAL_LINK_TEXT, "Ajuda")  # href do link
+                driver.find_elements(By.TAG_NAME, "a")
+
+            Regra prática:
+
+                Prefira ID e CSS selector quando possível (mais legível).
+
+                Use XPath quando precisar navegar por texto, ancestrais, 
+                condições mais complexas.
+
+                CLASS_NAME não aceita "classe1 classe2" → use CSS.
+
+                LINK_TEXT depende do texto exato (espaços e quebras podem 
+                quebrar).
+
+                PARTIAL_LINK_TEXT pode pegar link errado se existir mais de 
+                um match.
+
+        find_element vs “find_all”:
+
+            No Selenium é:
+
+                find_element(...) → 1 elemento (erro se não achar)
+
+                find_elements(...) → lista (vazia se não achar)
+
+        Interação básica: click() e send_keys():
+
+            from selenium.webdriver.common.by import By
+
+            driver.find_element(By.ID, "email").send_keys("a@b.com")
+            driver.find_element(By.ID, "senha").send_keys("123")
+            driver.find_element(By.CSS_SELECTOR, "button[type=submit]").click()
+
+        Keys especiais:
+
+            from selenium.webdriver.common.keys import Keys
+
+            campo = driver.find_element(By.NAME, "q")
+            campo.send_keys("selenium", Keys.ENTER)
+
+        Esperas (a parte MAIS importante): WebDriverWait + Expected Conditions
+
+            Existem duas estratégias:
+
+                . implicit wait (global, menos preciso)
+
+                . explicit wait (recomendado; você espera a condição certa)
+
+            Padrão ouro: WebDriverWait + EC
+
+                from selenium.webdriver.support.ui import WebDriverWait
+                from selenium.webdriver.support import expected_conditions as EC
+                from selenium.webdriver.common.by import By
+
+                wait = WebDriverWait(driver, 10)
+
+                botao = wait.until(EC.element_to_be_clickable((By.CSS_SELECTOR, "button.salvar")))
+                botao.click()
+
+            Condições mais usadas (EC):
+
+                presence_of_element_located
+
+                visibility_of_element_located
+                
+                element_to_be_clickable
+                
+                presence_of_all_elements_located
+                
+                url_contains, title_contains, etc.
+
+        JS com Selenium (técnicas reais):
+
+            Executar JS e pegar retorno:
+
+                altura = driver.execute_script("return document.body.scrollHeight;")
+    
+            Scroll até o fim:
+
+                driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+
+            Clicar via JS (quando click normal falha por overlay):
+
+                el = driver.find_element(By.CSS_SELECTOR, "button")
+                driver.execute_script("arguments[0].click();", el)
+
+        Select (dropdown <select>):
+
+            (A API do Select é documentada no Selenium Python bindings).
+
+                from selenium.webdriver.support.ui import Select
+                from selenium.webdriver.common.by import By
+
+                select = Select(driver.find_element(By.ID, "estado"))
+                select.select_by_visible_text("São Paulo")
+                # select.select_by_value("SP")
+        
+        ActionChains: mouse/teclado “avançado”:
+
+            EX:
+
+                from selenium.webdriver.common.action_chains import ActionChains
+                from selenium.webdriver.common.keys import Keys
+
+                actions = ActionChains(driver)
+                actions.move_to_element(el).click().perform()
+
+                actions.key_down(Keys.CONTROL).send_keys("a").key_up(Keys.CONTROL).perform()
+
+            Útil para:
+
+                hover
+                
+                drag and drop
+                
+                combos complexos
+                
+                interações que dependem de “sequência”
+
+        Janelas e abas (tabs/windows):
+
+            Pegar handles e trocar:
+
+                handles = driver.window_handles
+                driver.switch_to.window(handles[-1])
+
+            Abrir nova aba via JS:
+
+                driver.execute_script("window.open('https://example.com','_blank');")
+                driver.switch_to.window(driver.window_handles[-1])
+
+            Fechar aba atual:
+
+                driver.close()
+                driver.switch_to.window(driver.window_handles[0])
+
+        Pop-ups e diálogos JS (alert/confirm/prompt):
+
+            alert = driver.switch_to.alert
+            texto = alert.text
+            alert.accept()   # OK
+            # alert.dismiss()  # Cancel
+
+        Iframes:
+
+            Se um elemento está dentro de iframe, você precisa entrar nele:
+
+                from selenium.webdriver.common.by import By
+
+                iframe = driver.find_element(By.CSS_SELECTOR, "iframe#pay")
+                driver.switch_to.frame(iframe)
+
+                # ... agora encontra elementos dentro do iframe ...
+
+                driver.switch_to.default_content()
+
+        Cookies e sessões: guardar e reutilizar:
+
+            Ler cookies
+
+                cookies = driver.get_cookies()  # lista de dicts
+
+            Reaplicar cookies depois
+
+                driver.get("https://site.com")   # precisa estar no domínio
+                for c in cookies:
+                    driver.add_cookie(c)
+                driver.refresh()
+
+        Downloads (Chrome/Firefox): diretório e comportamento
+
+            No Chrome você configura via Options (prefs):
+
+                from selenium.webdriver.chrome.options import Options
+
+                opts = Options()
+                prefs = {
+                "download.default_directory": r"/tmp/downloads",
+                "download.prompt_for_download": False,
+                "safebrowsing.enabled": True
+                }
+                opts.add_experimental_option("prefs", prefs)
+
+            No Firefox, usa profile/preferences (via options/profile). 
+            (A forma exata varia, mas a ideia é “setar prefs do navegador”.)
+
+        Proxy:
+
+            Em Selenium “puro”, proxy costuma ser setado via 
+            options/capabilities.
+
+            Exemplo conceitual (Chrome):
+
+                . --proxy-server=http://host:port:
+
+                    opts.add_argument("--proxy-server=http://127.0.0.1:8888")
+            
+        Extensões do navegador:
+
+            Chrome:
+
+                opts.add_extension("minha_extensao.crx")
+
+        Cache / perfil do navegador (reusar ou limpar):
+
+            Reusar perfil (Chrome)
+
+                Você pode apontar para um --user-data-dir:
+
+                    opts.add_argument(r"--user-data-dir=/caminho/do/perfil")
+                
+                Prós: mantém login/cookies/localStorage.
+
+                Contras: aumenta flakiness e “lixo” de estado.
+
+            Para “limpar”, geralmente é melhor:
+
+                usar perfil temporário (default)
+
+                ou apagar o diretório do profile antes de iniciar
+
+        Exceções comuns do Selenium (e como lidar):
+
+            . NoSuchElementException (não achou)
+
+            . TimeoutException (wait estourou)
+
+            . StaleElementReferenceException (DOM mudou; re-busque o elemento)
+
+            . ElementClickInterceptedException (overlay bloqueando)
+
+            . WebDriverException (genérico, driver/browser)
+
+            Padrão de tratamento: re-tentar com wait + re-localizar elemento.
+
+        Finalização correta do driver:
+
+            driver.close() fecha a aba atual
+
+            driver.quit() encerra o navegador e o processo do driver (o certo ao final)
+
+        Sempre:
+
+            try:
+                ...
+            finally:
+                driver.quit()
+
+        “Headers”, interceptação e Selenium Wire:
+
+            Selenium puro
+
+                Selenium não foi feito pra interceptar tráfego HTTP; ele 
+                automatiza o browser.
+
+            Para ver/alterar requests/responses, você usa:
+
+                Selenium Wire (muito usado em scraping) — expõe 
+                driver.requests, permite modificar headers etc.
+
+            Exemplo (conceitual):
+
+                from seleniumwire import webdriver
+
+                driver = webdriver.Chrome()
+                driver.get("https://example.com")
+
+                for r in driver.requests:
+                    if r.response:
+                        print(r.url, r.response.status_code)
+
+        undetected_chromedriver (quando usar):
+
+            Útil quando:
+
+                o site faz detecção agressiva de automação (bot detection)
+
+                você precisa reduzir sinais típicos do Selenium
+
+            Mas: não é bala de prata (CAPTCHA/challenges avançados ainda 
+            pegam).
+            
+            E pode quebrar conforme Chrome atualiza.
+
+        Selenium Grid (normal e Docker):
+
+            Grid serve para:
+
+                rodar testes/scraping em paralelo
+
+                distribuir em várias máquinas
+
+                rodar browsers “remotos”
+
+            Você aponta para um RemoteWebDriver e executa igual.
+
+            Em Docker, é comum usar as imagens oficiais do Selenium 
+            Grid/Standalone e escalar browsers.
+
+        Configurações e instalações:
+
+            Isso é importantíssimo. Hoje existem 3 “camadas” diferentes que 
+            muita gente mistura:
+
+                . Browser (Chrome/Firefox/Edge) – o binário do navegador
+
+                . Driver (chromedriver/geckodriver/msedgedriver) – o 
+                “servidor” WebDriver local
+
+                . Gerenciador (Selenium Manager / webdriver-manager / 
+                baixar manual) – como você obtém e aponta pro driver 
+                (e às vezes pro browser)
+
+            Vou te mostrar as formas “de verdade” (com exemplos) e quando cada uma é melhor.
+
+            Selenium Manager (o padrão moderno do Selenium 4.6+):
+
+                Hoje o Selenium já chama o Selenium Manager por padrão pra 
+                resolver driver/browser automaticamente. Ele é um CLI em 
+                Rust embarcado no Selenium e você normalmente não precisa 
+                baixar driver manualmente.
+    
+                Exemplo (Chrome/Firefox/Edge) – “só funciona”
+
+                    from selenium import webdriver
+
+                    driver = webdriver.Chrome()   # Selenium Manager tenta resolver o driver
+                    driver.get("https://example.com")
+                    driver.quit()
+
+                Quando dá ruim:
+
+                    máquina sem browser instalado
+
+                    ambiente offline
+
+                    política corporativa bloqueia download
+
+                    você quer usar um Chrome específico “portable” (binário fora do padrão)
+
+                Aí entra o próximo tópico.
+
+            Usar um browser “por binário” (Chrome/Chromium/Brave/Edge etc.):
+
+                Você pode mandar o Selenium/ChromeDriver abrir um executável 
+                específico do navegador (um “chrome portable”, Brave, 
+                Chromium de CI, etc). O docs do Selenium chama isso de usar 
+                um alternate browser location via binary
+
+                Chrome/Chromium-based: options.binary_location:
+
+                    from selenium import webdriver
+                    from selenium.webdriver.chrome.options import Options
+
+                    opts = Options()
+                    opts.binary_location = "/caminho/para/chrome"   # Linux
+                    # opts.binary_location = r"C:\Path\to\chrome.exe"  # Windows
+
+                    driver = webdriver.Chrome(options=opts)
+                    driver.get("https://example.com")
+                    driver.quit()
+
+                Esse é o jeito “correto” pra apontar o binário (equivalente 
+                ao setBinary).
+
+                Por que isso é crítico?
+
+                    Porque o driver precisa “casar” com a versão do browser. 
+                    Aí entram os gerenciadores.
+
+            webdriver-manager (o clássico “ChromeDriverManager().install()”):
+
+                Quando você quer controle explícito do caminho do driver 
+                (sem depender do Selenium Manager), muita gente usa 
+                webdriver-manager. Ele baixa e gerencia chromedriver/
+                geckodriver/edgedriver e te entrega um path.
+
+                ChromeDriverManager:
+
+                    from selenium import webdriver
+                    from selenium.webdriver.chrome.service import Service
+                    from webdriver_manager.chrome import ChromeDriverManager
+
+                    service = Service(ChromeDriverManager().install())
+                    driver = webdriver.Chrome(service=service)
+                    driver.get("https://example.com")
+                    driver.quit()
+
+                Dica: é install() (não download_and_install()), e você importa o 
+                manager do módulo certo.
+
+            Quando prefiro webdriver-manager em vez de Selenium Manager?
+
+                CI/CD travando o Selenium Manager
+
+                você quer “pin” de versão do driver
+
+                você quer cachear drivers em lugar específico
+
+        PS: Sempre mantenha o navegador atualizado, para não causar conflitos
+
+        Chrome for Testing (browser + driver versionados, sem auto-update):
+
+            Esse é o caminho mais “empresa/CI”: usar Chrome for Testing 
+            (um Chrome feito pra automação, versionado, sem auto-update) 
+            + chromedriver correspondente.
+
+            Quando isso resolve sua vida
+
+                você precisa reproduzir bugs por versão
+
+                quer estabilidade (sem o Chrome atualizar e quebrar)
+
+                ambientes isolados/CI
+
+            Você baixa o zip do Chrome for Testing e aponta binary_location 
+            pra ele, e usa o driver correspondente.
+
+        “Service” e PATH: outra técnica essencial
+
+            Você também pode:
+
+                colocar chromedriver no PATH
+
+                ou passar o caminho explicitamente via Service
+
+            O Selenium documenta as classes Service para iniciar/parar 
+            drivers locais.
+
+            EX:
+
+                from selenium import webdriver
+                from selenium.webdriver.chrome.service import Service
+
+                service = Service("/caminho/para/chromedriver")
+                driver = webdriver.Chrome(service=service)
+
+        Como pegar LOCAL STORAGE no Selenium:
+
+            Selenium não tem método direto para localStorage.
+
+            Você usa JavaScript via execute_script.
+
+                Pegar todos os itens:
+
+                    storage = driver.execute_script("""
+                        var items = {};
+                        for (var i = 0; i < localStorage.length; i++) {
+                            var key = localStorage.key(i);
+                            items[key] = localStorage.getItem(key);
+                        }
+                        return items;
+                    """)
+
+                    print(storage)
+
+            Pegar chave específica:
+
+                token = driver.execute_script("""
+                    return localStorage.getItem("auth_token");
+                """)
+
+                print(token)
+
+            Definir valor:
+
+                driver.execute_script("""
+                    localStorage.setItem("auth_token", "MEU_TOKEN");
+                """)
+
+            Limpar:
+
+                driver.execute_script("localStorage.clear();")
+
+        SESSION STORAGE:
+
+            É igual, só troca localStorage por sessionStorage.
+
+                session_data = driver.execute_script("""
+                    return sessionStorage.getItem("user_data");
+                """)
+
+            Cookies (forma nativa do Selenium):
+
+                Ler cookies:
+
+                    cookies = driver.get_cookies()
+                    print(cookies)
+
+                Adicionar cookie
+
+                    driver.add_cookie({
+                        "name": "token",
+                        "value": "abc123",
+                        "domain": "example.com"
+                    })
+
+                PS: Precisa já estar no domínio antes de adicionar.
+
+        Network (Aba Network):
+
+            Selenium puro não intercepta rede diretamente.
+
+            Você tem duas formas reais:
+
+                Selenium Wire (mais simples), porém não roda bem com o grid:
+
+                    Instalar:
+
+                        pip install selenium-wire
+
+                    Capturar requisições:
+
+                        from seleniumwire import webdriver
+
+                        driver = webdriver.Chrome()
+                        driver.get("https://example.com")
+
+                        for request in driver.requests:
+                            if request.response:
+                                print(request.url, request.response.status_code)
+
+                    Ver corpo da resposta:
+
+                        for request in driver.requests:
+                            if request.response and "api" in request.url:
+                                print(request.response.body)
+
+                    Modificar header antes de enviar:
+
+                        def interceptor(request):
+                            request.headers["Authorization"] = "Bearer TOKEN"
+
+                        driver.request_interceptor = interceptor
+                    
+                    Limpar histórico
+
+                        driver.requests.clear()
+
+                CDP (Chrome DevTools Protocol), mas pode causar alguns
+                problemas em certos ambientes e grids
+
+                    Sem Selenium Wire, você pode usar CDP (Chrome only).
+
+                    Ativar Network:
+
+                        driver.execute_cdp_cmd("Network.enable", {})
+
+                    Capturar logs
+
+                        logs = driver.get_log("performance")
+
+                        for entry in logs:
+                            print(entry)
+
+                Isso exige configurar logging:
+
+                    from selenium.webdriver.chrome.options import Options
+
+                    options = Options()
+                    options.set_capability("goog:loggingPrefs", {"performance": "ALL"})
+                    
+                    driver = webdriver.Chrome(options=options)
+
+        Application Tab (Storage, IndexedDB, etc.)
+
+            Não existe API direta.
+
+            Mas você pode acessar via JS.
+
+            IndexedDB (mais complexo):
+
+                Você pode executar JS que consulta IndexedDB e retorna dados.
+
+                Exemplo básico:
+
+                    driver.execute_script("""
+                        return indexedDB.databases();
+                    """)
+
+                Mas extrair dados reais exige código JS mais complexo.
+
+        Recarregar página:
+
+            EX:
+
+                driver.refresh()
+
+            ou:
+
+                driver.execute_script("location.reload();")
+
+        Como pegar token de API (caso real)
+
+            Muitos sites SPA guardam JWT no localStorage.
+
+                token = driver.execute_script("""
+                    return localStorage.getItem("jwt_token");
+                """)
+            
+            Depois você usa esse token no requests ou curl_cffi.
+
+            Isso é técnica profissional.
+
+    =====================================================================
+
+    playwright: 
+    
+        Playwright é tipo “Selenium 2.0” em várias partes: ele tem 
+        auto-wait, locators mais inteligentes, suporte nativo a network 
+        interception, storage state, tracing, HAR, e ainda tem um cliente HTTP 
+        embutido (o “requests dentro dele”).
+
+        Instalação e “browsers” (equivalente a chromedriver/geckodriver):
+
+            No Playwright você não usa chromedriver/geckodriver. Ele trabalha 
+            com browsers “gerenciados” pelo próprio Playwright (Chromium/
+            Firefox/WebKit) e baixa as dependências com um comando de install.
+
+        Instalar biblioteca:
+
+            pip install playwright
+
+        Baixar browsers:
+
+            playwright install
+
+        Usar binário do sistema (tipo “usar por binário”)
+
+            Dá pra apontar um executável específico com executable_path 
+            (mas a doc avisa: Playwright funciona melhor com os browsers 
+            “bundled”).
+
+        Conceitos centrais: Browser → Context → Page:
+
+                Browser: processo do navegador
+
+                Context: perfil/isolamento (cookies, storage, headers, proxy) 
+                — pense como “perfil anônimo” por execução
+
+                Page: aba/janela
+
+            Isso é a base de tudo no Playwright.
+
+        Locators: mais “inteligentes” que find_element:
+
+            No Playwright, Locators são o núcleo e eles têm auto-wait e 
+            retry (ou seja, ele tenta esperar o elemento ficar pronto 
+            automaticamente).
+
+            Equivalentes práticos:
+
+                Selenium: find_element(By.CSS_SELECTOR, ...)
+
+                Playwright: page.locator("css=...") ou só "..." (CSS por 
+                padrão)
+
+            Exemplos:
+
+                btn = page.locator("button[type=submit]")
+                btn.click()
+
+                page.locator("text=Central de Ajuda").click()  # estilo “link text”
+
+            E o Playwright ainda tem codegen que sugere locators mais 
+            resilientes (role/text/test-id).
+
+        Click, type, fill, send_keys (teclado) e mouse:
+
+            Selenium:
+
+                click(), send_keys()
+
+            Playwright:
+
+                click(), fill(), type(), press()
+
+            Exemplos:
+
+                page.locator("#email").fill("a@b.com")
+                page.locator("#senha").fill("123")
+                page.locator("button[type=submit]").click()
+
+                page.keyboard.press("Enter")
+                page.keyboard.type("Olá", delay=50)
+                page.mouse.click(200, 300)
+
+        Esperas: WebDriverWait vs auto-wait + expect
+
+            No Playwright, muita espera “some” porque os locators fazem 
+            auto-wait.
+
+            Mas você ainda tem waits explícitos e asserções com espera.
+
+            . page.wait_for_url(...)
+            . locator.wait_for(...)
+            . Assertions/expect (em testes)
+
+            E ainda dá pra esperar por network/requests via eventos/rotas.
+        
+        Network (aba Network “na prática”): interceptar, logar e mockar
+
+            Aqui Playwright é bem mais completo que Selenium puro e em 
+            muitos casos substitui Selenium Wire.
+
+            Interceptar e modificar requests
+
+                page.route() / browser_context.route() permite roteamento, 
+                bloqueio, mock e modificação de requests.
+
+                Exemplo típico:
+
+                    bloquear imagens/css pra acelerar scraping
+
+                    mockar API
+
+                    alterar headers/cookies
+
+            HAR / Mock por HAR
+
+                Playwright consegue gravar e usar HAR para replay/mocking.
+
+            Eventos de request/response
+
+                Você pode ouvir page.on("request") e page.on("response") 
+                para coletar tráfego e extrair dados de XHR/fetch.
+
+                Dica do próprio docs: se “sumirem eventos de rede”, pode 
+                ser service worker; dá pra bloquear service workers no 
+                context.
+
+        “Application tab”: cookies, localStorage, sessionStorage, 
+        storage state
+
+            Playwright tem algo muito melhor que “ficar pescando 
+            localStorage via JS”: storage state.
+
+            Você pode salvar cookies + localStorage do contexto em um 
+            arquivo JSON e depois reusar (login 1x, reaproveita em execuções 
+            futuras).
+
+            Isso é o equivalente profissional de “guardar sessão” sem 
+            gambiarras.
+
+        Headers “globais”, user-agent, emulação, device profiles
+
+            No Playwright você configura muito disso no Context:
+
+                extra_http_headers para mandar headers em todas as requests 
+                do contexto.
+
+                Emulação de device / user-agent / viewport / 
+                touch via playwright.devices.
+
+            Isso substitui muita coisa que no Selenium vira “options + prefs + capabilities”.
+
+        Screenshot, video, trace (o pacote de debug):
+
+            Playwright tem uma pipeline de debug excelente:
+
+                screenshot
+
+                vídeo
+
+                trace (ZIP que abre no Trace Viewer)
+
+            O Trace Viewer é uma ferramenta oficial para inspecionar execução (ações, DOM snapshots etc.).
+
+        Page source e HTML
+
+            page.content() (HTML atual)
+
+            (Playwright foca mais em DOM via locators, mas dá pra extrair 
+            HTML.)
+
+        JS no Playwright (mais natural):
+
+            Playwright executa JS com:
+
+                page.evaluate("...")
+
+                e pode retornar valores
+
+            Serve pra:
+
+                ler propriedades
+
+                mexer em storage (quando você quer algo pontual)
+
+                executar scripts no DOM
+
+        Janelas/abas, popups e iframes:
+
+            Playwright tem eventos e APIs próprias pra isso (e costuma ser 
+            mais estável que Selenium em popups):
+
+            popup: você “espera o popup” (event)
+
+            frames: page.frame(...) e locators dentro do frame
+
+        Downloads:
+
+            Playwright tem suporte nativo a download, normalmente via 
+            eventos de download (você espera o download e salva). Isso 
+            é bem mais robusto do que depender de prefs do Chrome.
+
+        Proxies e extensões
+
+            Proxy costuma ir no browser.new_context(proxy=...)
+
+            Extensões: Playwright suporta extensão em Chromium com launch 
+            args (é mais chatinho; mas dá)
+
+        “Requests dentro do Playwright” (API testing)
+
+            Playwright tem um módulo de API testing (cliente HTTP) para 
+            você chamar endpoints sem abrir página — útil pra preparar 
+            estado, validar backend etc.
+
+        Um mapa direto: Selenium → Playwright (equivalências):
+
+            . driver.get(url) → page.goto(url)
+
+            . find_element → page.locator(...)
+
+            . WebDriverWait + EC → auto-wait + locator.wait_for(...) / expect
+
+            . Selenium Wire (network) → route() + page.on(request/response) + HAR
+
+            . Cookies/localStorage “manual” → storage_state (salvar/reusar)
+
+            . Screenshot → page.screenshot(...) (e trace/video)
 
     =====================================================================
 
     nodriver:
 
+        nodriver é uma lib Python que:
+
+            Controla Chromium via CDP
+
+            Não usa WebDriver
+
+            Não depende de chromedriver
+
+            É mais stealth
+
+            Funciona bem contra anti-bot básicos
+
+        Ou seja:
+
+            Selenium → WebDriver
+            Playwright → Engine própria
+            nodriver → CDP puro
+
+        Arquitetura mental:
+
+            Browser (Chromium)
+            ⬇
+            CDP (DevTools Protocol)
+            ⬇
+            nodriver (Python)
+            
+            Isso elimina a “assinatura WebDriver” clássica que muitos sites detectam.
+
+        Instalação:
+
+            pip install nodriver
+
+        Ele geralmente usa Chromium do sistema.
+
+        Iniciando navegador:
+
+            import nodriver as uc
+
+            browser = uc.start()
+            page = await browser.get("https://example.com")
+
+        PS: nodriver é async nativo.
+
+        Browser → Tab → Element:
+
+            Browser = processo / root (mantém targets/tabs/cookies/config)
+
+            Tab = “target” controlável (pode ser aba, janela, iframe, worker…)
+
+            Element = nó do DOM com API de clique, texto, html, input etc.
+
+        Start / Config / Chrome externo (binário) / args:
+
+            Você pode iniciar de forma “rápida” ou “profissional” com Config.
+
+            Start simples:
+
+                import nodriver as uc
+
+                browser = uc.start()
+                page = await browser.get("https://example.com")
+
+            Start com Chrome/Edge/Brave externo + args (binário):
+
+                browser_executable_path=...
+
+                browser_args=[...]
+
+                user_data_dir=... (para reusar perfil/cache, e aí ele 
+                NÃO limpa no final)
+
+            Exemplo (com Config):
+
+                from nodriver import Config, start
+
+                config = Config()
+                config.headless = False
+                config.user_data_dir = "/path/to/existing/profile"
+                config.browser_executable_path = "/path/to/some/other/browser"
+                config.browser_args = ["--some-browser-arg=true"]
+
+                browser = await start(config=config)
+
+        Abrindo páginas / nova aba / nova janela + gerenciar/alternar:
+
+            Navegar (forma mais “segura”)
+
+                browser.get() é o “top-level get” e já lida com waits/DOM 
+                events, sendo o jeito recomendado de navegar.
+
+                ex:
+
+                    tab = await browser.get("https://site.com")
+                    tab2 = await browser.get("https://twitter.com", new_tab=True)
+                    tab3 = await browser.get("https://github.com", new_window=True)
+
+                Alternar/gerenciar:
+
+                    Você “troca” trazendo a aba pra frente:
+
+                        await tab2.bring_to_front()
+
+                    E fecha com:
+
+                        await tab.close()
+                    
+                Dica nodriver: guarde referência dos Tab (igual você guarda 
+                driver.window_handles no Selenium), porque “voltar pro nível 
+                página” depende disso.
+
+        Seletores:
+
+            CSS selector, e também pode servir como “wait” porque ele tenta até 
+            o timeout.
+
+            btn = await page.select("button")
+            await btn.click()
+
+            card = await tab.select("div.card")
+            cards = await tab.select_all("div.card")  # PEGA TODOS
+        
+        Texto:
+
+            tab.find(text, best_match=True, timeout=10):
+
+                Busca por texto (não só <a>, pode bater em scripts também), e 
+                tem o modo best_match que tenta devolver o elemento com texto 
+                “mais parecido” (muito útil pra achar botão “Aceitar” sem cair 
+                em scripts).
+    
+                btn = await tab.find("accept all")      # texto
+                btn = await tab.find("login", best_match=True)
+                await btn.click()
+
+            tab.find_all(text, timeout=10):
+
+                Retorna lista de elementos por texto.
+
+                items = await tab.find_all("Comprar")    
+            
+        Observação importante: no nodriver, find/find_all/select/select_all já 
+        têm esse comportamento de retry por timeout, então muitas vezes você não 
+        precisa de “WebDriverWait” separado.
+
+        get_html / get_content / “page_source”:
+
+            Você tem duas linhas úteis:
+
+                Página (Tab): tab.get_content() (conteúdo atual da página)
+
+                Elemento: element.get_html() (HTML daquele nó)
+
+            Exemplo:
+
+                html = await tab.get_content()
+                botao = await tab.select("button")
+                outer = await botao.get_html()
+
+        evaluate + js_dumps (JS “no estilo CDP”):
+
+            tab.evaluate(expression, ...):
+
+                Executa expressão JS e retorna resultado (sem precisar 
+                escrever return ... do jeito Selenium).
+
+                EX:
+
+                    title = await tab.evaluate("document.title")
+                    width = await tab.evaluate("document.body.clientWidth")
+
+            tab.js_dumps()
+
+                Existe como utilitário no Tab (útil pra 
+                serializar/inspecionar objetos de forma mais amigável 
+                quando você está retornando estruturas JS).
+
+            LocalStorage pronto (sem gambiarra / com gambiarra):
+
+                O nodriver tem métodos dedicados:
+
+                    tab.get_local_storage()
+
+                    tab.set_local_storage(dict)
+
+                    EX:
+
+                        storage = await tab.get_local_storage()
+                        await tab.set_local_storage({"token": "abc"})
+
+                Mas também é póssível fazendo:
+
+                    token = await page.evaluate(
+                        "localStorage.getItem('auth_token')"
+                    )
+
+        Cookies: cookies.save() / cookies.load() + export para requests
+
+            Isso aqui é MUITO bom e você pediu explicitamente:
+
+                # salva (default: '.session.dat')
+                await browser.cookies.save()
+
+                # carrega (default: '.session.dat')
+                await browser.cookies.load()
+
+            E exporta em formato “requests-style”:
+
+                requests_cookies = await browser.cookies.get_all(requests_cookie_format=True)
+
+            Mas você pode pegar cookies com:
+
+                cookies = await page.get_cookies()
+
+        Downloads: download_file() + caminho de download:
+
+            . tab.download_file(url, filename=None) baixa direto por URL.
+
+            . E existe tab.set_download_path() para configurar diretório de 
+            download.
+
+        Screenshot (Tab e Element):
+
+            tab.save_screenshot()
+
+            element.save_screenshot()
+
+            EX:
+
+                await tab.save_screenshot("page.png")
+                el = await tab.select("#login")
+                await el.save_screenshot("login.png")
+
+        Eventos (Network etc.) — “Selenium Wire / aba Network” equivalente:
+
+            No nodriver, o caminho “certo” é handler de eventos CDP:
+
+                from nodriver import cdp
+
+                tab.add_handler(cdp.network.RequestWillBeSent,
+                                lambda ev: print(ev.request.url))
+
+            A doc mostra explicitamente esse padrão (network é evento).
+
+            Isso cobre boa parte do que você fazia com Selenium Wire:
+
+                inspecionar requests
+
+                observar headers/payload
+
+                reagir a responses (com handlers de eventos apropriados)
+
+        DevTools / Inspector integrado (o que você chamou de “aba Network 
+        / Application”)
+
+            No nodriver você tem:
+
+                tab.inspector_open()
+
+                tab.inspector_url
+
+                tab.open_external_inspector() (abrir sem quebrar conexão)
+
+            Isso é a forma “nodriver” de você conseguir inspecionar (como 
+            se abrisse DevTools) enquanto seu script roda.
+
+        Contextos múltiplos + proxies por contexto:
+
+            O Browser.create_context(...) cria um novo contexto, e é 
+            especialmente útil pra proxy por instância (porque Chrome 
+            normalmente “quer” 1 proxy por browser).
+
+            Ele aceita:
+
+                proxy_server
+
+                proxy_bypass_list
+
+                e até string socks com user/pass no formato socks://USER:PASS@SERVER:PORT
+
+                Isso é bem “Playwright mindset” (context isolado).
+
+            Configurando proxy:
+
+                browser = await uc.start(
+                    browser_args=[
+                        "--proxy-server=http://ip:port"
+                    ]
+                )
+
+        Element API essencial (o “kit do dia a dia”):
+
+            Do Element você usa muito:
+
+                click()
+
+                send_keys(text)
+
+                clear_input()
+
+                focus()
+
+                scroll_into_view()
+
+                text e text_all
+
+                get_html()
+
+                query_selector() / query_selector_all()
+
+                send_file(...) (upload)
+
+                select_option() (select/option)
+
+                apply(js_function, ...) (JS aplicado no elemento)
+
+            Exemplo “form”:
+
+                email = await tab.select("input[name=email]")
+                await email.clear_input()
+                await email.send_keys("a@b.com")
+
+                btn = await tab.find("Entrar", best_match=True)
+                await btn.click()
+
+        Network (a parte forte do nodriver):
+
+            Como ele usa CDP, você consegue escutar requests facilmente.
+
+                await page.on("request", lambda r: print(r.url))
+
+            ou capturar responses:
+
+                await 
+                page.on("response", lambda r: print(r.status, r.url))
+
+        Fechamento correto:
+
+            await browser.stop()
+
+            PS: Na maioria dos casos o nodriver costuma fechar sozinho,
+            entretanto, se houver problemas, ele nunca irá fechar como 
+            esperado, então sempre sete stop() com tratamento para não haver
+            muitos navegadores abertos.
+
+        nodriver permite executar comandos CDP brutos.
+
+            Base: habilitar domínios e enviar CDP “bruto
+
+                import nodriver as uc
+                from nodriver import cdp
+
+                browser = await uc.start()
+                tab = await browser.get("https://example.com")
+
+                # Habilita domínio de Network (útil para eventos + headers)
+                await tab.send(cdp.network.enable())
+
+            Isso significa que você pode:
+
+                Desabilitar WebRTC:
+
+                    CDP não tem um “off” universal de WebRTC em todas as 
+                    versões. O caminho mais suportado é via política/
+                    configuração do Chrome (enterprise policy “WebRTC IP 
+                    handling”).
+    
+                    Para automação, o que geralmente funciona em ambiente 
+                    corporativo/teste é:
+        
+                        aplicar a policy de WebRTC no SO (Windows Pro/
+                        Enterprise)
+
+                        ou usar extensões/controle específico (quando 
+                        permitido)
+
+                Alterar timezone:
+
+                    CDP tem isso oficialmente no domínio Emulation: 
+                    Emulation.setTimezoneOverride.
+            
+                    No nodriver:
+
+                        from nodriver import cdp
+
+                        await tab.send(cdp.emulation.set_timezone_override(timezone_id="America/Sao_Paulo"))
+                        # às vezes é útil recarregar após mudanças de emulação
+                        await tab.reload()
+
+                    (Esse método existe no CDP e é usado em exemplos/relatos 
+                    com nodriver).
+
+                Emular dispositivo
+
+                    No CDP (Emulation) existe setDeviceMetricsOverride (e 
+                    outros).
+
+                    Exemplo típico:
+
+                        from nodriver import cdp
+
+                        await tab.send(cdp.emulation.set_device_metrics_override(
+                            width=390,
+                            height=844,
+                            device_scale_factor=3,
+                            mobile=True
+                        ))
+                        await tab.reload()
+                    
+                    (Dependendo da versão do wrapper, alguns nomes/params 
+                    podem variar; a base é esse método do domínio Emulation.)
+        
+                Bloquear service workers:
+
+                    Para testes isso é MUITO útil (PWA cache atrapalha). 
+                    O CDP tem domínio ServiceWorker com métodos como:
+
+                        enable/disable
+
+                        stopAllWorkers
+
+                        unregister
+
+                        setForceUpdateOnPageLoad
+
+                    Exemplos:
+
+                        Manipular headers profundamente
+
+                Forçar update no reload (tipo “Update on reload” do DevTools):
+
+                    from nodriver import cdp
+
+                    await tab.send(cdp.service_worker.enable())
+                    await tab.send(cdp.service_worker.set_force_update_on_page_load(force_update_on_page_load=True))
+                    await tab.reload()
+
+                Parar todos os workers (ambiente de teste)
+
+                    EX:
+
+                        await tab.send(cdp.service_worker.enable())
+                        await tab.send(cdp.service_worker.stop_all_workers())
+
+                    Observação: “bloquear service worker” 100% pode exigir 
+                    estratégia de teste (ex.: parar/unregister + reload). 
+                    A própria UI do DevTools usa ações equivalentes 
+                    (“Unregister”, “Bypass for network”).
+    
+                Manipular headers “profundamente”:
+
+                    Headers extras para todas as requests (CDP Network)
+
+                    O CDP tem Network.setExtraHTTPHeaders.
+
+                        from nodriver import cdp
+
+                        await tab.send(cdp.network.enable())
+                        await tab.send(cdp.network.set_extra_http_headers(headers={
+                            "X-Test-Run": "local",
+                            "Accept-Language": "pt-BR,pt;q=0.9"
+                        }))
+
+                Observar requests/responses (estilo “Network tab”):
+
+                    No nodriver você consegue ouvir eventos do CDP, como 
+                    RequestWillBeSent.
+
+                        from nodriver import cdp
+
+                        await tab.send(cdp.network.enable())
+
+                        tab.add_handler(
+                            cdp.network.RequestWillBeSent,
+                            lambda ev: print("->", ev.request.method, ev.request.url)
+                        )              
+
     =====================================================================
 
     scrappy:
+
+        Scrapy é um framework completo de crawling e scraping.
+
+        Não é só uma biblioteca tipo requests.
+
+        Ele já traz:
+
+            Motor assíncrono (Twisted)
+
+            Sistema de spiders
+
+            Pipeline de dados
+
+            Middleware
+
+            Controle de concorrência
+
+            Retry automático
+
+            Auto-throttle
+
+            Sistema de exportação (JSON, CSV, etc.)
+
+            Scheduler interno
+
+        É um ecossistema inteiro.
+
+        Instalação:
+
+            pip install scrapy
+
+        Criar projeto:
+
+            scrapy startproject meu_projeto
+            cd meu_projeto
+
+        Estrutura do projeto:
+
+            meu_projeto/
+            │
+            ├── scrapy.cfg
+            └── meu_projeto/
+                ├── spiders/
+                │   └── exemplo.py
+                ├── items.py
+                ├── pipelines.py
+                ├── middlewares.py
+                └── settings.py
+
+        Scrapy é baseado em projeto.
+
+        Spider básica:
+
+            spiders/exemplo.py:
+
+                import scrapy
+
+                class ExemploSpider(scrapy.Spider):
+                    name = "exemplo"
+                    start_urls = ["https://quotes.toscrape.com"]
+
+                    def parse(self, response):
+                        for quote in response.css("div.quote"):
+                            yield {
+                                "texto": quote.css("span.text::text").get(),
+                                "autor": quote.css("small.author::text").get()
+                            }
+
+            Rodar:
+
+                scrapy crawl exemplo
+
+            O que está acontecendo?
+
+                Scrapy faz a requisição
+
+                Recebe response
+
+                Usa seletores CSS ou XPath
+
+                yield envia item para pipeline
+
+        Scrapy já é assíncrono
+
+            Você não precisa usar asyncio.
+
+            Ele usa Twisted internamente.
+
+            Ele consegue fazer dezenas ou centenas de requisições 
+            concorrentes.
+
+        Seletores:
+
+            CSS:
+
+                response.css("div.quote")
+
+            XPath:
+
+                response.xpath("//div[@class='quote']")
+
+        Follow links (crawler real):
+
+            next_page = response.css("li.next a::attr(href)").get()
+
+            if next_page:
+                yield response.follow(next_page, callback=self.parse)
+
+        Agora ele vira crawler.
+
+        Items estruturados:
+
+            items.py
+
+                import scrapy
+
+                class QuoteItem(scrapy.Item):
+                    texto = scrapy.Field()
+                    autor = scrapy.Field()
+
+            No spider:
+
+                from meu_projeto.items import QuoteItem
+
+                item = QuoteItem()
+                item["texto"] = ...
+                yield item
+
+        Pipelines (processamento):
+
+            pipelines.py
+
+                class MeuPipeline:
+                    def process_item(self, item, spider):
+                        item["texto"] = item["texto"].strip()
+                        return item
+
+            Ativar no settings.py.
+
+        Exportação automática:
+
+            scrapy crawl exemplo -o dados.json
+
+        ou
+
+            scrapy crawl exemplo -o dados.csv
+
+        Controle de concorrência
+
+            Em settings.py:
+
+                CONCURRENT_REQUESTS = 32
+                DOWNLOAD_DELAY = 0.5
+                AUTOTHROTTLE_ENABLED = True
+
+            Scrapy já tem controle profissional.
+
+        Retry automático:
+
+            Scrapy já re-tenta falhas automaticamente.
+
+            Você pode configurar:
+
+                RETRY_TIMES = 3
+
+        Headers personalizados
+
+            DEFAULT_REQUEST_HEADERS = {
+                "User-Agent": "Mozilla/5.0"
+            }
+
+        Middleware (nível avançado):
+
+            Você pode:
+
+                Modificar requests
+
+                Modificar responses
+
+                Integrar proxies
+
+                Alterar headers dinamicamente
+
+            Em middlewares.py.
+
+        Scrapy + Playwright:
+
+            Scrapy não executa JS.
+
+            Mas existe integração oficial:
+
+                pip install scrapy-playwright
+
+            Ele usa Playwright como engine de renderização.
+
+            Isso resolve:
+
+                Sites SPA
+
+                JS pesado
+
+        Quando usar Scrapy?
+
+            Use quando:
+
+                Você vai extrair dados de muitos sites
+
+                Vai fazer crawling grande
+
+                Quer arquitetura organizada
+
+                Quer controle de escala
+
+            Não use quando:
+
+                É scraping simples
+
+                É site altamente dinâmico (use Playwright/nodriver)
+
+        Mas aqui vai a parte honesta
+
+            Scrapy é poderoso…
+
+            Mas exige:
+
+                Organização
+
+                Projeto estruturado
+
+                Pensar como crawler
+
+            Ele não é “script rápido”.
 
     =====================================================================
 
     sockets, http.client e http.server:
 
+        Agora você entrou na camada mais baixa da comunicação em rede 
+        no Python.
+
+        Aqui estamos falando de:
+
+            socket → nível TCP/UDP bruto
+
+            http.client → cliente HTTP manual
+
+            http.server → servidor HTTP simples
+
+        Isso é a base de tudo que você já usou:
+
+            requests
+            urllib3
+            aiohttp
+            Scrapy
+            Selenium (indiretamente)
+
+        Tudo isso, no final, usa sockets.
+
+        Agora vamos desmontar isso como engenheiro.
+
+        SOCKETS — A BASE DE TUDO:
+
+            É uma interface de comunicação entre dois processos via rede.
+
+            Modelo clássico:
+
+                Cliente  <---- TCP/IP ---->  Servidor
+            
+            Criando um cliente TCP simples:
+
+                import socket
+
+                client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+                client.connect(("example.com", 80))
+
+                request = b"GET / HTTP/1.1\r\nHost: example.com\r\n\r\n"
+                client.sendall(request)
+
+                response = client.recv(4096)
+                print(response.decode())
+
+                client.close()
+
+            Aqui você fez um HTTP manual via TCP puro.
+
+            Sem requests.
+            Sem urllib.
+            Sem nada.
+
+        Criando um servidor TCP simples:
+
+            import socket
+
+            server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            server.bind(("localhost", 8080))
+            server.listen(1)
+
+            conn, addr = server.accept()
+            print("Conectado:", addr)
+
+            data = conn.recv(1024)
+            print(data.decode())
+
+            conn.sendall(b"HTTP/1.1 200 OK\r\n\r\nHello World")
+
+            conn.close()
+            server.close()
+
+        Tipos de Socket:
+
+            TCP (confiável)
+
+                socket.SOCK_STREAM
+
+            UDP (não confiável, rápido)
+
+                socket.SOCK_DGRAM
+
+        AF_INET vs AF_INET6
+
+            AF_INET → IPv4
+
+            AF_INET6 → IPv6
+
+        Conceitos importantes
+
+            Bind → ligar porta
+
+            Listen → esperar conexões
+
+            Accept → aceitar conexão
+
+            Connect → conectar ao servidor
+
+            Send / Recv → enviar / receber
+
+        http.client — Cliente HTTP manual
+
+            É um nível acima do socket.
+
+            Permite fazer requisições HTTP estruturadas.
+
+            GET simples:
+
+                import http.client
+
+                conn = http.client.HTTPSConnection("example.com")
+
+                conn.request("GET", "/")
+
+                response = conn.getresponse()
+
+                print(response.status)
+                print(response.read().decode())
+
+                conn.close()
+
+            POST
+
+                import http.client
+                import json
+
+                conn = http.client.HTTPSConnection("httpbin.org")
+
+                payload = json.dumps({"nome": "Renato"})
+
+                conn.request(
+                    "POST",
+                    "/post",
+                    body=payload,
+                    headers={"Content-Type": "application/json"}
+                )
+
+                response = conn.getresponse()
+                print(response.read().decode())
+
+                conn.close()
+
+            Headers customizados:
+
+                conn.request(
+                    "GET",
+                    "/",
+                    headers={"User-Agent": "MeuClient/1.0"}
+                )
+
+        http.server — Servidor HTTP simples
+
+            Excelente para:
+
+                Testes locais
+
+                Mock API
+
+                Servir arquivos
+
+                Debug
+
+        Servidor básico:
+
+            from http.server import HTTPServer, BaseHTTPRequestHandler
+
+            class MeuHandler(BaseHTTPRequestHandler):
+                def do_GET(self):
+                    self.send_response(200)
+                    self.send_header("Content-Type", "text/plain")
+                    self.end_headers()
+                    self.wfile.write(b"Hello Renato!")
+
+            server = HTTPServer(("localhost", 8000), MeuHandler)
+            print("Rodando em http://localhost:8000")
+
+            server.serve_forever()
+
+        Servir arquivos estáticos:
+
+            python -m http.server 8000
+
+        Isso já sobe servidor instantâneo.
+
+        Métodos HTTP no server:
+
+            Você pode sobrescrever:
+
+                do_GET
+
+                do_POST
+
+                do_PUT
+
+                do_DELETE
+
+        O que acontece por baixo?
+
+            http.server usa socket internamente.
+
+            Fluxo:
+
+                Socket
+                ↓
+                HTTPServer
+                ↓
+                Handler
+                ↓
+                Response
+
+        Quando usar cada um?
+
+            Use socket quando:
+
+                Quer aprender TCP
+
+                Criar protocolo custom
+
+                Estudar rede
+
+                Criar servidor específico
+
+            Use http.client quando:
+
+                Quer cliente HTTP padrão da stdlib
+
+                Evitar dependências externas
+
+            Use http.server quando:
+
+                Testar webhooks
+
+                Mockar APIs
+
+                Testar upload/download
+
     =====================================================================
 
     Pillow:
+
+        Pillow é a versão moderna da antiga PIL (Python Imaging Library).
+
+        Ela permite:
+
+            Abrir imagens
+
+            Criar imagens
+
+            Redimensionar
+
+            Cortar (crop)
+
+            Girar
+
+            Converter formatos
+
+            Trabalhar com pixels
+
+            Desenhar texto
+
+            Aplicar filtros
+
+            Manipular cores
+
+            Trabalhar com transparência (RGBA)
+
+            Trabalhar com EXIF
+
+            Gerar thumbnails
+
+            Converter para bytes (útil para APIs)
+
+        Instalação:
+
+            pip install pillow
+
+        Import padrão:
+
+            from PIL import Image
+
+        Abrindo uma imagem:
+
+            from PIL import Image
+
+            img = Image.open("foto.jpg")
+
+            print(img.format)   # JPEG
+            print(img.size)     # (largura, altura)
+            print(img.mode)     # RGB, RGBA, L etc
+
+            img.show()
+
+        Salvando em outro formato:
+
+            img.save("nova.png")
+
+        Converter JPEG → PNG é automático.
+
+        Redimensionar (resize):
+
+            nova = img.resize((300, 300))
+            nova.save("300x300.png")
+
+        Com suavização:
+
+            from PIL import Image
+
+            nova = img.resize((300, 300), Image.LANCZOS)
+
+        Thumbnail (mantém proporção)
+
+            img.thumbnail((300, 300))
+            img.save("thumb.jpg")
+
+        PS: thumbnail altera a imagem original.
+
+        Crop (recortar):
+
+            recorte = img.crop((100, 100, 400, 400))
+            recorte.save("recorte.jpg")
+
+        Formato:
+
+            (left, top, right, bottom)
+
+        Rotacionar
+
+            rot = img.rotate(90)
+            rot.save("rot.jpg")
+
+        Com expand:
+
+            rot = img.rotate(90, expand=True)
+
+        Converter modo (RGB, grayscale, RGBA):
+
+            gray = img.convert("L")
+            gray.save("cinza.jpg")
+
+        Modos comuns:
+
+            | Modo | Significado       |
+            | ---- | ----------------- |
+            | RGB  | colorido          |
+            | RGBA | com transparência |
+            | L    | grayscale         |
+            | CMYK | impressão         |
+
+        Trabalhar com pixels:
+
+            pixel = img.getpixel((10, 10))
+            print(pixel)  # (R, G, B)
+
+        Alterar pixel:
+
+            img.putpixel((10, 10), (255, 0, 0))
+
+        Criar imagem do zero:
+
+            from PIL import Image
+
+            nova = Image.new("RGB", (500, 500), "blue")
+            nova.save("azul.png")
+
+        Desenhar na imagem:
+
+            from PIL import ImageDraw
+
+            draw = ImageDraw.Draw(img)
+            draw.rectangle((50, 50, 200, 200), outline="red", width=5)
+            draw.text((100, 100), "Renato", fill="white")
+
+            img.save("editada.png")
+
+        Trabalhar com fontes
+
+            from PIL import ImageFont
+
+            font = ImageFont.truetype("arial.ttf", 40)
+            draw.text((100, 100), "Texto", font=font, fill="white")
+
+        Filtros:
+
+            from PIL import ImageFilter
+
+            blur = img.filter(ImageFilter.BLUR)
+            blur.save("blur.jpg")
+
+        Filtros comuns:
+
+            BLUR
+
+            CONTOUR
+
+            DETAIL
+
+            EDGE_ENHANCE
+
+            SHARPEN
+
+        Ajuste de brilho, contraste
+
+            from PIL import ImageEnhance
+
+            enhancer = ImageEnhance.Brightness(img)
+            brilho = enhancer.enhance(1.5)
+            brilho.save("mais_clara.jpg")
+
+        Também:
+
+            Contrast
+
+            Sharpness
+
+            Color
+
+        Transparência (RGBA):
+
+            img = Image.open("imagem.png").convert("RGBA")
+
+        Criar fundo transparente:
+
+            Image.new("RGBA", (500, 500), (0, 0, 0, 0))
+
+        Trabalhar com EXIF
+
+            exif = img._getexif()
+            print(exif)
+
+        Útil para:
+
+            Orientação automática
+
+            Metadados de câmera
+
+        Converter imagem para bytes (API):
+
+            import io
+
+            buffer = io.BytesIO()
+            img.save(buffer, format="PNG")
+            img_bytes = buffer.getvalue()
+
+        Muito usado para:
+
+            Upload
+
+            Enviar via requests
+
+            Base64
+
+        Base64
+
+            import base64
+
+            b64 = base64.b64encode(img_bytes)
+
+        Combinar imagens (paste)
+
+            img2 = Image.open("logo.png")
+            img.paste(img2, (50, 50))
+            img.save("com_logo.png")
+
+        Com máscara:
+
+            img.paste(img2, (50, 50), img2)
+
+        Redimensionamento proporcional automático:
+
+            w, h = img.size
+            nova_largura = 300
+            nova_altura = int(h * (nova_largura / w))
+
+            nova = img.resize((nova_largura, nova_altura))
+
+        Exemplo real profissional
+
+            Exemplo: baixar imagem, colocar watermark e salvar.
+
+                from PIL import Image, ImageDraw, ImageFont
+
+                img = Image.open("foto.jpg")
+
+                draw = ImageDraw.Draw(img)
+                font = ImageFont.truetype("arial.ttf", 30)
+
+                draw.text((20, 20), "© Renato", font=font, fill=(255, 255, 255))
+
+                img.save("watermark.jpg")
+
+    =====================================================================
+
+    opencv:
+
+        OpenCV = Open Source Computer Vision Library.
+
+        Ela permite:
+
+            Processar imagens
+
+            Processar vídeo
+
+            Detectar faces
+
+            Detectar objetos
+
+            Trabalhar com câmera
+
+            Aplicar filtros avançados
+
+            Trabalhar com machine learning
+
+            Trabalhar com visão computacional em tempo real
+
+        Ela é MUITO mais poderosa que Pillow.
+
+        Instalação:
+
+            pip install opencv-python
+
+        Import:
+
+            import cv2
+
+        Ler imagem:
+
+            import cv2
+
+            img = cv2.imread("foto.jpg")
+
+            cv2.imshow("Imagem", img)
+            cv2.waitKey(0)
+            cv2.destroyAllWindows()
+
+        OpenCV usa BGR, não RGB.
+
+        Converter para grayscale:
+
+            gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+            cv2.imshow("Gray", gray)
+            cv2.waitKey(0)
+
+        Redimensionar:
+
+            resized = cv2.resize(img, (300, 300))
+
+        Detectar bordas (Canny):
+
+            EX:
+
+                edges = cv2.Canny(gray, 100, 200)
+                cv2.imshow("Edges", edges)
+                cv2.waitKey(0)
+
+            Isso já é visão computacional básica.
+
+        Capturar câmera:
+
+            EX:
+
+                cap = cv2.VideoCapture(0)
+
+                while True:
+                    ret, frame = cap.read()
+                    if not ret:
+                        break
+
+                    cv2.imshow("Camera", frame)
+
+                    if cv2.waitKey(1) & 0xFF == ord("q"):
+                        break
+
+                cap.release()
+                cv2.destroyAllWindows()
+
+            Isso só funciona se:
+
+                Você tem permissão
+
+                A câmera é local
+
+                O sistema permite acesso
+
+        Detectar rosto (Haar Cascade):
+
+            EX:
+
+                face_cascade = cv2.CascadeClassifier(
+                    cv2.data.haarcascades + "haarcascade_frontalface_default.xml"
+                )
+
+                gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+                faces = face_cascade.detectMultiScale(gray, 1.3, 5)
+
+                for (x, y, w, h) in faces:
+                    cv2.rectangle(img, (x, y), (x+w, y+h), (255, 0, 0), 2)
+
+                cv2.imshow("Faces", img)
+                cv2.waitKey(0)
+            
+            Agora você está fazendo reconhecimento básico.
+
+        Trabalhar com vídeo
+
+            cap = cv2.VideoCapture("video.mp4")
+
+            while cap.isOpened():
+                ret, frame = cap.read()
+                if not ret:
+                    break
+
+                cv2.imshow("Video", frame)
+
+                if cv2.waitKey(25) & 0xFF == ord("q"):
+                    break
+
+            cap.release()
+            cv2.destroyAllWindows()
+
+        Desenhar na imagem:
+
+            cv2.rectangle(img, (50, 50), (200, 200), (0, 255, 0), 3)
+            cv2.circle(img, (100, 100), 40, (0, 0, 255), -1)
+
+        Trabalhar com pixels (NumPy)
+
+            OpenCV usa NumPy por baixo.
+
+                print(img[100, 100])  # pixel BGR
+                img[100, 100] = [0, 0, 255]
+
+        Blur (desfoque)
+
+            blur = cv2.GaussianBlur(img, (15, 15), 0)
+
+        Threshold (binário):
+
+            _, thresh = cv2.threshold(gray, 127, 255, cv2.THRESH_BINARY)
+
+        Detecção de movimento simples:
+
+            frame1 = cap.read()[1]
+            frame2 = cap.read()[1]
+
+            diff = cv2.absdiff(frame1, frame2)
+            gray = cv2.cvtColor(diff, cv2.COLOR_BGR2GRAY)
+            _, thresh = cv2.threshold(gray, 30, 255, cv2.THRESH_BINARY)
+
+            cv2.imshow("Motion", thresh)
+
+        Sobre o “perigoso”
+
+            OpenCV pode acessar:
+
+                cv2.VideoCapture(0)
+
+                Mas isso só funciona se:
+
+                    Você já tem acesso ao sistema
+
+                    O SO permitir
+
+                    Não houver bloqueio de permissão
+
+    =====================================================================
+
+    moviepy:
+
+        O moviepy é uma biblioteca Python de alto nível para:
+
+            . Cortar, juntar e editar vídeos
+            . Extrair e manipular áudio
+            . Criar vídeos a partir de imagens
+            . Adicionar texto animado
+            . Ajustar volume
+            . Criar efeitos simples
+
+        Ele usa FFmpeg por baixo, mas você trabalha só com Python.
+
+        Instalação:
+
+            pip install moviepy
+
+        É importante ter o FFmpeg instalado no sistema (o moviepy depende dele).
+
+        No Linux:
+
+            sudo apt install ffmpeg
+
+        No Windows:
+
+            Baixar do site oficial e adicionar ao PATH.
+
+        Abrir vídeo:
+
+            from moviepy.editor import VideoFileClip
+
+            video = VideoFileClip("video.mp4")
+
+            print(video.duration)   # duração em segundos
+            print(video.fps)        # frames por segundo
+
+        Extrair áudio de vídeo (vídeo → mp3):
+
+            video.audio.write_audiofile("audio.mp3")
+
+        Pronto. Simples assim.
+
+        Cortar vídeo:
+
+            corte = video.subclip(10, 20)  # do segundo 10 ao 20
+            corte.write_videofile("cortado.mp4")
+
+        Juntar vídeos:
+
+            from moviepy.editor import concatenate_videoclips
+
+            video1 = VideoFileClip("v1.mp4")
+            video2 = VideoFileClip("v2.mp4")
+
+            final = concatenate_videoclips([video1, video2])
+            final.write_videofile("final.mp4")
+
+        Criar vídeo com imagem + áudio:
+
+            from moviepy.editor import AudioFileClip, ImageClip
+
+            audio = AudioFileClip("audio.mp3")
+            imagem = ImageClip("foto.jpg").set_duration(audio.duration)
+
+            video = imagem.set_audio(audio)
+            video.write_videofile("saida.mp4", fps=24)
+
+        Muito usado para criar vídeo para YouTube com imagem estática.
+
+        Adicionar texto no vídeo:
+
+            from moviepy.editor import TextClip, CompositeVideoClip
+
+            txt = TextClip("Renato Dev", fontsize=70, color="white")
+            txt = txt.set_position("center").set_duration(video.duration)
+
+            final = CompositeVideoClip([video, txt])
+            final.write_videofile("com_texto.mp4")
+
+        Ajustar volume
+
+            video = video.volumex(0.5)  # reduzir pela metade
+            video.write_videofile("baixo.mp4")
+
+        Acelerar ou desacelerar vídeo:
+
+            video_lento = video.fx(vfx.speedx, 0.5)
+            video_lento.write_videofile("lento.mp4")
+
+        Loop de vídeo:
+
+            video_loop = video.loop(duration=60)
+            video_loop.write_videofile("loop.mp4")
+
+        Trabalhar frame a frame:
+
+            Você pode aplicar função personalizada:
+
+                def inverter(frame):
+                    return 255 - frame
+
+                video_editado = video.fl_image(inverter)
+                video_editado.write_videofile("invertido.mp4")
+
+            Aqui você entra no território OpenCV-like.
+        
+        Converter vídeo para GIF:
+
+            video.write_gif("animacao.gif")
+
+        Estrutura mental do MoviePy:
+
+            VideoFileClip
+            │
+            ├── audio
+            ├── subclip
+            ├── resize
+            ├── crop
+            ├── fx (efeitos)
+            └── write_videofile
+
+    =====================================================================
+
+    yt_dlp:
+
+        O yt-dlp é um fork moderno e mais atualizado do antigo youtube-dl.
+
+        Ele serve para:
+
+            . Baixar vídeos do YouTube
+            . Baixar só áudio
+            . Baixar playlists
+            . Baixar lives gravadas
+            . Escolher qualidade específica
+            . Extrair metadados
+            . Baixar de dezenas de sites (não só YouTube)
+            . Integrar com FFmpeg
+
+        Ele é extremamente completo.
+
+        Instalação:
+
+            Via pip:
+
+                pip install yt-dlp
+
+            Ou via binário (recomendado para uso no sistema):
+
+                sudo apt install yt-dlp
+
+            Windows:
+
+                Baixar executável oficial.
+
+        Uso básico (terminal)
+
+            Baixar vídeo simples:
+
+                yt-dlp https://youtube.com/URL
+
+            Baixar só áudio (MP3):
+
+                yt-dlp -x --audio-format mp3 URL
+
+            tal que:
+
+                -x → extrair áudio
+                --audio-format mp3 → converter para MP3
+
+            Ele usa FFmpeg automaticamente.
+
+        Escolher qualidade específica:
+
+            Listar formatos disponíveis:
+
+                yt-dlp -F URL
+
+            Baixar qualidade específica:
+
+                yt-dlp -f 137+140 URL
+
+            (137 = vídeo, 140 = áudio, por exemplo)
+
+        Baixar playlist inteira:
+
+            yt-dlp URL_DA_PLAYLIST
+
+        Personalizar nome do arquivo:
+
+            yt-dlp -o "%(title)s.%(ext)s" URL
+
+        Baixar com limite de qualidade:
+
+            yt-dlp -f "bestvideo[height<=720]+bestaudio" URL
+
+        Usando via Python (API):
+
+            import yt_dlp
+
+            ydl_opts = {
+                'format': 'best',
+                'outtmpl': '%(title)s.%(ext)s'
+            }
+            
+            with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+                ydl.download(['https://youtube.com/URL'])
+
+        Baixar só áudio via Python:
+
+            ydl_opts = {
+                'format': 'bestaudio/best',
+                'postprocessors': [{
+                    'key': 'FFmpegExtractAudio',
+                    'preferredcodec': 'mp3',
+                    'preferredquality': '192',
+                }],
+            }
+
+            with yt_dlp.YoutubeDL(ydl_opts) as ydl:
+                ydl.download(['URL'])
+        
+        Extrair metadados sem baixar:
+
+            with yt_dlp.YoutubeDL({}) as ydl:
+            info = ydl.extract_info("URL", download=False)
+            print(info['title'])
+            print(info['duration'])
+
+        Funciona só para YouTube?
+
+            Não.
+
+            Suporta:
+
+                YouTube
+
+                Vimeo
+
+                Twitter/X
+
+                Facebook
+
+                TikTok
+
+                Twitch
+
+                Instagram
+
+            E muitos outros
+
+            Depende do site suportado oficialmente.
+
+        Como ele funciona por baixo?
+
+            yt-dlp:
+
+                Analisa a página
+
+                Encontra URLs de mídia
+
+                Baixa fluxos separados (vídeo + áudio)
+
+                Junta via FFmpeg
+
+                Converte se necessário
+
+        Parte importante (ética e legal)
+
+            Baixar vídeos:
+
+                + Pode ser permitido dependendo da licença
+                - Pode violar termos de uso de plataformas
+                - Pode violar direitos autorais
+
+            Sempre use:
+
+                Conteúdo próprio
+
+                Conteúdo livre
+
+                Conteúdo com permissão
+
+        Configurações avançadas
+
+            Você pode:
+
+                Definir cookies
+
+                Usar proxy
+
+                Definir headers
+
+                Definir rate limit
+
+                Baixar legendas
+
+                Baixar thumbnails
+
+                Ignorar erros
+
+            Exemplo com cookies:
+
+                ydl_opts = {
+                    'cookiefile': 'cookies.txt'
+                }
 
     =====================================================================
 
     io:
 
+        A lib io é da stdlib e serve para trabalhar com:
+
+            Arquivos
+
+            Streams
+
+            Buffers em memória
+
+            Dados binários
+
+            Dados de texto
+
+            Simular arquivos
+
+        Ela é a base do open().
+
+        Conceito central: Streams
+
+            Um stream é um fluxo de dados.
+
+            Pode ser:
+
+                Arquivo no disco
+
+                Dados na memória
+
+                Conexão de rede
+
+                Buffer temporário
+
+            O io permite criar streams sem precisar de arquivo físico.
+
+        Principais classes:
+
+            | Classe                  | Para que serve            |
+            | ----------------------- | ------------------------- |
+            | `StringIO`              | Texto em memória          |
+            | `BytesIO`               | Dados binários em memória |
+            | `TextIOWrapper`         | Converter bytes ↔ texto   |
+            | `BufferedReader/Writer` | Bufferização              |
+
+        StringIO (arquivo fake de texto):
+
+            from io import StringIO
+
+            arquivo = StringIO()
+            
+            arquivo.write("Renato\n")
+            arquivo.write("Python\n")
+            
+            arquivo.seek(0)
+            
+            print(arquivo.read())
+
+        . Não cria arquivo no disco
+        . Tudo fica na memória
+
+        Muito usado para:
+
+            Testes
+
+            Simular arquivos
+
+            Trabalhar com CSV temporário
+
+        BytesIO (dados binários):
+
+            EX:
+
+                from io import BytesIO
+
+                buffer = BytesIO()
+
+                buffer.write(b"Hello")
+                buffer.seek(0)
+
+                print(buffer.read())
+
+            Muito usado para:
+
+                Trabalhar com imagens (Pillow)
+
+                Trabalhar com uploads
+
+                Trabalhar com requests
+
+                Trabalhar com arquivos temporários
+
+        Exemplo real com Pillow:
+
+            from PIL import Image
+            from io import BytesIO
+
+            img = Image.open("foto.jpg")
+
+            buffer = BytesIO()
+            img.save(buffer, format="PNG")
+
+            dados = buffer.getvalue()
+
+        Aqui você tem a imagem em memória, pronta para:
+
+            Enviar via API
+
+            Converter para base64
+
+            Salvar depois
+
+        Exemplo real com requests
+
+            import requests
+            from io import BytesIO
+            
+            res = requests.get("https://example.com/image.jpg")
+            
+            buffer = BytesIO(res.content)
+            
+            print(len(buffer.getvalue()))
+
+        Diferença: StringIO vs BytesIO:
+
+            | StringIO           | BytesIO            |
+            | ------------------ | ------------------ |
+            | Trabalha com texto | Trabalha com bytes |
+            | str                | bytes              |
+            | "abc"              | b"abc"             |
+
+        TextIOWrapper (converter bytes ↔ texto)
+
+            Imagine que você recebeu bytes:
+
+                from io import BytesIO, TextIOWrapper
+
+                raw = BytesIO(b"Renato\nPython")
+                
+                text = TextIOWrapper(raw, encoding="utf-8")
+                
+                print(text.read())
+
+            Isso converte bytes para texto.
+
+        Trabalhar com CSV em memória:
+
+            import csv
+            from io import StringIO
+
+            data = StringIO()
+
+            writer = csv.writer(data)
+            writer.writerow(["Nome", "Idade"])
+            writer.writerow(["Renato", 25])
+
+            print(data.getvalue())
+
+        Simular upload de arquivo
+
+            from io import BytesIO
+
+            arquivo_fake = BytesIO(b"conteudo do arquivo")
+
+            # Pode passar para API que espera arquivo
+
+        Trabalhar com ZIP em memória:
+
+            import zipfile
+            from io import BytesIO
+
+            buffer = BytesIO()
+
+            with zipfile.ZipFile(buffer, "w") as z:
+                z.writestr("teste.txt", "Renato")
+
+            buffer.seek(0)
+            print(buffer.getvalue())
+
+        ZIP criado sem tocar no disco.
+
+        Executando código vindo da memória (StringIO):
+
+            from io import StringIO
+
+            codigo = StringIO("""
+                print("Hello World da memória!")
+            """)
+
+            conteudo = codigo.read()
+
+            exec(conteudo)
+
+        Isso executa código que nunca existiu em arquivo.
+
+        Forma mais profissional: compile + exec
+
+            from io import StringIO
+
+            codigo = StringIO("""
+                def hello():
+                    return "Olá Renato!"
+
+                print(hello())
+            """)
+
+            source = codigo.read()
+
+            compiled = compile(source, "<memory>", "exec")
+
+            exec(compiled)
+
+        O nome <memory> é só simbólico (como se fosse o nome do arquivo).
+
+        Executando módulo inteiro da memória
+
+            Você pode simular um módulo:
+
+                from io import StringIO
+                import types
+
+                codigo = """
+                    def saudacao():
+                        return "Hello do módulo em memória"
+                """
+
+                mod = types.ModuleType("mod_memoria")
+
+                exec(codigo, mod.__dict__)
+
+                print(mod.saudacao())
+
+            Agora você criou um módulo sem arquivo físico.
+
+        Executar script completo como se fosse arquivo
+
+            from io import StringIO
+
+            script = StringIO("""
+                import math
+                print(math.sqrt(16))
+            """)
+
+            exec(script.read())
+
+        Executar código recebido via rede (conceito):
+
+            Imagine:
+
+                import requests
+
+                res = requests.get("https://exemplo.com/script.py")
+
+                exec(res.text)
+
+            Isso é extremamente perigoso.
+
+            Executar código remoto = risco máximo.
+
+        Diferença entre eval e exec:
+
+            | Função      | Executa            |
+            | ----------- | ------------------ |
+            | `eval()`    | Apenas expressões  |
+            | `exec()`    | Bloco completo     |
+            | `compile()` | Pré-compila código |
+
+            Exemplo:
+
+                eval("2 + 2")      # retorna 4
+                exec("print(2+2)") # imprime 4
+
+        Executar bytes com BytesIO
+
+            from io import BytesIO
+
+            codigo = BytesIO(b'print("Bytes Hello!")')
+
+            exec(codigo.getvalue().decode())
+
     =====================================================================
 
     tesseract e pytessaract:
+
+    =====================================================================
+
+    Base64:
 
     =====================================================================
 
