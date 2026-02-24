@@ -1,0 +1,24 @@
+EXERCÍCIO 3 — Compactador de String (Run-Length Encoding manual)
+
+Crie uma função que compacte repetições consecutivas de caracteres.
+
+Exemplo:
+
+    entrada:  "aaabbcdddd"
+    saida:    "a3b2c1d4"
+
+Regras:
+
+    Percorrer caractere por caractere
+
+    Contar repetições consecutivas
+
+    Não usar collections
+
+    Não usar groupby
+
+    Não usar regex
+
+Desafio extra:
+
+    Se a versão compactada for maior que a original, retornar a original.

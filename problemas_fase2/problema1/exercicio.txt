@@ -1,0 +1,21 @@
+            EXERCÍCIO 1 — Inverter String (Manual)
+
+Implemente uma função que:
+
+    Recebe uma string
+
+    Retorna a string invertida
+
+
+Regras:
+
+    O python é seu amigo, faça o máximo de técnicas possíveis que souber
+
+    Faça testes de performance para comparações
+
+    Faça testes com todas as versões pelo pytest
+
+Exemplo:
+
+    entrada: "python"
+    saida:   "nohtyp"

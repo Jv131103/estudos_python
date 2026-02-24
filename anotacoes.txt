@@ -23655,21 +23655,898 @@ UM POUCO SOBRE LÓGICA DE PROGRAMAÇÃO:
 
     tesseract e pytessaract:
 
+        Tesseract → motor OCR (programa externo, feito em C++)
+
+        pytesseract → wrapper Python que conversa com o Tesseract
+
+        OCR = transformar imagem em texto.
+
+        Exemplo:
+
+            imagem:
+
+                RENATO DEV
+                Python 2026
+
+            vira:
+
+                "RENATO DEV\nPython 2026"
+
+        Instalando o Tesseract:
+
+            O pytesseract sozinho não funciona.
+
+            Você precisa instalar o motor Tesseract.
+
+            Linux:
+
+                sudo apt install tesseract-ocr
+
+            Português:
+
+                sudo apt install tesseract-ocr-por
+
+        Windows:
+
+            Baixar instalador oficial:
+
+                https://github.com/UB-Mannheim/tesseract/wiki
+
+            Depois adicionar ao PATH.
+
+        Instalar pytesseract:
+
+            pip install pytesseract
+
+        OCR básico:
+
+            import pytesseract
+            from PIL import Image
+
+            img = Image.open("imagem.png")
+
+            texto = pytesseract.image_to_string(img)
+
+            print(texto)
+
+        Especificar idioma
+
+            texto = pytesseract.image_to_string(img, lang="por")
+
+        Se tiver múltiplos:
+
+            lang="por+eng"
+
+        Trabalhar com OpenCV (melhor resultado):
+
+            OCR funciona melhor com pré-processamento.
+
+                import cv2
+                import pytesseract
+
+                img = cv2.imread("imagem.png")
+
+                gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+
+                texto = pytesseract.image_to_string(gray)
+
+                print(texto)
+
+        Melhorando precisão (threshold):
+
+            Isso melhora MUITO OCR.
+
+
+                _, thresh = cv2.threshold(gray, 150, 255, cv2.THRESH_BINARY)
+
+                texto = pytesseract.image_to_string(thresh)
+
+        Extrair apenas números:
+
+            EX:
+
+                config = "--psm 6 -c tessedit_char_whitelist=0123456789"
+
+                texto = pytesseract.image_to_string(img, config=config)
+
+            Muito usado para:
+
+                Leitura de placas
+
+                Leitura de boletos
+
+                Captchas simples
+
+                Extrair valores
+
+        PSM (Page Segmentation Mode):
+
+            Alguns modos importantes:
+
+                | PSM | Significado       |
+                | --- | ----------------- |
+                | 3   | padrão automático |
+                | 6   | bloco uniforme    |
+                | 7   | linha única       |
+                | 8   | palavra única     |
+                | 10  | caractere único   |
+
+            Exemplo:
+
+                config="--psm 7"
+
+        Extrair coordenadas do texto:
+
+            EX:
+
+                data = pytesseract.image_to_data(img, output_type=pytesseract.Output.DICT)
+
+                print(data["text"])
+                print(data["left"], data["top"])
+
+            Você recebe:
+
+                Texto
+
+                Posição
+
+                Confiança
+
+            Isso é poderoso.
+
+        Obter bounding boxes:
+
+            boxes = pytesseract.image_to_boxes(img)
+
+            print(boxes)
+
+        OCR em PDF
+
+            texto = pytesseract.image_to_pdf_or_hocr(img, extension='pdf')
+
+            with open("saida.pdf", "wb") as f:
+                f.write(texto)
+
+        Pipeline profissional
+
+            Para melhorar OCR:
+
+                1. Converter para grayscale
+                2. Remover ruído (blur)
+                3. Aplicar threshold
+                4. Ajustar contraste
+                5. Usar PSM correto
+
+        Limitações do Tesseract:
+
+            Ele funciona muito bem para:
+
+                Texto impresso
+
+                Documentos
+
+                Letras claras
+
+            Ele NÃO funciona bem para:
+
+                Letra manuscrita complexa
+
+                Fontes muito estilizadas
+
+                Texto distorcido demais
+
+        Para isso, usa-se:
+
+            EasyOCR
+
+            PaddleOCR
+
+            Modelos treinados (deep learning)
+
     =====================================================================
 
     Base64:
+
+        Base64 não é criptografia.
+        Não é segurança.
+        Não é hash.
+
+        É apenas codificação.
+
+        Serve para transformar bytes em texto seguro para transporte.
+
+        Por que Base64 existe?
+
+            Alguns sistemas só aceitam texto:
+
+                JSON
+
+                XML
+
+                HTML
+
+                E-mail (SMTP antigo)
+
+                URLs
+
+            Mas arquivos são bytes.
+
+            Então fazemos:
+
+                Arquivo binário → Base64 → Texto seguro
+
+        Como funciona?
+
+            Base64 pega 3 bytes (24 bits) e transforma em 4 caracteres ASCII.
+
+            Ele usa 64 símbolos:
+
+                A–Z
+                a–z
+                0–9
+                +
+                /
+
+            E = para padding.
+
+        Usando Base64 em Python:
+
+            Biblioteca padrão:
+
+                import base64
+
+        Codificar texto:
+
+            import base64
+
+            texto = "Renato Dev"
+
+            codificado = base64.b64encode(texto.encode())
+
+            print(codificado)
+
+        Saída:
+
+            b'UmVuYXRvIERldg=='
+
+        Decodificar:
+
+            decodificado = base64.b64decode(codificado)
+
+            print(decodificado.decode())
+
+        Codificar arquivo:
+
+            with open("imagem.jpg", "rb") as f:
+                dados = f.read()
+
+            b64 = base64.b64encode(dados)
+
+            print(b64[:100])
+
+        Converter imagem para string Base64
+
+                b64_string = b64.decode()
+
+                Agora você pode colocar isso em JSON.
+
+        Decodificar Base64 e salvar arquivo
+
+            with open("saida.jpg", "wb") as f:
+                f.write(base64.b64decode(b64))
+
+        Base64 para URL (URL-safe)
+
+            Normal Base64 usa:
+
+                +
+                /
+
+            Mas URL-safe troca por:
+
+                -
+                _
+
+            EX:
+
+                base64.urlsafe_b64encode(b"dados")
+        
+        Exemplo real com Pillow:
+
+            from PIL import Image
+            from io import BytesIO
+            import base64
+
+            img = Image.open("foto.jpg")
+
+            buffer = BytesIO()
+            img.save(buffer, format="PNG")
+
+            b64 = base64.b64encode(buffer.getvalue())
+
+            print(b64[:50])
+
+        Exemplo real com APIs
+
+            Enviar imagem em JSON:
+
+                payload = {
+                    "imagem": b64.decode()
+                }
+
+        Base64 não é segurança
+
+            Muita gente acha que:
+
+                UmVuYXRv
+
+            é protegido.
+
+        Não é.
+
+        Qualquer pessoa pode fazer:
+
+            base64.b64decode("UmVuYXRv")
+
+        Quando usar Base64?
+
+            Use quando:
+
+                Precisa embutir imagem em HTML
+
+                Precisa enviar arquivo em JSON
+
+                Precisa armazenar binário como texto
+
+                Trabalha com APIs REST
+
+                Trabalha com JWT (usa base64 internamente)
+
+        Onde você já viu Base64 sem perceber
+
+            Tokens JWT
+
+            Data URLs:
+
+                <img src="data:image/png;base64,iVBORw0KGgo...">
+
+            E-mails com anexos
+
+            Uploads via API
+            
+            Cabeçalhos HTTP Basic Auth
+
+        Tamanho aumenta
+
+            Base64 aumenta o tamanho do dado em ~33%.
+
+            Porque:
+
+            3 bytes → 4 caracteres.
 
     =====================================================================
 
     pandas:
 
+        Pandas é uma biblioteca para manipulação e análise de dados 
+        estruturados.
+
+        Ela trabalha principalmente com:
+
+            Series (coluna única)
+
+            DataFrame (tabela completa)
+
+        Instalação:
+
+            pip install pandas
+
+        Import padrão:
+
+            import pandas as pd
+
+        Criando um DataFrame:
+
+            import pandas as pd
+
+            dados = {
+                "nome": ["Renato", "Ana", "Carlos"],
+                "idade": [25, 30, 22],
+                "salario": [3000, 5000, 2500]
+            }
+
+            df = pd.DataFrame(dados)
+
+            print(df)
+
+        Saída:
+
+                 nome  idade  salario
+            0  Renato     25     3000
+            1     Ana     30     5000
+            2  Carlos     22     2500
+
+        Ler CSV
+
+            df = pd.read_csv("arquivo.csv")
+
+        Ler Excel
+
+            df = pd.read_excel("arquivo.xlsx")
+
+        PS: (precisa openpyxl)
+
+        Ver informações básicas:
+
+            df.head()        # primeiras linhas
+            df.tail()        # últimas linhas
+            df.info()        # estrutura
+            df.describe()    # estatísticas
+
+        Selecionar coluna
+
+            df["nome"]
+
+        Múltiplas colunas:
+
+            df[["nome", "salario"]]
+
+        Filtrar dados
+
+            df[df["idade"] > 25]
+
+        Múltiplas condições:
+
+            df[(df["idade"] > 20) & (df["salario"] > 3000)]
+
+        Criar nova coluna
+
+            df["salario_anual"] = df["salario"] * 12
+
+        Ordenar
+
+            df.sort_values("salario", ascending=False)
+
+        Agrupar (groupby) - Isso é muito usado.
+
+            df.groupby("idade")["salario"].mean()
+
+        Trabalhar com datas
+
+            df["data"] = pd.to_datetime(df["data"])
+
+        Filtrar por data:
+
+            df[df["data"] > "2025-01-01"]
+
+        Trabalhar com valores faltantes
+
+            df.isnull()
+            df.dropna()
+            df.fillna(0)
+
+        Exportar:
+
+            df.to_csv("saida.csv", index=False)
+            df.to_excel("saida.xlsx", index=False)
+
+        Aplicar função personalizada
+
+            df["dobro"] = df["salario"].apply(lambda x: x * 2)
+
+        Trabalhar com índices
+
+            df.set_index("nome", inplace=True)
+
+        Merge (tipo JOIN de banco)
+
+            pd.merge(df1, df2, on="id")
+
+        Performance
+
+            Pandas usa NumPy por baixo.
+
+            Ele é rápido porque trabalha com vetores, não loops Python.
+
+            Errado:
+
+                for linha in df:
+                    ...
+
+            Certo:
+
+                df["salario"] * 2
+
+        Pandas vs Excel:
+
+            | Excel             | Pandas         |
+            | ----------------- | -------------- |
+            | Manual            | Automatizado   |
+            | Interface gráfica | Código         |
+            | Pequenas bases    | Grandes bases  |
+            | Limitado          | Muito poderoso |
+
+        Conceito importante
+
+            Pandas não é banco de dados.
+
+            Ele trabalha em memória.
+
+            Para milhões de registros:
+
+            Pode ficar pesado
+
+            Às vezes é melhor usar SQL
+
     =====================================================================
 
     logging e pdb:
 
+        logging → registrar eventos corretamente
+
+        pdb → depurar código interativamente
+
+        LOGGING:
+
+            logging é a forma correta de substituir:
+
+                print("debug aqui")
+
+            Por algo profissional, configurável e escalável.
+
+            Problema do print
+
+                Não tem nível
+
+                Não salva em arquivo
+
+                Não tem timestamp
+
+                Não é filtrável
+
+                Não é profissional
+
+            Níveis de Log:
+
+                | Nível    | Uso                  |
+                | -------- | -------------------- |
+                | DEBUG    | Informação detalhada |
+                | INFO     | Evento normal        |
+                | WARNING  | Algo estranho        |
+                | ERROR    | Erro aconteceu       |
+                | CRITICAL | Sistema quebrado     |
+
+            Exemplo básico:
+
+                import logging
+
+                logging.basicConfig(level=logging.DEBUG)
+
+                logging.debug("Debugando...")
+                logging.info("Aplicação iniciou")
+                logging.warning("Algo estranho")
+                logging.error("Erro ocorreu")
+                logging.critical("Sistema caiu")
+
+            Salvar em arquivo:
+
+                logging.basicConfig(
+                    filename="app.log",
+                    level=logging.INFO,
+                    format="%(asctime)s - %(levelname)s - %(message)s"
+                )
+
+                logging.info("Sistema iniciado")
+
+            Arquivo gerado:
+
+                2026-02-23 10:00:00 - INFO - Sistema iniciado
+
+            Agora é profissional.
+
+            Criando logger customizado:
+
+                logger = logging.getLogger("meu_app")
+                logger.setLevel(logging.DEBUG)
+
+                handler = logging.FileHandler("app.log")
+                formatter = logging.Formatter("%(asctime)s - %(name)s - %(levelname)s - %(message)s")
+
+                handler.setFormatter(formatter)
+                logger.addHandler(handler)
+
+                logger.info("Mensagem custom")
+
+            Logging em projetos grandes
+
+            Você pode ter:
+
+                app/
+                ├── main.py
+                ├── services.py
+                └── utils.py
+
+            E cada arquivo ter seu próprio logger:
+
+                logger = logging.getLogger(__name__)
+
+            Exemplo real (capturar erro)
+
+                try:
+                    1 / 0
+                except Exception as e:
+                    logging.exception("Erro crítico")
+
+            Isso loga stacktrace completo.
+
+            Muito melhor que print.
+
+        PDB:
+
+            pdb é o debugger nativo do Python.
+
+            Ele permite:
+
+                Pausar código
+
+                Inspecionar variáveis
+
+                Executar comandos
+
+                Navegar linha por linha
+
+            Usando breakpoint moderno:
+
+                Python 3.7+:
+
+                    x = 10
+                    breakpoint()
+                    print(x)
+                
+                Quando rodar, ele entra no modo debug.
+
+            Forma antiga:
+
+                import pdb
+
+                pdb.set_trace()
+
+            Comandos principais do pdb:
+
+                | Comando    | O que faz         |
+                | ---------- | ----------------- |
+                | n          | próxima linha     |
+                | s          | entrar na função  |
+                | c          | continuar         |
+                | l          | listar código     |
+                | p variável | imprimir variável |
+                | q          | sair              |
+
+            Exemplo prático
+
+                def soma(a, b):
+                    resultado = a + b
+                    breakpoint()
+                    return resultado
+
+                print(soma(10, 20))
+
+            Quando rodar:
+
+                (Pdb)
+
+            Você pode digitar:
+
+                p resultado
+                n
+                c
+
+            Por que isso é poderoso?
+
+                Porque você vê:
+
+                    Valor real das variáveis
+
+                    Fluxo de execução
+
+                    Onde está o bug
+
+                    Sem precisar adivinhar.
+
+        Logging vs PDB:
+
+            | Logging          | PDB                  |
+            | ---------------- | -------------------- |
+            | Para produção    | Para desenvolvimento |
+            | Registra eventos | Inspeciona execução  |
+            | Não pausa código | Pausa código         |
+            | Histórico salvo  | Interativo           |
+
     =====================================================================
 
-    cryptography:
+    cryptography, sha, jwt:
+
+        CRYPTOGRAPHY:
+
+            Criptografia é a ciência de:
+
+                Proteger dados
+
+                Garantir confidencialidade
+
+                Garantir integridade
+
+                Garantir autenticidade
+
+            Ela tem 3 grandes pilares:
+
+                | Pilar             | O que significa      |
+                | ----------------- | -------------------- |
+                | Confidencialidade | Só quem deve ler, lê |
+                | Integridade       | Ninguém alterou      |
+                | Autenticidade     | Sei quem enviou      |
+
+            CRIPTOGRAFIA SIMÉTRICA
+
+                Mesma chave para criptografar e descriptografar.
+
+                Exemplo:
+
+                    AES
+
+                        Mensagem → Criptografar (chave secreta) → Texto cifrado
+                        Texto cifrado → Descriptografar (mesma chave) → Mensagem
+
+                    Boa para:
+
+                        Armazenamento
+
+                        Comunicação rápida
+
+            CRIPTOGRAFIA ASSIMÉTRICA
+
+                Usa duas chaves:
+
+                    . Chave pública
+
+                    . Chave privada
+
+                Exemplo:
+
+                    RSA
+
+                    ECC
+
+                Muito usada em:
+
+                    HTTPS
+
+                    Assinatura digital
+
+                    Certificados
+
+        SHA (Secure Hash Algorithm):
+
+            SHA é família de hashes:
+
+                SHA1 (quebrado)
+
+                SHA256 (seguro)
+
+                SHA512
+
+            Exemplo em Python:
+
+                import hashlib
+
+                texto = "Renato"
+                hash_obj = hashlib.sha256(texto.encode())
+                
+                print(hash_obj.hexdigest())
+
+            Onde SHA é usado?
+
+                Senhas (com salt)
+
+                Blockchain
+
+                Assinaturas digitais
+
+                Verificação de integridade
+
+                JWT
+
+        Senhas NÃO devem usar SHA puro
+
+            Errado:
+
+                hashlib.sha256("senha".encode())
+
+            Certo:
+
+                bcrypt
+
+                argon2
+
+                scrypt
+
+                pbkdf2
+
+            Porque:
+
+                São lentos
+
+                Dificultam brute force
+
+        JWT (JSON Web Token):
+
+            JWT é um token assinado.
+
+            Estrutura:
+
+                HEADER.PAYLOAD.SIGNATURE
+
+            Exemplo real:
+
+                eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...
+
+            Estrutura
+
+                HEADER
+                {
+                  "alg": "HS256",
+                  "typ": "JWT"
+                }
+
+            PAYLOAD
+
+                {
+                  "user_id": 123,
+                  "exp": 1710000000
+                }
+
+            SIGNATURE
+
+                HMACSHA256(
+                    base64(header) + "." + base64(payload),
+                    segredo
+                )
+
+            WT NÃO é criptografado
+
+            Ele é:
+
+                Assinado
+
+                Não secreto
+
+            Você pode decodificar payload facilmente.
+
+            Exemplo:
+
+                import jwt
+
+                token = jwt.encode(
+                    {"user": "Renato"},
+                    "segredo",
+                    algorithm="HS256"
+                )
+
+                print(token)
+
+            Decodificar:
+
+                jwt.decode(token, "segredo", algorithms=["HS256"])
+
+            JWT serve para:
+
+                Autenticação
+
+                Sessão stateless
+
+                APIs
+
+                OAuth
 
     ======================================================================
 
@@ -29412,55 +30289,979 @@ Um pouco sobre POO:
 
 Um pouco sobre Estruturas de dados:
 
-    caracteres e strings
 
-    listas / vetores e arrays não ordenadas
+    caracteres e strings:
+
+        O que é um caractere?
+
+            Um caractere é a menor unidade textual possível.
+
+            Exemplos:
+
+                "A"
+                "7"
+                "#"
+                "ç"
+                "🔥"
+
+            Mas aqui começa algo interessante…
+
+            Em Python não existe tipo char separado como em C ou Java.
+
+            Um “caractere” é simplesmente uma string de tamanho 1.
+
+            EX:
+
+                letra = "A"
+                type(letra)
+                # <class 'str'>
+
+        O que é uma String?
+
+            Uma string é uma sequência ordenada de caracteres.
+
+            EX:
+
+                nome = "Renato"
+
+            Na memória, isso é algo como:
+
+                [R][e][n][a][t][o]
+                 0  1  2  3  4  5
+
+            Cada posição tem um índice.
+
+        Como Strings Funcionam Internamente:
+
+            Unicode:
+
+                Python usa Unicode.
+
+                Isso significa que:
+
+                    Não é só ASCII
+
+                    Pode representar praticamente qualquer símbolo do mundo
+
+                Exemplo:
+
+                    len("🔥")
+
+                Pode retornar 1, mas internamente ele ocupa mais de 1 byte.
+
+            Bastidor técnico:
+
+                ASCII → 1 byte (até 127)
+
+                UTF-8 → 1 a 4 bytes
+
+                UTF-16 → 2 ou 4 bytes
+
+                UTF-32 → 4 bytes fixos
+
+            Python usa uma otimização chamada:
+
+                Flexible String Representation
+
+            Ele usa menos memória se os caracteres forem simples.
+
+        Strings são IMUTÁVEIS (Muito importante):
+
+            Isso muda tudo.
+
+                nome = "Renato"
+                nome[0] = "J"  # ❌ ERRO
+
+            Não funciona.
+
+            Por quê?
+
+                Porque a string é imutável.
+
+            Toda modificação cria uma nova string na memória.
+
+                nome = "Renato"
+                novo = "J" + nome[1:]
+
+        Indexação e Fatiamento (Slicing):
+
+            Índices positivos
+
+                texto = "Python"
+                texto[0]  # P
+                texto[3]  # h
+
+            Índices negativos
+
+                texto[-1]  # n
+                texto[-2]  # o
+
+            Slicing
+
+                texto[0:3]   # "Pyt"
+                texto[:3]    # "Pyt"
+                texto[3:]    # "hon"
+                texto[::2]   # "Pto"
+                texto[::-1]  # "nohtyP"
+
+            - [::-1] inverte a string.
+
+        Iterando Strings:
+
+            EX:
+
+                for letra in "Renato":
+                    print(letra)
+
+            Strings são iteráveis.
+
+            Você pode usar:
+
+                for
+
+                in
+
+                enumerate
+
+        Métodos Fundamentais de String:
+
+            Busca
+
+                EX:
+
+                    texto.find("a")
+                    texto.index("a")
+                    "a" in texto
+
+                Diferença:
+
+                    find() retorna -1
+
+                    index() gera erro
+
+            Transformação
+
+                texto.upper()
+                texto.lower()
+                texto.title()
+                texto.capitalize()
+
+            Remoção de espaços
+
+                "  Renato  ".strip()
+                "  Renato  ".lstrip()
+                "  Renato  ".rstrip()
+
+            Dividir e juntar
+
+                frase = "Python é incrível"
+
+                lista = frase.split()
+                # ['Python', 'é', 'incrível']
+
+                "-".join(lista)
+                # 'Python-é-incrível'
+
+        Formatação Moderna:
+
+            Método antigo
+
+                "Meu nome é %s" % nome
+
+            format()
+
+                "Meu nome é {}".format(nome)
+
+            F-strings (melhor)
+
+                nome = "Renato"
+                idade = 25
+
+                f"Meu nome é {nome} e tenho {idade} anos"
+
+            Você pode até fazer cálculo dentro::
+
+                f"{10 * 2}"
+
+        Strings e Performance
+
+            Como são imutáveis, isso é ruim:
+
+                texto = ""
+                for i in range(10000):
+                    texto += "a"
+
+            Isso cria milhares de strings.
+
+            Melhor:
+
+                lista = []
+                for i in range(10000):
+                    lista.append("a")
+
+                texto = "".join(lista)
+
+            Isso é profissional.
+
+        Strings Multilinha
+
+            EX duas aspas:
+            
+                texto = """
+                    Linha 1
+                    Linha 2
+                    Linha 3
+                """
+
+            EX aspas simples:
+
+                '''
+                    Texto grande
+                '''
+
+        Caracteres Especiais:
+
+            "\n"   # quebra de linha
+            "\t"   # tab
+            "\\"   # Simula \
+            "\""   # Simula " dentro de "" 
+
+        Strings Raw:
+
+            EX:
+
+                r"C:\Users\Renato"
+
+            O r impede que \ seja interpretado como escape.
+
+        Comparação de Strings:
+
+            EX:
+
+                "abc" < "b"
+
+            Comparação é feita por código Unicode.
+
+        Casos Profissionais:
+
+            Validação
+
+                email.endswith("@gmail.com")
+
+            Sanitização
+
+                entrada.strip().lower()
+
+            Substituição
+
+                texto.replace("Python", "Java")
+
+        Strings e Segurança
+
+            Nunca confie em entrada:
+
+                input_usuario = input()
+
+            Sempre valide:
+
+                tamanho
+
+                caracteres permitidos
+
+                padrões (regex)
+
+        Regex (Introdução):
+
+            EX:
+
+                import re
+
+                re.findall(r"\d+", "Tenho 25 anos")
+
+            Retorna números.
+
+        Conceito Mental Importante
+
+            String é:
+
+                . Sequência
+                . Ordenada
+                . Indexável
+                . Iterável
+                . Imutável
+
+        Diferença entre Bytes e String:
+
+            EX:
+
+                texto = "Renato"
+                b = texto.encode()
+
+            b vira bytes.
+
+                b.decode()
+
+        Volta para string.
+
+        Isso é essencial para:
+
+            APIs
+
+            Arquivos
+
+            Redes
+
+            Segurança
+
+        Pegadinha Clássica:
+
+            - Strings não somam, elas concatenam.
+
+                "10" + "5"   # "105"
+                10 + 5       # 15
+
+        Nível Expert — Internamento
+
+            Python pode reutilizar strings pequenas na memória:
+
+                a = "oi"
+                b = "oi"
+                a is b  # Pode ser True
+
+            Isso se chama interning.
+
+    ==========================================================================
+
+    listas / vetores e arrays não ordenadas:
+
+        Uma lista é:
+
+            Uma estrutura de dados dinâmica, indexada, ordenada e mutável.
+
+        Exemplo:
+
+            numeros = [10, 20, 30, 40]
+
+        Na memória ela se comporta assim:
+
+            [10][20][30][40]
+              0   1   2   3
+
+        LISTA NÃO É UM VETOR CLÁSSICO
+
+            Aqui começa o detalhe importante.
+
+            Em linguagens como C:
+
+                int vetor[4] = {10, 20, 30, 40};
+
+            Isso é um bloco contínuo de memória com inteiros fixos.
+
+            Em Python, NÃO.
+
+            Uma lista Python é:
+
+                Um vetor de PONTEIROS para objetos.
+
+            Internamente é algo assim:
+
+                [ ref ] → 10
+                [ ref ] → 20
+                [ ref ] → 30
+                [ ref ] → 40
+
+            Ou seja:
+
+                A lista guarda referências
+
+                Os valores estão em outro lugar da memória
+
+            Isso explica várias coisas importantes.
+
+        LISTAS SÃO MUTÁVEIS
+
+            EX:
+
+                lista = [1, 2, 3]
+                lista[0] = 99
+
+            Funciona.
+
+            Porque a lista altera a referência do índice.
+
+        COMPLEXIDADE (BIG-O)
+
+            Aqui começa a parte profissional
+
+                | Operação           | Complexidade    |
+                | ------------------ | --------------- |
+                | Acesso por índice  | O(1)            |
+                | Alterar por índice | O(1)            |
+                | Append             | O(1) amortizado |
+                | Inserir no meio    | O(n)            |
+                | Remover do meio    | O(n)            |
+                | Buscar valor       | O(n)            |
+
+            Por que append é O(1) “amortizado”?
+
+                Porque a lista cresce assim:
+
+                    Se você cria:
+
+                        lista = []
+
+                    Ela já reserva espaço interno maior do que 0.
+                
+                Quando enche, ela:
+
+                    Aloca um bloco maior
+
+                    Copia os elementos
+
+                Isso acontece raramente.
+
+                Por isso é amortizado O(1).
+
+        ARRAYS NÃO ORDENADOS
+
+            Uma lista Python pode ser usada como:
+
+                Array não ordenado
+
+            Significa que:
+
+                Não existe regra de ordenação
+
+                A posição não indica prioridade
+
+                Para buscar, precisa percorrer
+
+            Exemplo clássico:
+
+                estoque = ["banana", "maçã", "uva"]
+
+            Se quiser saber se tem "uva":
+
+                "uva" in estoque
+
+            Internamente:
+
+                Percorre elemento por elemento
+
+                Até encontrar
+
+                Ou terminar
+
+            Complexidade: O(n)
+
+        OPERAÇÕES IMPORTANTES
+
+            append: Adiciona no final
+
+                lista.append(50)
+
+            insert: Insere em qualquer posição. 
+            
+                Seu custo é O(n), Porque precisa deslocar tudo à direita.
+
+                    lista.insert(1, 999)
+
+            pop: Remove elementos
+
+                EX:
+
+                    lista.pop()      # remove último
+                    lista.pop(0)     # remove primeiro
+
+                . Último → O(1)
+
+                . Primeiro → O(n)
+
+                Porque precisa deslocar tudo à esquerda.
+
+            remove: Remove por valor.
+
+                . Primeiro encontra
+
+                . Depois desloca
+
+                O(n)
+
+                EX:
+
+                    lista.remove(20)
+
+        LISTA COMO ESTRUTURA DE DADOS
+
+            Você pode usar lista como:
+
+                . Pilha (stack)
+                . Fila simples (ineficiente)
+                . Buffer
+                . Armazenamento dinâmico
+                . Tabela temporária
+
+        LISTA COMO PILHA
+
+            Último entra, primeiro sai.
+
+            LIFO (Last In First Out).
+
+            EX:
+
+                pilha = []
+
+                pilha.append(10)
+                pilha.append(20)
+
+                pilha.pop()
+
+        LISTA COMO FILA (PROBLEMA):
+
+            Isso é O(n).
+
+            EX:
+
+                fila = []
+
+                fila.append(10)
+                fila.append(20)
+
+                fila.pop(0)  # RUIM
+
+            Melhor usar:
+
+                from collections import deque
+
+        LISTAS SÃO HETEROGÊNEAS:
+
+            - Isso é impossível em vetores clássicos de C.
+
+                lista = [1, "Renato", True, 3.14]
+
+        LISTA VS ARRAY MODULE:
+
+            Python tem módulo:
+
+                import array
+
+            Exemplo:
+
+                import array
+                arr = array.array('i', [1,2,3])
+
+            Aqui:
+
+                Tipo fixo
+
+                Memória contínua real
+
+                Mais eficiente
+
+        LISTAS E MEMÓRIA:
+
+            Cada elemento da lista:
+
+                Guarda ponteiro (~8 bytes)
+
+                Aponta para objeto
+
+                Objeto tem overhead
+            
+            Ou seja:
+
+                Lista de 1 milhão de ints consome muito mais que 
+                1 milhão * 4 bytes.
+
+        LISTA E REFERÊNCIA:
+
+            Cuidado clássico:
+
+                a = [1,2,3]
+                b = a
+                b[0] = 99
+
+            a também muda.
+
+            Porque é a mesma referência.
+
+        CÓPIA:
+
+                b = a.copy()
+
+            Ou:
+
+                b = a[:]
+
+            Agora são listas diferentes.
+
+        LIST COMPREHENSION:
+
+            Ferramenta profissional:
+
+                quadrados = [x**2 for x in range(10)]
+
+            Muito mais rápido que loop tradicional.
+
+        ORDENAÇÃO:
+
+            EX:
+
+                lista.sort()  # in-place
+
+                lista = sorted(lista) # Não in-place
+
+            Usa:
+
+                Timsort
+
+            Complexidade média: O(n log n)
+
+        VANTAGENS DAS LISTAS
+
+            . Dinâmicas
+            . Simples
+            . Flexíveis
+            . Extremamente otimizadas
+            . Base de quase tudo em Python
+
+        LIMITAÇÕES
+
+            . Busca lenta
+            . Inserção no início lenta
+            . Muito consumo de memória
+            . Não é ideal para milhões de números
+
+        QUANDO NÃO USAR LISTA
+
+            Use:
+
+                set → quando precisa busca rápida
+
+                dict → quando precisa chave/valor
+
+                deque → quando precisa fila eficiente
+
+                numpy array → quando precisa cálculo pesado
+
+        O QUE É UMA LISTA "NÃO ORDENADA"?
+
+            Primeiro precisamos separar duas coisas:
+
+                Ordenada ≠ Classificada
+
+            Uma lista Python é:
+
+                . Ordenada no sentido de manter posição
+                . Mas pode ser usada como estrutura sem ordenação lógica
+
+        Estrutura NÃO ORDENADA (conceito de algoritmo):
+
+            Em estrutura de dados, "não ordenada" significa:
+
+                Não há relação matemática ou regra entre os elementos.
+
+            Exemplo:
+
+                dados = [42, 7, 100, 3, 55]
+
+            Aqui:
+
+                42 não tem relação com 7
+
+                Não está crescente
+
+                Não está decrescente
+
+                Não tem prioridade
+
+            É apenas armazenamento.
+
+        Consequência Algorítmica
+
+            Se você quiser buscar:
+
+                100 in dados
+
+            O Python precisa:
+
+                Começar no índice 0
+
+                Ir verificando
+
+                Até achar
+
+                Ou terminar
+
+            Complexidade:
+
+                O(n)
+
+        A ABORDAGEM [0] * N
+
+            Agora entramos numa parte MUITO interessante.
+
+            O que isso faz?
+
+                N = 5
+                lista = [0] * N
+
+            Resultado:
+
+                [0, 0, 0, 0, 0]
+
+            Mas como isso funciona internamente?
+
+            O que realmente acontece?
+
+                Python:
+
+                    Cria a lista [0]
+
+                    Repete a referência N vezes
+
+            CUIDADO IMPORTANTE
+
+                Com inteiros, funciona bem porque:
+
+                Inteiros são imutáveis
+
+                O mesmo objeto pode ser compartilhado
+
+            Mas veja isso:
+
+                lista = [[]] * 3
+                lista[0].append(1)
+                print(lista)
+
+            Resultado:
+
+                [[1], [1], [1]]
+
+            POR QUÊ?
+
+                Porque todas as posições apontam para a mesma lista interna.
+
+                Representação mental:
+
+                    lista = [[]] * 3
+
+                Na memória:
+
+                    [ ref ] ----\
+                    [ ref ] ----- >  []
+                    [ ref ] ----/
+
+                Todas apontam para o mesmo objeto.
+
+            Como fazer corretamente?
+
+                Use list comprehension:
+
+                    lista = [[] for _ in range(3)]
+
+                Agora cada posição é independente.
+
+            [0] * N COMO TÉCNICA DE ARRAY:
+
+                Essa técnica é usada para:
+
+                    . Criar vetor fixo
+                    . Criar buffer
+                    . Criar tabela de contagem
+                    . Criar array de frequência
+
+                Exemplo clássico:
+
+                    frequencia = [0] * 10
+
+                Agora você pode contar:
+
+                    numeros = [1,2,2,3,3,3]
+
+                    for n in numeros:
+                        frequencia[n] += 1
+
+            Performance de [0] * N:
+
+                Complexidade:
+
+                    . Criação → O(n)
+                    . Muito rápida
+                    . Mais rápida que append em loop
+
+                Comparação:
+
+                    # Lento
+                    lista = []
+                    for _ in range(1000000):
+                        lista.append(0)
+
+                    # Muito mais rápido
+                    lista = [0] * 1000000
+
+            LISTA COMO ARRAY FIXO
+
+                Embora listas sejam dinâmicas, você pode usar como se fosse 
+                array fixo:
+
+                    buffer = [None] * 1024
+
+                Isso é comum em:
+
+                    Processamento de dados
+
+                    Algoritmos
+
+                    Estruturas de baixo nível
+
+            CASO AVANÇADO — Pré-alocação
+
+                Em Python puro, pré-alocar com [0] * N pode melhorar 
+                performance quando:
+
+                    Você sabe o tamanho final
+
+                    Vai acessar por índice
+
+                    Não vai usar append
+
+                Exemplo profissional:
+
+                    resultado = [0] * len(dados)
+
+                    for i in range(len(dados)):
+                        resultado[i] = dados[i] * 2
+
+                Isso evita redimensionamento.
+
+        LISTAS NÃO ORDENADAS NA PRÁTICA REAL:
+
+            Exemplos reais:
+
+                . Carrinho de compras
+                . Lista de usuários online
+                . Buffer de requisições
+                . Logs temporários
+                . Armazenamento bruto
+
+            Não importa ordem, só armazenar.
+
+
+        Quando NÃO usar lista não ordenada
+
+            Se você precisa:
+
+                . Busca rápida → use set
+                . Mapeamento → use dict
+                . Ordem automática → use heapq
+                . Ordenação automática → use bisect
+
+        Agora pensamento de engenheiro:
+
+            Se você tem:
+
+                1 milhão de elementos
+                E precisa fazer 10 mil buscas
+
+                Lista não ordenada → O(n²) comportamento prático
+                Set → O(n)
+
+            Isso muda tudo.
+
+    ==========================================================================
 
     listas / vetores e arrays ordenadas
 
+    ==========================================================================
+
     circularidade e rotacionamento:
+
+    ==========================================================================
 
     matrizes
 
+    ==========================================================================
+
     Torre de Hanoi
+
+    ==========================================================================
 
     algoritmos de busca
 
+    ==========================================================================
+
     algoritmo de Ordenações
+
+    ==========================================================================
 
     pilhas
 
+    ==========================================================================
+
     filas
+
+    ==========================================================================
 
     fila de prioridade
 
+    ==========================================================================
+
     fila circular
+
+    ==========================================================================
 
     fila de extremidade dupla
 
+    ==========================================================================
+
     deques
+
+    ==========================================================================
 
     Lista encadeada
 
+    ==========================================================================
+
     ávores
+
+    ==========================================================================
 
     hash tables
 
+    ==========================================================================
+
     LRU Cache
+
+    ==========================================================================
 
     grafos
 
+    ==========================================================================
+
     BFS × DFS
+
+    ==========================================================================
 
     Busca em profundidade
 
+    ==========================================================================
+
     Busca em largura
+
+    ==========================================================================
 
     Busca gulosa
 
+    ==========================================================================
+
     Busca A*
 
+    ==========================================================================
+
     Algoritmo de Dijkstra
+
+    ==========================================================================
 
 Um pouco de python em baixo nível:
 

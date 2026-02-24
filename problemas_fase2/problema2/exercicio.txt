@@ -1,0 +1,32 @@
+EXERCÍCIO 2 — Verificar Palíndromo (Sem métodos prontos)
+
+Implemente um algoritmo que:
+
+    Verifique se uma string é palíndromo
+
+    Ignore:
+
+        espaços
+
+        letras maiúsculas/minúsculas
+
+    Sem usar:
+
+        [::-1]
+
+        .replace()
+
+        .lower() diretamente no return
+
+        funções mágicas prontas
+
+    Você pode:
+
+        Percorrer manualmente
+
+        Comparar posições espelhadas
+
+    Exemplo:
+
+        "Ame a ema"
+        → True

@@ -1,0 +1,7 @@
+EXERCÍCIO 1 — Encontrar o Maior e o Menor
+
+Dada uma lista de números inteiros não ordenada, encontre:
+
+    O maior valor
+
+    O menor valor
