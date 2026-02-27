@@ -1,0 +1,5 @@
+Exercício 2 - Encontrar Segundo Maior
+
+Objetivo:
+
+    Dada uma lista de inteiros não ordenada, retorne o segundo maior número

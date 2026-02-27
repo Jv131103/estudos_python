@@ -15,6 +15,17 @@ processo, que geralmente se dá mediante a utilização de
 algoritmos pré-programados, o software consegue tomar decisões 
 e realizar tarefas de maneira autônoma.
 
+A IA precisa de muitos dados. E muitos dados chama-se Big Data, e ambas (IA 
+e Big Data) são duas tecnologias que se complementam de forma poderosa, 
+impulsionando inovações em diversos setores: saúde, transporte, meio ambiente, 
+segurança, educação, finanças etc. A IA utiliza o Big Data como combustível 
+para seus algoritmos, enquanto o Big Data se beneficia da IA para extrair 
+insights valiosos de grandes conjuntos de dados. Big Data refere-se ao 
+enorme volume de dados gerados a partir de diversas fontes, como sensores, 
+GPS, dispositivos móveis, transações online e mídias sociais, cliques de 
+mouse, visitas aos sites, posts, likes, áudios, vídeos etc.
+
+
                 Tipos de inteligência
 
 A IA se manifesta de diversas formas, cada uma com suas
@@ -126,5 +137,3 @@ Retomando a lista de IAs, ainda exploraremos sobre:
     autônomas que podem realizar tarefas complexas. Os robôs são capazes
     de interagir com o ambiente físico, manipular objetos e executar tarefas
     com alto grau de precisão e repetitividade.
-
-
