@@ -1,0 +1,29 @@
+EXERCÍCIO 1 — Busca Binária Manual
+
+Dada uma lista ordenada crescente, implemente busca binária manualmente.
+
+Exemplo:
+
+    lista = [1, 3, 5, 7, 9, 11, 13]
+    buscar 7 → retorna índice 3
+    buscar 4 → retorna -1
+
+Restrições:
+
+    Não usar in
+
+    Não usar index
+
+    Não usar bisect
+
+    Não usar recursão (faça iterativo)
+
+O que treinar
+
+    Dois ponteiros (left, right)
+
+    Cálculo de mid
+
+    Controle de loop
+
+    Complexidade esperada: O(log n)
