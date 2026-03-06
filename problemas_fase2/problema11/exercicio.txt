@@ -1,0 +1,24 @@
+EXERCÍCIO 3 — Rotação
+
+Rotacionar array para a direita
+
+Dada uma lista e um número k, rotacione a lista k posições para a direita.
+
+Exemplo:
+
+    lista = [1,2,3,4,5]
+    k = 2
+
+    saida = [4,5,1,2,3]
+
+Restrições
+
+    Não usar deque
+
+    Não usar collections
+
+Treina:
+
+    manipulação de índices
+
+    rotação eficiente

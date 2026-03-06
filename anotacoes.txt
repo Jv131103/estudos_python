@@ -31344,9 +31344,361 @@ Um pouco sobre Estruturas de dados:
 
     circularidade e rotacionamento:
 
+        circularidade:
+
+            Circularidade significa que a estrutura não tem começo ou fim
+            absoluto.
+
+            Quando chega no final, volta para o início.
+
+            Representação:
+
+                0 → 1 → 2 → 3 → 4
+                ↑               ↓
+                 ← ← ← ← ← ← ← ←
+                
+            Isso forma um ciclo.
+
+            Matematicamente:
+
+                indice_novo = (indice + passo) % tamanho
+
+            O operador % é a chave da circularidade.
+
+            Circularidade em Arrays / Vetores:
+
+                Imagine um vetor:
+
+                    vetor = [10, 20, 30, 40, 50]
+
+                Se avançarmos circularmente:
+
+                    posição atual = 4
+                    tamanho = 5
+
+                    (4 + 1) % 5 = 0
+
+                Voltamos ao começo.
+
+            Implementação:
+
+                def proximo_indice(i, tamanho):
+                    return (i + 1) % tamanho
+
+        Rotacionamento de vetor:
+
+            Rotacionar significa deslocar elementos circularmente.
+
+            Exemplo:
+
+                [1,2,3,4,5]
+
+                rotacionar direita
+
+                [5,1,2,3,4]
+
+            Rotação simples (direita):
+
+                EX:
+
+                    def rotacionar_direita(lista):
+                        ultimo = lista[-1]
+
+                        for i in range(len(lista)-1, 0, -1):
+                            lista[i] = lista[i-1]
+
+                        lista[0] = ultimo
+
+                Complexidade:
+
+                    O(n)
+
+            Rotação esquerda
+
+                Demonstração:
+
+                    [1,2,3,4,5]
+
+                    →
+
+                    [2,3,4,5,1]
+
+                EX:
+
+                    def rotacionar_esquerda(lista):
+                        primeiro = lista[0]
+
+                        for i in range(len(lista)-1):
+                            lista[i] = lista[i+1]
+
+                        lista[-1] = primeiro
+
+            Rotação por k posições:
+
+                EX:
+
+                    def rotacionar(lista, k):
+                        n = len(lista)
+                        k = k % n
+
+                        return lista[-k:] + lista[:-k]
+
+                Exemplo:
+
+                    [1,2,3,4,5]
+
+                    k=2
+
+                    [4,5,1,2,3]
+
+        Circularidade em FILAS (fila circular):
+
+            Estrutura muito usada em:
+
+                sistemas operacionais
+
+                buffers
+
+                redes
+
+                streaming
+
+            Modelo:
+
+                head → início da fila
+                tail → final da fila
+
+            Mas o vetor se reutiliza.
+
+            Estrutura
+
+                [_,_,_,_,_]
+
+                head
+                tail
+
+            Implementação:
+
+                class FilaCircular:
+
+                    def __init__(self, tamanho):
+                        self.vetor = [None] * tamanho
+                        self.head = 0
+                        self.tail = 0
+                        self.tamanho = tamanho
+                        self.quantidade = 0
+
+                    def enqueue(self, valor):
+
+                        if self.quantidade == self.tamanho:
+                            raise IndexError("fila cheia")
+
+                        self.vetor[self.tail] = valor
+                        self.tail = (self.tail + 1) % self.tamanho
+                        self.quantidade += 1
+
+                    def dequeue(self):
+
+                        if self.quantidade == 0:
+                            raise IndexError("fila vazia")
+
+                        valor = self.vetor[self.head]
+                        self.vetor[self.head] = None
+
+                        self.head = (self.head + 1) % self.tamanho
+                        self.quantidade -= 1
+
+                        return valor
+
+                    def __str__(self):
+
+                        elementos = []
+                        i = self.head
+
+                        for _ in range(self.quantidade):
+                            elementos.append(self.vetor[i])
+                            i = (i + 1) % self.tamanho
+
+                        return str(elementos)
+
+        Circularidade em Buffers:
+
+            Usado em:
+
+                áudio
+
+                vídeo
+
+                streaming
+
+                redes
+
+        Chamado de Ring Buffer.
+
+        Exemplo:
+
+            buffer = [0]*5
+
+        Escrevendo continuamente:
+
+            0 1 2 3 4
+            ↑       ↓
+             ← ← ← ←
+
+        Implementação:
+
+            class RingBuffer:
+
+                def __init__(self, tamanho):
+                    self.buffer = [None] * tamanho
+                    self.index = 0
+                    self.tamanho = tamanho
+
+                def adicionar(self, valor):
+                    self.buffer[self.index] = valor
+                    self.index = (self.index + 1) % self.tamanho
+
+
+            r = RingBuffer(5)
+            r.adicionar("A")
+            r.adicionar("B")
+            r.adicionar("C")
+            r.adicionar("D")
+            r.adicionar("E")
+            print(r.buffer)
+            r.adicionar("F")
+            r.adicionar("G")
+            print(r.buffer)
+
+        Circularidade em listas ligadas:
+
+            Em listas ligadas circulares:
+
+                A → B → C → D
+                ↑           ↓
+                 ← ← ← ← ← ←
+
+            O último aponta para o primeiro.
+
+            Implementação:
+
+                class Node:
+
+                    def __init__(self, valor):
+                        self.valor = valor
+                        self.proximo = None
+
+
+                a = Node(1)
+                b = Node(2)
+                c = Node(3)
+
+                a.proximo = b
+                b.proximo = c
+                c.proximo = a
+
+        Rotação com reversão (algoritmo famoso)
+
+            Rotação O(n) sem memória extra.
+
+            Exemplo:
+
+                [1,2,3,4,5]
+                k=2
+
+                [4,5,1,2,3]
+
+            Algoritmo:
+
+                1 inverter tudo
+                2 inverter primeiros k
+                3 inverter resto
+
+            Implementação:
+
+                def inverter(lista, inicio, fim):
+
+                    while inicio < fim:
+                        lista[inicio], lista[fim] = lista[fim], lista[inicio]
+                        inicio += 1
+                        fim -= 1
+
+
+                def rotacionar(lista, k):
+
+                    n = len(lista)
+                    k %= n
+
+                    inverter(lista, 0, n - 1)
+                    inverter(lista, 0, k - 1)
+                    inverter(lista, k, n - 1)
+
+
+                lista = [1, 2, 3, 4]
+                rotacionar(lista, 2)
+                print(lista)
+
+            Complexidade:
+
+                O(n)
+
+            Memória:
+
+                O(1)
+
+        Rotação de bits (baixo nível)
+
+            Muito usada em:
+
+                criptografia
+                
+                hashing
+                
+                compressão
+
+            Exemplo:
+
+                10110001
+
+                rotacionar direita 2
+
+                01101100
+
+        Sliding window (IA e análise):
+
+            Exemplo:
+
+                [1,2,3,4,5]
+                
+                janela = 3
+                
+                [1,2,3]
+                [2,3,4]
+                [3,4,5]
+
+            Isso é circularidade parcial.
+
+        RESUMO
+
+            Circularidade é baseada em:
+
+                indice % tamanho
+
+            Ela permite:
+
+                reutilizar memória
+
+                evitar deslocamentos
+
+                implementar buffers
+
+                implementar filas eficientes
+
+                implementar algoritmos rápidos
+
     ==========================================================================
 
-    matrizes
+    matrizes:
 
     ==========================================================================
 
@@ -31359,6 +31711,10 @@ Um pouco sobre Estruturas de dados:
     ==========================================================================
 
     algoritmo de Ordenações
+
+    ==========================================================================
+
+    DataFrames manual
 
     ==========================================================================
 

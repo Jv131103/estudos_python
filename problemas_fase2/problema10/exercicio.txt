@@ -1,0 +1,33 @@
+EXERCÍCIO 2 — Circularidade
+
+Soma circular
+
+Dada uma lista, calcule a soma de cada elemento com o próximo elemento circular.
+
+Exemplo:
+
+    lista = [1, 2, 3, 4]
+
+    resultado = [
+        1+2,
+        2+3,
+        3+4,
+        4+1
+    ]
+
+    saida = [3, 5, 7, 5]
+
+
+Restrições
+
+    Não criar listas auxiliares gigantes
+
+    Usar índice circular
+
+Treina:
+
+    circularidade
+
+    índice modular
+
+    arrays

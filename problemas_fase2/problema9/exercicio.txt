@@ -1,0 +1,23 @@
+EXERCÍCIO 1 — Circularidade
+
+Próximo elemento circular
+
+Dada uma lista e um índice i, retorne o próximo elemento considerando a lista circular.
+
+Exemplo:
+
+    lista = [10, 20, 30, 40]
+
+    indice = 2
+    saida = 40
+
+    indice = 3
+    saida = 10
+
+Regras:
+
+    Não usar try/except
+
+    Usar aritmética modular
+
+    Objetivo: entender (i + 1) mod n
