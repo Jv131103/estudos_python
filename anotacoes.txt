@@ -19664,6 +19664,14 @@ UM POUCO SOBRE LÓGICA DE PROGRAMAÇÃO:
 
     ======================================================================
 
+    csv e excel:
+
+    ======================================================================
+
+    python e PDF:
+
+    ======================================================================
+
     bs4:
 
         Ela serve para:
@@ -31698,27 +31706,1934 @@ Um pouco sobre Estruturas de dados:
 
     ==========================================================================
 
-    matrizes:
+        matrizes:
+
+        Uma matriz é uma estrutura bidimensional de dados.
+
+        Enquanto um vetor tem uma dimensão, a matriz tem duas dimensões.
+
+        Visualmente:
+
+            [1 2 3]
+            [4 5 6]
+            [7 8 9]
+
+        Cada elemento possui linha e coluna.
+
+        Representação:
+
+            A
+             ij
+
+        onde:
+
+            i → linha
+
+            j → coluna
+
+        Representação em Python
+
+            Em Python, normalmente usamos listas de listas.
+
+                matriz = [
+                    [1,2,3],
+                    [4,5,6],
+                    [7,8,9]
+                ]
+
+            Acessar elemento:
+
+                matriz[1][2]
+
+            Resultado:
+
+                6
+
+            Porque:
+
+                linha 1 coluna 2
+
+        Dimensões da matriz
+
+            Número de linhas:
+
+                len(matriz)
+
+            Número de colunas:
+
+                len(matriz[0])
+
+        Percorrendo uma matriz
+
+            Forma clássica:
+
+                for i in range(len(matriz)):
+                    for j in range(len(matriz[0])):
+                        print(matriz[i][j])
+
+            Isso percorre todos os elementos.
+
+            Complexidade:
+
+                O(n × m)
+
+        Criando matriz vazia
+
+            Estratégia comum:
+
+                linhas = 3
+                colunas = 4
+
+                matriz = [[0]*colunas for _ in range(linhas)]
+
+            Resultado:
+
+                [0 0 0 0]
+                [0 0 0 0]
+                [0 0 0 0]
+
+            Cuidado com:
+
+                matriz = [[0]*colunas]*linhas
+
+            Isso cria referências duplicadas.
+
+        Matriz identidade
+
+            Muito usada em matemática e IA.
+
+                [1 0 0]
+                [0 1 0]
+                [0 0 1]
+
+            Implementação:
+
+                def matriz_identidade(n):
+
+                matriz = [[0]*n for _ in range(n)]
+
+                for i in range(n):
+                    matriz[i][i] = 1
+
+                return matriz
+        
+        Soma de matrizes
+
+            Duas matrizes do mesmo tamanho.
+
+                A + B
+
+            Implementação:
+                
+                def soma_matriz(A,B):
+
+                    linhas = len(A)
+                    colunas = len(A[0])
+
+                    resultado = [[0]*colunas for _ in range(linhas)]
+
+                    for i in range(linhas):
+                        for j in range(colunas):
+
+                            resultado[i][j] = A[i][j] + B[i][j]
+
+                    return resultado
+            
+        Multiplicação de matrizes
+
+            Uma das operações mais importantes da ciência da computação.
+
+                Regra:
+
+                    A (n × m)
+                    B (m × p)
+
+                    resultado (n × p)
+
+                Implementação:
+
+                    def multiplicar(A,B):
+
+                        n = len(A)
+                        m = len(A[0])
+                        p = len(B[0])
+
+                        resultado = [[0]*p for _ in range(n)]
+
+                        for i in range(n):
+                            for j in range(p):
+                                for k in range(m):
+
+                                    resultado[i][j] += A[i][k] * B[k][j]
+
+                        return resultado
+
+            Complexidade:
+
+                O(n³)
+
+            Esse algoritmo é a base de machine learning e gráficos 3D.
+
+        Transposta da matriz
+
+            Troca linhas por colunas.
+
+                Original:
+
+                    [1 2 3]
+                    [4 5 6]
+
+                Transposta:
+
+                    [1 4]
+                    [2 5]
+                    [3 6]
+
+            Código:
+
+                def transposta(matriz):
+
+                    linhas = len(matriz)
+                    colunas = len(matriz[0])
+
+                    T = [[0]*linhas for _ in range(colunas)]
+
+                    for i in range(linhas):
+                        for j in range(colunas):
+
+                            T[j][i] = matriz[i][j]
+
+                    return T
+
+        Matriz de adjacência:
+
+            Exemplo de grafo:
+
+                A -- B
+                |    |
+                C -- D
+
+            Representação:
+
+                  A B C D
+                A 0 1 1 0
+                B 1 0 0 1
+                C 1 0 0 1
+                D 0 1 1 0
+
+            Python:
+
+                grafo = [
+                    [0,1,1,0],
+                    [1,0,0,1],
+                    [1,0,0,1],
+                    [0,1,1,0]
+                ]
+
+        Matrizes esparsas:
+
+            Algumas matrizes têm muitos zeros.
+
+            Exemplo:
+
+                [0 0 0 5]
+                [0 0 0 0]
+                [0 0 3 0]
+
+            Nesse caso é melhor usar:
+
+                lista de coordenadas
+
+                    Exemplo:
+
+                        [(0,3,5),(2,2,3)]
+
+                Isso economiza memória.
+        
+        Matrizes e memória
+
+            Em C, matriz é contínua na memória.
+
+            Em Python:
+
+                lista → ponteiros → listas
+
+            Então não é totalmente contínuo.
+
+            Isso impacta performance.
+
+        Matrizes e imagens
+
+            Uma imagem é uma matriz de pixels.
+
+            Exemplo simples:
+
+                [255 200 100]
+                [180  50  90]
+
+            Cada valor representa intensidade.
+
+        Sliding window em matrizes
+
+            Muito usado em visão computacional.
+
+            Exemplo:
+
+                [1 2 3]
+                [4 5 6]
+                [7 8 9]
+
+            Janela 2×2:
+
+                [1 2]
+                [4 5]
+
+                [2 3]
+                [5 6]
+
+                [4 5]
+                [7 8]
+
+                [5 6]
+                [8 9]
+        
+        Matrizes circulares:
+
+            Uma matriz circular significa que as bordas se conectam.
+
+            Imagine um mapa de jogo onde sair pela direita faz você aparecer
+            na esquerda.
+
+            Visualmente:
+
+                (0,0) ... (0,n-1)
+                  |          |
+                  |          |
+                (m-1,0) ... (m-1,n-1)
+
+            Se você ultrapassa o limite, volta.
+
+            Matematicamente usamos módulo.
+
+                linha = (linha + movimento_linha) % numero_linhas
+                coluna = (coluna + movimento_coluna) % numero_colunas
+
+            Exemplo:
+
+                matriz = [
+                    [1,2,3],
+                    [4,5,6],
+                    [7,8,9]
+                ]
+
+                linhas = len(matriz)
+                colunas = len(matriz[0])
+
+                i = 2
+                j = 2
+
+                # mover para baixo e direita circularmente
+                i = (i + 1) % linhas
+                j = (j + 1) % colunas
+
+                print(matriz[i][j])
+
+            Resultado:
+
+                1
+
+            Porque saiu da borda e voltou.
+
+        Rotação de matriz
+
+            Rotacionar uma matriz é muito comum em:
+
+                Exemplo matriz:
+
+                    1 2 3
+                    4 5 6
+                    7 8 9
+
+                Rotacionada 90° horário:
+
+                    7 4 1
+                    8 5 2
+                    9 6 3
+
+            Método simples (criar nova matriz):
+
+                def rotacionar(matriz):
+
+                    n = len(matriz)
+
+                    nova = [[0]*n for _ in range(n)]
+
+                    for i in range(n):
+                        for j in range(n):
+                            nova[j][n-1-i] = matriz[i][j]
+
+                    return nova
+
+            Complexidade:
+
+                O(n²)
+
+        Rotação in-place (sem memória extra)
+
+            Algoritmo clássico de entrevista.
+
+            Ideia:
+
+                1. transpor matriz
+                2. inverter linhas
+
+            Transposição
+                1 2 3
+                4 5 6
+                7 8 9
+
+                ↓
+
+                1 4 7
+                2 5 8
+                3 6 9
+
+            Código:
+
+                def transpor(m):
+
+                    n = len(m)
+
+                    for i in range(n):
+                        for j in range(i+1,n):
+                            m[i][j], m[j][i] = m[j][i], m[i][j]
+
+            Inverter linhas
+
+                for linha in matriz:
+                    linha.reverse()
+
+            Resultado: matriz rotacionada.
+
+        Espiral de matriz:
+
+            Problema clássico.
+
+            Percorrer matriz assim:
+
+                1 2 3
+                4 5 6
+                7 8 9
+
+            Ordem:
+
+                1 2 3 6 9 8 7 4 5
+
+            Formato espiral.
+
+        Algoritmo
+
+            Controlamos quatro limites:
+
+                top
+                bottom
+                left
+                right
+
+            Implementação:
+
+                def espiral(m):
+
+                    resultado = []
+
+                    top = 0
+                    bottom = len(m)-1
+                    left = 0
+                    right = len(m[0])-1
+
+                    while top <= bottom and left <= right:
+
+                        for j in range(left,right+1):
+                            resultado.append(m[top][j])
+                        top += 1
+
+                        for i in range(top,bottom+1):
+                            resultado.append(m[i][right])
+                        right -= 1
+
+                        if top <= bottom:
+                            for j in range(right,left-1,-1):
+                                resultado.append(m[bottom][j])
+                            bottom -= 1
+
+                        if left <= right:
+                            for i in range(bottom,top-1,-1):
+                                resultado.append(m[i][left])
+                            left += 1
+
+                    return resultado
+
+            Complexidade:
+
+                O(n*m)
+
+        Flood Fill
+
+            Esse algoritmo é famoso.
+
+            Ele é o que acontece quando você usa o balde de tinta no Paint.
+
+            Exemplo:
+
+                1 1 1
+                1 1 0
+                1 0 1
+
+            Se você clicar em (1,1) e pintar com 2:
+
+                2 2 2
+                2 2 0
+                2 0 1
+
+            Ele pinta toda a região conectada.
+
+            Ideia:
+
+                1. começa em um ponto
+                2. visita vizinhos
+                3. continua enquanto tiver mesma cor
+
+            Versão recursiva:
+
+                def flood_fill(m,i,j,cor_nova):
+
+                    linhas = len(m)
+                    colunas = len(m[0])
+
+                    cor_original = m[i][j]
+
+                    if cor_original == cor_nova:
+                        return
+
+                    def dfs(x,y):
+
+                        if x<0 or x>=linhas or y<0 or y>=colunas:
+                            return
+
+                        if m[x][y] != cor_original:
+                            return
+
+                        m[x][y] = cor_nova
+
+                        dfs(x+1,y)
+                        dfs(x-1,y)
+                        dfs(x,y+1)
+                        dfs(x,y-1)
+
+                    dfs(i,j)
 
     ==========================================================================
 
-    Torre de Hanoi
+    Torre de Hanoi:
+
+        É um quebra-cabeça matemático criado em 1883 por Édouard Lucas.
+
+        Ele possui:
+
+            3 pinos (torres)
+
+            N discos
+
+            discos de tamanhos diferentes
+
+        Estado inicial:
+
+            Torre A      Torre B      Torre C
+
+               1
+              2
+             3
+             4
+
+        Objetivo:
+
+            Mover todos os discos da Torre A → Torre C
+
+        Regras:
+
+            1. mover apenas um disco por vez
+
+            2. só pode mover o disco do topo
+
+            3. disco maior nunca pode ficar sobre menor
+
+        Objetivo:
+
+            Inicial
+
+            A       B       C
+            1
+            2
+            3
+
+
+            Final
+
+            A       B       C
+                            1
+                            2
+                            3
+
+        Ideia fundamental do algoritmo
+
+        Se você tiver 3 discos, a solução é:
+
+            1. mover disco 1 A→C
+            2. mover disco 2 A→B
+            3. mover disco 1 C→B
+            4. mover disco 3 A→C
+            5. mover disco 1 B→A
+            6. mover disco 2 B→C
+            7. mover disco 1 A→C
+
+        Total:
+
+            7 movimentos
+
+        Fórmula de movimentos
+
+            Número mínimo de movimentos:
+
+                2**n − 1
+
+            | discos | movimentos |
+            | ------ | ---------- |
+            | 1      | 1          |
+            | 2      | 3          |
+            | 3      | 7          |
+            | 4      | 15         |
+            | 5      | 31         |
+
+            Crescimento exponencial.
+
+        Ideia recursiva
+
+            Para mover n discos:
+
+                1. mover n-1 discos para torre auxiliar
+                2. mover o maior disco
+                3. mover n-1 discos para torre final
+
+            Implementação recursiva:
+
+                def hanoi(n, origem, destino, auxiliar):
+
+                    if n == 1:
+                        print(f"Mover disco 1 de {origem} para {destino}")
+                        return
+
+                    hanoi(n-1, origem, auxiliar, destino)
+
+                    print(f"Mover disco {n} de {origem} para {destino}")
+
+                    hanoi(n-1, auxiliar, destino, origem)
+
+                hanoi(3,"A","C","B")
+
+            Saída:
+
+                Mover disco 1 de A para C
+                Mover disco 2 de A para B
+                Mover disco 1 de C para B
+                Mover disco 3 de A para C
+                Mover disco 1 de B para A
+                Mover disco 2 de B para C
+                Mover disco 1 de A para C
+
+            Complexidade
+
+                Tempo:
+
+                    O(2**n)
+
+                Espaço (recursão):
+
+                    O(n)
+
+        Representando como estrutura de dados:
+
+            Podemos representar as torres como pilhas.
+
+            Cada torre é uma lista.
+
+                A = [3,2,1]
+                B = []
+                C = []
+
+            Topo da pilha:
+
+                A[-1]
+
+            Implementação usando listas
+
+                def mover(origem, destino):
+                    disco = origem.pop()
+                    destino.append(disco)
+
+            Simulação completa
+
+                def hanoi(n, A, B, C):
+
+                    if n == 1:
+                        mover(A,C)
+                        return
+
+                    hanoi(n-1, A, C, B)
+
+                    mover(A,C)
+
+                    hanoi(n-1, B, A, C)
+
+            Visualização
+
+                Estado inicial:
+
+                A = [3,2,1]
+                B = []
+                C = []
+
+                Estado final:
+
+                A = []
+                B = []
+                C = [3,2,1]
+
+        Por que a Torre de Hanoi é importante?
+
+            Ela ensina:
+
+                . recursão
+                . dividir problema grande em menores
+                . estruturas de pilha
+                . complexidade exponencial
+
+        Curiosidade famosa
+
+            Existe uma lenda chamada:
+
+                Templo de Benares
+
+            Diz que monges movem 64 discos de ouro seguindo as regras.
+
+                Quando terminarem…
+
+                    o mundo acaba.
+
+                Número de movimentos:
+
+                    2**64 - 1
+
+                Isso é aproximadamente:
+
+                    18 quintilhões de movimentos
+
+                Se mover 1 disco por segundo:
+
+                    levaria 585 bilhões de anos.
+
+                O universo tem ~13 bilhões.
 
     ==========================================================================
 
-    algoritmos de busca
+    algoritmos de busca:
+
+        algoritmos de busca são um dos pilares da ciência da computação.
+        Sempre que você faz algo como:
+
+            procurar um usuário
+
+            achar um valor em uma lista
+
+            buscar um arquivo
+
+            encontrar um caminho em um mapa
+
+        você está usando algoritmos de busca.
+
+        Busca Linear (Linear Search):
+
+            É o algoritmo mais simples.
+
+            Ideia:
+
+                Percorrer a lista elemento por elemento até encontrar o valor.
+
+            Exemplo:
+
+                lista = [10,20,30,40,50]
+
+                def busca_linear(lista, alvo):
+
+                    for i in range(len(lista)):
+                        if lista[i] == alvo:
+                            return i
+
+                    return -1
+
+            Complexidade:
+
+                | Caso   | Complexidade |
+                | ------ | ------------ |
+                | Melhor | O(1)         |
+                | Médio  | O(n)         |
+                | Pior   | O(n)         |
+
+            Vantagem
+
+                Funciona em qualquer lista, ordenada ou não.
+
+        Busca Binária:
+
+            Muito mais eficiente.
+
+            Requisito:
+
+                A lista precisa estar ordenada.
+
+            Ideia
+
+                Dividir o espaço de busca pela metade.
+
+                Exemplo:
+
+                    [1,3,5,7,9,11,13]
+
+                Buscar 7
+
+            1. olhar o meio
+            2. decidir se vai esquerda ou direita
+            3. repetir
+
+            Implementação:
+
+                def busca_binaria(lista, alvo):
+
+                    inicio = 0
+                    fim = len(lista)-1
+
+                    while inicio <= fim:
+
+                        meio = (inicio + fim)//2
+
+                        if lista[meio] == alvo:
+                            return meio
+
+                        elif lista[meio] < alvo:
+                            inicio = meio + 1
+
+                        else:
+                            fim = meio - 1
+
+                    return -1
+
+            Complexidade
+
+                O(log n)
+
+            Se n = 1.000.000
+
+            Busca linear → até 1 milhão passos
+            Busca binária → cerca de 20 passos
+
+        Busca Ternária
+
+            Divide o array em três partes.
+
+            Usado principalmente em:
+
+                funções unimodais
+
+                otimização matemática
+
+            Ideia
+
+                Dois pontos de divisão:
+
+                    |----|----|
+                     m1   m2
+
+            Código simplificado:
+
+                def busca_ternaria(arr, alvo):
+
+                    esquerda = 0
+                    direita = len(arr)-1
+
+                    while esquerda <= direita:
+
+                        terco = (direita-esquerda)//3
+
+                        m1 = esquerda + terco
+                        m2 = direita - terco
+
+                        if arr[m1] == alvo:
+                            return m1
+
+                        if arr[m2] == alvo:
+                            return m2
+
+                        if alvo < arr[m1]:
+                            direita = m1 - 1
+
+                        elif alvo > arr[m2]:
+                            esquerda = m2 + 1
+
+                        else:
+                            esquerda = m1 + 1
+                            direita = m2 - 1
+
+            Complexidade:
+
+                O(log n)
+
+        Jump Search
+
+            Funciona em listas ordenadas.
+
+            Ideia:
+
+                Pular blocos.
+
+            Exemplo:
+
+                [1,2,3,4,5,6,7,8,9,10]
+
+            Pulos de √n.
+
+            Código:
+
+                import math
+
+                def jump_search(arr, alvo):
+
+                    n = len(arr)
+                    passo = int(math.sqrt(n))
+                    prev = 0
+
+                    while arr[min(passo,n)-1] < alvo:
+                        prev = passo
+                        passo += int(math.sqrt(n))
+
+                        if prev >= n:
+                            return -1
+
+                    for i in range(prev, min(passo,n)):
+                        if arr[i] == alvo:
+                            return i
+
+                    return -1
+
+        Interpolation Search
+
+            Funciona melhor quando os dados estão uniformemente distribuídos.
+
+            Ideia:
+
+                Estimar a posição do elemento.
+            
+            Fórmula:
+
+                pos = low + (x - arr[low] * (high - low))
+                     -------------------------------------
+                            arr[high] - arr[low]
+
+            Código:
+
+                def interpolation_search(arr, x):
+
+                    low = 0
+                    high = len(arr)-1
+
+                    while low <= high and x >= arr[low] and x <= arr[high]:
+
+                        pos = low + ((x-arr[low])*(high-low))//(arr[high]-arr[low])
+
+                        if arr[pos] == x:
+                            return pos
+
+                        if arr[pos] < x:
+                            low = pos + 1
+                        else:
+                            high = pos - 1
+
+                    return -1
+
+            Complexidade média:
+
+                O(log log n)
+
+            Muito rápido quando distribuição é boa.
+
+        Exponential Search
+
+            Usado para listas grandes.
+
+            Ideia:
+
+                1. dobrar intervalos
+                2. depois usar busca binária
+
+            Exemplo:
+
+                1,2,4,8,16,32...
+
+            Código:
+
+                def exponential_search(arr,x):
+
+                    if arr[0] == x:
+                        return 0
+
+                    i = 1
+
+                    while i < len(arr) and arr[i] <= x:
+                        i *= 2
+
+                    return busca_binaria(arr, x)
+
+            Complexidade:
+
+                O(log n)
+
+        Fibonacci Search:
+
+            Usa sequência de Fibonacci para dividir o array.
+
+            Usado em sistemas antigos e alguns bancos de dados.
+
+            Complexidade:
+
+                O(log n)
+
+            EX:
+
+                def fibonacci_search(arr, x):
+
+                    n = len(arr)
+
+                    fibMMm2 = 0
+                    fibMMm1 = 1
+                    fibM = fibMMm1 + fibMMm2
+
+                    while fibM < n:
+                        fibMMm2 = fibMMm1
+                        fibMMm1 = fibM
+                        fibM = fibMMm1 + fibMMm2
+
+                    offset = -1
+
+                    while fibM > 1:
+
+                        i = min(offset + fibMMm2, n - 1)
+
+                        if arr[i] < x:
+
+                            fibM = fibMMm1
+                            fibMMm1 = fibMMm2
+                            fibMMm2 = fibM - fibMMm1
+
+                            offset = i
+
+                        elif arr[i] > x:
+
+                            fibM = fibMMm2
+                            fibMMm1 = fibMMm1 - fibMMm2
+                            fibMMm2 = fibM - fibMMm1
+
+                        else:
+                            return i
+
+                    if fibMMm1 and offset + 1 < n and arr[offset + 1] == x:
+                        return offset + 1
+
+                    return -1
+
+        Comparação dos algoritmos:
+
+            | Algoritmo     | Complexidade |
+            | ------------- | ------------ |
+            | Linear        | O(n)         |
+            | Binária       | O(log n)     |
+            | Jump          | O(√n)        |
+            | Ternária      | O(log n)     |
+            | Interpolation | O(log log n) |
+            | Exponential   | O(log n)     |
+            | Fibonacci     | O(log n)     |
+
+        Onde cada um aparece:
+
+            | Situação              | Melhor        |
+            | --------------------- | ------------- |
+            | Lista pequena         | Linear        |
+            | Lista ordenada        | Binária       |
+            | Distribuição uniforme | Interpolation |
+            | Arrays enormes        | Exponential   |
+            | Sistemas antigos      | Fibonacci     |
 
     ==========================================================================
 
-    algoritmo de Ordenações
+    algoritmo de Ordenações:
+
+        Ordenar significa reorganizar dados seguindo uma regra.
+
+        Exemplo:
+
+            Lista original:
+
+                [8,3,5,1,9]
+
+            Ordenada crescente:
+
+                [1,3,5,8,9]
+
+            Ordenada decrescente:
+
+                [9,8,5,3,1]
+
+        Complexidade típica:
+
+            | Complexidade | Desempenho              |
+            | ------------ | ----------------------- |
+            | O(n²)        | simples e lento         |
+            | O(n log n)   | rápido                  |
+            | O(n)         | ideal (casos especiais) |
+
+        Bubble Sort:
+
+            Um dos mais simples.
+
+            Ideia:
+
+                Comparar pares vizinhos e trocar se estiverem fora de ordem.
+
+            Exemplo:
+
+                [5,3,8,4]
+
+            Passo 1:
+
+                3 5 8 4
+
+            Passo 2:
+
+                3 5 4 8
+
+            Passo 3:
+
+                3 4 5 8
+
+            Implementação:
+
+                def bubble_sort(arr):
+
+                    n = len(arr)
+
+                    for i in range(n):
+                        for j in range(0, n-i-1):
+
+                            if arr[j] > arr[j+1]:
+                                arr[j], arr[j+1] = arr[j+1], arr[j]
+
+            Complexidade:
+
+                O(n²)
+
+        Selection Sort:
+
+            Ideia:
+
+                Encontrar o menor elemento e colocar na posição correta.
+
+            Exemplo:
+
+                [7,3,5,2]
+
+            Passo:
+
+                2 3 5 7
+
+            Código:
+
+                def selection_sort(arr):
+
+                    n = len(arr)
+
+                    for i in range(n):
+
+                        min_index = i
+
+                        for j in range(i+1, n):
+
+                            if arr[j] < arr[min_index]:
+                                min_index = j
+
+                        arr[i], arr[min_index] = arr[min_index], arr[i]
+
+            Complexidade:
+
+                O(n²)
+
+        Insertion Sort
+
+            Muito usado para listas pequenas.
+
+            Ideia:
+
+                Inserir cada elemento na posição correta.
+
+            Exemplo:
+
+                [8,3,5,1]
+
+            Processo:
+            
+                8
+                3 8
+                3 5 8
+                1 3 5 8
+
+            Complexidade:
+
+                O(n²)
+
+            Mas se a lista estiver quase ordenada:
+
+                O(n)
+
+        Merge Sort
+
+            Um dos algoritmos mais importantes.
+
+            Ideia:
+
+                Dividir a lista em partes menores e depois juntar ordenando.
+
+            Exemplo:
+
+                [8,3,5,1]
+
+            Divide:
+
+                [8,3] [5,1]
+
+            Ordena:
+
+                [3,8] [1,5]
+
+            Merge:
+
+                [1,3,5,8]
+
+            Código:
+
+                def merge_sort(arr):
+
+                    if len(arr) > 1:
+
+                        meio = len(arr)//2
+
+                        esquerda = arr[:meio]
+                        direita = arr[meio:]
+
+                        merge_sort(esquerda)
+                        merge_sort(direita)
+
+                        i=j=k=0
+
+                        while i < len(esquerda) and j < len(direita):
+
+                            if esquerda[i] < direita[j]:
+                                arr[k] = esquerda[i]
+                                i += 1
+                            else:
+                                arr[k] = direita[j]
+                                j += 1
+
+                            k += 1
+
+                        while i < len(esquerda):
+                            arr[k] = esquerda[i]
+                            i+=1
+                            k+=1
+
+                        while j < len(direita):
+                            arr[k] = direita[j]
+                            j+=1
+                            k+=1
+
+            Complexidade:
+
+                O(n log n)
+
+        QuickSort
+
+            Um dos algoritmos mais usados na prática.
+
+            Ideia:
+
+                Escolher um pivô e dividir o array.
+
+            Exemplo:
+
+                [8,3,5,1,9]
+                pivô = 5
+
+            Divide:
+
+                [3,1] 5 [8,9]
+
+            Ordena recursivamente.
+
+            Código:
+
+                def quicksort(arr):
+
+                    if len(arr) <= 1:
+                        return arr
+
+                    pivot = arr[len(arr)//2]
+
+                    left = [x for x in arr if x < pivot]
+                    middle = [x for x in arr if x == pivot]
+                    right = [x for x in arr if x > pivot]
+
+                    return quicksort(left) + middle + quicksort(right)
+
+            Complexidade média:
+
+                O(n log n)
+
+            Pior caso:
+
+                O(n²)
+
+        Heap Sort
+
+            Usa uma estrutura chamada heap.
+
+            Passos:
+
+                1. construir heap
+                2. remover maior elemento
+                3. reconstruir heap
+
+            Código:
+
+                def heapify(lista, n, i):
+
+                    maior = i
+                    esquerda = 2 * i + 1
+                    direita = 2 * i + 2
+
+                    if esquerda < n and lista[esquerda] > lista[maior]:
+                        maior = esquerda
+
+                    if direita < n and lista[direita] > lista[maior]:
+                        maior = direita
+
+                    if maior != i:
+                        lista[i], lista[maior] = lista[maior], lista[i]
+                        heapify(lista, n, maior)
+
+
+                def heap_sort(lista):
+
+                    n = len(lista)
+
+                    # construir heap
+                    for i in range(n // 2 - 1, -1, -1):
+                        heapify(lista, n, i)
+
+                    # extrair elementos
+                    for i in range(n - 1, 0, -1):
+                        lista[0], lista[i] = lista[i], lista[0]
+                        heapify(lista, i, 0)
+
+                    return lista
+
+            Complexidade:
+
+                O(n log n)
+
+        Counting Sort
+
+            Funciona quando os números têm intervalo pequeno.
+
+            Exemplo:
+
+                [4,2,2,8,3]
+
+            Conta frequência:
+
+                2 → 2
+                3 → 1
+                4 → 1
+                8 → 1
+
+            Código:
+
+                def counting_sort(lista):
+
+                    if not lista:
+                        return lista
+
+                    maior = max(lista)
+
+                    contagem = [0] * (maior + 1)
+
+                    for valor in lista:
+                        contagem[valor] += 1
+
+                    resultado = []
+
+                    for numero, qtd in enumerate(contagem):
+                        for _ in range(qtd):
+                            resultado.append(numero)
+
+                    return resultado
+
+            Complexidade:
+
+                O(n + k)
+
+        Radix Sort
+
+            Ordena dígito por dígito.
+
+            Exemplo:
+
+                170
+                45
+                75
+                90
+
+            Ordena unidades → dezenas → centenas.
+
+            Código:
+
+                def counting_sort_digito(lista, exp):
+
+                    n = len(lista)
+                    resultado = [0] * n
+                    contagem = [0] * 10
+
+                    for numero in lista:
+                        indice = (numero // exp) % 10
+                        contagem[indice] += 1
+
+                    for i in range(1, 10):
+                        contagem[i] += contagem[i - 1]
+
+                    for i in range(n - 1, -1, -1):
+                        indice = (lista[i] // exp) % 10
+                        contagem[indice] -= 1
+                        resultado[contagem[indice]] = lista[i]
+
+                    for i in range(n):
+                        lista[i] = resultado[i]
+
+
+                def radix_sort(lista):
+
+                    maior = max(lista)
+
+                    exp = 1
+
+                    while maior // exp > 0:
+                        counting_sort_digito(lista, exp)
+                        exp *= 10
+
+                    return lista
+
+
+            Complexidade:
+
+                O(nk)
+
+        TimSort:
+
+            Python usa TimSort.
+
+            Ele é uma combinação de:
+
+                Merge Sort + Insertion Sort
+
+            Ideia:
+
+                1. detectar partes já ordenadas (runs)
+                2. usar insertion sort em blocos pequenos
+                3. usar merge sort para juntar
+
+            Código:
+
+                def insertion_sort_intervalo(lista, inicio, fim):
+                    for i in range(inicio + 1, fim):
+                        chave = lista[i]
+                        j = i - 1
+
+                        while j >= inicio and lista[j] > chave:
+                            lista[j + 1] = lista[j]
+                            j -= 1
+
+                        lista[j + 1] = chave
+
+
+                def merge(lista, inicio1, fim1, inicio2, fim2):
+                    esquerda = lista[inicio1:fim1]
+                    direita = lista[inicio2:fim2]
+
+                    i = 0
+                    j = 0
+                    k = inicio1
+
+                    while i < len(esquerda) and j < len(direita):
+                        if esquerda[i] <= direita[j]:
+                            lista[k] = esquerda[i]
+                            i += 1
+                        else:
+                            lista[k] = direita[j]
+                            j += 1
+                        k += 1
+
+                    while i < len(esquerda):
+                        lista[k] = esquerda[i]
+                        i += 1
+                        k += 1
+
+                    while j < len(direita):
+                        lista[k] = direita[j]
+                        j += 1
+                        k += 1
+
+
+                def calcular_minrun(n):
+                    r = 0
+                    while n >= 64:
+                        r |= n & 1
+                        n >>= 1
+                    return n + r
+
+
+                def contar_run(lista, inicio):
+                    n = len(lista)
+
+                    if inicio >= n - 1:
+                        return 1
+
+                    fim = inicio + 1
+
+                    if lista[fim] < lista[inicio]:
+                        while fim < n and lista[fim] < lista[fim - 1]:
+                            fim += 1
+                        lista[inicio:fim] = reversed(lista[inicio:fim])
+                    else:
+                        while fim < n and lista[fim] >= lista[fim - 1]:
+                            fim += 1
+
+                    return fim - inicio
+
+
+                def timsort_manual(lista):
+                    n = len(lista)
+                    if n < 2:
+                        return lista
+
+                    minrun = calcular_minrun(n)
+                    runs = []
+                    i = 0
+
+                    while i < n:
+                        run_len = contar_run(lista, i)
+
+                        if run_len < minrun:
+                            fim = min(i + minrun, n)
+                            insertion_sort_intervalo(lista, i, fim)
+                            run_len = fim - i
+
+                        runs.append((i, run_len))
+                        i += run_len
+
+                    while len(runs) > 1:
+                        novas_runs = []
+
+                        for i in range(0, len(runs), 2):
+                            if i + 1 < len(runs):
+                                inicio1, tam1 = runs[i]
+                                inicio2, tam2 = runs[i + 1]
+
+                                merge(
+                                    lista,
+                                    inicio1, inicio1 + tam1,
+                                    inicio2, inicio2 + tam2
+                                )
+
+                                novas_runs.append((inicio1, tam1 + tam2))
+                            else:
+                                novas_runs.append(runs[i])
+
+                        runs = novas_runs
+
+                    return lista
+
+            Complexidade:
+
+                O(n log n) no pior caso
+
+                pode chegar a O(n) se dados já estiverem quase ordenados
+
+        BucketSort:
+
+            Bucket Sort é um algoritmo que:
+
+                1. divide os dados em baldes (buckets)
+                2. ordena cada balde separadamente
+                3. junta os baldes no final
+
+            Ideia central:
+
+                Distribuir dados em grupos menores para ordenar mais rápido.
+
+            Ideia matemática
+
+                Se os números estão entre 0 e 1, podemos mapear:
+
+                    bucket=[n ∗ valor]
+
+                Exemplo:
+
+                    valor = 0.78
+                    n = 6
+
+                    bucket = int(6 * 0.78)
+                    bucket = 4
+
+            Código:
+
+                def bucket_sort(arr):
+
+                    n = len(arr)
+
+                    buckets = [[] for _ in range(n)]
+
+                    for valor in arr:
+
+                        indice = int(n * valor)
+                        buckets[indice].append(valor)
+
+                    for bucket in buckets:
+                        bucket.sort()
+
+                    resultado = []
+
+                    for bucket in buckets:
+                        resultado.extend(bucket)
+
+                    return resultado
+
+        Histogram sort:
+
+            Histogram Sort usa um histograma de frequência para ordenar valores.
+
+            Um histograma é simplesmente:
+
+                valor -> quantas vezes aparece
+
+            Exemplo:
+
+                Lista:
+
+                    [4,2,2,8,3,3,1]
+
+                Histograma:
+
+                    1 -> 1
+                    2 -> 2
+                    3 -> 2
+                    4 -> 1
+                    8 -> 1
+
+                Depois reconstruímos a lista ordenada.
+
+            Código:
+
+                def histogram_sort(lista):
+
+                    hist = {}
+
+                    for valor in lista:
+                        hist[valor] = hist.get(valor, 0) + 1
+
+                    resultado = []
+
+                    for valor in sorted(hist):
+                        resultado.extend([valor] * hist[valor])
+
+                    return resultado
+
+            Complexidade:
+
+                O(n + k log k)
+
+            onde
+
+                n = tamanho da lista
+                k = quantidade de valores distintos
+
+        Comparação:
+
+            | Algoritmo     | Complexidade   |
+            | ------------- | -------------- |
+            | Bubble        | O(n²)          |
+            | Selection     | O(n²)          |
+            | Insertion     | O(n²)          |
+            | Merge         | O(n log n)     |
+            | QuickSort     | O(n log n)     |
+            | HeapSort      | O(n log n)     |
+            | Counting      | O(n + k)       |
+            | Radix         | O(nk)          |
+            | TimSort       | O(n log n)     |
+            | BucketSort    | O(n + k)       |
+            | HistogramSort | O(n + k log k) |
 
     ==========================================================================
 
-    DataFrames manual
+    DataFrames manual:
+
+        Sem biblioteca, a ideia é pensar no DataFrame como:
+
+            . colunas com nomes
+
+            . linhas com valores
+
+            . acesso por:
+
+                . nome da coluna
+
+                . índice da linha
+
+            . operações como:
+
+                . mostrar tabela
+
+                . selecionar coluna
+
+                . adicionar linha
+
+                . filtrar
+
+            Ou seja: um DataFrame manual é basicamente uma estrutura de dados 
+            organizada para representar tabela.
+    
+        Jeito mais simples de pensar:
+
+            Um DataFrame pode ser representado como:
+
+                modelo A — lista de dicionários
+
+                    dados = [
+                        {"nome": "Ana", "idade": 20, "cidade": "SP"},
+                        {"nome": "Bruno", "idade": 25, "cidade": "RJ"},
+                        {"nome": "Carla", "idade": 22, "cidade": "BH"},
+                    ]
+
+                Cada dicionário é uma linha.
+
+                Isso já parece muito com um DataFrame.
+
+            Criando um “mini DataFrame” na mão:
+
+                Vou montar uma versão simples e didática.
+
+                    class DataFrameManual:
+                        def __init__(self, colunas, dados=None):
+                            self.colunas = colunas[:]
+                            self.dados = dados[:] if dados else []
+
+                        def adicionar_linha(self, linha):
+                            if set(linha.keys()) != set(self.colunas):
+                                raise ValueError("linha precisa ter exatamente as mesmas colunas")
+                            self.dados.append(linha)
+
+                        def selecionar_coluna(self, nome_coluna):
+                            if nome_coluna not in self.colunas:
+                                raise KeyError(f"coluna '{nome_coluna}' não existe")
+                            return [linha[nome_coluna] for linha in self.dados]
+
+                        def selecionar_linha(self, indice):
+                            return self.dados[indice]
+
+                        def filtrar(self, funcao):
+                            filtrados = [linha for linha in self.dados if funcao(linha)]
+                            return DataFrameManual(self.colunas, filtrados)
+
+                        def __str__(self):
+                            if not self.dados:
+                                return "DataFrame vazio"
+
+                            larguras = {}
+                            for coluna in self.colunas:
+                                maior = len(str(coluna))
+                                for linha in self.dados:
+                                    maior = max(maior, len(str(linha[coluna])))
+                                larguras[coluna] = maior
+
+                            cabecalho = " | ".join(f"{coluna:<{larguras[coluna]}}" for coluna in self.colunas)
+                            separador = "-+-".join("-" * larguras[coluna] for coluna in self.colunas)
+
+                            linhas_texto = []
+                            for linha in self.dados:
+                                linha_formatada = " | ".join(
+                                    f"{str(linha[coluna]):<{larguras[coluna]}}" for coluna in self.colunas
+                                )
+                                linhas_texto.append(linha_formatada)
+
+                            return "\n".join([cabecalho, separador] + linhas_texto)
+
+                Exemplo de uso:
+
+                    df = DataFrameManual(["nome", "idade", "cidade"])
+
+                    df.adicionar_linha({"nome": "Ana", "idade": 20, "cidade": "SP"})
+                    df.adicionar_linha({"nome": "Bruno", "idade": 25, "cidade": "RJ"})
+                    df.adicionar_linha({"nome": "Carla", "idade": 22, "cidade": "BH"})
+
+                    print(df)
+
+                Selecionar coluna:
+
+                    print(df.selecionar_linha(1))
+
+                Filtrar
+
+                    df_filtrado = df.filtrar(lambda linha: linha["idade"] >= 22)
+                    print(df_filtrado)
+
+        O que isso já ensina de verdade
+
+            Com esse modelo você aprende:
+
+                estrutura tabular
+                
+                colunas
+                
+                linhas
+                
+                validação de esquema
+                
+                filtragem
+                
+                seleção
+                
+                visualização
+
+            Ou seja: a base conceitual de um DataFrame.
+
+        Outro modelo importante: dicionário de listas
+
+            Essa é outra forma muito usada internamente em sistemas tabulares:
+
+                dados = {
+                    "nome": ["Ana", "Bruno", "Carla"],
+                    "idade": [20, 25, 22],
+                    "cidade": ["SP", "RJ", "BH"]
+                }
+
+            Aqui cada chave é uma coluna.
+
+            Esse modelo é muito bom para:
+
+                acessar coluna rapidamente
+
+                fazer operações por coluna
+
+        Exemplo de DataFrame manual com dicionário de listas:
+
+            class DataFrameColunar:
+                def __init__(self, dados):
+                    self.dados = dados
+
+                    tamanhos = {len(valores) for valores in dados.values()}
+                    if len(tamanhos) > 1:
+                        raise ValueError("todas as colunas devem ter o mesmo tamanho")
+
+                def colunas(self):
+                    return list(self.dados.keys())
+
+                def selecionar_coluna(self, nome):
+                    return self.dados[nome]
+
+                def selecionar_linha(self, indice):
+                    return {coluna: valores[indice] for coluna, valores in self.dados.items()}
+
+                def __str__(self):
+                    colunas = self.colunas()
+                    n_linhas = len(next(iter(self.dados.values()), []))
+
+                    larguras = {}
+                    for coluna in colunas:
+                        maior = len(coluna)
+                        for valor in self.dados[coluna]:
+                            maior = max(maior, len(str(valor)))
+                        larguras[coluna] = maior
+
+                    cabecalho = " | ".join(f"{coluna:<{larguras[coluna]}}" for coluna in colunas)
+                    separador = "-+-".join("-" * larguras[coluna] for coluna in colunas)
+
+                    linhas_texto = []
+                    for i in range(n_linhas):
+                        linha = " | ".join(
+                            f"{str(self.dados[coluna][i]):<{larguras[coluna]}}" for coluna in colunas
+                        )
+                        linhas_texto.append(linha)
+
+                    return "\n".join([cabecalho, separador] + linhas_texto)
+
+
+            df = DataFrameColunar({
+                "nome": ["Ana", "Bruno", "Carla"],
+                "idade": [20, 25, 22],
+                "cidade": ["SP", "RJ", "BH"]
+            })
+
+            print(df)
+            print(df.selecionar_coluna("nome"))
+            print(df.selecionar_linha(2))
+
+        O que um DataFrame real ainda tem além disso:
+
+            Bibliotecas como pandas ainda oferecem:
+
+                índice
+
+                tipos de dados
+
+                operações vetorizadas
+
+                merge/join
+
+                groupby
+
+                ordenação
+
+                valores nulos
+
+                leitura de CSV/Excel
+
+            Mas a base é essa.
 
     ==========================================================================
 
-    pilhas
+    pilhas: 
 
     ==========================================================================
 

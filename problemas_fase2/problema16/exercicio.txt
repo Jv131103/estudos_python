@@ -1,0 +1,21 @@
+EXERCÍCIO 1 — Busca Linear Manual
+
+Objetivo:
+
+    Dada uma lista não ordenada e um valor alvo, retorne o índice da
+    primeira ocorrência desse valor.
+
+Exemplo:
+
+    lista = [7, 3, 9, 1, 3]
+    alvo = 3
+
+    saida = 1
+
+Regras
+
+    Não usar in
+
+    Não usar .index()
+
+    Se não encontrar, retornar -1

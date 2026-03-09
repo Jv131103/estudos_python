@@ -1,0 +1,26 @@
+EXERCÍCIO 2 — Busca Binária Iterativa
+
+Objetivo
+
+    Dada uma lista ordenada crescente e um valor alvo, implemente busca binária
+
+Exemplo:
+
+    lista = [1, 3, 5, 7, 9, 11, 13]
+    alvo = 9
+
+    saida = 4
+
+Regras:
+
+    Não usar bisect
+
+    Se não encontrar, retornar -1
+
+O que treinar
+
+    left, right, mid
+
+    divisão do espaço de busca
+
+    O(log n)
