@@ -1,0 +1,21 @@
+EXERCÍCIO 1 — Verificar Parênteses Balanceados
+
+Objetivo
+
+    Dada uma string contendo:
+
+        ( ) { } [ ]
+
+    Verifique se os parênteses estão balanceados corretamente.
+
+
+Exemplo:
+
+    entrada = "()[]{}"
+    saida = True
+
+    entrada = "(]"
+    saida = False
+
+    entrada = "([{}])"
+    saida = True

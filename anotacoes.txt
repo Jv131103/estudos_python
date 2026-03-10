@@ -33635,9 +33635,183 @@ Um pouco sobre Estruturas de dados:
 
     pilhas: 
 
+        Uma pilha é uma estrutura de dados que segue a regra:
+
+            LIFO
+
+        Last In, First Out
+
+        Ou seja:
+
+            O último elemento que entra é o primeiro que sai.
+
+        Exemplo físico
+
+            Imagine uma pilha de pratos:
+
+                    [5]
+                    [4]
+                    [3]
+                    [2]
+                    [1]
+
+            Você só pode:
+
+                . colocar um prato no topo
+                . retirar o prato do topo
+
+            Nunca do meio.
+
+        Operações principais:
+
+            | Operação | O que faz               |
+            | -------- | ----------------------- |
+            | push     | adicionar elemento      |
+            | pop      | remover elemento        |
+            | peek     | ver topo                |
+            | is_empty | verificar se está vazia |
+
+        Implementando pilha com lista:
+
+            Python facilita muito isso.
+
+                pilha = []
+
+            Push
+
+                pilha.append(10)
+                pilha.append(20)
+                pilha.append(30)
+            
+            Estado:
+
+                [10,20,30]
+                        ↑ topo
+
+            Pop
+
+                pilha.pop()
+
+            Resultado:
+
+                [10,20]
+
+            Peek
+
+                pilha[-1]
+
+        Implementação completa:
+
+            class Pilha:
+
+                def __init__(self):
+                    self.dados = []
+
+                def push(self, valor):
+                    self.dados.append(valor)
+
+                def pop(self):
+                    if not self.is_empty():
+                        return self.dados.pop()
+
+                def peek(self):
+                    if not self.is_empty():
+                        return self.dados[-1]
+
+                def is_empty(self):
+                    return len(self.dados) == 0
+
+        Complexidade:
+
+            | operação | custo |
+            | -------- | ----- |
+            | push     | O(1)  |
+            | pop      | O(1)  |
+            | peek     | O(1)  |
+
+            Muito eficiente.
+
+        Pilha usando array fixo:
+
+            Outra forma clássica.
+
+                class Pilha:
+                
+                    def __init__(self, tamanho):
+                        self.vetor = [None]*tamanho
+                        self.topo = -1
+
+            Push:
+
+                def push(self,valor):
+
+                    self.topo += 1
+                    self.vetor[self.topo] = valor
+
+            Pop:
+
+                def pop(self):
+
+                    valor = self.vetor[self.topo]
+                    self.topo -= 1
+                    return valor
+
+        Pilhas e Recursão:
+
+            Toda recursão usa uma pilha.
+
+            Exemplo:
+
+                def f(n):
+                    if n == 0:
+                        return
+                    f(n-1)
+            
+            Chamadas ficam assim:
+
+                f(3)
+                f(2)
+                f(1)
+                f(0)
+
+            Na pilha de chamadas:
+
+                f(3)
+                f(2)
+                f(1)
+                f(0)
+
+            Depois desempilha.
+
+        Pilha vs Fila:
+
+            | Estrutura | Regra |
+            | --------- | ----- |
+            | Pilha     | LIFO  |
+            | Fila      | FIFO  |
+
+
+        Pilha de memória (stack memory):
+
+            Em linguagens como C:
+
+                STACK
+                variáveis locais
+                chamadas de função
+
+            Ela cresce e diminui automaticamente.
+
+        Curiosidade
+
+            O erro famoso:
+            
+                Stack Overflow
+            
+            acontece quando a pilha de chamadas estoura.
+
     ==========================================================================
 
-    filas
+    filas:
 
     ==========================================================================
 
