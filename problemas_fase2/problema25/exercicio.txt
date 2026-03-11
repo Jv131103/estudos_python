@@ -1,0 +1,58 @@
+EXERCÍCIO 1 — Implementar Fila usando Duas Pilhas
+
+Objetivo
+
+    Implemente uma estrutura de fila (FIFO) usando duas pilhas (LIFO).
+
+A classe deve ter:
+
+    enqueue(valor)
+    dequeue()
+    peek()
+    is_empty()
+    size()
+
+Exemplo
+
+    enqueue(10)
+    enqueue(20)
+    enqueue(30)
+
+    dequeue() → 10
+    peek() → 20
+
+Regras
+
+    Usar duas pilhas
+
+    Não usar deque
+
+    Não usar pop(0)
+
+Dica conceitual
+
+    Estrutura:
+
+        stack_in
+        [10,20,30]
+
+        stack_out
+        []
+
+    Ao fazer dequeue():
+
+        stack_in → stack_out
+
+        stack_in  = []
+        stack_out = [30,20,10]
+
+    Agora:
+
+        pop() → 10
+
+Complexidade
+
+    Amortizada:
+
+        enqueue → O(1)
+        dequeue → O(1)

@@ -13973,6 +13973,12 @@ UM POUCO SOBRE LÓGICA DE PROGRAMAÇÃO:
 
     =====================================================================
 
+    Técnica de amortização:
+
+
+
+    =====================================================================
+
     buffer:
 
         - O intermediário silencioso entre velocidade e organização
@@ -29026,6 +29032,12 @@ Um pouco sobre POO:
 
     ==========================================================================
 
+    Amortização em POO:
+
+
+
+    ==========================================================================
+
     mixins:
 
         Mixin é uma classe pequena criada apenas para adicionar comportamento a 
@@ -33813,6 +33825,284 @@ Um pouco sobre Estruturas de dados:
 
     filas:
 
+        Fila segue a regra:
+
+            FIFO
+
+        First In, First Out
+
+        Ou seja:
+
+            O primeiro que entra é o primeiro que sai.
+
+        Exemplo real
+
+            Fila de banco:
+
+                Pessoa1 → Pessoa2 → Pessoa3 → Pessoa4
+                ↑                                   ↓
+                entra                             sai
+
+        Operações principais:
+
+            | Operação     | Função             |
+            | ------------ | ------------------ |
+            | enqueue      | inserir na fila    |
+            | dequeue      | remover da fila    |
+            | front / peek | ver primeiro       |
+            | is_empty     | verificar se vazia |
+
+        Implementando fila com lista:
+
+            fila = []
+
+        Enqueue
+
+            Adicionar elemento:
+
+                fila.append(10)
+                fila.append(20)
+                fila.append(30)
+
+            Estado:
+
+                [10,20,30]
+                 ↑
+                 frente
+
+        Dequeue
+
+            Remover primeiro elemento:
+
+                fila.pop(0)
+
+            Resultado:
+
+                [20,30]
+
+        Problema:
+
+            pop(0) = O(n)
+
+        Porque precisa deslocar todos os elementos.
+
+        Implementação simples de fila:
+
+            class Fila:
+
+                def __init__(self):
+                    self.dados = []
+
+                def enqueue(self, valor):
+                    self.dados.append(valor)
+
+                def dequeue(self):
+                    if not self.is_empty():
+                        return self.dados.pop(0)
+
+                def peek(self):
+                    if not self.is_empty():
+                        return self.dados[0]
+
+                def is_empty(self):
+                    return len(self.dados) == 0
+
+        Complexidade:
+
+            | operação | custo |
+            | -------- | ----- |
+            | enqueue  | O(1)  |
+            | dequeue  | O(n)  |
+
+    ==========================================================================
+
+    fila com duas pilhas:
+
+        Uma fila (queue) segue a regra:
+
+            FIFO
+            First In First Out
+
+        Exemplo:
+
+            1 → 2 → 3 → 4
+            ↑           ↓
+            entra       sai
+
+        Mas pilhas seguem:
+
+            LIFO
+            Last In First Out
+
+        Então a pergunta é:
+
+            Como transformar duas pilhas em uma fila?
+
+        A ideia central
+
+            Usamos duas pilhas:
+
+                pilha_entrada
+                pilha_saida
+
+            Função de cada uma:
+
+                | Pilha   | Função                 |
+                | ------- | ---------------------- |
+                | entrada | recebe novos elementos |
+                | saida   | entrega elementos      |
+
+        Inserção (enqueue)
+
+            Quando inserimos, colocamos apenas na pilha de entrada.
+
+            Exemplo:
+
+                enqueue(1)
+                enqueue(2)
+                enqueue(3)
+
+            Estado:
+
+                entrada: [1,2,3]
+                saida: []
+
+        Remoção (dequeue)
+
+            Se saida estiver vazia:
+
+                1. mover tudo da pilha entrada
+                2. inverter ordem
+                3. remover topo
+
+            Exemplo
+
+                Estado inicial:
+
+                    entrada: [1,2,3]
+                    saida: []
+
+                Transferência:
+
+                    entrada.pop → saida.append
+
+                Resultado:
+
+                    entrada: []
+                    saida: [3,2,1]
+
+                Agora:
+
+                    saida.pop() → 1
+
+            FIFO preservado.
+
+        Implementação em Python
+
+            class FilaComPilhas:
+
+                def __init__(self):
+                    self.entrada = []
+                    self.saida = []
+
+                def enqueue(self, valor):
+                    self.entrada.append(valor)
+
+                def dequeue(self):
+
+                    if not self.saida:
+
+                        while self.entrada:
+                            self.saida.append(self.entrada.pop())
+
+                    if not self.saida:
+                        raise IndexError("fila vazia")
+
+                    return self.saida.pop()
+
+                def peek(self):
+                    if not self.saida:
+
+                        while self.entrada:
+                            self.saida.append(self.entrada.pop())
+
+                    return self.saida[-1]
+
+        Complexidade:
+
+            | operação | custo           |
+            | -------- | --------------- |
+            | enqueue  | O(1)            |
+            | dequeue  | O(1) amortizado |
+
+        Por que amortizado?
+
+            Porque a transferência acontece raramente.
+
+            Exemplo:
+
+                push push push push push
+                transferência
+                pop pop pop pop pop
+
+            Cada elemento:
+
+                entra uma vez
+
+                sai uma vez
+
+            Total:
+
+                O(n)
+
+            Para n operações.
+
+            Então por operação:
+
+                O(1)
+
+        Visualização completa
+
+            Operações:
+
+                enqueue(1)
+                enqueue(2)
+                enqueue(3)
+                dequeue()
+                dequeue()
+
+            Passos:
+
+                entrada: [1,2,3]
+                saida: []
+
+            transferência:
+
+                entrada: []
+                saida: [3,2,1]
+
+            remoções:
+
+                pop → 1
+                pop → 2
+
+        Por que isso é importante?
+
+            Esse problema ensina:
+
+                . abstração
+                . transformação de estruturas
+                . análise amortizada
+                . raciocínio de algoritmo
+
+        Comparação:
+
+            | Estrutura            | Inserção | Remoção         |
+            | -------------------- | -------- | --------------- |
+            | fila simples         | O(1)     | O(n)            |
+            | fila circular        | O(1)     | O(1)            |
+            | fila com duas pilhas | O(1)     | O(1) amortizado |
+
     ==========================================================================
 
     fila de prioridade
@@ -33828,6 +34118,10 @@ Um pouco sobre Estruturas de dados:
     ==========================================================================
 
     deques
+
+    ==========================================================================
+
+    Amortização em estruturas de dados:
 
     ==========================================================================
 

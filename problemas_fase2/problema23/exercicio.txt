@@ -1,0 +1,18 @@
+EXERCÍCIO 2 — Simulação de Fila de Atendimento
+
+Objetivo
+
+    Simule uma fila de atendimento em um banco.
+
+Operações possíveis:
+
+    chegar João
+    chegar Maria
+    atender
+    chegar Pedro
+    atender
+
+Resultado esperado
+
+    Atendendo João
+    Atendendo Maria

@@ -1,0 +1,31 @@
+EXERCÍCIO 3 — Gerar Sequência Binária
+
+Esse é um clássico de fila.
+
+Objetivo
+
+    Dado um número n, gere os primeiros n números binários.
+
+Exemplo:
+
+    n = 5
+
+Saída:
+
+    1
+    10
+    11
+    100
+    101
+
+Ideia de exemplo
+
+    Use fila:
+
+        1
+        enqueue(10)
+        enqueue(11)
+
+        10
+        enqueue(100)
+        enqueue(101)
