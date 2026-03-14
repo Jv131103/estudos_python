@@ -1,0 +1,37 @@
+EXERCÍCIO 1 — Fila de Prioridade de Pacientes
+
+Objetivo
+
+    Simular atendimento de hospital usando fila de prioridade.
+
+Cada paciente tem:
+
+    (nome, prioridade)
+
+Onde:
+
+    1 → emergência
+    2 → urgente
+    3 → normal
+
+Exemplo
+
+    Entrada:
+
+    chegar João prioridade 3
+    chegar Maria prioridade 1
+    chegar Pedro prioridade 2
+
+    Atendimento:
+
+    atender → Maria
+    atender → Pedro
+    atender → João
+
+Regras
+
+    Não usar heapq
+    
+    Implementar manualmente
+    
+    Pode usar lista

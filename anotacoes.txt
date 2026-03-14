@@ -34105,31 +34105,998 @@ Um pouco sobre Estruturas de dados:
 
     ==========================================================================
 
-    fila de prioridade
+    fila de prioridade:
+
+        Uma fila de prioridade é uma fila onde os elementos não saem na ordem
+        de chegada, mas sim pela prioridade.
+
+        Em uma fila normal:
+
+            FIFO
+            1 → 2 → 3 → 4
+
+        Saída:
+
+            1,2,3,4
+
+        Em uma fila de prioridade:
+
+            (valor, prioridade)
+
+            (A,3)
+            (B,1)
+            (C,2)
+
+        Sai primeiro quem tem maior prioridade.
+
+        Resultado:
+
+            B → C → A
+
+        Exemplo real
+
+            Imagine um hospital:
+
+                Paciente A - prioridade 5
+                Paciente B - prioridade 1
+                Paciente C - prioridade 3
+
+            Atendimento:
+
+                B → C → A
+
+        Operações principais:
+
+            | operação | função                   |
+            | -------- | ------------------------ |
+            | insert   | inserir elemento         |
+            | extract  | remover maior prioridade |
+            | peek     | ver maior prioridade     |
+
+        Implementação simples (lista)
+
+            Podemos fazer de forma simples.
+
+        | operação | custo |
+        | -------- | ----- |
+        | insert   | O(1)  |
+        | remove   | O(n)  |
+        | priority | O(n)  |
+
+        Isso não é ideal.
 
     ==========================================================================
 
-    fila circular
+    fila circular:
+
+        O problema da fila simples:
+
+            Se você implementar fila com lista:
+
+                fila.append(x)
+                fila.pop(0)
+
+            Problema:
+
+                pop(0) = O(n)
+
+            Porque todos os elementos precisam deslocar uma posição.
+
+            Exemplo:
+
+                [1,2,3,4]
+
+                remove 1
+
+                [2,3,4]
+
+            Tudo desloca.
+
+        Ideia da fila circular:
+
+            A solução é usar um vetor fixo e reutilizar posições.
+
+            Visualização:
+
+                [ ][ ][ ][ ][ ]
+                 ↑         ↑
+                head      tail
+
+            Quando o tail chega no final, ele volta para o início.
+
+                [4][5][ ][2][3]
+                   ↑       ↑
+                 tail     head
+
+            Isso cria uma estrutura circular.
+
+        Fórmula fundamental
+
+            Circularidade usa módulo:
+
+                indice = (indice + 1) % tamanho
+
+            Exemplo:
+
+                tamanho = 5
+
+                (4 + 1) % 5 = 0
+
+            Ou seja, volta ao início.
+
+        Estrutura da fila circular
+
+            Precisamos de:
+
+                | variável | função                  |
+                | -------- | ----------------------- |
+                | vetor    | armazenamento           |
+                | head     | início da fila          |
+                | tail     | final da fila           |
+                | count    | quantidade de elementos |
+
+        Implementação:
+
+            class FilaCircular:
+
+                def __init__(self, tamanho):
+                    self.vetor = [None] * tamanho
+                    self.head = 0
+                    self.tail = 0
+                    self.count = 0
+                    self.tamanho = tamanho
+
+                def enqueue(self, valor):
+                    if self.count == self.tamanho:
+                        raise Exception("Fila cheia")
+
+                    self.vetor[self.tail] = valor
+
+                    self.tail = (self.tail + 1) % self.tamanho
+
+                    self.count += 1
+
+                def dequeue(self):
+                    if self.count == 0:
+                        raise Exception("Fila vazia")
+
+                    valor = self.vetor[self.head]
+
+                    self.head = (self.head + 1) % self.tamanho
+
+                    self.count -= 1
+
+                    return valor
+
+                def peek(self):
+                    if self.count == 0:
+                        raise Exception("Fila vazia")
+
+                    return self.vetor[self.head]
+
+                def __str__(self):
+                    elementos = []
+
+                    for i in range(self.count):
+                        pos = (self.head + i) % self.tamanho
+                        elementos.append(str(self.vetor[pos]))
+
+                    return "<- " + " <- ".join(elementos) + " <-"
+
+
+            f = FilaCircular(5)
+            f.enqueue(1)
+            f.enqueue(2)
+            f.enqueue(3)
+            f.enqueue(4)
+            f.enqueue(5)
+            print(f)
+            print(f.dequeue())
+            print(f.peek())
+            print(f)
+            print(f.dequeue())
+            print(f)
+            print(f.dequeue())
+
+        Complexidade:
+
+            | operação | custo |
+            | -------- | ----- |
+            | enqueue  | O(1)  |
+            | dequeue  | O(1)  |
+            | peek     | O(1)  |
+
+            Muito eficiente.
+
+        Exemplo visual
+
+            Fila tamanho 5.
+
+            Inserindo:
+
+                enqueue(1)
+                enqueue(2)
+                enqueue(3)
+
+            Estado:
+
+                [1][2][3][ ][ ]
+                 ↑         ↑
+                head      tail
+
+            Removendo:
+
+                dequeue()
+            
+            simulacao:
+
+                [1][2][3][ ][ ]
+                   ↑       ↑
+                 head     tail
+
+            Inserindo novamente:
+
+                enqueue(4)
+                enqueue(5)
+
+            Simulação:
+
+                [1][2][3][4][5]
+                   ↑         ↑
+                 head       tail
+
+            Agora o próximo enqueue volta:
+
+                tail = (4 + 1) % 5 = 0
+
+            Fila circular.
+
+        Problema clássico
+
+            Quando a fila está cheia:
+
+                head == tail
+
+            Isso também acontece quando ela está vazia.
+
+            Por isso usamos:
+
+                count
+
+            ou reservamos uma posição.
+
+        Ring Buffer
+
+            Fila circular também é chamada de:
+
+                Ring Buffer
+
+            Ela permite fluxo contínuo de dados.
+
+            Implementação:
+
+                class RingBuffer:
+
+                    def __init__(self, tamanho):
+                        self.buffer = [None] * tamanho
+                        self.index = 0
+                        self.tamanho = tamanho
+
+                    def adicionar(self, valor):
+                        self.buffer[self.index] = valor
+                        self.index = (self.index + 1) % self.tamanho
 
     ==========================================================================
 
-    fila de extremidade dupla
+    fila de extremidade dupla (deque):
+
+        O Deque (Double Ended Queue) é uma evolução da fila tradicional.
+
+        Ele permite inserir e remover nas duas extremidades.
+
+        Enquanto uma fila normal permite:
+
+            enqueue → inserir no final
+            dequeue → remover do início
+
+        O deque permite:
+
+            inserir no início
+            inserir no final
+            remover do início
+            remover do final
+
+        Visualização:
+
+            ← inserir/remover   inserir/remover →
+            [ 1  2  3  4  5 ]
+
+        Operações principais:
+
+            | operação     | função            |
+            | ------------ | ----------------- |
+            | append_left  | inserir no início |
+            | append_right | inserir no final  |
+            | pop_left     | remover início    |
+            | pop_right    | remover final     |
+            | peek_left    | ver primeiro      |
+            | peek_right   | ver último        |
+
+        Representação visual:
+
+            Deque com elementos:
+
+                [10, 20, 30]
+
+            Inserir esquerda:
+
+                append_left(5)
+                [5,10,20,30]
+
+            Inserir direita:
+
+                append_right(40)
+                [5,10,20,30,40]
+
+        Implementação simples com lista:
+
+            class Deque:
+                def __init__(self):
+                    self.dados = []
+
+                def append_right(self, valor):
+                    self.dados.append(valor)
+
+                def append_left(self, valor):
+                    self.dados.insert(0, valor)
+
+                def pop_right(self):
+                    return self.dados.pop()
+
+                def pop_left(self):
+                    return self.dados.pop(0)
+
+
+            d = Deque()
+            d.append_right(1)
+            d.append_right(2)
+            d.append_right(3)
+            d.append_right(4)
+            d.append_left(1)
+            d.append_left(2)
+            d.append_left(3)
+            print(d.dados)
+            print(d.pop_left())
+            print(d.pop_right())
+            print(d.dados)
+
+        Problema dessa implementação:
+
+            | operação     | custo |
+            | ------------ | ----- |
+            | append_right | O(1)  |
+            | pop_right    | O(1)  |
+            | append_left  | O(n)  |
+            | pop_left     | O(n)  |
+
+            Porque inserir/remover no início desloca elementos.
+
+        Implementação eficiente (conceito):
+
+            Deques eficientes usam:
+
+                buffer circular
+
+            ou
+
+                lista duplamente ligada
 
     ==========================================================================
 
-    deques
+    fila circular de extremidade dupla (Deque circular):
+
+        Deque → inserir e remover nas duas pontas
+        
+        Fila circular → reutilizar o vetor usando módulo
+
+        Resultado:
+
+            Uma estrutura que permite inserir e remover em ambas extremidades
+            em O(1) usando array circular.
+
+        Estrutura da Deque Circular
+
+            Usamos:
+
+                vetor fixo
+                head
+                tail
+                tamanho
+
+            Visualização:
+
+                [ ][ ][ ][ ][ ]
+                ↑         ↑
+                head      tail
+
+            Mas diferente da fila circular simples, podemos operar nos dois
+            lados.
+
+        Operações permitidas:
+
+            | operação     | descrição         |
+            | ------------ | ----------------- |
+            | insert_front | inserir no início |
+            | insert_last  | inserir no final  |
+            | delete_front | remover início    |
+            | delete_last  | remover final     |
+            | get_front    | ver primeiro      |
+            | get_rear     | ver último        |
+        
+        Ideia da circularidade
+
+            Usamos módulo:
+
+                indice = (indice + 1) % tamanho
+                indice = (indice - 1) % tamanho
+
+            Exemplo:
+
+                tamanho = 5
+
+                (0 - 1) % 5 = 4
+
+            Isso permite andar para trás no vetor circular.
+
+        Implementação:
+
+            class DequeCircular:
+
+                def __init__(self, k):
+                    self.vetor = [None] * k
+                    self.head = 0
+                    self.tail = 0
+                    self.count = 0
+                    self.tamanho = k
+
+                def insert_last(self, valor):
+                    if self.count == self.tamanho:
+                        return False
+
+                    self.vetor[self.tail] = valor
+
+                    self.tail = (self.tail + 1) % self.tamanho
+
+                    self.count += 1
+
+                    return True
+
+                def insert_front(self, valor):
+
+                    if self.count == self.tamanho:
+                        return False
+
+                    self.head = (self.head - 1) % self.tamanho
+
+                    self.vetor[self.head] = valor
+
+                    self.count += 1
+
+                    return True
+
+                def delete_front(self):
+
+                    if self.count == 0:
+                        return False
+
+                    self.head = (self.head + 1) % self.tamanho
+
+                    self.count -= 1
+
+                    return True
+
+                def delete_last(self):
+
+                    if self.count == 0:
+                        return False
+
+                    self.tail = (self.tail - 1) % self.tamanho
+
+                    self.count -= 1
+
+                    return True
+
+                def get_front(self):
+
+                    if self.count == 0:
+                        return None
+
+                    return self.vetor[self.head]
+
+                def get_rear(self):
+
+                    if self.count == 0:
+                        return None
+
+                    return self.vetor[(self.tail - 1) % self.tamanho]
+
+
+            dc = DequeCircular(5)
+            dc.insert_front(1)
+            dc.insert_front(2)
+            dc.insert_front(3)
+            dc.insert_last(4)
+            dc.insert_last(5)
+            print(dc.get_front(), dc.get_rear())
+            print(dc.delete_front(), dc.delete_last())
+            print(dc.get_front(), dc.get_rear())
+
+        Complexidade:
+
+            | operação     | custo |
+            | ------------ | ----- |
+            | insert_front | O(1)  |
+            | insert_last  | O(1)  |
+            | delete_front | O(1)  |
+            | delete_last  | O(1)  |
+            | peek         | O(1)  |
+
+        Extremamente eficiente.
+
+        Visualização de operações
+
+        Deque tamanho 5
+
+            Inserções:
+
+                insert_last(1)
+                insert_last(2)
+                insert_last(3)
+            
+            [1][2][3][ ][ ]
+             ↑       ↑
+            head    tail
+        
+        Inserir na frente:
+
+            insert_front(9)
+
+                [1][2][3][ ][ ]
+                    ↑
+                9
+
+        Resultado:
+
+            [1][2][3][ ][ ]
+             ↑
+            head
+
+            (circularmente)
+
+    ==========================================================================
+
+    sliding window:
+
+        Percorrer uma lista usando uma janela de tamanho fixo ou variável que
+        se move pela estrutura.
+
+        Visualização:
+
+            Lista:
+
+                [1,2,3,4,5]
+
+            Janela tamanho 3
+
+                [1,2,3]
+                  [2,3,4]
+                    [3,4,5]
+
+            A janela desliza.
+
+        Problema clássico:
+
+            Lista:
+
+                nums = [1,3,-1,-3,5,3,6,7]
+
+            Janela:
+
+                k = 3
+
+            Objetivo:
+
+                Encontrar o maior número em cada janela
+
+        Solução ingênua (força bruta):
+
+            def max_window(lista, k):
+                resultado = []
+
+                for i in range(len(lista) - k + 1):
+                    janela = []
+
+                    for j in range(i, i + k):
+                        janela.append(lista[j])
+
+                    resultado.append(max(janela))
+
+                return resultado
+
+
+            def max_window2(nums, k):
+
+                resultado = []
+
+                for i in range(len(nums) - k + 1):
+
+                    janela = nums[i: i + k]
+
+                    resultado.append(max(janela))
+
+                return resultado
+
+
+            maiores = max_window([1, 3, -1, -3, 5, 3, 6, 7], 3)
+            print(maiores)
+
+            maiores = max_window2([1, 3, -1, -3, 5, 3, 6, 7], 3)
+            print(maiores)
+
+        Complexidade
+        
+            O(n*k)
+
+        Se:
+
+            n = 1 milhão
+            k = 1000
+
+        Vai ficar lento.
+
+        Ideia da Sliding Window otimizada:
+
+            Em vez de recalcular tudo:
+
+                atualizamos a janela
+
+                Quando a janela anda:
+
+                    [1,2,3]
+                        [2,3,4]
+
+                . o 1 sai
+                . o 4 entra
+
+            Só precisamos atualizar.
+
+            Exemplo simples: soma da janela
+
+                nums = [1,2,3,4,5]
+                k = 3
+
+            Somas:
+
+                1+2+3 = 6
+                2+3+4 = 9
+                3+4+5 = 12
+
+        Código otimizado:
+
+            def soma_janela(nums, k):
+
+                soma = sum(nums[:k])
+                resultado = [soma]
+
+                for i in range(k, len(nums)):
+
+                    soma += nums[i]
+                    soma -= nums[i-k]
+
+                    resultado.append(soma)
+
+                return resultado
+
+        Complexidade
+            
+            O(n)
+
+        Muito mais eficiente.
+
+        Sliding window variável
+
+            Às vezes a janela cresce ou diminui.
+
+            Exemplo clássico:
+
+                maior substring sem caracteres repetidos
+
+                Exemplo:
+
+                    abcabcbb
+
+                Maior substring:
+
+                    abc
+            
+            Complexidade
+
+                O(n)
 
     ==========================================================================
 
     Amortização em estruturas de dados:
 
+        Algumas operações podem ser caras, mas raramente acontecem, então o
+        custo médio por operação continua pequeno.
+
+        Vou mostrar como isso aparece de verdade em estruturas de dados.
+
+        O que é custo amortizado em estruturas de dados
+
+            Suponha uma operação que às vezes custa muito:
+
+                push push push push push resize push push
+
+            Custos:
+
+                1 1 1 1 1 10 1 1
+
+            Mesmo tendo uma operação de custo 10, o custo médio ainda é pequeno.
+
+            Então dizemos:
+
+                custo amortizado = O(1)
+
+        Exemplo clássico: vetor dinâmico (array dinâmico)
+
+            Essa é a estrutura mais famosa que usa amortização.
+
+            Inserção normal
+
+                append(x)
+
+            Se ainda há espaço:
+
+                O(1)
+
+            Quando o vetor enche
+
+                Suponha:
+
+                    capacidade = 4
+
+                Vetor:
+
+                    [1 2 3 4]
+
+                Agora fazemos:
+
+                    append(5)
+
+                O que acontece:
+                
+                    1. cria novo vetor maior
+
+                    2. copia todos os elementos
+
+                    3. adiciona o novo
+
+                    [1 2 3 4]  →  [1 2 3 4 5 _ _ _]
+
+                Custo:
+
+                    O(n)
+
+        Por que o append ainda é O(1) amortizado?
+
+            Porque o resize não acontece sempre.
+
+            Capacidade cresce assim:
+
+                1
+                2
+                4
+                8
+                16
+                32
+            
+            Número de cópias ao longo do tempo:
+
+                1 + 2 + 4 + 8 + 16 + ...
+
+            Isso forma uma série geométrica.
+
+            O total de cópias após inserir n elementos é:
+
+                O(n)
+
+            Logo:
+
+                custo médio por inserção = O(1)
+
+            Isso é amortização.
+
+        Exemplo real em código:
+
+            class DynamicArray:
+                def __init__(self):
+                    self.capacity = 1
+                    self.size = 0
+                    self.data = [None] * self.capacity
+
+                def append(self, value):
+                    if self.size == self.capacity:
+                        self._resize()
+
+                    self.data[self.size] = value
+                    self.size += 1
+
+                def _resize(self):
+                    new_capacity = self.capacity * 2
+                    new_data = [None] * new_capacity
+
+                    for i in range(self.size):
+                        new_data[i] = self.data[i]
+
+                    self.data = new_data
+                    self.capacity = new_capacity
+
+
+            if __name__ == "__main__":
+                array = DynamicArray()
+                array.append(1)
+                array.append(1)
+                array.append(1)
+                array.append(1)
+                print(array.data)
+
+        Outro exemplo famoso: fila com duas pilhas
+
+            Implementação:
+
+                in_stack
+                out_stack
+
+            Inserção:
+
+                enqueue(x) → push em in_stack
+
+            Remoção:
+
+                se out_stack vazio
+                    mover tudo de in_stack para out_stack
+                pop de out_stack
+
+        Parece caro:
+
+            Mover todos os elementos custa:
+
+                O(n)
+
+            Mas cada elemento é movido apenas uma vez.
+
+            Então no total:
+
+                n inserções
+                n remoções
+                n movimentos
+
+            Total:
+
+                O(n)
+
+            Logo:
+
+                dequeue = O(1) amortizado
+
+        Outro exemplo: Union-Find
+
+            Estrutura usada em:
+
+                grafos
+
+                Kruskal
+
+                redes
+
+            Com:
+
+                path compression
+
+            Operação:
+
+                find(x)
+
+            Complexidade amortizada:
+
+                O(α(n))
+
+            Onde α é a função inversa de Ackermann, que cresce extremamente
+            devagar.
+
+            Na prática:
+
+                ≈ O(1)
+
+        Diferença importante
+
+            | análise    | significado                  |
+            | ---------- | ---------------------------- |
+            | pior caso  | custo máximo de uma operação |
+            | amortizado | custo médio em sequência     |
+            | médio      | média probabilística         |
+
+            Exemplo:
+
+                append em lista Python
+
+            | análise    | custo |
+            | ---------- | ----- |
+            | pior caso  | O(n)  |
+            | amortizado | O(1)  |
+
+        Intuição mental
+
+            Amortização significa:
+
+                operações baratas
+                +
+                operações raras e caras
+                =
+                custo médio pequeno
+
+            Por isso muitas estruturas dizem:
+
+                O(1) amortizado
+
     ==========================================================================
 
-    Lista encadeada
+    Union find:
 
     ==========================================================================
 
-    ávores
+    Lista encadeada:
+
+    ==========================================================================
+
+    Lista encadeada com extremidade dupla:
+
+    ==========================================================================
+
+    Lista encadeada duplamente ligada:
+
+    ==========================================================================
+
+    Lista encadeada com pilha:
+
+    ==========================================================================
+
+    Lista encadeada com Fila:
+
+    ==========================================================================
+
+    heaps (árvores binárias):
+
+    ==========================================================================
+
+    min heaps (árvores pequenas):
+
+    ==========================================================================
+
+    heap bin search (árvore binária de busca)
+
+    ==========================================================================
+
+    AVL
+
+    ==========================================================================
+
+    Red-Black Tree
+
+    ==========================================================================
+
+    árvores ternárias
 
     ==========================================================================
 
@@ -34145,7 +35112,7 @@ Um pouco sobre Estruturas de dados:
 
     ==========================================================================
 
-    BFS × DFS
+    Inorder × Preorder × Postorder × Best-First Search
 
     ==========================================================================
 
@@ -34154,6 +35121,10 @@ Um pouco sobre Estruturas de dados:
     ==========================================================================
 
     Busca em largura
+
+    ==========================================================================
+
+    IDDFS
 
     ==========================================================================
 
