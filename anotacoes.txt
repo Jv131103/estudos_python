@@ -6573,6 +6573,10 @@ UM POUCO SOBRE LÓGICA DE PROGRAMAÇÃO:
 
     =====================================================================
 
+    Referências de objetos na memória e ponteiros:
+
+    =====================================================================
+
     Recursões:
 
         Resolver um problema chamando o próprio problema
@@ -13978,6 +13982,7 @@ UM POUCO SOBRE LÓGICA DE PROGRAMAÇÃO:
 
 
     =====================================================================
+    
 
     buffer:
 
@@ -35054,13 +35059,639 @@ Um pouco sobre Estruturas de dados:
 
     Union find:
 
+        Union-Find é uma estrutura de dados muito importante em grafos e
+        algoritmos eficientes. Ela também é conhecida como:
+
+            Disjoint Set Union (DSU)
+
+        Serve para trabalhar com conjuntos disjuntos.
+
+        Union-Find mantém vários conjuntos separados e permite:
+
+            | operação   | função                               |
+            | ---------- | ------------------------------------ |
+            | find(x)    | descobrir a qual conjunto x pertence |
+            | union(a,b) | juntar dois conjuntos                |
+
+        Exemplo simples
+
+            Imagine elementos:
+
+                1 2 3 4 5   
+
+            Inicialmente cada elemento é seu próprio conjunto:
+
+                {1} {2} {3} {4} {5}
+
+        Operação
+
+            union(1,2)
+
+        Agora:
+
+            {1,2} {3} {4} {5}
+
+        Depois:
+
+            union(2,3)
+
+        Resultado:
+
+            {1,2,3} {4} {5}
+
+        Union-Find responde perguntas como:
+
+            Dois elementos pertencem ao mesmo grupo?
+
+            Exemplo:
+
+                find(1) == find(3)
+            
+            Se for verdadeiro → estão conectados.
+
+        Representação interna
+
+            Union-Find usa normalmente árvores.
+
+            Cada conjunto tem um representante (raiz).
+
+            Exemplo:
+
+                1
+                │
+                2
+                │
+                3
+
+            Raiz = 1
+
+            Então:
+
+                find(3) → 1
+
+        Estrutura básica:
+
+            Usamos um vetor:
+
+                parent = [0,1,2,3,4]
+
+            Cada índice aponta para seu pai.
+
+            Inicialmente:
+
+                0→0
+                1→1
+                2→2
+                3→3
+                4→4
+
+            Cada elemento é sua própria raiz.
+
+        Operação find
+
+            Percorre os pais até encontrar a raiz.
+
+                def find(x):
+                    while parent[x] != x:
+                        x = parent[x]
+                    return x
+
+        Operação union
+
+            Junta dois conjuntos.
+
+            EX:
+
+                def union(a,b):
+                    rootA = find(a)
+                    rootB = find(b)
+
+                    parent[rootB] = rootA
+
+            Exemplo:
+
+                union(1,2)
+
+            Resultado:
+
+                1
+                │
+                2
+
+        Problema da versão simples
+
+            Árvores podem ficar muito profundas:
+
+                1
+                │
+                2
+                │
+                3
+                │
+                4
+                │
+                5
+
+            Então:
+
+                find(5)
+
+            Custo:
+
+                O(n)
+
+            Muito lento.
+
+        Otimização 1: Path Compression
+
+            Quando fazemos find, achatamos a árvore.
+
+                antes:
+
+                    1
+                    │
+                    2
+                    │
+                    3
+                    │
+                    4
+
+                Depois de find(4):
+
+                    1
+                    ├2
+                    ├3
+                    └4
+
+            Implementação:
+
+                def find(x):
+
+                    if parent[x] != x:
+                        parent[x] = find(parent[x])
+
+                    return parent[x]
+
+            Isso reduz drasticamente a altura da árvore.
+
+        Otimização 2: Union by Rank
+
+            Sempre anexamos árvore menor na maior.
+
+            Mantemos:
+
+                rank = [0]*n
+
+            Union:
+
+                def union(a,b):
+                    rootA = find(a)
+                    rootB = find(b)
+
+                    if rootA == rootB:
+                        return
+
+                    if rank[rootA] < rank[rootB]:
+                        parent[rootA] = rootB
+
+                    elif rank[rootA] > rank[rootB]:
+                        parent[rootB] = rootA
+
+                    else:
+                        parent[rootB] = rootA
+                        rank[rootA] += 1
+            
+        Complexidade
+
+            Com as duas otimizações:
+
+                find ≈ O(α(n))
+                union ≈ O(α(n))
+
+            α(n) = função inversa de Ackermann
+
+            Ela cresce extremamente devagar.
+
+            Na prática:
+
+                ≈ O(1)
+
+        Aplicação famosa: algoritmo de Kruskal
+
+            Union-Find é essencial no algoritmo de árvore geradora mínima.
+
+            Algoritmo:
+
+                ordenar arestas
+
+                pegar menor aresta
+
+                verificar se cria ciclo
+
+            Verificação de ciclo:
+
+                find(u) == find(v)
+
+            Se forem iguais → ciclo.
+
+            Se forem diferentes:
+
+                union(u,v)
+
+        Outro uso: detectar ciclos em grafos
+
+            Exemplo:
+
+                1--2
+                |  |
+                3--4
+
+            Se uma aresta conecta dois nós com mesmo representante → ciclo.
+
+        Exemplo completo Python:
+
+            class UnionFind:
+
+                def __init__(self,n):
+                    self.parent = list(range(n))
+                    self.rank = [0]*n
+
+
+                def find(self,x):
+
+                    if self.parent[x] != x:
+                        self.parent[x] = self.find(self.parent[x])
+
+                    return self.parent[x]
+
+
+                def union(self,a,b):
+
+                    rootA = self.find(a)
+                    rootB = self.find(b)
+
+                    if rootA == rootB:
+                        return
+
+                    if self.rank[rootA] < self.rank[rootB]:
+                        self.parent[rootA] = rootB
+
+                    elif self.rank[rootA] > self.rank[rootB]:
+                        self.parent[rootB] = rootA
+
+                    else:
+                        self.parent[rootB] = rootA
+                        self.rank[rootA] += 1
+
+
+            uf = UnionFind(5)
+
+            uf.union(0, 1)
+            uf.union(1, 2)
+            uf.union(2, 3)
+
+            print(uf.find(2))
+            print(uf.find(3))
+
+        Intuição final:
+
+            Union-Find resolve rapidamente:
+
+                "Esses dois elementos estão no mesmo grupo?"
+
+            Operações:
+
+                union → juntar grupos
+                find → descobrir grupo
+
+            Com otimizações:
+
+                quase O(1)
+
     ==========================================================================
 
     Lista encadeada:
 
+        Uma lista encadeada é uma coleção de nós conectados por ponteiros.
+
+        Cada nó contém:
+
+            dados
+            ponteiro para o próximo nó
+
+        Estrutura de um nó:
+
+            [data | next]
+
+        Visualização
+
+            Exemplo de lista:
+
+                10 → 20 → 30 → 40 → None
+
+            Visualmente:
+
+                [10|•] → [20|•] → [30|•] → [40|None]
+
+            Cada nó aponta para o próximo.
+
+        Diferença para listas normais
+
+            Lista Python (array):
+
+                [10,20,30,40]
+
+            Memória:
+
+                contígua
+
+            Lista encadeada:
+
+                nós espalhados na memória
+
+            Conectados por ponteiros.
+
+        Estrutura do nó em Python
+
+            class Node:
+                def __init__(self, data):
+                    self.data = data
+                    self.next = None
+
+
+            n1 = Node(10)
+            n2 = Node(20)
+            n3 = Node(30)
+
+            n1.next = n2
+            n2.next = n3
+
+            current = n1
+
+            while current:
+                print(current.data)
+                current = current.next
+
+        Saída:
+
+            10
+            20
+            30
+
+        Inserção no início
+
+            Uma das grandes vantagens da lista encadeada.
+
+                def insert_begin(head,value):
+                    new_node = Node(value)
+                    new_node.next = head
+                    head = new_node
+
+                    return head
+
+            Complexidade:
+
+                O(1)
+
+        Inserção no final:
+
+            def insert_end(head,value):
+                new_node = Node(value)
+
+                if head is None:
+                    return new_node
+
+                current = head
+
+                while current.next:
+                    current = current.next
+
+                current.next = new_node
+
+                return head
+
+        Remoção de elemento
+
+            Exemplo removendo valor.
+
+                def delete(head,value):
+                    if head.data == value:
+                        return head.next
+
+                    current = head
+
+                    while current.next:
+
+                        if current.next.data == value:
+                            current.next = current.next.next
+                            return head
+
+                        current = current.next
+
+                    return head
+
+        Complexidade:
+
+            | operação       | custo |
+            | -------------- | ----- |
+            | acessar índice | O(n)  |
+            | inserir início | O(1)  |
+            | inserir meio   | O(n)  |
+            | remover        | O(n)  |
+
+        Vantagens e Desvantagens:
+
+            | vantagem         | 
+            | ---------------- |
+            | inserção rápida  |
+            | remoção rápida   |
+            | memória dinâmica |
+
+            | desvantagem      |
+            | ---------------- |
+            | acesso lento     |
+            | uso de ponteiros |
+            | mais memória     |
+
+        Comparação com array:
+
+            | estrutura   | acesso | inserção    |
+            | ----------- | ------ | ----------- |
+            | array       | O(1)   | O(n)        |
+            | linked list | O(n)   | O(1) início |
+
+        Intuição final
+
+            Lista encadeada funciona como:
+
+                vagões de trem
+
+            Cada vagão sabe quem vem depois.
+
+                [10] → [20] → [30] → [40]
+
     ==========================================================================
 
     Lista encadeada com extremidade dupla:
+
+        Estrutura básica:
+
+            Em uma lista encadeada simples:
+
+                10 → 20 → 30 → 40
+
+            Cada nó só sabe quem vem depois.
+
+        Na lista duplamente encadeada:
+
+            None ← 10 ⇄ 20 ⇄ 30 ⇄ 40 → None
+
+        Cada nó tem dois ponteiros:
+
+            prev ← [data] → next
+
+        Estrutura de um nó:
+
+            class Node:
+
+                def __init__(self, data):
+                    self.data = data
+                    self.next = None
+                    self.prev = None
+
+        Campo:
+
+            | campo | função           |
+            | ----- | ---------------- |
+            | data  | valor armazenado |
+            | next  | próximo nó       |
+            | prev  | nó anterior      |
+
+        Estrutura da lista
+
+            Normalmente mantemos dois ponteiros principais:
+
+                head → primeiro nó
+                tail → último nó
+
+            Visualização:
+
+                head
+                    ↓
+                10 ⇄ 20 ⇄ 30 ⇄ 40
+                                    ↑
+                                tail
+
+            Isso permite acesso rápido às duas extremidades.
+
+        Classe da lista:
+
+            class Node:
+                def __init__(self, value) -> None:
+                    self.value = value
+                    self.next = None
+                    self.prev = None
+
+
+            class DoublyLinkedList:
+
+                def __init__(self):
+                    self.head = None
+                    self.tail = None
+
+                def insert_begin(self, value):
+
+                    new_node = Node(value)
+
+                    if self.head is None:
+                        self.head = new_node
+                        self.tail = new_node
+                        return
+
+                    new_node.next = self.head
+                    self.head.prev = new_node
+                    self.head = new_node
+
+                def insert_end(self, value):
+                    new_node = Node(value)
+
+                    if self.tail is None:
+                        self.head = new_node
+                        self.tail = new_node
+                        return
+
+                    self.tail.next = new_node
+                    new_node.prev = self.tail
+                    self.tail = new_node
+
+                def delete_begin(self):
+                    if self.head is None:
+                        return
+
+                    if self.head == self.tail:
+                        self.head = None
+                        self.tail = None
+                        return
+
+                    self.head = self.head.next
+                    self.head.prev = None
+
+                def delete_end(self):
+                    if self.tail is None:
+                        return
+
+                    if self.head == self.tail:
+                        self.head = None
+                        self.tail = None
+                        return
+
+                    self.tail = self.tail.prev
+                    self.tail.next = None
+
+        Percorrer a lista:
+
+            Da esquerda para direita
+
+                current = self.head
+
+                while current:
+                    print(current.data)
+                    current = current.next
+
+            Da direita para esquerda
+
+                current = self.tail
+
+                while current:
+                    print(current.data)
+                    current = current.prev
+
+            Isso só é possível porque temos o ponteiro prev.
+
+        Complexidade:
+
+            | operação       | custo |
+            | -------------- | ----- |
+            | inserir início | O(1)  |
+            | inserir final  | O(1)  |
+            | remover início | O(1)  |
+            | remover final  | O(1)  |
+            | buscar         | O(n)  |
+
+        Vantagens:
+
+            | vantagem                           |
+            | ---------------------------------- |
+            | navegação nos dois sentidos        |
+            | remoção fácil                      |
+            | operações nas extremidades rápidas |
+
+        Desvantagens:
+
+            | desvantagem             |
+            | ----------------------- |
+            | usa mais memória        |
+            | estrutura mais complexa |
 
     ==========================================================================
 
@@ -35174,3 +35805,14 @@ Um pouco de ambientes:
     Python com DOCKER:
 
     Usando python com outras linguagens:
+
+
+A parte:
+
+    Tracing / Dry Run de algoritmo e estruturas de dados:
+
+    Tracing / Dry Run de algoritmo de algoritmos e estruturas de dados PYTHON:
+
+    Benchemark com python:
+
+    Matemática computacional e discreta:
