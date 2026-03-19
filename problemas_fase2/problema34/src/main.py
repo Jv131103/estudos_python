@@ -1,5 +1,7 @@
 def modelo1(frase):
     frase = frase.lower().split()
+    if not frase:
+        return
 
     dados = {}
 
@@ -12,6 +14,8 @@ def modelo1(frase):
 
 def modelo2(frase):
     frase = frase.lower().split()
+    if not frase:
+        return
 
     dados = {}
 
@@ -27,6 +31,9 @@ def modelo2(frase):
 
 def modelo3(frase):
     frase = frase.lower().split()
+    if not frase:
+        return
+
     ja_foi = []
 
     for texto in frase:
@@ -41,6 +48,9 @@ def modelo3(frase):
 
 def modelo4(frase):
     frase = frase.lower().split()
+    if not frase:
+        return
+
     ja_foi = []
 
     for texto in frase:
@@ -51,6 +61,8 @@ def modelo4(frase):
 
 def modelo5(frase):
     palavras = frase.lower().split()
+    if not palavras:
+        return
     dados = dict.fromkeys(palavras, 0)
     for texto in palavras:
         dados[texto] += 1
@@ -58,12 +70,38 @@ def modelo5(frase):
         print(f"{chave}: {valor}")
 
 
-modelo1("o gato viu o rato e o rato fugiu")
-print()
-modelo2("o gato viu o rato e o rato fugiu")
-print()
-modelo3("o gato viu o rato e o rato fugiu")
-print()
-modelo4("o gato viu o rato e o rato fugiu")
-print()
-modelo5("o gato viu o rato e o rato fugiu")
+def modelo6(frase):
+    palavras = sorted(frase.lower().split())
+    if not palavras:
+        return
+
+    anterior = palavras[0]
+    cont = 1
+    dados = []
+    for i in range(1, len(palavras)):
+        if palavras[i] == anterior:
+            cont += 1
+        else:
+            dados.append([anterior, cont])
+            cont = 1
+            anterior = palavras[i]
+
+    dados.append([anterior, cont])
+
+    for dado in dados:
+        palavra, total = dado
+        print(f"{palavra}: {total}")
+
+
+if __name__ == "__main__":
+    modelo1("o gato viu o rato e o rato fugiu")
+    print()
+    modelo2("o gato viu o rato e o rato fugiu")
+    print()
+    modelo3("o gato viu o rato e o rato fugiu")
+    print()
+    modelo4("o gato viu o rato e o rato fugiu")
+    print()
+    modelo5("o gato viu o rato e o rato fugiu")
+    print()
+    modelo6("o gato viu o rato e o rato fugiu")
