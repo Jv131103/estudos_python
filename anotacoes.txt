@@ -31364,6 +31364,440 @@ Um pouco sobre Estruturas de dados:
             Inserção custa caro.
 
             Se você insere muito → performance cai.
+    
+    =========================================================================
+
+    lista / vetores e arrays dinâmicos de ponteiros:
+
+        O que é um vetor (array)?
+
+            Um vetor (array) é simplesmente:
+
+                Uma sequência de valores guardados em posições na memória
+
+            Exemplo:
+
+                [10, 20, 30, 40]
+
+            Cada elemento tem um índice:
+
+                índice:   0   1   2   3
+                valor:   10  20  30  40
+
+            Acesso direto:
+
+                vetor[2] → 30
+
+            Muito rápido (O(1))
+
+        Problema do vetor comum:
+
+            O vetor tradicional tem um grande problema:
+
+                . Tamanho fixo
+
+                Exemplo:
+
+                    int vetor[4];
+
+                Você NÃO pode simplesmente fazer:
+
+                    vetor[4] = 50 (estoura memória)
+
+        Entra o ARRAY DINÂMICO:
+
+            Um array dinâmico resolve isso:
+
+                Ele cresce automaticamente na memória
+
+            Exemplo no Python:
+
+                lista = [10, 20, 30]
+                lista.append(40)
+
+        Como isso funciona por trás (IMPORTANTE):
+
+            Internamente, ele usa:
+
+                ponteiros + realocação de memória
+
+        O que são ponteiros?
+
+            Um ponteiro é:
+
+                Um valor que guarda o endereço de memória
+
+            Exemplo em C:
+
+                int x = 10;
+                int *p = &x;
+
+            p aponta para x
+
+        Visualização:
+
+            x = 10
+
+            Endereço: 1000 → 10
+                         ↑
+                         p
+
+        Array dinâmico com ponteiros
+
+            Agora junta tudo:
+
+                Um array dinâmico é:
+
+                    . Um ponteiro para um bloco de memória
+                    . Que pode ser realocado quando precisar crescer
+
+        Estrutura básica (em C):
+
+            EX:
+
+                int *array = malloc(4 * sizeof(int));
+
+            Criamos espaço para 4 elementos
+
+        Crescimento do array:
+
+            Quando enche:
+
+                Cria um novo espaço maior
+
+                Copia os dados antigos
+
+                Libera o antigo
+
+        Exemplo visual
+
+            Antes:
+                [10, 20, 30, 40]
+
+            Depois de crescer:
+                [10, 20, 30, 40, _, _, _, _]
+
+            (geralmente dobra de tamanho)
+
+        Tradução simples:
+
+            Quando enche:
+
+                dobra o tamanho
+
+                copia tudo
+
+                continua normalmente
+
+        Complexidade:
+
+            | Operação       | Tempo           |
+            | -------------- | --------------- |
+            | Acesso         | O(1)            |
+            | Inserção final | O(1) amortizado |
+            | Inserção meio  | O(n)            |
+
+        Ponto MUITO IMPORTANTE:
+
+            Inserir no meio é caro:
+
+                [10, 20, 30, 40]
+
+            Inserir 15:
+
+                [10, 15, 20, 30, 40]
+
+            Precisa mover tudo → O(n)
+
+        Diferença: Vetor vs Lista Encadeada:
+
+            | Estrutura       | Acesso | Inserção      |
+            | --------------- | ------ | ------------- |
+            | Vetor           | Rápido | Lento no meio |
+            | Lista encadeada | Lento  | Rápido        |
+
+        Em Python:
+
+            Python usa array dinâmico por baixo:
+
+                lista = []
+                lista.append(10)
+                lista.append(20)
+
+            Ele já faz tudo automaticamente
+
+            Ideia central:
+
+                um array dinâmico + capacidade + tamanho
+
+            Ou seja, ela guarda:
+
+                dados       # onde ficam os valores
+                tamanho     # quantos elementos tem
+                capacidade  # quanto cabe antes de crescer
+
+            Implementação do zero (didática)
+
+                Aqui vai uma versão simplificada:
+
+                    class ArrayDinamico:
+                        def __init__(self):
+                            self.capacidade = 2
+                            self.tamanho = 0
+                            self.dados = [None] * self.capacidade
+
+                        def adicionar(self, valor):
+                            # Se estiver cheio → cresce
+                            if self.tamanho == self.capacidade:
+                                self._redimensionar()
+
+                            self.dados[self.tamanho] = valor
+                            self.tamanho += 1
+
+                        def _redimensionar(self):
+                            print("🔁 Redimensionando...")
+
+                            self.capacidade *= 2
+                            novo_array = [None] * self.capacidade
+
+                            # copia os dados antigos
+                            for i in range(self.tamanho):
+                                novo_array[i] = self.dados[i]
+
+                            self.dados = novo_array
+
+                        def __str__(self):
+                            return str(self.dados[:self.tamanho])
+
+
+                    arr = ArrayDinamico()
+
+                    arr.adicionar(10)
+                    arr.adicionar(20)
+                    arr.adicionar(30)  # aqui vai redimensionar
+                    arr.adicionar(40)
+                    arr.adicionar(50)
+                    arr.adicionar(60)  # aqui vai redimensionar
+
+                    print(arr)
+
+            O que está acontecendo (bem simples):
+
+                Situação inicial:
+
+                    capacidade = 2
+                    dados = [None, None]
+
+                Depois de adicionar 2 elementos:
+                    
+                    [10, 20]
+
+                cheio
+
+            Ao adicionar mais um:
+
+                1. Cria array maior:
+
+                    [None, None, None, None]
+
+                2. Copia:
+
+                    [10, 20, _, _]
+
+                3. Adiciona:
+
+                    [10, 20, 30, _]
+
+            Código completo:
+
+                class ArrayDinamico:
+                    def __init__(self):
+                        self.capacidade = 2
+                        self.tamanho = 0
+                        self.dados = [None] * self.capacidade
+
+                    def adicionar(self, valor):
+                        # Se os tamanho sobrepor a capacidade, redimensiona alocando mais espaços
+                        if self.tamanho == self.capacidade:
+                            self._redimensionar()
+
+                        # Adiciona o dado novo na lista alocada
+                        self.dados[self.tamanho] = valor
+
+                        # Incrementa o tamanho
+                        self.tamanho += 1
+
+                    def obter(self, indice):
+                        if indice < 0 or indice >= self.tamanho:
+                            raise IndexError("Índice fora do limite")
+
+                        # retorna os dados
+                        return self.dados[indice]
+
+                    def definir(self, indice, valor):
+                        if indice < 0 or indice >= self.tamanho:
+                            raise IndexError("Índice fora do limite")
+
+                        # Faz a substituição ou adição implícita
+                        self.dados[indice] = valor
+
+                    def deletar(self, indice=None):
+                        if indice is None:
+                            indice = self.tamanho - 1
+
+                        if indice < 0 or indice >= self.tamanho:
+                            raise IndexError("Índice fora do limite")
+
+                        # move os elementos para a esquerda
+                        for i in range(indice, self.tamanho - 1):
+                            self.dados[i] = self.dados[i + 1]
+
+                        # limpa o último espaço
+                        self.dados[self.tamanho - 1] = None
+
+                        # diminui o tamanho
+                        self.tamanho -= 1
+
+                    def _redimensionar(self):
+                        self.capacidade *= 2
+
+                        # Adiciona mais 2 espaços
+                        novo = [None] * self.capacidade
+
+                        # Percorre e tranforma e readiciona os dados nessa nova lista
+                        for i in range(self.tamanho):
+                            novo[i] = self.dados[i]
+
+                        # Converte o novo para os dados principal
+                        self.dados = novo
+
+                    def tamanho_total(self):
+                        return self.tamanho
+
+                    def ultimo_indice(self):
+                        if self.tamanho == 0:
+                            return None
+                        return self.tamanho - 1
+
+                    def __str__(self):
+                        return str(self.dados[:self.tamanho])
+
+
+                arr = ArrayDinamico()
+
+                arr.adicionar(10)
+                arr.adicionar(20)
+                arr.adicionar(30)  # aqui vai redimensionar
+                arr.adicionar(40)
+                arr.adicionar(50)
+                arr.adicionar(60)  # aqui vai redimensionar
+
+                print(arr)
+
+                arr.deletar()
+                arr.deletar(2)
+                arr.deletar(0)
+                print(arr)
+
+            Problema: Deletar do início, exige O(n) remoções, por que
+            ao deletar, ele move os elementos a direita, então deletar do 
+            início, torna-se o pior caso.
+
+            Solução: Trapacear com circularização
+
+                class ArrayDinamico:
+                    def __init__(self):
+                        self.capacidade = 2
+                        self.tamanho = 0
+                        self.inicio = 0  # inicio → aponta pro primeiro elemento. Circulariza o array
+                        self.dados = [None] * self.capacidade
+
+                    def adicionar(self, valor):
+                        if self.tamanho == self.capacidade:
+                            self._redimensionar()
+
+                        # calcula posição real (circular)
+                        pos = (self.inicio + self.tamanho) % self.capacidade
+                        self.dados[pos] = valor
+                        self.tamanho += 1
+
+                    def obter(self, indice):
+                        if indice < 0 or indice >= self.tamanho:
+                            raise IndexError("Índice fora do limite")
+
+                        # converte índice lógico → físico
+                        pos = (self.inicio + indice) % self.capacidade
+                        return self.dados[pos]
+
+                    def definir(self, indice, valor):
+                        if indice < 0 or indice >= self.tamanho:
+                            raise IndexError("Índice fora do limite")
+
+                        pos = (self.inicio + indice) % self.capacidade
+                        self.dados[pos] = valor
+
+                    def deletar(self, indice=None):
+                        if indice is None:
+                            indice = self.tamanho - 1
+
+                        if indice < 0 or indice >= self.tamanho:
+                            raise IndexError("Índice fora do limite")
+
+                        # 🔥 CASO ESPECIAL: deletar primeiro → O(1)
+                        if indice == 0:
+                            self.dados[self.inicio] = None
+                            self.inicio = (self.inicio + 1) % self.capacidade
+                            self.tamanho -= 1
+                            return
+
+                        # 🔥 CASO GERAL: continua O(n)
+                        for i in range(indice, self.tamanho - 1):
+                            atual = (self.inicio + i) % self.capacidade
+                            prox = (self.inicio + i + 1) % self.capacidade
+                            self.dados[atual] = self.dados[prox]
+
+                        # limpa último
+                        ultimo = (self.inicio + self.tamanho - 1) % self.capacidade
+                        self.dados[ultimo] = None
+
+                        self.tamanho -= 1
+
+                    def _redimensionar(self):
+                        nova_capacidade = self.capacidade * 2
+                        novo = [None] * nova_capacidade
+
+                        # copia respeitando ordem lógica
+                        for i in range(self.tamanho):
+                            pos = (self.inicio + i) % self.capacidade
+                            novo[i] = self.dados[pos]
+
+                        self.dados = novo
+                        self.capacidade = nova_capacidade
+                        self.inicio = 0  # reseta
+
+                    def __str__(self):
+                        elementos = []
+                        for i in range(self.tamanho):
+                            pos = (self.inicio + i) % self.capacidade
+                            elementos.append(self.dados[pos])
+                        return str(elementos)
+
+
+                arr = ArrayDinamico()
+
+                arr.adicionar(10)
+                arr.adicionar(20)
+                arr.adicionar(30)  # aqui vai redimensionar
+                arr.adicionar(40)
+                arr.adicionar(50)
+                arr.adicionar(60)  # aqui vai redimensionar
+
+                print(arr)
+
+                arr.deletar()
+                arr.deletar(2)
+                arr.deletar(0)
+                print(arr)
 
     ==========================================================================
 
@@ -35924,7 +36358,15 @@ Um pouco sobre Estruturas de dados:
 
     ==========================================================================
 
-    heaps (árvores binárias):
+    Trees (árvore):
+
+    ==========================================================================
+
+    binary Trees (árvores binárias):
+
+    ==========================================================================
+
+    heaps:
 
     ==========================================================================
 
@@ -35933,6 +36375,22 @@ Um pouco sobre Estruturas de dados:
     ==========================================================================
 
     heap bin search (árvore binária de busca)
+
+    ==========================================================================
+
+    heaps encadeados
+
+    ==========================================================================
+
+    Rope
+
+    ==========================================================================
+
+    Gap Buffer
+
+    ==========================================================================
+
+    Piece Tree 
 
     ==========================================================================
 
@@ -35953,6 +36411,10 @@ Um pouco sobre Estruturas de dados:
     ==========================================================================
 
     LRU Cache
+
+    ==========================================================================
+
+    B-Tree / B+ Tree
 
     ==========================================================================
 
