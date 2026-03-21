@@ -13983,6 +13983,10 @@ UM POUCO SOBRE LÓGICA DE PROGRAMAÇÃO:
 
     =====================================================================
     
+    Cópia e cópia profunda:
+
+
+    =====================================================================
 
     buffer:
 
@@ -36358,7 +36362,135 @@ Um pouco sobre Estruturas de dados:
 
     ==========================================================================
 
-    Trees (árvore):
+    Trees (árvore) conceito básico, árvore unária:
+
+        Uma árvore é uma estrutura de dados que organiza informações em forma
+        hierárquica.
+
+        Pensa assim:
+
+                    10   ← raiz
+                   /
+                  5
+                 /
+                2
+
+        Cada elemento é um nó (node).
+
+        Conceitos básicos:
+
+            . Raiz (root) → primeiro nó
+            
+            . Filho (child) → nó abaixo
+            
+            . Pai (parent) → nó acima
+            
+            . Folha (leaf) → nó que não tem filho
+
+        Árvore Unária (Unary Tree):
+
+            Agora o que você pediu:
+
+                Árvore unária = cada nó só pode ter NO MÁXIMO 1 filho
+
+            Ou seja:
+
+                10
+                 |
+                 5
+                 |
+                 2
+                 |
+                 1
+            
+            Isso parece muito com uma lista encadeada
+
+            E é exatamente isso:
+
+                uma árvore unária é praticamente uma lista encadeada disfarçada
+
+        Regra principal:
+
+            Cada nó tem:
+
+                . um valor
+                
+                . no máximo 1 ponteiro
+
+        Implementação em Python:
+
+            Vamos montar isso passo a passo.
+
+        Criando o nó:
+
+            class Node:
+                def __init__(self, valor):
+                    self.valor = valor
+                    self.filho = None
+
+        Criando a árvore:
+
+            class ArvoreUnaria:
+                def __init__(self):
+                    self.raiz = None
+
+        Inserção (simples)
+
+            Vamos sempre inserir “embaixo”:
+
+                def inserir(self, valor):
+                    novo = Node(valor)
+
+                    if self.raiz is None:
+                        self.raiz = novo
+                        return
+
+                    atual = self.raiz
+
+                    while atual.filho is not None:
+                        atual = atual.filho
+
+                    atual.filho = novo
+
+        Visualizando
+
+            Se fizer:
+
+                a = ArvoreUnaria()
+                a.inserir(10)
+                a.inserir(5)
+                a.inserir(2)
+
+        Percorrendo (Traversal)
+
+            def percorrer(self):
+                atual = self.raiz
+
+                while atual is not None:
+                    print(atual.valor)
+                    atual = atual.filho
+
+        Complexidade:
+
+            . Inserir: O(n)
+            . Buscar: O(n)
+            . Remover: O(n)
+
+            Igual lista encadeada
+
+        Importante:
+
+            - Árvore unária não é muito usada na prática porque:
+
+                . Não aproveita o poder das árvores
+                . Vira basicamente uma lista
+
+        Resumo do jeito direto
+
+            Árvore = estrutura hierárquica
+            Árvore unária = 1 filho por nó
+            Na prática = lista encadeada
+            Complexidade = O(n)
 
     ==========================================================================
 
