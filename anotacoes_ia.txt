@@ -137,3 +137,50 @@ Retomando a lista de IAs, ainda exploraremos sobre:
     autônomas que podem realizar tarefas complexas. Os robôs são capazes
     de interagir com o ambiente físico, manipular objetos e executar tarefas
     com alto grau de precisão e repetitividade.
+
+                    MODELAGEM E SIMULAÇÃO
+
+Neste contexto, a modelagem consiste em construir representações abstratas
+e simplificadas de sistemas domundo real, enquanto a simulação envolve a
+execução dessas representações para gerar dados e insights.
+
+Elementos da modelagem: Para um robô funcionar de modo inteligente e eficiente,
+é necessário desenvolver um modelo que represente o ambiente em que ele irá
+operar. Esse modelo pode ser uma planta ou mapa com informações sobre
+localização, região, ambiente ou objetos e obstáculos. Com a modelagem, se têm:
+
+    - abstração: Que representa o ambiente real de forma simplificada,
+    utilizando um mapa bidimensional com informações relevantes para o robô,
+    como paredes e obstáculos.
+
+    - simplificalção: Que representa, em primeiro momento, a necessidade de
+    ignorar detalhes irrelevantes para o funcionamento do robô, como por exemplo,
+    textura ou cor.
+
+    - Representação: Que se utiliza uma estrutura de dados adequada para
+    armazenar as informações do modelo, como um grafo, uma matriz, estrutura
+    de dados ou um banco de dados.
+
+Com essas aplicações, é possível realizar simulações para tesdtar diferentes
+estratégias de uso e otimizar o desempenho do robô, até para que ele tenha
+autonomia maior.
+
+Ainda aprofundando o quisito simulação, temos:
+
+    - Execução do modelo: É uma simulação do movimento e ação do robô no
+    ambiente virtual, utilizando algoritmos de planejamento de trajetória
+    e controle de moviemnto.
+
+    - Coleta de dados: registrar informações sobre o desempenho do robô
+    durante a simulação, como o tempo gasto, área coberta e energia consumida.
+
+    - Análise dos resultados: Avaliar diferentes estratégias de limpeza e
+    identificar a mais eficiente em termos de tempo, cobertura e consumo de
+    energia.
+
+Através da modelagem e simulação, é possível testar e aprimorar o robô
+antes mesmo de construí-lo fisicamente, economizando tempo e recursos.
+Além disso, com simulação, é possível explorar diferentes cenários e condições,
+garantindo que o robô seja capaz de se adaptar a diferentes situações.
+
+Ainda nesse cenário, definiremos mais alguns conceitos importantes:
