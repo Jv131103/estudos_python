@@ -1,0 +1,5 @@
+arq = open("./arquivos/arquivo.txt", 'w+')
+arq.write("94837463746384833838463836")
+arq.seek(8)
+print(arq.read())
+arq.close()

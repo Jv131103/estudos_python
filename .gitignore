@@ -10,6 +10,12 @@ mysql_206
 # remover arquivos .db
 *.db
 databases/
+database/
+
+# remover arquivos csv
+*.csv
+csvs/
+csv/
 
 # remover a pasta arquivos
 arquivos/
