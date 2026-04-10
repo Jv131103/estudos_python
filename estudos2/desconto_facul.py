@@ -1,5 +1,3 @@
-# ✏️ Escreva seu código aqui!
-
 def desconto_cupom1():
     valor_compra = float(input("Valor da compra: "))
     cupom = input("Cupom selecionado (FIAP10, PYTHON20): ").strip().upper()

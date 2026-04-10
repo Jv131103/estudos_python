@@ -13970,6 +13970,14 @@ UM POUCO SOBRE LÓGICA DE PROGRAMAÇÃO:
             . Distribuição manda
 
     =====================================================================
+    
+    Técnica de cache:
+    
+    =====================================================================
+    
+    Técnica de POOL:
+    
+    =====================================================================
 
     Técnicas de transição de estados e invariantes:
 
@@ -36588,6 +36596,10 @@ Um pouco sobre Estruturas de dados:
 
     Algoritmo de Dijkstra
 
+    ==========================================================================
+    
+    Algoritmos de telemetria
+    
     ==========================================================================
 
     Regressão Linear:
