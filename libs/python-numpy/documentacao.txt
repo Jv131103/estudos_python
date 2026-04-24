@@ -1,0 +1,888 @@
+                    Numpy documentação
+
+O NumPy é o pacote fundamental para computação científica em 
+Python, oferecendo arrays multidimensionais, operações 
+vetorizadas, broadcasting, álgebra linear, estatística, Fourier, 
+random e I/O.
+
+                            O que é NumPy
+
+NumPy serve para trabalhar com dados numéricos em arrays de 
+forma rápida.
+
+Lista Python:
+
+    lista = [1, 2, 3, 4]
+
+Array NumPy:
+
+    import numpy as np
+
+    a = np.array([1, 2, 3, 4])
+
+A diferença principal:
+
+    lista * 2
+    # [1, 2, 3, 4, 1, 2, 3, 4]
+
+    a * 2
+    # array([2, 4, 6, 8])
+
+    No NumPy, a operação acontece elemento por elemento.
+
+                O coração do NumPy: ndarray
+
+O objeto principal é o:
+
+    np.ndarray
+
+Ele é um array N-dimensional.
+
+EX:
+
+    import numpy as np
+
+    a = np.array([10, 20, 30])
+    b = np.array([[1, 2, 3], [4, 5, 6]])
+
+    print(type(a))
+    print(type(b))
+
+                Propriedades fundamentais
+
+EX:
+
+    a = np.array([[1, 2, 3], [4, 5, 6]])
+
+    print(a.ndim)    # número de dimensões
+    print(a.shape)   # formato: linhas, colunas
+    print(a.size)    # total de elementos
+    print(a.dtype)   # tipo dos dados
+    print(a.itemsize) # bytes por elemento
+
+Saída mental:
+
+    ndim = 2
+    shape = (2, 3)
+    size = 6
+    dtype = int64
+
+Pensa assim:
+
+    shape = desenho do array
+    dtype = tipo do conteúdo
+    size = quantidade total
+    ndim = quantidade de eixos
+
+                    Criando arrays
+
+EX:
+
+    np.array([1, 2, 3])
+    np.zeros((2, 3))
+    np.ones((3, 3))
+    np.empty((2, 2))
+    np.full((2, 3), 7)
+    np.eye(3)
+
+Exemplo:
+
+    np.zeros((2, 3))
+
+Resultado:
+
+    array([[0., 0., 0.],
+           [0., 0., 0.]])
+
+                    Sequências numéricas
+
+EX:
+
+    np.arange(0, 10, 2)
+    # array([0, 2, 4, 6, 8])
+
+    np.linspace(0, 1, 5)
+    # array([0.  , 0.25, 0.5 , 0.75, 1.  ])
+
+Diferença:
+
+    arange → passo
+    linspace → quantidade de pontos
+
+                Tipos de dados: dtype
+
+EX:
+
+    a = np.array([1, 2, 3], dtype=np.int32)
+    b = np.array([1.5, 2.5], dtype=np.float64)
+    c = np.array([True, False], dtype=np.bool_)
+
+Tipos comuns:
+
+    np.int8
+    np.int16
+    np.int32
+    np.int64
+    np.float32
+    np.float64
+    np.bool_
+    np.str_
+    np.object_
+
+Cuidado:
+
+    a = np.array([1, 2, 3], dtype=np.int8)
+
+int8 economiza memória, mas estoura fácil.
+
+                Operações vetorizadas
+
+EX:
+
+    a = np.array([1, 2, 3])
+    b = np.array([10, 20, 30])
+
+    print(a + b)
+    print(a - b)
+    print(a * b)
+    print(b / a)
+    print(a ** 2)
+
+Resultado:
+
+    [11 22 33]
+    [-9 -18 -27]
+    [10 40 90]
+    [10. 10. 10.]
+    [1 4 9]
+
+Sem for.
+
+Esse é o poder do NumPy.
+
+            Funções universais: ufuncs
+
+EX:
+
+    a = np.array([1, 4, 9, 16])
+
+    np.sqrt(a)
+    np.sin(a)
+    np.cos(a)
+    np.log(a)
+    np.exp(a)
+    np.abs(a)
+
+Exemplo:
+
+    np.sqrt([1, 4, 9])
+    # array([1., 2., 3.])
+
+                    Indexação básica
+
+EX:
+
+    a = np.array([10, 20, 30, 40])
+
+    print(a[0])
+    print(a[-1])
+    print(a[1:3])
+
+Array 2D:
+
+    m = np.array([
+        [1, 2, 3],
+        [4, 5, 6]
+    ])
+
+    print(m[0, 0])  # 1
+    print(m[1, 2])  # 6
+
+Modelo mental:
+
+    m[linha, coluna]
+
+                        Fatiamento
+
+EX:
+
+    a = np.array([10, 20, 30, 40, 50])
+
+    a[1:4]
+    a[:3]
+    a[::2]
+    a[::-1]
+
+Matriz:
+
+    m = np.array([
+        [1, 2, 3],
+        [4, 5, 6],
+        [7, 8, 9]
+    ])
+
+    m[0, :]     # primeira linha
+    m[:, 0]     # primeira coluna
+    m[0:2, 1:3] # bloco
+
+            Atenção: slice geralmente é view
+
+Exemplo:
+
+    a = np.array([1, 2, 3, 4])
+    b = a[1:3]
+
+    b[0] = 999
+
+    print(a)
+
+Resultado:
+
+    [1, 999, 3, 4]
+
+Porque b é uma view, não cópia.
+
+Para copiar:
+
+    b = a[1:3].copy()
+
+                    Boolean indexing
+
+EX:
+
+    a = np.array([10, 20, 30, 40])
+
+    mask = a > 20
+    print(mask)
+    print(a[mask])
+
+Resultado:
+
+    [False False  True  True]
+    [30 40]
+
+Uso direto:
+
+    a[a > 20]
+
+Com múltiplas condições:
+
+    a[(a > 10) & (a < 40)]
+
+Cuidado:
+
+    # errado
+    a[a > 10 and a < 40]
+
+    # certo
+    a[(a > 10) & (a < 40)]
+
+                    Fancy indexing
+
+EX:
+
+    a = np.array([10, 20, 30, 40, 50])
+
+    indices = [0, 2, 4]
+
+    print(a[indices])
+
+Resultado:
+
+    [10 30 50]
+
+                Shape e reshape
+
+EX:
+
+    a = np.arange(12)
+
+    b = a.reshape(3, 4)
+    print(b)
+
+Resultado:
+
+    [[ 0  1  2  3]
+     [ 4  5  6  7]
+     [ 8  9 10 11]]
+
+A regra:
+
+    número total de elementos precisa bater
+
+12 pode virar:
+
+    (3, 4)
+    (4, 3)
+    (2, 6)
+    (6, 2)
+    (1, 12)
+    (12, 1)
+
+                    Flatten vs ravel
+
+EX:
+
+    m = np.array([[1, 2], [3, 4]])
+
+    m.flatten()
+    m.ravel()
+
+Diferença:
+
+    flatten → cópia
+    ravel → tenta retornar view
+
+                    Transposição
+
+EX:
+
+    m = np.array([
+        [1, 2, 3],
+        [4, 5, 6]
+    ])
+
+    print(m.T)
+
+Resultado:
+
+    [[1 4]
+     [2 5]
+     [3 6]]
+
+                        Broadcasting
+
+Broadcasting é uma das partes mais importantes. Ele permite 
+operações entre arrays de formatos diferentes quando as dimensões 
+são compatíveis. A documentação oficial define broadcasting 
+como uma forma de NumPy tratar arrays com shapes diferentes
+durante operações aritméticas, “esticando” conceitualmente o menor 
+sem necessariamente copiar os dados.
+
+Exemplo simples:
+
+    a = np.array([1, 2, 3])
+
+    print(a + 10)
+
+O 10 é aplicado em todos:
+
+    [11 12 13]
+
+Exemplo 2D:
+
+    m = np.array([
+        [1, 2, 3],
+        [4, 5, 6]
+    ])
+
+    v = np.array([10, 20, 30])
+
+    print(m + v)
+
+Resultado:
+
+    [[11 22 33]
+     [14 25 36]]
+
+Regra mental:
+
+    Compara shapes da direita para a esquerda.
+
+    Dimensões são compatíveis se forem iguais ou se uma delas for 1.
+
+Exemplo:
+
+    (2, 3)
+    (3,)
+
+Vira:
+
+    (2, 3)
+    (1, 3)
+
+Compatível.
+
+                        Agregações
+
+EX:
+
+    a = np.array([1, 2, 3, 4])
+
+    np.sum(a)
+    np.mean(a)
+    np.min(a)
+    np.max(a)
+    np.std(a)
+    np.var(a)
+    np.median(a)
+
+
+Matriz:
+
+    m = np.array([
+        [1, 2, 3],
+        [4, 5, 6]
+    ])
+
+    np.sum(m)
+    np.sum(m, axis=0)
+    np.sum(m, axis=1)
+
+Modelo mental:
+
+    axis=0 → desce nas linhas, resultado por coluna
+
+    axis=1 → anda nas colunas, resultado por linha
+
+                        Ordenação
+
+EX:
+
+    a = np.array([3, 1, 2])
+
+    np.sort(a)
+
+Índices da ordenação:
+
+    np.argsort(a)
+
+Exemplo:
+
+    a = np.array([30, 10, 20])
+    idx = np.argsort(a)
+
+    print(idx)      # [1 2 0]
+    print(a[idx])   # [10 20 30]
+
+                Concatenar e empilhar
+
+EX:
+
+    a = np.array([1, 2])
+    b = np.array([3, 4])
+
+    np.concatenate([a, b])
+
+2D:
+
+    m1 = np.array([[1, 2]])
+    m2 = np.array([[3, 4]])
+
+    np.vstack([m1, m2])
+    np.hstack([m1, m2])
+
+Resultado:
+
+    vstack → empilha vertical
+    hstack → empilha horizontal
+
+                Separar arrays
+
+EX:
+
+    a = np.arange(10)
+
+    np.split(a, 2)
+
+    m = np.arange(12).reshape(3, 4)
+
+    np.hsplit(m, 2)
+    np.vsplit(m, 3)
+
+                    Álgebra linear
+
+EX:
+
+    A = np.array([[1, 2], [3, 4]])
+    B = np.array([[10, 20], [30, 40]])
+
+    A @ B
+    np.matmul(A, B)
+    np.dot(A, B)
+
+Determinante:
+
+    np.linalg.det(A)
+
+Inversa:
+
+    np.linalg.inv(A)
+
+Resolver sistema:
+
+    # 2x + y = 5
+    # x + y = 3
+
+    A = np.array([[2, 1], [1, 1]])
+    b = np.array([5, 3])
+
+    x = np.linalg.solve(A, b)
+    print(x)
+
+                        Random moderno
+
+Use o gerador novo:
+
+    rng = np.random.default_rng(seed=42)
+
+A documentação de random do NumPy recomenda o uso do objeto 
+Generator criado por default_rng, que é a API moderna para 
+geração aleatória.
+
+Exemplos:
+
+    rng.integers(0, 10, size=5)
+    rng.random(5)
+    rng.normal(loc=0, scale=1, size=5)
+    rng.choice([10, 20, 30], size=2)
+
+Evite usar em código novo:
+
+    np.random.seed(42)
+    np.random.randint(...)
+
+Prefira:
+
+    rng = np.random.default_rng(42)
+
+                        Arquivos
+
+Salvar binário NumPy:
+
+    a = np.array([1, 2, 3])
+
+    np.save("dados.npy", a)
+    b = np.load("dados.npy")
+
+Salvar vários arrays:
+
+    np.savez("dados.npz", a=a, b=b)
+
+CSV simples:
+
+    np.savetxt("dados.csv", a, delimiter=",")
+    np.loadtxt("dados.csv", delimiter=",")
+
+Para CSV real de produção, geralmente Pandas é melhor.
+
+                Valores especiais
+
+Tipos:
+
+    np.nan
+    np.inf
+    -np.inf
+
+EX:
+
+    a = np.array([1, 2, np.nan, 4])
+
+    np.isnan(a)
+    np.nanmean(a)
+    np.nansum(a)
+
+                        Where
+
+EX:
+
+    a = np.array([10, 20, 30, 40])
+
+    np.where(a > 20, "alto", "baixo")
+
+Resultado:
+
+    ['baixo' 'baixo' 'alto' 'alto']
+
+Também retorna índices:
+
+    np.where(a > 20)
+
+                    Unique e contagem
+
+EX:
+
+    a = np.array([1, 1, 2, 3, 3, 3])
+
+    np.unique(a)
+    np.unique(a, return_counts=True)
+
+                        Clip
+
+Limitar valores:
+
+    a = np.array([-10, 5, 20, 100])
+
+    np.clip(a, 0, 50)
+
+Resultado:
+
+    [ 0  5 20 50]
+
+            Performance: por que NumPy é rápido?
+
+Porque ele evita loops Python e usa operações vetorizadas em C.
+
+Ruim:
+
+    lista = list(range(1_000_000))
+    resultado = []
+
+    for x in lista:
+        resultado.append(x * 2)
+
+Melhor:
+
+    a = np.arange(1_000_000)
+    resultado = a * 2
+
+Regra:
+
+    Evite for em Python quando puder usar operação vetorizada.
+
+                Armadilhas importantes:
+
+View vs copy:
+
+    b = a[1:3]       # pode ser view
+    b = a[1:3].copy() # cópia real
+
+* não é multiplicação matricial:
+
+    A * B   # elemento por elemento
+    A @ B   # matriz
+
+axis confunde:
+
+    axis=0 → colunas
+    axis=1 → linhas
+
+dtype pode estourar:
+
+    a = np.array([127], dtype=np.int8)
+    a + 1
+
+Pode dar comportamento inesperado por overflow.
+
+np.nan == np.nan é False:
+
+    np.nan == np.nan
+    # False
+
+Use:
+
+    np.isnan(x)
+
+                    O que mudou na linha 2.3
+
+NumPy 2.3.0 trouxe melhorias em suporte a Python free-threaded, 
+anotações, exemplos interativos na documentação, suporte preliminar
+a Windows on ARM e nova função numpy.strings.slice para fatiamento 
+nativo rápido em arrays de strings.
+
+Exemplo conceitual:
+
+    arr = np.array(["Renato", "Python", "NumPy"])
+    np.strings.slice(arr, start=0, stop=3)
+
+        INDEXAÇÃO AVANÇADA + BROADCASTING + AXIS (DE VERDADE)
+
+INDEXAÇÃO AVANÇADA:
+
+    Boolean Mask (filtro poderoso)
+
+        EX:
+            import numpy as np
+            
+            a = np.array([10, 20, 30, 40, 50])
+            
+            mask = a > 25
+            print(mask)
+            print(a[mask])
+
+        Resultado:
+
+            [False False  True  True  True]
+            [30 40 50]
+
+        Isso substitui for + if.
+
+        Multi-condição:
+
+            a[(a > 10) & (a < 50)]
+
+        SEMPRE usar:
+
+            &  (and)
+            |  (or)
+            ~  (not)
+
+    Indexação com múltiplos eixos
+
+        EX:
+
+            m = np.array([
+                [10, 20, 30],
+                [40, 50, 60],
+                [70, 80, 90]
+            ])
+
+        Selecionar:
+
+            m[0, 1]   # 20
+            m[:, 1]   # coluna inteira
+            m[1, :]   # linha inteira
+
+        Selecionar valores específicos:
+
+            m[[0, 2], [1, 2]]
+
+        Resultado:
+        
+            [20, 90]
+
+        Pegou:
+
+            (0,1)
+            (2,2)
+
+    Fancy Indexing (índices)
+
+        EX:
+
+            a = np.array([10, 20, 30, 40])
+
+            a[[0, 2, 3]]
+
+        Resultado:
+
+            [10 30 40]
+
+    Indexação 2D avançada
+
+        EX:
+
+            m = np.arange(9).reshape(3,3)
+
+            linhas = [0, 1]
+            colunas = [1, 2]
+
+            print(m[linhas, colunas])
+
+        Resultado:
+
+            [1 5]
+
+    np.where (muito usado)
+        EX:
+
+            a = np.array([10, 20, 30, 40])
+
+            np.where(a > 20)
+
+        Retorna índices:
+
+            (array([2, 3]),)
+
+        Modo substituição:
+
+            np.where(a > 20, 999, a)
+
+        Resultado:
+
+            [10 20 999 999]
+
+BROADCASTING (O SUPERPODER):
+
+    Compare shapes da direita → esquerda.
+
+    Compatível se:
+
+        Iguais
+        Ou um deles = 1
+
+    Exemplo simples
+
+        a = np.array([1, 2, 3])
+
+        a + 10
+
+    Resultado:
+
+        [11 12 13]
+
+    Exemplo 2D + 1D:
+        EX:
+
+            m = np.array([
+                [1, 2, 3],
+                [4, 5, 6]
+            ])
+
+            v = np.array([10, 20, 30])
+
+            m + v
+
+        Resultado:
+
+            [[11 22 33]
+            [14 25 36]]
+
+        Visualização mental:
+
+            (2, 3)
+            (3,)
+            ↓ vira
+            (2, 3)
+            (1, 3)
+
+    Exemplo com coluna:
+
+        EX:
+
+            v = np.array([[10], [20]])
+
+            print(v.shape)  # (2,1)
+
+            m = np.array([
+                [1, 2, 3],
+                [4, 5, 6]
+            ])
+
+            m + v
+
+        Resultado:
+
+            [[11 12 13]
+             [24 25 26]]
+
+    Expand dims:
+
+        EX:
+
+            a = np.array([1, 2, 3])
+    
+            a[:, np.newaxis]
+
+        Resultado:
+
+            [[1]
+            [2]
+            [3]]
+
+        transforma vetor em coluna.
+
+
+Mini resumo mental
+
+    np.array       → cria array
+    shape          → formato
+    dtype          → tipo
+    axis           → eixo
+    broadcasting   → compatibilidade de shapes
+    ufunc          → função vetorizada
+    view           → janela para o mesmo dado
+    copy           → dado novo
+    @              → multiplicação matricial
+    rng            → random moderno
+
