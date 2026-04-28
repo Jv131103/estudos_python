@@ -1,0 +1,598 @@
+                        PANDAS
+
+                MODELO MENTAL DO PANDAS
+
+Pandas é construído em cima de:
+
+    NumPy (dados)
+    Índices (labels)
+    Estruturas tabulares
+
+A diferença chave:
+
+    NumPy → posição
+    Pandas → posição + rótulo
+
+                ESTRUTURAS FUNDAMENTAIS
+
+Series (1 dimensão):
+
+    EX:
+
+        import pandas as pd
+
+        s = pd.Series([10, 20, 30])
+        print(s)
+
+    Saída:
+
+        0    10
+        1    20
+        2    30
+        dtype: int64
+
+    Series tem DUAS partes:
+
+        ÍNDICE → 0, 1, 2
+        VALOR → 10, 20, 30
+
+    Criando Series com índice:
+
+        s = pd.Series([10, 20, 30], index=["a", "b", "c"])
+
+    Agora:
+
+        s["a"] → 10
+
+    Isso muda tudo.
+
+                        DATAFRAME
+
+EX:
+
+    df = pd.DataFrame({
+        "nome": ["Renato", "Ana"],
+        "idade": [25, 30]
+    })
+
+Visual:
+
+       nome   idade
+    0 Renato   25
+    1 Ana      30
+
+DataFrame = coleção de Series
+
+    colunas → Series
+    linhas → registros
+
+                COMPONENTES INTERNOS
+
+Um DataFrame tem:
+
+    df.index     # linhas
+    df.columns   # colunas
+    df.values    # dados (numpy)
+    df.dtypes    # tipos
+
+            CRIAÇÃO (TODAS AS FORMAS IMPORTANTES)
+
+1. Dict de listas
+
+    EX:
+
+        pd.DataFrame({
+            "A": [1, 2],
+            "B": [3, 4]
+        })
+
+2. Lista de dict
+
+    pd.DataFrame([
+        {"A": 1, "B": 2},
+        {"A": 3, "B": 4}
+    ])
+
+3. NumPy
+
+    import numpy as np
+
+    arr = np.arange(6).reshape(3,2)
+
+    pd.DataFrame(arr, columns=["A", "B"])
+
+4. Série → DataFrame
+
+    s = pd.Series([1,2,3])
+    pd.DataFrame(s)
+
+                TIPOS DE DADOS (dtype)
+
+Comando:
+
+    df.dtypes
+
+Tipos comuns:
+
+    int64
+    float64
+    object (string)
+    bool
+    datetime64
+    category
+
+Conversão:
+
+    df["idade"] = df["idade"].astype("float")
+
+            SELEÇÃO DE DADOS (FUNDAMENTAL)
+
+. Coluna
+
+    df["nome"]
+
+. Múltiplas
+
+    df[["nome", "idade"]]
+
+. Linhas
+
+    df.iloc[0]
+
+                LOC vs ILOC (CRÍTICO)
+
+loc → rótulo
+
+    df.loc[0, "nome"]
+
+iloc → posição
+
+    df.iloc[0, 0]
+
+Slice:
+
+    df.loc[0:1]   # inclui final
+    df.iloc[0:1]  # NÃO inclui final
+
+                INDEXAÇÃO BOOLEANA
+
+EX:
+
+    df[df["idade"] > 25]
+
+múltiplas condições:
+
+    df[(df["idade"] > 20) & (df["idade"] < 30)]
+
+isin
+
+        df[df["nome"].isin(["Renato", "Ana"])]
+
+                ATRIBUIÇÃO
+
+EX:
+
+    df["salario"] = [3000, 5000]
+
+condicional
+
+    df.loc[df["idade"] > 25, "salario"] = 9999
+
+                OPERAÇÕES VETORIZADAS
+
+EX:
+
+    df["idade"] * 2
+
+nova coluna
+
+    df["dobro"] = df["idade"] * 2
+
+                FUNÇÕES DE AGREGAÇÃO
+
+EX:
+
+    df["idade"].sum()
+    df["idade"].mean()
+    df["idade"].max()
+    df["idade"].min()
+
+DataFrame inteiro
+
+    df.sum()
+    df.mean()
+
+            AXIS (IGUAL NUMPY, MAS COM RÓTULO)
+
+EX:
+
+    df.sum(axis=0)  # colunas
+    df.sum(axis=1)  # linhas
+
+                    VALORES NULOS
+
+EX:
+
+    df.isnull()
+    df.isnull().sum()
+
+tratar:
+
+    df.dropna()
+    df.fillna(0)
+
+                        ORDENAÇÃO
+
+EX:
+
+    df.sort_values("idade")
+
+múltiplas colunas:
+
+    df.sort_values(["idade", "nome"])
+
+                INDEX (MUITO IMPORTANTE)
+
+EX:
+
+    df.set_index("nome", inplace=True)
+
+Agora:
+
+    df.loc["Renato"]
+
+resetar:
+    
+    df.reset_index()
+
+
+                    STRING OPERATIONS
+
+EX:
+
+    df["nome"].str.upper()
+    df["nome"].str.lower()
+    df["nome"].str.contains("a")
+
+                        DATAS
+
+EX:
+
+    df["data"] = pd.to_datetime(df["data"])
+
+filtrar:
+
+    df[df["data"] > "2025-01-01"]
+
+                    APPLY (CUIDADO)
+
+ex:
+
+    df["idade"].apply(lambda x: x * 2)
+
+mais lento que vetorização.
+
+                GROUPBY (INTRO BASE)
+
+EX:
+
+    df.groupby("idade")["salario"].mean()
+
+                    MERGE (JOIN)
+
+EX:
+
+    pd.merge(df1, df2, on="id")
+
+                    CONCAT
+
+EX:
+
+    pd.concat([df1, df2])
+
+                INPUT/OUTPUT
+
+EX:
+
+    pd.read_csv()
+    df.to_csv()
+
+    pd.read_excel()
+    df.to_excel()
+
+                DIFERENÇA CRÍTICA PRA NUMPY
+
+| NumPy   | Pandas        |
+| ------- | ------------- |
+| posição | rótulo        |
+| array   | tabela        |
+| rápido  | mais flexível |
+
+                    ERROS COMUNS
+EX 1:
+
+    parênteses
+
+        df[df["idade"] > 20 & df["idade"] < 30]
+
+    correto:
+
+        df[(df["idade"] > 20) & (df["idade"] < 30)]
+
+EX 2:
+
+    SettingWithCopy:
+
+        df[df["idade"] > 20]["salario"] = 0
+
+    - errado
+
+    correto:
+
+        df.loc[df["idade"] > 20, "salario"] = 0
+
+                    RESUMO MENTAL
+
+Series → coluna
+DataFrame → tabela
+index → rótulo linha
+columns → rótulo coluna
+loc → rótulo
+iloc → posição
+axis → direção
+groupby → agregação
+
+                    PANDAS AVANÇADO
+
+                GROUPBY (O CORAÇÃO DO PANDAS)
+
+Modelo mental
+
+    groupby = dividir → aplicar → combinar
+
+Exemplo base:
+
+    import pandas as pd
+
+    df = pd.DataFrame({
+        "categoria": ["A", "A", "B", "B"],
+        "valor": [10, 20, 30, 40]
+    })
+
+Agrupar
+
+    df.groupby("categoria")["valor"].sum()
+
+Resultado:
+
+    A    30
+    B    70
+
+Múltiplas colunas:
+
+    df.groupby("categoria")[["valor"]].mean()
+
+                AGG vs TRANSFORM vs APPLY
+
+1. agg (reduz):
+
+    EX:
+
+        df.groupby("categoria")["valor"].agg("sum")
+
+    Retorna menor (resumido)
+
+2. transform (mantém tamanho):
+    
+    EX:
+        df["media"] = df.groupby("categoria")["valor"].transform("mean")
+
+    Resultado:
+
+        10 → 15
+        20 → 15
+        30 → 35
+        40 → 35
+
+    Mantém shape original
+
+3. apply (flexível, lento):
+
+    df.groupby("categoria")["valor"].apply(lambda x: x.max() - x.min())
+
+Diferença FINAL:
+
+    agg → reduz
+    transform → mantém tamanho
+    apply → qualquer coisa (mas mais lento)
+
+                    MÚLTIPLAS AGREGAÇÕES
+
+EX:
+
+    df.groupby("categoria")["valor"].agg(["sum", "mean", "max"])
+
+Resultado:
+
+                   sum  mean  max
+        A           30   15   20
+        B           70   35   40
+
+Nomeando:
+
+    df.groupby("categoria").agg(
+        soma=("valor", "sum"),
+        media=("valor", "mean")
+    )
+
+                GROUPBY COM VÁRIAS COLUNAS
+
+EX:
+
+    df = pd.DataFrame({
+        "categoria": ["A", "A", "B", "B"],
+        "cidade": ["SP", "RJ", "SP", "RJ"],
+        "valor": [10, 20, 30, 40]
+    })
+
+    df.groupby(["categoria", "cidade"])["valor"].sum()
+
+Resultado → MultiIndex:
+
+    A SP → 10
+    A RJ → 20
+    B SP → 30
+    B RJ → 40
+
+                PIVOT TABLE (NÍVEL EXCEL)
+
+ex:
+
+    pd.pivot_table(
+        df,
+        values="valor",
+        index="categoria",
+        columns="cidade",
+        aggfunc="sum"
+    )
+
+Resultado:
+
+            RJ   SP
+    A       20   10
+    B       40   30
+
+                MERGE (JOIN DE BANCO)
+
+Modelo mental
+
+    merge = SQL JOIN
+
+Exemplo:
+
+    df1 = pd.DataFrame({
+        "id": [1, 2],
+        "nome": ["Renato", "Ana"]
+    })
+
+    df2 = pd.DataFrame({
+        "id": [1, 2],
+        "salario": [3000, 5000]
+    })
+
+Inner Join:
+
+    pd.merge(df1, df2, on="id")
+
+Left Join:
+
+    pd.merge(df1, df2, on="id", how="left")
+
+Tipos de join:
+
+    inner → interseção
+    left → tudo da esquerda
+    right → tudo da direita
+    outer → união total
+
+                        CONCAT
+
+ex:
+
+    pd.concat([df1, df2])
+
+eixo:
+
+    pd.concat([df1, df2], axis=1)
+
+lado a lado
+
+                        MULTI-INDEX
+
+Criar
+
+    df = df.set_index(["categoria", "cidade"])
+
+acessar
+
+    df.loc["A"]
+    df.loc[("A", "SP")]
+
+resetar
+
+    df.reset_index()
+
+            PERFORMANCE (MUITO IMPORTANTE)
+
+EX1:
+    errado:
+
+        for i in range(len(df)):
+            df["valor"][i] = df["valor"][i] * 2
+
+    correto:
+
+        df["valor"] * 2
+
+EX2:
+
+    apply desnecessário:
+
+        df["valor"].apply(lambda x: x * 2)
+
+    melhor:
+
+        df["valor"] * 2
+
+                PIPE (CÓDIGO LIMPO)
+
+EX:
+
+    (df
+     .query("valor > 10")
+     .assign(novo=lambda x: x["valor"] * 2)
+    )
+
+                QUERY (MUITO USADO)
+
+ex:
+
+    df.query("valor > 20")
+
+Mais limpo que:
+
+    df[df["valor"] > 20]
+
+                    SORT AVANÇADO
+
+ex:
+
+    df.sort_values(["categoria", "valor"], ascending=[True, False])
+
+                    MAP vs APPLY
+
+EX:
+
+    df["categoria"].map({"A": "Alpha", "B": "Beta"})
+
+                    DUPLICATES
+
+EX:
+
+    df.drop_duplicates()
+
+                    CUT (BUCKET)
+
+EX:
+
+    df["faixa"] = pd.cut(df["valor"], bins=[0, 20, 50])
+
+                        RESUMO
+
+groupby → dividir dados
+agg → resumir
+transform → manter shape
+apply → flexível (lento)
+merge → juntar tabelas
+pivot → reorganizar
+multi-index → múltiplos níveis
