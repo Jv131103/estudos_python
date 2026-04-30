@@ -1,0 +1,136 @@
+                            SEABORN
+
+O Seaborn é uma biblioteca de gráficos em Python que:
+
+    É baseada no Matplotlib
+    Funciona MUITO bem com Pandas
+    Já cria gráficos bonitos automaticamente (sem esforço)
+
+Resumindo:
+
+    Pandas organiza → Seaborn desenha bonito
+
+                    Primeiro código
+
+
+ex:
+
+    import seaborn as sns
+    import pandas as pd
+    import matplotlib.pyplot as plt
+
+Traduzindo:
+
+    sns → seaborn
+    pd → pandas
+    plt → gráficos
+
+                    Criando dados simples
+
+ex:
+
+    dados = {
+        "mes": ["Jan", "Fev", "Mar", "Abr", "Mai"],
+        "vendas": [100, 150, 200, 180, 220]
+    }
+
+    df = pd.DataFrame(dados)
+
+Aqui você criou uma tabela (DataFrame)
+
+                Seu PRIMEIRO gráfico (linha)
+
+ex:
+
+    sns.lineplot(data=df, x="mes", y="vendas")
+
+    plt.show()
+
+O que está acontecendo?
+
+    data=df → tabela
+    x="mes" → eixo horizontal
+    y="vendas" → eixo vertical
+
+Resultado:
+
+    um gráfico de crescimento de vendas
+
+                    Deixar o gráfico bonito
+
+EX:
+
+    sns.set_style("darkgrid")
+
+Coloca antes do gráfico:
+
+    sns.set_style("darkgrid")
+    sns.lineplot(data=df, x="mes", y="vendas")
+    plt.show()
+
+                Tipos de gráficos principais
+
+Aqui está o coração do Seaborn:
+
+    Linha (tendência)
+
+        sns.lineplot(data=df, x="mes", y="vendas")
+
+    Barras (comparação)
+
+        EX:
+
+            sns.barplot(data=df, x="mes", y="vendas")
+
+        - Melhor para comparar valores
+
+    Boxplot (distribuição)
+
+        EX:
+
+            sns.boxplot(data=df, y="vendas")
+
+        Mostra:
+
+            mediana
+            extremos
+            outliers
+
+    Histograma (frequência)
+
+        EX:
+
+            sns.histplot(data=df, x="vendas")
+
+        Mostra quantas vezes valores aparecem    
+
+            Dataset pronto do Seaborn (muito usado)
+
+O Seaborn já tem dados prontos:
+
+    EX:
+
+        df = sns.load_dataset("tips")
+
+    Esse dataset tem:
+
+        gorjeta
+        conta
+        sexo
+        dia
+
+    Exemplo poderoso:
+
+        sns.scatterplot(data=df, x="total_bill", y="tip")
+
+        plt.show()
+
+    Mostra relação entre conta e gorjeta
+
+            Gráfico com categoria (muito importante)
+
+EX:
+
+    sns.scatterplot(data=df, x="total_bill", y="tip", hue="sex")
+
+hue = separa por cor
