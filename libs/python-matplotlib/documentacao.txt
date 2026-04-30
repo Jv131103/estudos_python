@@ -1,0 +1,431 @@
+                        MATPLOTLIB
+
+Se você aprender Matplotlib, você aprende a linguagem base de 
+gráficos em Python. Muitas bibliotecas como Seaborn, Pandas 
+plotting, e várias ferramentas científicas usam Matplotlib por 
+baixo dos panos.
+
+Matplotlib é uma biblioteca Python para criar:
+
+    . gráficos de linha
+    . barras
+    . pizza
+    . histogramas
+    . dispersão
+    . mapas de calor
+    . gráficos 3D
+    . animações
+    . dashboards científicos
+    . gráficos para artigos acadêmicos
+
+Imagine que Matplotlib é um atelier de pintura técnica:
+
+    . Figure = a folha inteira / quadro
+    . Axes = área onde o gráfico é desenhado
+    . Axis = eixos X e Y
+    . Line2D = linha desenhada
+    . Text = textos
+    . Legend = legenda
+    . Ticks = marcações do eixo
+
+                    Primeiro gráfico
+
+EX:
+
+    import matplotlib.pyplot as plt
+
+    x = [1,2,3,4]
+    y = [10,20,15,30]
+
+    plt.plot(x, y)
+    plt.show()
+
+                    O que é pyplot?
+
+matplotlib.pyplot é interface parecida com MATLAB.
+
+Ela facilita:
+
+    plt.plot()
+    plt.title()
+    plt.xlabel()
+    plt.show()
+
+                Dois estilos de uso
+
+Modo simples (pyplot):
+
+    plt.plot(x, y)
+    plt.show()
+
+        Modo profissional (OO - Orientado a Objetos)
+
+EX:
+
+    fig, ax = plt.subplots()
+    ax.plot(x, y)
+    plt.show()
+
+                Figure e Axes (ESSENCIAL)
+
+Figure:
+
+    Container principal.
+
+    EX:
+
+        fig = plt.figure()
+
+Axes
+
+    Área do gráfico.
+
+        fig, ax = plt.subplots()
+
+Visual:
+
+    Figure
+     └── Axes
+          ├── eixo X
+          ├── eixo Y
+          └── linhas/barras/textos
+
+                plot() — gráfico de linha
+
+EX:
+
+    x = [1,2,3,4]
+    y = [2,4,1,5]
+
+    plt.plot(x, y)
+    plt.show()
+
+Personalização:
+
+    plt.plot(x, y,
+             color="red",
+             linestyle="--",
+             linewidth=3,
+             marker="o",
+             markersize=8)
+
+                        Cores
+
+EX:
+
+    "red"
+    "blue"
+    "#FF00AA"
+    (0.2,0.5,0.8)
+
+                        Linhas
+
+EX:
+
+    "-"   sólida
+    "--"  tracejada
+    ":"   pontilhada
+    "-."  mista
+
+                        Marcadores
+
+EX:
+
+    "o" círculo
+    "s" quadrado
+    "^" triângulo
+    "x" x
+    "*"
+
+                    Títulos e rótulos
+
+EX:
+
+    plt.title("Vendas")
+    plt.xlabel("Meses")
+    plt.ylabel("Valor")
+
+                    Limites dos eixos
+
+EX:
+
+    plt.xlim(0,10)
+    plt.ylim(0,100)
+
+                        Grade
+
+EX:
+
+    plt.grid(True)
+
+Customizado:
+
+    plt.grid(color="gray", linestyle="--", alpha=0.5)
+
+                        Legenda
+
+EX:
+
+    plt.plot(x,y,label="Produto A")
+    plt.legend()
+
+                    Múltiplas linhas
+
+EX:
+
+    plt.plot(x,[1,2,3,4],label="A")
+    plt.plot(x,[4,3,2,1],label="B")
+    plt.legend()
+
+            Subplots (múltiplos gráficos)
+
+EX:
+
+    fig, ax = plt.subplots(2,2)
+
+4 gráficos.
+
+Exemplo:
+
+    fig, ax = plt.subplots(2,2)
+
+    ax[0,0].plot([1,2],[3,4])
+    ax[0,1].bar([1,2],[5,6])
+    ax[1,0].scatter([1,2],[8,9])
+    ax[1,1].hist([1,2,2,3,4])
+
+    plt.show()
+
+                    scatter() — dispersão
+
+Excelente para correlação.
+
+EX:
+
+    plt.scatter([1,2,3],[5,7,6])
+
+Com tamanhos:
+
+    plt.scatter(x,y,s=[100,200,300],c="red")
+
+                    bar() — barras
+
+EX:
+
+    nomes = ["A","B","C"]
+    valores = [10,20,15]
+
+    plt.bar(nomes,valores)
+
+Horizontal:
+
+    plt.barh(nomes,valores)
+
+                hist() — histograma
+
+Distribuição de dados.
+
+EX:
+
+    dados = [1,2,2,3,3,3,4,5]
+    plt.hist(dados,bins=5)
+
+                    pie() — pizza
+
+EX:
+
+    plt.pie([40,30,20],
+            labels=["A","B","C"],
+            autopct="%1.1f%%")
+
+                    boxplot()
+
+EX:
+
+    plt.boxplot([1,2,3,4,5,100])
+
+Mostra:
+
+    mediana
+    quartis
+    outliers
+
+            imshow() — imagens / matriz
+
+EX:
+
+    import numpy as np
+
+    matriz = np.random.rand(10,10)
+    plt.imshow(matriz)
+    plt.colorbar()
+
+                Salvando gráfico
+
+EX:
+
+    plt.savefig("grafico.png")
+
+Alta resolução:
+
+    plt.savefig("grafico.png", dpi=300)
+
+PDF:
+
+    plt.savefig("grafico.pdf")
+
+                Tamanho da figura
+
+EX:
+
+    plt.figure(figsize=(10,5))
+
+Polegadas.
+
+                tight_layout()
+
+Organiza automaticamente.
+
+EX:
+
+    plt.tight_layout()
+
+                    Estilos prontos
+
+EX:
+
+    plt.style.use("ggplot")
+
+Outros:
+
+    dark_background
+    seaborn-v0_8
+    classic
+    fivethirtyeight
+
+Ver lista:
+
+    print(plt.style.available)
+
+                Texto no gráfico
+
+plt.text(2,15,"Pico")
+
+                    annotate()
+
+Seta explicativa.
+
+    plt.annotate("Máximo",
+                 xy=(4,30),
+                 xytext=(3,25),
+                 arrowprops=dict(arrowstyle="->"))
+
+                Escalas logarítmicas
+
+EX:
+
+    plt.xscale("log")
+    plt.yscale("log")
+
+                        Datas
+
+EX:
+
+    import datetime as dt
+
+    datas = [dt.date(2024,1,i) for i in range(1,6)]
+    valores = [10,12,8,14,15]
+
+    plt.plot(datas,valores)
+    plt.gcf().autofmt_xdate()
+
+                Trabalhando com NumPy
+
+NumPy integra perfeitamente.
+
+EX:
+
+    import numpy as np
+
+    x = np.linspace(0,10,100)
+    y = np.sin(x)
+
+    plt.plot(x,y)
+
+            Orientado a Objetos (IMPORTANTE)
+
+EX:
+
+    fig, ax = plt.subplots()
+
+    ax.plot(x,y)
+    ax.set_title("Título")
+    ax.set_xlabel("X")
+    ax.set_ylabel("Y")
+
+Esse é o modelo recomendado pela documentação moderna.
+
+                    Objetos internos
+
+Quando você faz:
+
+    linha, = ax.plot(x,y)
+
+Recebe objeto linha:
+
+    linha.set_color("red")
+    linha.set_linewidth(5)
+
+                    Tick labels
+
+EX:
+
+    ax.set_xticks([1,2,3])
+    ax.set_xticklabels(["Um","Dois","Três"])
+
+                    Eixo secundário
+
+EX:
+
+    fig, ax1 = plt.subplots()
+
+    ax2 = ax1.twinx()
+
+Um eixo Y extra.
+
+                Performance com muitos dados
+
+Para milhões de pontos:
+
+    plt.plot(x,y,rasterized=True)
+
+ou reduzir dados antes.
+
+                    Erros comuns
+
+Nada aparece
+
+    Esqueceu:
+
+        plt.show()
+
+Sobreposição
+
+    Use:
+
+        plt.tight_layout()
+
+Muitas figuras abertas
+
+    plt.close()
+
+                Quando usar cada gráfico
+
+| Situação                | Tipo       |
+| ----------------------- | ---------- |
+| Evolução no tempo       | Linha      |
+| Comparação              | Barras     |
+| Distribuição            | Histograma |
+| Relação entre variáveis | Scatter    |
+| Partes do total         | Pizza      |
+| Outliers                | Boxplot    |
