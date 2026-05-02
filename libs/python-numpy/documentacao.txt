@@ -872,6 +872,60 @@ BROADCASTING (O SUPERPODER):
 
         transforma vetor em coluna.
 
+    broadcasting manual
+
+            np.broadcast_to(a, (3, 3))
+
+AXIS:
+
+    axis = direção da operação
+
+    Exemplo:
+
+        m = np.array([
+            [1, 2, 3],
+            [4, 5, 6]
+        ])
+
+    axis = 0
+
+        EX:
+
+            np.sum(m, axis=0)
+
+        Resultado:
+
+            [5 7 9]
+
+        soma colunas
+
+    axis = 1
+
+        EX:
+
+            np.sum(m, axis=1)
+
+        Resultado:
+
+            [6 15]
+
+        soma linhas
+
+    Regra de ouro:
+
+        axis 0 → desce (colunas)
+        axis 1 → anda (linhas)
+
+    keepdims:
+
+        EX:
+
+            np.sum(m, axis=1, keepdims=True)
+
+        Resultado:
+
+            [[ 6]
+             [15]]
 
 Mini resumo mental
 
@@ -885,4 +939,7 @@ Mini resumo mental
     copy           → dado novo
     @              → multiplicação matricial
     rng            → random moderno
+    Indexação avançada → filtrar e selecionar
+    Broadcasting → combinar shapes
+    Axis → direção da operação
 
