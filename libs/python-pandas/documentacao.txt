@@ -596,3 +596,126 @@ apply → flexível (lento)
 merge → juntar tabelas
 pivot → reorganizar
 multi-index → múltiplos níveis
+
+            EXPLORANDO E LIMPANDO DADOS COM O PANDAS
+
+Explorar e limpar dados são fases críticas na análise, e a 
+biblioteca Pandas destaca-se nessas tarefas. Mergulharemos na 
+exploração de um conjunto de dados simples, mas que ilustra os 
+passos de exploração e limpeza de dados.
+
+O código a seguir carrega para a memória um DataFrame Pandas 
+contendo os dados do arquivo “exemplos_limpeza_dados.csv”. Na 
+sequência, pedimos o formato deste DataFrame, bem como sua exibição.
+
+EX:
+
+    import pandas as pd
+    import numpy as np
+
+    df = pd.read_csv("exemplos_limpeza_dados.csv")
+    print(df.shape)
+    print()
+    print(df)
+
+A saída do comando “shape” é uma tupla, indicando a quantidade de 
+linhas e colunas do arquivo (12 linhas e 5 colunas). Após pularmos 
+uma linha, vemos o conteúdo do DataFrame. É importante notar que 
+somente conseguimos ver o DataFrame inteiro porque ele é pequeno. 
+Para dimensões maiores, a visualização seria restrita.
+
+Inclusive, nos casos que possuímos muitas linhas, podemos alterar 
+a visualização puxando apenas as primeiras linhas — com o head() — 
+ou as últimas — com o tail(). Geralmente, a melhor representação é 
+feita pelo sample(N), que puxa uma amostra de N linhas aleatórias. Esta é uma representação mais fiel da distribuição de dados do DataFrame inteiro. No código a seguir vamos exibir 5 linhas aleatórias. Sua saída provavelmente será diferente. Aproveite e explore outros valores para N.
+
+EX:
+
+    # Pegando uma amostra de 5 linhas aleatórias
+    print(df.sample(5))
+
+A saída do comando “shape” é uma tupla, indicando a quantidade de 
+linhas e colunas do arquivo (12 linhas e 5 colunas). Após pularmos 
+uma linha, vemos o conteúdo do DataFrame. É importante notar que 
+somente conseguimos ver o DataFrame inteiro porque ele é pequeno. 
+Para dimensões maiores, a visualização seria restrita.
+
+Uma parte relevante da exploração da base é compreender quais 
+variáveis existem, quais são seus tipos e a existência de dados
+nulos. Tudo isso pode ser obtido por meio do seguinte comando:
+
+EX:
+
+    # Explorando a base
+    print(df.info())
+
+A saída do comando info() é muito completa. Ela aponta que estamos 
+diante de um DataFrame Pandas, que ocupa ~608 bytes na memória, 
+temos 5 variáveis, sendo que duas variáveis (Age e Salary) são 
+numéricas do tipo float e as demais são strings. Também conseguimos 
+notar que o DataFrame possui 12 entradas (linhas), numeradas de 0 a 
+11. Inclusive, a maior parte das variáveis está completa, havendo 
+valores nulos apenas nas colunas “Age”, “Salary” e “Grade”.
+
+Inclusive, uma outra forma mais visual de verificar se há dados 
+faltantes é por meio da biblioteca “missingno”. Experimente seu 
+uso com os seguintes comandos:
+
+    import missingno as msno
+    msno.matrix(df);
+
+Outra análise exploratória relevante é obtermos estatísticas 
+básicas das variáveis numéricas. Podemos fazer isso manualmente 
+com poucas linhas de código, porém, o Pandas já facilita este 
+cálculo por meio do comando describe():
+
+    # Exibe estatísticas básicas do dataframe
+    print(df.describe())
+
+Esta análise nos mostra, para cada variável numérica, a contagem de 
+linhas não nulas, além de apresentar a média (mean), o desvio padrão 
+(std), os valores mínimos (min) e máximo (max) e os quartis (25%, 
+50% e 75%). Observe a média da idade (Age) e a mediana do salário 
+(Salary). Usaremos estes valores em breve!
+
+Agora chegou o momento de começarmos a limpar os dados. Uma 
+análise essencial para Machine Learning é evitar dados duplicados 
+no dataset. Podemos remover linhas duplicadas de forma simples com 
+os seguintes comandos:
+
+    # Remover dados duplicados em nova variável
+    df_unicos = df.drop_duplicates()
+
+    # Remover dados duplicados na MESMA variável
+    df.drop_duplicates(inplace=True)
+
+Ambos os comandos mencionados fazem essencialmente a mesma coisa. 
+O drop_duplicates() sempre retorna uma cópia do DataFrame sem as 
+cópias extras das linhas que aparecem mais de uma vez. A diferença 
+é que o primeiro comando armazena esta cópia na variável 
+“df_unicos”, portanto, a variável “df” fica exatamente como está. 
+Em relação ao comando que utiliza o parâmetro “inplace=True”, ele 
+altera a própria variável “df”.
+
+Podemos seguir com a variável “df_unicos” para mostrar como 
+podemos tratar dados nulos com a exclusão das linhas problemáticas. 
+O primeiro comando mostrado a seguir apaga as linhas com nulos na 
+própria variável “df_unicos”.
+
+Além disso, outra estratégia é preencher os valores nulos com 
+valores pertinentes. Por exemplo, preenchemos a coluna “Age” 
+com seu valor médio e a coluna “Salary” com a mediana.
+
+EX:
+
+    # Apagar dados faltantes na MESMA variável
+    df_unicos.dropna(inplace=True)
+
+    # Preencher dados faltantes
+    # - coloca o valor médio da idade na coluna Age
+    df["Age"].fillna( df["Age"].mean() , inplace=True)
+
+    # - coloca o valor mediano do salário na coluna Salary
+    df["Salary"].fillna( df["Salary"].median() , inplace=True )
+
+
