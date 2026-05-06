@@ -1,2 +1,615 @@
                         Scikit-Learn
 
+É uma biblioteca para:
+
+    . Machine Learning clássico
+    . classificação
+    . regressão
+    . clusterização
+    . pré-processamento
+
+Todo sklearn segue isso:
+
+    dados → modelo → treino → previsão → avaliação
+
+Ou em código:
+
+    model.fit(X, y)
+    model.predict(X)
+
+                CONCEITO FUNDAMENTAL
+
+X e y
+
+    X → variáveis (features)
+    y → resposta (target)
+
+Exemplo:
+
+    X = [[1], [2], [3], [4]]  # entrada
+    y = [2, 4, 6, 8]          # saída
+
+
+                PRIMEIRO MODELO (REGRESSÃO)
+
+EX:
+
+    from sklearn.linear_model import LinearRegression
+
+    model = LinearRegression()
+
+    model.fit(X, y)
+
+    print(model.predict([[5]]))
+
+Resultado:
+
+    [10.]
+
+Ele aprendeu: y = 2x
+
+                    CLASSIFICAÇÃO
+
+EX:
+
+    from sklearn.neighbors import KNeighborsClassifier
+
+    X = [[1], [2], [3], [10], [11], [12]]
+    y = [0, 0, 0, 1, 1, 1]
+
+    model = KNeighborsClassifier()
+    model.fit(X, y)
+
+    print(model.predict([[4]]))
+
+            TRAIN TEST SPLIT (OBRIGATÓRIO)
+
+Nunca treinar e testar nos mesmos dados.
+
+EX:
+
+    from sklearn.model_selection import train_test_split
+
+    X_train, X_test, y_train, y_test = train_test_split(
+        X, y, test_size=0.2, random_state=42
+    )
+
+                        AVALIAÇÃO
+
+Regressão:
+
+    from sklearn.metrics import mean_squared_error
+
+    y_pred = model.predict(X_test)
+
+    print(mean_squared_error(y_test, y_pred))
+
+Classificação
+
+    from sklearn.metrics import accuracy_score
+
+    accuracy_score(y_test, y_pred)
+
+            NORMALIZAÇÃO (IMPORTANTÍSSIMO)
+
+Modelos precisam de dados escalados.
+
+    from sklearn.preprocessing import StandardScaler
+
+    scaler = StandardScaler()
+
+    X_scaled = scaler.fit_transform(X)
+
+            PIPELINE (NÍVEL PROFISSIONAL)
+
+EX:
+
+    from sklearn.pipeline import Pipeline
+
+    pipe = Pipeline([
+        ("scaler", StandardScaler()),
+        ("model", LinearRegression())
+    ])
+
+    pipe.fit(X_train, y_train)
+    pipe.predict(X_test)
+
+Isso é padrão profissional.
+
+                    DATASETS PRONTOS
+
+EX:
+
+    from sklearn.datasets import load_iris
+
+    data = load_iris()
+
+    X = data.data
+    y = data.target
+
+                    MODELOS PRINCIPAIS
+
+Regressão
+
+    LinearRegression
+    Ridge
+    Lasso
+
+Classificação
+
+    LogisticRegression
+    KNN
+    DecisionTree
+    RandomForest
+    SVM
+
+Clusterização
+
+    KMeans
+
+                OVERFITTING vs UNDERFITTING
+
+Overfitting → decora os dados
+Underfitting → não aprende
+
+                    CROSS VALIDATION
+
+EX:
+
+    from sklearn.model_selection import cross_val_score
+
+    scores = cross_val_score(model, X, y, cv=5)
+
+    print(scores)
+
+                GRID SEARCH (OTIMIZAÇÃO)
+
+EX:
+
+    from sklearn.model_selection import GridSearchCV
+
+    params = {"n_neighbors": [1, 3, 5]}
+
+    grid = GridSearchCV(KNeighborsClassifier(), params)
+
+    grid.fit(X, y)
+
+    print(grid.best_params_)
+
+                    MATRIZ DE CONFUSÃO
+
+EX:
+
+    from sklearn.metrics import confusion_matrix
+
+    confusion_matrix(y_test, y_pred)
+
+                FEATURE ENGINEERING
+
+EX:
+
+    from sklearn.preprocessing import PolynomialFeatures
+
+    poly = PolynomialFeatures(degree=2)
+
+    X_poly = poly.fit_transform(X)
+
+            TRABALHAR COM CATEGÓRICOS
+
+ex:
+
+    from sklearn.preprocessing import OneHotEncoder
+
+    encoder = OneHotEncoder()
+
+    X_encoded = encoder.fit_transform([["SP"], ["RJ"]])
+
+                        SALVAR MODELO
+
+EX:
+
+    import joblib
+
+    joblib.dump(model, "modelo.pkl")
+
+    model = joblib.load("modelo.pkl")
+
+                PIPELINE COMPLETO REAL
+
+EX:
+
+    from sklearn.pipeline import Pipeline
+    from sklearn.preprocessing import StandardScaler
+    from sklearn.linear_model import LogisticRegression
+
+    pipe = Pipeline([
+        ("scaler", StandardScaler()),
+        ("model", LogisticRegression())
+    ])
+
+    pipe.fit(X_train, y_train)
+    pipe.predict(X_test)
+
+ERROS COMUNS:
+
+    Não separar treino/teste
+
+    Não normalizar
+
+    Usar apply em vez de pipeline
+
+    Data leakage
+
+RESUMO FINAL:
+
+    fit → aprende
+    predict → prevê
+    score → avalia
+    pipeline → organiza
+    scaler → normaliza
+
+        SCIKIT-LEARN (NÍVEL AVANÇADO REAL)
+
+Foco: 
+
+    modelos fortes + tuning + interpretação + pipeline profissional
+
+            RANDOM FOREST (MODELO MUITO USADO)
+
+O que é?
+
+    Floresta de árvores de decisão
+        → várias árvores
+        → cada uma vota
+
+
+EX:
+
+    from sklearn.ensemble import RandomForestClassifier
+
+    model = RandomForestClassifier()
+
+    model.fit(X_train, y_train)
+
+    y_pred = model.predict(X_test)
+
+Hiperparâmetros importantes:
+
+    RandomForestClassifier(
+        n_estimators=100,     # nº de árvores
+        max_depth=5,          # profundidade
+        min_samples_split=2,  # divisão mínima
+        random_state=42
+    )
+
+Feature Importance: mostra quais variáveis mais influenciam
+
+    model.feature_importances_
+
+                SVM (MODELO PODEROSO)
+
+Ideia
+
+    Separar dados com a melhor linha (ou plano)
+
+EX:
+
+    from sklearn.svm import SVC
+
+    model = SVC(kernel="rbf")
+
+    model.fit(X_train, y_train)
+
+Kernels:
+
+    linear → simples
+    rbf → mais usado
+    poly → polinomial
+
+IMPORTANTE
+
+    SVM precisa de:
+
+        StandardScaler()
+
+                KNN (REVISÃO PROFUNDA)
+
+classificação por proximidade
+
+    from sklearn.neighbors import KNeighborsClassifier
+
+    model = KNeighborsClassifier(n_neighbors=3)
+
+                    DECISION TREE
+
+EX:
+
+    from sklearn.tree import DecisionTreeClassifier
+
+    model = DecisionTreeClassifier(max_depth=3)
+
+fácil de entender, mas overfit fácil
+
+            OVERFITTING (AGORA DE VERDADE)
+
+Exemplo
+
+    Treino → 100% acerto
+    Teste → ruim
+
+modelo decorou
+
+solução
+
+    reduzir complexidade
+    regularização
+    mais dados
+
+                    REGULARIZAÇÃO
+
+Ridge (L2):
+
+    from sklearn.linear_model import Ridge
+
+Lasso (L1):
+
+    from sklearn.linear_model import Lasso
+
+reduz complexidade do modelo
+
+            GRID SEARCH (PROFISSIONAL)
+
+EX:
+
+    from sklearn.model_selection import GridSearchCV
+
+    params = {
+        "n_estimators": [50, 100],
+        "max_depth": [3, 5, None]
+    }
+
+    grid = GridSearchCV(RandomForestClassifier(), params, cv=5)
+
+    grid.fit(X_train, y_train)
+
+    print(grid.best_params_)
+
+                RANDOM SEARCH (MAIS RÁPIDO)
+
+EX:
+
+    from sklearn.model_selection import RandomizedSearchCV
+
+mais eficiente em muitos casos
+
+                MÉTRICAS AVANÇADAS
+
+Classificação:
+
+    from sklearn.metrics import classification_report
+
+    print(classification_report(y_test, y_pred))
+
+ROC AUC:
+
+    from sklearn.metrics import roc_auc_score
+
+Regressão:
+
+    from sklearn.metrics import r2_score
+
+            CONFUSION MATRIX VISUAL
+
+EX:
+
+    from sklearn.metrics import ConfusionMatrixDisplay
+
+    ConfusionMatrixDisplay.from_predictions(y_test, y_pred)
+
+            PIPELINE PROFISSIONAL COMPLETO
+
+EX:
+
+    from sklearn.pipeline import Pipeline
+    from sklearn.preprocessing import StandardScaler
+    from sklearn.ensemble import RandomForestClassifier
+
+    pipe = Pipeline([
+        ("scaler", StandardScaler()),
+        ("model", RandomForestClassifier())
+    ])
+
+    pipe.fit(X_train, y_train)
+
+        COLUMN TRANSFORMER (DADOS REAIS)
+
+EX:
+
+    from sklearn.compose import ColumnTransformer
+    from sklearn.preprocessing import OneHotEncoder, StandardScaler
+
+    preprocess = ColumnTransformer([
+        ("num", StandardScaler(), ["idade", "salario"]),
+        ("cat", OneHotEncoder(), ["cidade"])
+    ])
+
+Pipeline completo
+
+    from sklearn.pipeline import Pipeline
+
+    pipe = Pipeline([
+        ("prep", preprocess),
+        ("model", RandomForestClassifier())
+    ])
+
+            FEATURE IMPORTANCE AVANÇADO
+
+EX:
+
+    import pandas as pd
+
+    importances = pd.Series(
+        model.feature_importances_,
+        index=feature_names
+    ).sort_values()
+
+    importances.plot(kind="barh")
+
+                    VALIDAÇÃO REAL
+
+EX:
+
+    from sklearn.model_selection import StratifiedKFold
+
+- mantém proporção das classes
+
+            LEAKAGE (ERRO GRAVE)
+
+errado:
+
+    Normalizar antes do split
+
+correto:
+
+    Usar Pipeline
+
+                    PROBABILIDADE
+
+EX:
+
+    model.predict_proba(X_test)
+
+                    CLUSTERING (KMEANS)
+
+EX:
+
+    from sklearn.cluster import KMeans
+
+    model = KMeans(n_clusters=3)
+
+    model.fit(X)
+
+                PCA (REDUÇÃO DE DIMENSÃO)
+
+EX:
+
+    from sklearn.decomposition import PCA
+
+    pca = PCA(n_components=2)
+
+    X_reduced = pca.fit_transform(X)
+
+                DETECÇÃO DE OUTLIERS
+
+EX:
+
+    from sklearn.ensemble import IsolationForest
+
+    model = IsolationForest()
+
+    model.fit(X)
+
+RESUMO:
+
+    RandomForest → robusto
+    SVM → poderoso
+    KNN → simples
+    Tree → interpretável
+    GridSearch → tuning
+    Pipeline → obrigatório
+    Scaler → essencial
+
+        Engenharia de features com Pandas e Scikit-Learn
+
+A engenharia de features é essencial na construção de modelos de 
+aprendizado de máquina robustos, e a combinação do Scikit-Learn e 
+Pandas oferece uma abordagem poderosa nesse processo.
+
+O Scikit-Learn é crucial para Ciência de Dados e Machine Learning, 
+pois ele proporciona uma ampla gama de ferramentas e algoritmos de 
+aprendizado de máquina. Sua biblioteca abrangente simplifica a 
+implementação de modelos, oferecendo suporte desde a 
+pré-processamento dos dados até a avaliação do desempenho do modelo. 
+Veremos usos mais sofisticados desta biblioteca adiante.
+
+Por enquanto, utilizaremos a parte de pré-processamento do 
+Scikit-learn para transformar dados categóricos nominais e 
+ordinais, bem como escalar valores numéricos.
+
+EX:
+
+    from sklearn.preprocessing import StandardScaler, MinMaxScaler
+    from sklearn.preprocessing import LabelEncoder
+
+    # Tratando dados categóricos - ORDINAIS
+    print( df["Purchased"].unique() ) # valores únicos
+
+    le = LabelEncoder()
+
+    df["Purchased_encoder"] = le.fit_transform( df["Purchased"] )
+    df["Grade_encoder"] = le.fit_transform( df["Grade"] )
+    df
+
+Agora vamos tratar as variáveis categóricas nominais, ou seja, 
+aquelas que não possuem relação de ordem entre cada categoria. 
+Neste caso usamos a técnica de One Hot Encoder, que é implementada, 
+por exemplo, pelo método get_dummies() do Pandas.
+
+EX:
+
+    # Tratando dados categóricos - NOMINAIS
+    aux = pd.get_dummies( df["Country"] )
+    final = pd.concat( [df, aux], axis=1 )
+    final
+
+No entanto, claramente não precisamos de todas estas features, 
+pois muitas são cópias transformadas das colunas originais. Então, 
+vamos fazer outra limpeza, removendo colunas que não são mais 
+necessárias. O comando a seguir pode ser feito com qualquer 
+feature que julgamos irrelevante na nossa análise:
+
+    # Filtrar colunas relevantes
+    final.drop( columns=["Country", "Grade", "Purchased"] , inplace=True )
+    final
+
+Finalmente, nossas features estão completamente numéricas, o que é 
+uma exigência dos modelos de Machine Learning e Deep Learning. No 
+entanto, elas se apresentam em escalas bem diferentes. Nosso 
+próximo comando transformará os dados por meio de Padronização e 
+Normalização.
+
+A Padronização “StandardScaler()” é mais voltada para dados que 
+seguem a distribuição normal, ou seja, centrados na média. A 
+Normalização “MinMaxScaler()” apenas leva a distribuição dos dados 
+para outro intervalo de valores (no nosso caso, entre 10 e 20).
+
+EX:
+
+    # Transforma os dados com Padronização/Normalização
+    sc = StandardScaler()
+    final_padronizado = sc.fit_transform(final)
+
+    mm = MinMaxScaler(feature_range=(10, 20))
+    final_normalizado = mm.fit_transform(final)
+
+Para melhor exibir os dados, criaremos novos DataFrames Pandas. 
+Primeiramente, para os dados Padronizados:
+
+    # Salvar os dados padronizados em outro dataframe
+    df_final_padronizado = pd.DataFrame(final_padronizado,
+    columns=final.columns)
+    df_final_padronizado
+
+Agora iremos fazer o mesmo com os dados Normalizados:
+
+    # Salvar os dados normalizados em outro dataframe
+    df_final_normalizado = pd.DataFrame(final_normalizado,
+    columns=final.columns)
+    df_final_normalizado
+
+A título de curiosidade, podemos, ainda, exportar os dados salvos 
+em arquivos CSV pelos seguintes comandos:
+
+    # Exporta os dados para arquivos
+    df_final_padronizado.to_csv("dados_padronizados.csv")
+    df_final_normalizado.to_csv("dados_normalizados.csv")
