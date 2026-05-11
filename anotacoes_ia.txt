@@ -1748,4 +1748,523 @@ Floresta aleatório:
         pode ser uma ferramenta poderosa em qualquer pipeline de 
         aprendizado supervisionado.
 
+Support Vector Machine:
+
+    As máquinas de vetores de suporte (SVM, do inglês Support 
+    Vector Machine) são um poderoso algoritmo de aprendizado 
+    supervisionado utilizado tanto para classificação quanto 
+    para regressão.
+
+    A intuição por trás do SVM é encontrar o hiperplano que melhor 
+    separa as classes no espaço de características, de modo que a 
+    margem entre as duas classes seja maximizada.
+
+    O SVM busca um hiperplano ótimo que não apenas separa as 
+    classes, mas que também maximiza a distância mínima entre 
+    qualquer ponto de dado e o hiperplano, garantindo assim que 
+    o modelo seja robusto e generalize bem para novos dados. Por 
+    ser um algoritmo que também depende do conceito de distância 
+    de pontos, é imprescindível normalizar ou padronizar os dados 
+    antes de iniciar o treinamento.
+
+    O SVM passa por quatro etapas durante o treinamento do 
+    algoritmo. São elas: 
+
+        Definição do hiperplano: em um espaço de características 
+        {N}-dimensional, um hiperplano é uma superfície 
+        {N-1}-dimensional que separa os pontos de dados em 
+        diferentes classes. Em um problema de classificação 
+        binária, o SVM tenta encontrar o hiperplano que maximiza 
+        a margem entre as duas classes. A margem é definida como 
+        a distância entre o hiperplano e os pontos de dados mais 
+        próximos de qualquer classe, conhecidos como vetores de 
+        suporte.
+        
+        Maximização da Margem: o objetivo do SVM é maximizar essa 
+        margem, pois um hiperplano com uma margem maior tende a 
+        ser mais robusto a novos dados. Os vetores de suporte são 
+        os pontos de dados que estão mais próximos do hiperplano e 
+        são essenciais para definir a posição do hiperplano ótimo.
+        
+        Kernel Trick: se os dados não são linearmente separáveis 
+        no espaço original, o SVM pode utilizar uma técnica 
+        chamada “kernel trick”. Essa técnica mapeia os dados para 
+        um espaço de maior dimensionalidade onde eles podem ser 
+        linearmente separáveis. Existem vários tipos de kernels, 
+        como o kernel linear, polinomial, e o mais comum, o kernel 
+        RBF (Radial Basis Function), que permite ao SVM encontrar 
+        limites de decisão não lineares.
+        
+        Classificação: depois que o hiperplano é definido, novos 
+        pontos de dados são classificados com base em qual lado do 
+        hiperplano eles caem: se estiverem de um lado, são 
+        classificados como pertencentes a uma classe; se estiverem 
+        do outro lado, pertencem à outra classe.
+
+    Vantagens:
+
+        Por ser um algoritmo mais robusto e complexo que os 
+        anteriores, o SVM pode levar a resultados mais precisos. 
+        No entanto, não há garantias que ele sempre se adequará 
+        bem ao conjunto de dados e/ou ao problema modelado. Assim, 
+        também é importante conhecer suas vantagens e desvantagens. 
+        Observe o quadro:
+
+            Eficácia em espaços de alta dimensão: SVM é eficaz em 
+            espaços de alta dimensionalidade (muitas variáveis), 
+            e ainda funciona bem mesmo quando o número de 
+            dimensões é maior que o número de amostras.
+
+            Uso do kernel trick: a capacidade de usar kernels 
+            permite que o SVM lide com problemas não lineares 
+            de forma eficaz, mapeando os dados para um espaço 
+            onde eles se tornam linearmente separáveis.
+
+            Margem máxima: a maximização da margem entre classes 
+            aumenta a robustez do modelo e melhora sua capacidade 
+            de generalização.
+
+    Desvantagens:
+
+        Complexidade computacional: SVM pode ser 
+        computacionalmente intenso, especialmente 
+        em grandes conjuntos de dados, tanto em termos 
+        de tempo de treinamento quanto de memória.
+
+        Escolha do kernel: a escolha do kernel e dos parâmetros 
+        associados é crítica e pode ser complicada, exigindo 
+        muita experimentação para encontrar o melhor desempenho.
+
+        Interpretabilidade: o modelo resultante, especialmente 
+        com kernels não lineares, pode ser difícil de interpretar 
+        em termos de como as decisões são tomadas.
+
+    Parametrização e influência no resultado:
+
+        Existem essencialmente três hiperparâmetros no SVM. Sua 
+        definição e conceito pode ser um pouco confusa devido à 
+        influência inversamente proporcional no resultado. 
+        Portanto, recomendamos ler com atenção e observar as 
+        imagens seguintes para melhor compreensão:
+
+            Escolha do kernel: a seleção do kernel é um dos 
+            aspectos mais críticos do SVM. O kernel linear é 
+            adequado para dados linearmente separáveis, enquanto 
+            kernels mais complexos, como o RBF, são utilizados 
+            para dados não lineares. A escolha do kernel pode 
+            afetar significativamente a performance do modelo. 
+            O kernel essencialmente indica a “forma” do hiperplano 
+            de separação, sendo mais ou menos linear.
+
+            Parâmetro C: o parâmetro C controla a trade-off entre 
+            maximizar a margem e minimizar o erro de classificação. 
+            Um valor alto de C penaliza mais os erros de
+            classificação, resultando em uma margem menor, mas com 
+            menos violações; um valor baixo de C permite uma 
+            margem maior, mas com mais violações. A figura 
+            “Influência do hiperparâmetro C na margem do SVM” 
+            ilustra o impacto do valor de C na grossura da margem.
+
+            Parâmetro γ (gamma) (para kernels não lineares): o 
+            parâmetro γ no kernel RBF controla a influência de 
+            um único exemplo de treinamento. Valores altos de γ 
+            significam que cada ponto de dado tem uma esfera de 
+            influência menor, o que pode levar ao overfitting 
+            devido a um hiperplano mais rígido; valores baixos de 
+            γ levam a uma esfera de influência maior, resultando 
+            em um hiperplano mais suave.
+
+        O SVM é uma ferramenta poderosa e flexível, especialmente 
+        eficaz em problemas de alta dimensionalidade e onde a 
+        separação não é linear. No entanto, seu desempenho depende 
+        fortemente da escolha apropriada do kernel e da 
+        configuração correta dos hiperparâmetros, exigindo uma 
+        compreensão detalhada do problema e dos dados em questão.
+
+        Um kernel inadequado pode resultar em um modelo que não 
+        captura corretamente as relações entre as variáveis de 
+        entrada e a classe de saída, ocasionando um desempenho 
+        insatisfatório. Por esse motivo, é essencial testar 
+        diferentes kernels para encontrar o kernel mais apropriado.
+
+        O hiperparâmetros C controla a grossura do hiperplano, 
+        enquanto o gamma controla sua flexibilidade (mais ou 
+        menos rígido, ou seja, com mais ou menos curvas).
+
+
+                    Análises preditivas
+
+Dica: utilize o arquivo de apoio “fertilizer_prediction.csv”.
+
+    Faremos o estudo de caso do dataset “Fertilizer Prediction”, 
+    disponível no Kaggle. Este dataset contém informações sobre o 
+    tipo de solo, temperatura, umidade, pH, produto cultivado e 
+    outros fatores, com o objetivo de prever o tipo adequado de 
+    fertilizante a ser utilizado.
+
+    No Agronegócio, a utilização do fertilizante adequado é crucial 
+    para maximizar o rendimento das culturas, garantindo que as 
+    plantas recebam os nutrientes necessários para um crescimento 
+    saudável. Por isso, é necessário escolher o fertilizante certo com 
+    base nas condições do solo e ambientais para garantir uma nutrição 
+    equilibrada, reduzindo o desperdício de recursos e o impacto 
+    ambiental. Isso também contribui para a sustentabilidade agrícola, 
+    preservando a fertilidade do solo a longo prazo e melhorando a 
+    qualidade das colheitas.
+
+    A biblioteca Scikit-Learn (Sklearn) é uma das ferramentas mais 
+    populares e amplamente utilizadas para a implementação de modelos 
+    de aprendizado de máquina em Python. Desenvolvida inicialmente 
+    como um projeto de código aberto, a biblioteca fornece uma vasta 
+    gama de algoritmos de aprendizado de máquina supervisionados e 
+    não supervisionados, incluindo classificação, regressão, 
+    clusterização e redução de dimensionalidade. Além disso, sua 
+    documentação é impecável.
+
+    Uma das principais vantagens do Sklearn é sua simplicidade e 
+    consistência na interface de usuário, o que facilita o uso até 
+    mesmo para iniciantes em Machine Learning. A biblioteca é 
+    construída sobre outras bibliotecas científicas robustas como 
+    NumPy, SciPy e Matplotlib, permitindo um desempenho eficiente e 
+    uma integração fluida com outras ferramentas do ecossistema Python.
+
+    Além de algoritmos, o Scikit-Learn também oferece ferramentas 
+    para pré-processamento de dados, seleção de modelos, validação 
+    cruzada e pipelines, que ajudam a criar fluxos de trabalho de 
+    Machine Learning completos, desde a limpeza de dados até a 
+    implementação de modelos preditivos. Com uma comunidade ativa de 
+    desenvolvedores e uma documentação abrangente, o Sklearn é uma 
+    escolha excelente tanto para pesquisadores quanto para 
+    profissionais que buscam aplicar aprendizado de máquina em 
+    problemas reais.
+
+    O primeiro passo é a importação do código necessário, leitura e 
+    exibição dos dados (ou de uma parte deles).
+
+    EX:
+
+        # Imports
+        import warnings
+        warnings.filterwarnings('ignore')
+        
+        import pandas as pd
+        import seaborn as sns
+        import matplotlib.pyplot as plt
+        
+        from sklearn.preprocessing import LabelEncoder, OneHotEncoder, MinMaxScaler
+        from sklearn.model_selection import train_test_split
+        
+        from sklearn.neighbors import KNeighborsClassifier
+        from sklearn.linear_model import LogisticRegression
+        from sklearn.svm import SVC
+        from sklearn.tree import DecisionTreeClassifier
+        from sklearn.ensemble import RandomForestClassifier
+        from sklearn.metrics import accuracy_score, classification_report
+        
+        # Carregar o dataset
+        df = pd.read_csv("fertilizer_prediction.csv")
+        
+        # Exibir as primeiras linhas do DataFrame
+        df.head()
+
+    Agora, podemos começar a exploração de dados que guiará a 
+    limpeza da base! No código a seguir veremos os aspectos gerais 
+    da base:
+
+        # Mostra informações gerais sobre a base
+        df.info()
+
+    Mesmo caso não tenha valores ausentes, outros problemas podem 
+    aparecer, como outliers e dados duplicados. Vejamos como a 
+    base se apresenta nestes quesitos:
+
+        # Imprime informações relevantes à limpeza
+
+        # Verificar a presença de dados duplicados
+        duplicates = df.duplicated().sum()
+        print("Número de dados duplicados:", duplicates)
+
+        # Verificar a presença de outliers
+        plt.figure(figsize=(12, 6))
+        sns.boxplot(data=df)
+        plt.title("Boxplot para detectar outliers")
+        plt.xticks(rotation=45)
+        plt.show()
+
+    Também podemos explorar a distribuição dos labels
+
+        plt.figure(figsize=(10, 6))
+        sns.countplot(x='Fertilizer_Name', data=df)
+        plt.title("Distribuição dos Tipos de Fertilizantes")
+        plt.xticks(rotation=45)
+        plt.show()
+
+    Outra boa prática em Machine Learning é investigar a 
+    correlação entre as variáveis. Se duas ou mais colunas 
+    estão altamente correlacionadas, pode ser interessante 
+    remover algumas delas, para facilitar a convergência do 
+    algoritmo preditivo em menor dimensão. No nosso caso, a 
+    verificação de correlação é:
+
+        # Correlação entre as features numéricas
+        numerics = ['int16', 'int32', 'int64', 'float16', 'float32', 'float64']
+        plt.figure(figsize=(12, 8))
+        sns.heatmap(df.select_dtypes(include=numerics).corr(), annot=True, cmap='coolwarm')
+        plt.title("Matriz de Correlação")
+        plt.show()
+
+    Aprendemos que a base não apresenta problemas nos dados, mas 
+    se houvessem dados duplicados ou faltantes, poderíamos ajustá-la 
+    com os seguintes comandos:
+
+        df = df.copy()
+
+        # Remove dados duplicados
+        df = df.drop_duplicates()
+
+        # Tratamento simples de outliers na coluna Temperature
+        limite_inferior = df["Temperature"].quantile(0.025)
+        limite_superior = df["Temperature"].quantile(0.975)
+        mediana_temperature = df["Temperature"].median()
+
+        df["Temperature"] = df["Temperature"].apply(
+            lambda valor: mediana_temperature
+            if valor < limite_inferior or valor > limite_superior
+            else valor
+        )
+
+        print("\nDimensão após ajustes:")
+        print(df.shape)
+
+    O código-fonte anterior não tem efeito no dataset em questão, 
+    e apenas mostra que o dataframe resultante continua com as 
+    mesmas linhas e colunas.
+
+    Neste momento, iremos migrar para engenharia de features! Esta 
+    é uma etapa muito importante. Aqui realizaremos as seguintes 
+    ações:
+
+        Separamos as features X do label y;
+        
+        Criamos uma codificação para os dados em string, 
+        representando-os em números via LabelEncoder (para 
+        dados ordinais ou labels) ou OneHotEncoder (para 
+        dados nominais);
+        
+        Removemos as colunas originais antes dos tratamentos;
+        
+        Separamos os dados em treino (80%) e teste (20%);
+        
+        Normalizamos as features numéricas, sempre “aprendendo” a 
+        fórmula no treino e a aplicando no treino e no teste.
+
+    EX:
+
+        # =========================
+        # PREPARAÇÃO DOS DADOS
+        # =========================
+
+        def preparar_dados_para_modelo(df):
+            # Separando features e label
+            X = df.drop("Fertilizer_Name", axis=1)
+            y = df["Fertilizer_Name"]
+
+            # Label Encoder para a variável alvo
+            le = LabelEncoder()
+            y = le.fit_transform(y)
+
+            # Colunas categóricas
+            categorical_cols = ["Soil_Type", "Crop_Type"]
+
+            # One-Hot Encoding nas colunas categóricas
+            ohe = OneHotEncoder(handle_unknown="ignore", sparse_output=False)
+
+            X_encoded = pd.DataFrame(
+                ohe.fit_transform(X[categorical_cols]),
+                columns=ohe.get_feature_names_out(categorical_cols),
+                index=X.index
+            )
+
+            # Removendo colunas categóricas originais
+            X = X.drop(categorical_cols, axis=1)
+
+            # Concatenando features numéricas + categóricas codificadas
+            X = pd.concat([X, X_encoded], axis=1)
+
+            # Dividindo treino e teste
+            X_train, X_test, y_train, y_test = train_test_split(
+                X,
+                y,
+                test_size=0.2,
+                random_state=42
+            )
+
+            # Normalização
+            scaler = MinMaxScaler()
+
+            X_train_scaled = scaler.fit_transform(X_train)
+            X_test_scaled = scaler.transform(X_test)
+
+            return X_train_scaled, X_test_scaled, y_train, y_test, le, ohe, scaler
+
+O código-fonte anterior não possui saídas, mas se você quiser, pode 
+explorar o conteúdo atual de cada variável obtida:
+
+    X_train: contém os dados de treino;
     
+    X_test: contém os dados de teste;
+    
+    X_train_scaled: contém os dados de treino já normalizados;
+    
+    X_test_scaled: contém os dados de teste já normalizados;
+    
+    y_train: contém os labels do treino;
+    
+    y_test: contém os labels do teste.
+
+Agora estamos prontos para construir os modelos preditivos! 
+Iniciaremos pelo baseline, que será a Regressão Logística e 
+o KNN usando K=9:
+
+    def treinar_modelos(X_train_scaled, X_test_scaled, y_train, y_test):
+        print("\n" + "=" * 50)
+        print("REGRESSÃO LOGÍSTICA")
+        print("=" * 50)
+
+        # Regressão Logística
+        logreg = LogisticRegression(max_iter=1000)
+
+        logreg.fit(X_train_scaled, y_train)
+
+        y_pred_logreg = logreg.predict(X_test_scaled)
+
+        print("Acurácia Regressão Logística:")
+        print(accuracy_score(y_test, y_pred_logreg))
+
+        print("\nRelatório de Classificação:")
+        print(classification_report(y_test, y_pred_logreg))
+
+        print("\n" + "=" * 50)
+        print("KNN")
+        print("=" * 50)
+
+        # KNN
+        knn = KNeighborsClassifier(n_neighbors=9)
+
+        knn.fit(X_train_scaled, y_train)
+
+        y_pred_knn = knn.predict(X_test_scaled)
+
+        print("Acurácia KNN:")
+        print(accuracy_score(y_test, y_pred_knn))
+
+        print("\nRelatório de Classificação:")
+        print(classification_report(y_test, y_pred_knn))
+
+        return logreg, knn
+
+Podemos criar outros modelos baseados em SVM. Ainda que o modelo 
+baseline indicou uma certa linearidade nos dados, será que modelos 
+mais complexos levariam a melhores resultados?
+
+    # Adicionar na função treinar_modelos:
+
+    print("\n" + "=" * 50)
+    print("SVM - KERNEL RBF")
+    print("=" * 50)
+
+    # SVM com kernel RBF
+    svm_rbf = SVC(kernel="rbf")
+
+    svm_rbf.fit(X_train_scaled, y_train)
+
+    y_pred_svm_rbf = svm_rbf.predict(X_test_scaled)
+
+    print("Acurácia SVM (RBF):")
+    print(accuracy_score(y_test, y_pred_svm_rbf))
+
+    print("\nRelatório de Classificação:")
+    print(classification_report(y_test, y_pred_svm_rbf))
+
+    print("\n" + "=" * 50)
+    print("SVM - KERNEL POLINOMIAL")
+    print("=" * 50)
+
+    # SVM com kernel polinomial
+    svm_poly = SVC(kernel="poly")
+
+    svm_poly.fit(X_train_scaled, y_train)
+
+    y_pred_svm_poly = svm_poly.predict(X_test_scaled)
+
+    print("Acurácia SVM (Polinomial):")
+    print(accuracy_score(y_test, y_pred_svm_poly))
+
+    print("\nRelatório de Classificação:")
+    print(classification_report(y_test, y_pred_svm_poly))
+
+    print("\n" + "=" * 50)
+    print("SVM - KERNEL LINEAR")
+    print("=" * 50)
+
+    # SVM com kernel linear
+    svm_linear = SVC(kernel="linear")
+
+    svm_linear.fit(X_train_scaled, y_train)
+
+    y_pred_svm_linear = svm_linear.predict(X_test_scaled)
+
+    print("Acurácia SVM (Linear):")
+    print(accuracy_score(y_test, y_pred_svm_linear))
+
+    print("\nRelatório de Classificação:")
+    print(classification_report(y_test, y_pred_svm_linear))
+
+    return logreg, knn, svm_rbf, svm_poly, svm_linear
+
+Agora, vamos criar modelos baseados em árvores! Será que estes 
+modelos podem ser mais robustos que uma divisão puramente linear 
+(Regressão Logística) e não tão complexo quanto um SVM?
+
+    # Adicionar na função treinar_modelos
+
+    print("\n" + "=" * 50)
+    print("DECISION TREE")
+    print("=" * 50)
+
+    # Decision Tree
+    dt = DecisionTreeClassifier(random_state=42)
+
+    dt.fit(X_train_scaled, y_train)
+
+    y_pred_dt = dt.predict(X_test_scaled)
+
+    print("Acurácia Decision Tree:")
+    print(accuracy_score(y_test, y_pred_dt))
+
+    print("\nRelatório de Classificação:")
+    print(classification_report(y_test, y_pred_dt))
+
+
+    print("\n" + "=" * 50)
+    print("RANDOM FOREST")
+    print("=" * 50)
+
+    # Random Forest
+    rf = RandomForestClassifier(
+        n_estimators=25,
+        random_state=42
+    )
+
+    rf.fit(X_train_scaled, y_train)
+
+    y_pred_rf = rf.predict(X_test_scaled)
+
+    print("Acurácia Random Forest:")
+    print(accuracy_score(y_test, y_pred_rf))
+
+    print("\nRelatório de Classificação:")
+    print(classification_report(y_test, y_pred_rf))
+
+Portanto, de todos os modelos apresentados, o melhor foi a Árvore 
+de Decisão

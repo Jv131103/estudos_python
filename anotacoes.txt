@@ -36374,6 +36374,10 @@ Um pouco sobre Estruturas de dados:
 
     ==========================================================================
 
+    Técnicas de filtragem de dados:
+
+    ==========================================================================
+
     Trees (árvore) conceito básico, árvore unária:
 
         Uma árvore é uma estrutura de dados que organiza informações em forma
