@@ -31,36 +31,46 @@ while len(lista1) < tamanho_lista1:
 
 
 def modelo1(lista1, lista2):
-    i = 0
-
-    for valores in lista2:
-        if lista1[i]["nome"] == valores["nome"]:
-            lista1[i].update({"adicional": valores})
+    for itens in lista1:
+        for valores in lista2:
+            if itens["nome"] == valores["nome"]:
+                itens.update({"adicional": valores})
 
     return lista1
 
 
 def modelo2(lista1, lista2):
-    i = 0
-
-    for valores in lista2:
-        if lista1[i]["nome"] == valores["nome"]:
-            lista1[i].update({"adicional": valores})
-            break
+    for itens in lista1:
+        for valores in lista2:
+            if itens["nome"] == valores["nome"]:
+                itens.update({"adicional": valores})
+                break
 
     return lista1
 
 
 def modelo3(lista1, lista2):
+    usados = set()  # índice dos já matched em lista2
+    for pessoa1 in lista1:
+        for j, pessoa2 in enumerate(lista2):
+            if j not in usados and pessoa1["nome"] == pessoa2["nome"]:
+                pessoa1["adicional"] = pessoa2
+                usados.add(j)
+                break
+    return lista1
+
+
+def modelo4(lista1, lista2):
     i = 0
     j = 0
 
-    while i < len(lista2):
-        if lista1[j]["nome"] == lista2[i]["nome"]:
-            lista1[j].update({"adicional": lista2[i]})
-            del lista2[i]
+    while i < len(lista1):
+        if lista1[i]["nome"] == lista2[j]["nome"]:
+            lista1[i].update({"detalhes": lista2[j]})
             i += 1
-        j += 1
+            j = 0
+        else:
+            j += 1
 
     return lista1
 
@@ -80,18 +90,6 @@ def modelo_melhor(lista1, lista2):
     return lista1
 
 
-# modelo1 -> Tempo: O(m) | Espaço: O(1)
-# novo = modelo1(lista1, lista2)
-# print(novo)
 
-# modelo2 -> Tempo: O(m) no pior caso | Espaço: O(1)
-# novo = modelo2(lista1, lista2)
-# print(novo)
-
-# modelo3 -> Tempo: O(m²) no pior caso | Espaço: O(1)
-# novo = modelo3(lista1, lista2)
-# print(novo)
-
-# modelo_melhor -> Tempo: O(n + m) | Espaço: O(m)
-novo = modelo_melhor(lista1, lista2)
+novo = modelo4(lista1, lista2)
 print(novo)

@@ -8742,6 +8742,11 @@ UM POUCO SOBRE LÓGICA DE PROGRAMAÇÃO:
 
     =====================================================================
 
+    carry propagation:
+
+
+    =====================================================================
+
     Divisão e conquista:
 
         - Resolver o grande resolvendo muitos pequenos
@@ -13982,11 +13987,9 @@ UM POUCO SOBRE LÓGICA DE PROGRAMAÇÃO:
     Técnicas de transição de estados e invariantes:
 
 
-
     =====================================================================
 
     Técnica de amortização:
-
 
 
     =====================================================================
