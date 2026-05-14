@@ -64,6 +64,7 @@ class Conta:
         self.cpf = cpf
         self.__saldo = saldo_inicial
         self.extrato = []
+        self._saques_realizados = 0
 
     def depositar(self, valor):
         if not encontrou_erro_deposito(valor):
@@ -72,7 +73,7 @@ class Conta:
             self.extrato.append(f"[+] Depósito: R$ {valor:.2f} | Saldo: {self.saldo}")
 
     def sacar(self, valor):
-        if self.LIMITE_SAQUES >= 3:
+        if self.LIMITE_SAQUES == self._saques_realizados:
             print("❌ Limite de 3 saques por sessão atingido!")
             return
 
@@ -80,7 +81,7 @@ class Conta:
             self.__saldo -= valor
             print(f"✅ Saque de R$ {valor:.2f} realizado!")
             self.extrato.append(f"[-] Saque: R$ {valor:.2f} | Saldo: {self.saldo}")
-            self.LIMITE_SAQUES += 1
+            self._saques_realizados += 1
 
     def exibir_extrato(self):
         print("===== EXTRATO =====")
@@ -107,27 +108,78 @@ class Banco:
         ordenado = sorted(self.contas, key=lambda conta: conta.cpf)
         valor = busca_binaria(ordenado, cpf)
         if valor == -1:
-            print("Conta inexistente no banco!")
+            print("==" * 20)
+            print("Conta não encontrada!")
+            print("==" * 20)
+            print()
             return
 
         conta = ordenado[valor]
+        print()
         return conta
 
     def listar_contas(self):
-        pass
+        print("==" * 20)
+        if not self.contas:
+            print("Sem contas registradas!")
+            return
+
+        for dados in self.contas:
+            print(f"titular.: {dados.titular}")
+            print(f"cpf.....: {dados.cpf}")
+            print(f"saldo...: {dados.saldo}")
+            print()
 
 
-def menu(banco):
+def menu_conta(conta: Conta):
+    print("===================")
+    print(f"Bem vindo {conta.titular}")
+    print("===================")
+    opcoes = [
+        ["1", "Depositar"],
+        ["2", "Sacar"],
+        ["3", "Extrato"],
+        ["0", "Sair"]
+    ]
+    for num, opc in opcoes:
+        print(f"[{num}] {opc}")
+
+    print()
+    while True:
+        escolha = input(">> ")
+
+        if escolha == "0":
+            print("Saindo da conta!")
+            break
+        elif escolha == "1":
+            valor = trata_float("Valor: ")
+            conta.depositar(valor)
+        elif escolha == "2":
+            valor = trata_float("Valor: ")
+            conta.sacar(valor)
+        elif escolha == "3":
+            conta.exibir_extrato()
+        else:
+            print("Opção inválida para conta")
+        print()
+
+
+def exibir_opcao(banco):
     print(f"======= {banco} =======")
     opcoes = [
         ["1", "Nova conta"],
         ["2", "Acessar conta"],
+        ["3", "Listar contas"],
         ["0", "Sair"]
     ]
 
     for opcao, escolha in opcoes:
         print(f"[{opcao}] {escolha}")
     print()
+
+
+def menu(banco):
+    exibir_opcao(banco)
 
     banco = Banco(banco)
     while True:
@@ -139,9 +191,20 @@ def menu(banco):
         elif escolha == "2":
             cpf = trata_msg("Digite um CPF: ", "CPF")
             conta = banco.buscar_conta(cpf)
-            # TODO: Continuar daqui
+            if conta is not None:
+                print()
+                menu_conta(conta)
+            exibir_opcao(banco.nome)
+        elif escolha == "3":
+            banco.listar_contas()
+        elif escolha == "0":
+            print("Saindo do banco!")
+            break
+        else:
+            print("Opção inválida para conta")
+
         print()
 
 
 banco = Banco("Banco Py")
-menu(banco)
+menu(banco.nome)
