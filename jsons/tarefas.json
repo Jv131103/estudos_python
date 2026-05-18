@@ -1,0 +1,16 @@
+[
+    {
+        "id": 1,
+        "titulo": "Estudar Python",
+        "descricao": "Praticar POO e arquivos",
+        "status": "pendente",
+        "criada_em": "2026-05-17 14:30:00"
+    },
+    {
+        "id": 3,
+        "titulo": "Estudar Bíblia",
+        "descricao": "Leitura E Devocional",
+        "status": "pendente",
+        "criada_em": "2026-05-18 17:03:08"
+    }
+]
