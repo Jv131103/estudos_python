@@ -2268,3 +2268,444 @@ modelos podem ser mais robustos que uma divisão puramente linear
 
 Portanto, de todos os modelos apresentados, o melhor foi a Árvore 
 de Decisão
+
+                IA Simbólica vs IA Conexa
+
+Enquanto a IA Simbólica modelava a mente como uma série de 
+processos lógicos e regras sintáticas, o Conexionismo buscava 
+emular o funcionamento do cérebro como uma rede massiva de 
+neurônios interconectados. Essas duas abordagens — IA Simbólica e 
+Conexionista — coexistem até hoje, embora o sucesso recente da 
+aprendizagem profunda tenha dado maior visibilidade ao 
+Conexionismo.
+
+A IA Simbólica se baseava em dois pressupostos:
+
+    . Autonomia entre hardware e software, o que permitia simular 
+    a inteligência sem depender do tipo de estrutura física;
+
+    . A concepção da mente como um sistema de representações 
+    simbólicas governadas por regras lógicas.
+
+Essa abordagem (IA Simbólica) entendia o pensamento como o 
+resultado da manipulação de símbolos, e não como algo 
+necessariamente ligado ao cérebro físico. Essa concepção 
+influenciou profundamente as ciências cognitivas e estabeleceu 
+o paradigma computacional da mente, conhecido como funcionalismo.
+
+E o que é funcionalismo? No contexto da IA e das ciências 
+cognitivas, o funcionalismo é uma teoria que explica a mente e 
+os processos mentais em termos de funções, sem se concentrar em 
+como esses processos são realizados fisicamente e sem entender 
+as sinapses, visto que a mente é um dos grandes mistérios até hoje. 
+Ou seja, o funcionalismo sugere que os estados mentais, como
+pensamentos, crenças e desejos são definidos não pelo que eles são 
+fisicamente (se são neurônios no cérebro ou circuitos em um 
+computador), mas pelas funções que desempenham e pelas relações 
+que têm entre si. Isso parece ser mais fácil de ser explicado que 
+os circuitos dos neurônios.
+
+Por outro lado, o Conexionismo, ao focar em redes neurais 
+artificiais, aproximou-se mais do estudo da biologia do cérebro. 
+Essa abordagem considera a mente como um sistema dinâmico composto 
+por padrões de conectividade que se formam entre unidades 
+semelhantes aos neurônios. Essa perspectiva alinhou o Conexionismo 
+com filosofias materialistas da mente, e suas pesquisas 
+contribuíram para o desenvolvimento da neurociência cognitiva e da 
+robótica.
+
+            IA Generativa VS IA Preditiva
+
+A IA Preditiva utiliza grandes volumes de dados históricos para 
+prever resultados futuros. Ela trabalha com análise de tendências, 
+padrões e modelagem de dados, usando métodos como regressão, redes 
+neurais e árvores de decisão.
+
+Após o treinamento, o modelo preditivo é validado e refinado até 
+alcançar a precisão adequada, sendo implantado em ambientes de 
+produção. A IA Preditiva ajuda corporações a tomarem decisões 
+baseadas em dados, melhorando processos e gerando insights mais 
+inteligentes ao longo do tempo.
+
+Por outro lado, a IA Generativa é voltada para a criação de novos 
+conteúdos, como imagens, textos e músicas. Ela utiliza modelos de 
+aprendizado profundo e redes neurais para gerar dados originais, 
+aprendendo com padrões em dados existentes. Isso a torna uma 
+ferramenta poderosa em campos criativos e inovadores, auxiliando 
+na resolução de novos problemas.
+
+Embora distintas, as duas abordagens podem ser combinadas. Por 
+exemplo, a IA Generativa pode criar dados para treinar modelos 
+preditivos mais robustos, enquanto a IA Preditiva pode ajudar a 
+projetar produtos com base em previsões de demanda.
+
+                    Modelos de IAG
+
+Os modelos de IAG são treinados para gerar novos dados que imitam 
+dados reais existentes, utilizando o aprendizado não supervisionado, 
+isto é, como se fosse uma criança aprendendo agora, simulando a 
+criatividade humana. Entre os modelos gerativos mais comuns estão:
+
+    Autoencodificadores Variacionais (VAEs): são modelos de 
+    aprendizado profundo que codificam dados em um espaço 
+    comprimido e depois os decodificam para gerar novas amostras, 
+    mantendo a similaridade com os dados originais. São utilizados 
+    para geração de imagens e dados sintéticos.
+    
+    Redes Adversariais Gerativas (GANs): consistem em dois modelos 
+    que competem entre si — um gerador cria dados (imagens, por 
+    exemplo), enquanto um discriminador tenta distinguir os dados 
+    gerados dos reais. São utilizados para criar imagens realistas, 
+    vídeos e até músicas.
+    
+    Máquinas de Boltzmann Limitadas (RBMs): são redes neurais 
+    estocásticas usadas para redução de dimensionalidade, 
+    classificação e geração de dados. Elas funcionam aprendendo 
+    padrões em dados não supervisionados e são utilizadas em 
+    sistemas de recomendação e filtragem colaborativa.
+    
+    Modelos de Linguagem Baseados em Transformadores (Transformers):
+    são modelos de aprendizado profundo que utilizam mecanismos de 
+    atenção para processar grandes sequências de dados de texto de 
+    forma eficiente, gerando textos semelhantes aos humanos. 
+    Exemplos incluem o GPT, que é usado no ChatGPT.
+
+O Processamento de Linguagem Natural (PLN), uma subárea da IA, 
+está fortemente conectado aos Grandes Modelos de Linguagem (LLMs, 
+do inglês Large Language Models). Esses modelos de IA são 
+treinados com grandes volumes de texto e utilizam redes neurais 
+avançadas para gerar ou prever conteúdos textuais. Eles são 
+capazes de entender e processar a linguagem humana, identificando 
+contexto e nuances de sentimento.
+
+Vale ressaltar que os melhores modelos do mundo entendem mais o 
+idioma inglês. Ou seja, quando tentamos utilizar esses modelos 
+utilizando o português brasileiro, percebe-se falhas nas 
+respostas e alucinações (respostas sem correlações com a pergunta 
+enviada). Por isso, não se culpe pelas falhas do seu projeto, 
+porque esse problema é seu e de todo o restante do mundo que não 
+fala em inglês.
+
+Os LLMs são uma evolução dos modelos de PLN, focados em prever a 
+probabilidade de palavras ou frases e gerar textos coerentes e 
+relevantes. Exemplos de aplicações incluem assistentes virtuais, 
+traduções automáticas, análises de sentimentos e recomendações 
+personalizadas.
+
+Além de gerar textos, a IAG também engloba sistemas de geração de 
+imagens, como o famoso MidJourney, que utiliza um modelo de difusão 
+para criar imagens realistas a partir de comandos textuais. O 
+DALL-E é outro exemplo de aplicativo treinado para gerar imagens 
+com base em descrições verbais.
+
+Um exemplo de geração de imagens que pode gerar alucinações, 
+isto é, a IA devolve como resultado algo inesperado e errado. 
+Foi dado o seguinte prompt ao ChatGPT:
+
+    Primeiro prompt: “Crie uma imagem de um telhado inundado 
+    usando água barrenta de chuva. A vista do telhado inundado 
+    precisa ser superior. Mostre dois lados do telhado. A 
+    resolução deve ser 1920 por 1080.”
+
+    Segundo prompt: “Crie outra imagem de telhado inundado usando 
+    água barrenta de chuva. A vista do telhado inundado precisa 
+    ser superior de ângulo reto. Mostre um telhado usando telha 
+    romana do Brasil. A resolução deve ser 1920 por 1080. O 
+    telhado precisa ter uma cumeeira no centro e 2,40m de telha 
+    para cada lado. A água só pode estar no arredor do telhado. 
+    O telhado possui apenas 2 lados, direito e esquerdo.”
+
+    Terceiro prompt: “Usando essa mesma imagem, reduza a área do 
+    telhado e aumente a área da água.”
+
+    Quarto prompt: “Usando a mesma imagem, coloque apenas a água 
+    nos arredores do telhado do centro.”
+
+Portanto, pela evolução das imagens nota-se que os modelos de IAG, 
+como o ChatGPT, podem alucinar em suas respostas e em resultados 
+devido à forma como são treinados e operam. Essas alucinações 
+ocorrem quando a IA gera informações incorretas ou inventa fatos 
+que parecem plausíveis, mas não são verdadeiros.
+
+Isso acontece por algumas razões principais:
+
+    Os modelos IAG são treinados com enormes volumes de dados 
+    textuais disponíveis na Internet, que contêm informações 
+    corretas e incorretas. Eles aprendem padrões e associações 
+    entre palavras e frases, mas não têm a capacidade de verificar 
+    a veracidade dos dados. Como resultado, podem combinar 
+    informações de forma incorreta, gerando respostas que parecem 
+    precisas, mas não são.
+    
+    Esses modelos funcionam com base na probabilidade de sequência 
+    de palavras, ou seja, eles tentam prever a próxima palavra ou 
+    frase com base no que foi digitado até então. Quando a IA não 
+    tem informações suficientes ou exatas sobre o assunto, ela 
+    ainda gera uma resposta para continuar a conversa, e pode 
+    acabar “inventando” algo que parece lógico, mas não é baseado 
+    em fatos reais.
+    
+    Embora os modelos de IAG sejam muito avançados em gerar 
+    respostas que parecem compreensivas, eles não possuem 
+    compreensão real do conteúdo que estão gerando, isto é, 
+    eles (ainda) não “entendem” o mundo como os humanos. O modelo 
+    pode fazer conexões entre conceitos que não têm relação lógica 
+    ou factual, levando a respostas incoerentes ou falsas.
+    
+    Modelos de IAG são projetados para generalizar informações a 
+    partir dos dados com que foram treinados. Isso significa que, 
+    em situações específicas ou menos comuns, podem tentar aplicar 
+    regras gerais ou padrões observados em outros contextos, 
+    resultando em respostas imprecisas ou alucinações.
+    
+    Para mitigar as alucinações, é importante verificar as 
+    informações geradas pelo modelo com fontes confiáveis, além 
+    de treinar o modelo com dados de alta qualidade e supervisionar 
+    o uso em contextos críticos. E o mais importante: integrar 
+    mecanismos que permitam ao modelo admitir incerteza quando a 
+    resposta não é clara e nem responder.
+
+As alucinações são um desafio inerente à forma como os modelos de 
+IAG operam. Por esta razão, o uso responsável e supervisionado 
+desses modelos é essencial, especialmente em aplicações que exigem 
+alta precisão.
+
+            As leis da robótica e das IAs criadas
+
+Para fomentar este cenário complexo discutido até aqui, existe 
+uma quantidade de iniciativas normativas considerável que propõe 
+regulamentações para a IA. Infelizmente, essas propostas geram 
+uma sensação de insegurança jurídica, uma certa instabilidade e 
+até sobreposições das próprias tentativas de normatização, pois 
+parece que tais normatizações são criadas considerando apenas o 
+prazer dos criadores ou empresas, visto que mudam as metodologias 
+de normatização a cada novo lançamento.
+
+Contudo, os princípios possuem um ponto em comum: quase todos se 
+voltam à proteção dos humanos para evitar consequências nefastas 
+do uso da tecnologia. E ao mesmo tempo, tentam maximizar os 
+benefícios de seu uso e garantir que a tecnologia proporcionará 
+melhoramentos e comodidade à condição humana.
+
+Em Joon Moon (2023), foi feito um levantamento identificando que 
+tais iniciativas de normatização datam desde 1942:
+
+    As três leis da robótica, de Isaac Asimov (1942, EUA);
+    
+    Dez leis de Osamu Tezuka (1988, Japão);
+    
+    Declaração Mundial de Robôs Feira Internacional de Robôs de 
+    Fukuoka (2004, Japão);
+    
+    Carta de Ética para Robôs (2007, Coreia do Sul);
+    
+    As três leis da robótica responsável — do IEEE [Instituto 
+    de engenheiros elétricos e eletrônicos] (2009, Mundial);
+    
+    Cinco princípios éticos para a robótica do Conselho de 
+    Pesquisas em Engenharia e Ciências Físicas (EPSRC) e o 
+    Conselho de Pesquisa em Artes e Humanidades (AHRC, 2011, 
+    Reino Unido);
+    
+    Carta de Ética de Robôs (2012, Coreia do Sul);
+    
+    Oito leis da robótica de Shinpo Fumio — Keio University 
+    (2015, Japão);
+    
+    As Leis de Satya Nadella (2016, EUA);
+    
+    Princípios de Parceria em IA (2016, EUA);
+    
+    Três princípios para criar IA segura (ou IA compatível com 
+    humanos), de Stuart Russell (2017, EUA);
+    
+    Três Regras para Sistemas de Inteligência Artificial — do 
+    diretor executivo do Allen Institute for Artificial 
+    Intelligence (2017, EUA);
+    
+    Regras de Direito Civil sobre Robótica (2017, UE);
+    
+    23 Princípios de Asilomar (2017, EUA);
+    
+    Os Princípios Gerais do Design Eticamente Alinhado — IEEE 
+    versão 2 (2017, Mundial);
+    
+    Princípios para transparência algorítmica e responsabilidade 
+    — USACM (2017, EUA);
+    
+    Diretrizes Éticas da Sociedade Japonesa para IA — da Japanese 
+    Society for Artificial Intelligence [JSAI] (2017, Japão);
+    
+    Princípios para a Governança da IA da The Future Society 
+    (2017, EUA e UE);
+    
+    Os dez principais princípios para a IA ética da UNI Global 
+    Union (2017, Mundial);
+    
+    Princípios da Política de IA do Instituto de Tecnológico de 
+    Informática [ITI] (2017, Mundial);
+    
+    Princípios de pesquisa e desenvolvimento (P&amp;D) de IA — 
+    MIC (2017, Japão/G7);
+    
+    Princípios para a Era Cognitiva da IBM (2017, EUA);
+    
+    Desenvolvendo IA para Negócios com Cinco Princípios 
+    Fundamentais, da editora Sage (2017, Reino Unido);
+    
+    Código IA da Câmara dos Lordes (2017, Reino Unido);
+    
+    Três ideias da Iniciativa de IA centrada no ser humano de 
+    Stanford Human-Centered AI [HAI] (2018, EUA);
+    
+    Princípios Harmoniosos de IA — HAIP (2018, China);
+    
+    Diretrizes Universais para IA da Coalizão The Public Voice 
+    (2018, Mundial);
+    
+    Rascunho dos Princípios de Utilização de IA do MIC 
+    (2018, Japão);
+    
+    Princípios éticos e pré-requisitos democráticos, Grupo 
+    Europeu de Ética em Ciência e Novas Tecnologias [EGE] 
+    (2018, UE);
+    
+    Carta aberta à Comissão Europeia de IA e Robótica (2018, 
+    Europa);
+    
+    OpenAI Charter da OpenAI (2018, EUA);
+    
+    Práticas gerais recomendadas para IA da Google (2018, EUA);
+    
+    Microsoft responsible AI principles (2018, EUA); (xxxiv)
+    
+    Princípios para Confiança e Transparência IBM (2018, EUA);
+    
+    Princípios orientadores da empresa SAP para inteligência 
+    artificial (2018, Alemanha);
+    
+    Diretrizes de Ética de IA do Grupo Sony (2018, Japão);
+    
+    Declaração de Montreal pelo desenvolvimento responsável da IA 
+    (2018, Canadá);
+    
+    Princípios de IA da Organização para a Cooperação e 
+    Desenvolvimento Econômico (OCDE) (2019, Mundial);
+    
+    Recomendações sobre a inclusão da África subsaariana na ética 
+    global da IA (2019, África);
+    
+    Os oito princípios de ética da inteligência artificial (IA) 
+    da Austrália (2019, Austrália).
+
+
+                IAG consegue sentir?
+
+A tecnologia apresenta tendência (ou pelos menos tenta) de 
+antropomorfizar as IAs, ou seja, atribuir a elas características 
+humanas, como emoções, moralidade e a capacidade de raciocínio 
+ético.
+
+Essa confusão surge principalmente após o avanço da IAG, que 
+responde a comandos com uma prontidão e gentileza semelhantes 
+às interações humanas, levando muitos a acreditar que as IAs 
+podem “sentir” ou “pensar” como seres humanos.
+
+As IAs não possuem consciência ou intencionalidade; elas apenas 
+simulam reações humanas com base em algoritmos e estatísticas, 
+sem realmente entender o significado das respostas geradas.
+
+Isso cria desafios significativos para a ética no uso de IA, 
+especialmente em ambientes como a educação, onde a presença de 
+IA pode enganar os usuários sobre suas reais limitações.
+
+A reflexão aqui é: quais os impactos de tratar as IAs como 
+entidades cognitivamente humanas?
+
+                    IAG Consegue Mentir
+
+As IAGs podem ser acusadas de apresentar comportamentos similares 
+ao ato de mentir. Afirma-se que elas podem iludir, desinformar e 
+até mesmo enganar para concluir suas tarefas, o que se aproxima do 
+comportamento humano de mentir.
+
+Esse comportamento levanta preocupações éticas significativas. 
+Segundo Santaella (2021), a mentira tem uma semântica complexa 
+e precisa ser diferenciada de erros ou lapsos. A mentira envolve 
+intencionalidade, com o objetivo de enganar, o que a IAG não 
+possui, pois carece de consciência e seu algoritmo matemático não 
+possui essa natureza (ainda).
+
+É fundamental distinguir entre propósito e intencionalidade. O 
+propósito refere-se a uma ação dirigida a um fim, algo que até 
+as IAGs podem ter. Porém, a intencionalidade requer uma dimensão 
+psicológica, ligada à consciência, algo que a IA não tem.
+
+Assim, enquanto as IAGs possuem um propósito, elas não podem ser 
+intencionais, pois não têm autoconsciência. A IA pode ser 
+utilizada por humanos de maneira ética ou antiética, mas sua 
+matemática interna não lhe permite o comportamento deliberado de 
+enganar, como no caso humano.
+
+No entanto, falhas em seus bancos de dados ou algoritmos podem 
+levar a resultados imprecisos, conhecidos como “alucinações”, o 
+que muitas vezes se manifesta como respostas incorretas.
+
+Embora a IA pareça responder de forma afetiva e rápida, como no 
+caso do ChatGPT, essa afetividade é simulada. Ela não tem noção 
+do que é verdade ou mentira, apenas gera respostas a partir dos 
+dados com que foi treinada.
+
+Portanto, a IA não está programada para dizer a verdade, mas sim 
+para produzir conteúdo coerente baseado em seu treinamento. Isso 
+não isenta os humanos de responsabilidade no uso dessas tecnologias 
+para mentir ou enganar. Além disso, é possível que vieses nos dados 
+e negligências dos desenvolvedores afetem os resultados da IA 
+podendo, assim, atender a interesses duvidosos.
+
+                As IAs podem ser racistas
+
+Em 1990, Bayat Friedman e Helen Nissenbaum, citadas por Kaufman, 
+Junquilho e Reis (2023, p. 44), foram pioneiras em apontar os 
+riscos dos sistemas de computação tendenciosos e os possíveis 
+impactos que eles poderiam causar na sociedade e nos direitos 
+humanos.
+
+Elas identificaram três tipos de vieses nesses sistemas: o 
+preexistente, que surge das “instituições, práticas e atitudes 
+sociais”, e não necessariamente da tecnologia propriamente dita; 
+o técnico, que deriva das limitações operacionais dos próprios 
+sistemas; e o emergente, que aparece em situações ou contextos 
+específicos durante o uso da nova tecnologia.
+
+Um dos grandes desafios das IAs está justamente nesses vieses, 
+muitos dos quais já existiam antes das próprias tecnologias. 
+Isso ocorre porque os dados não são neutros e, portanto, podem 
+carregar vieses.
+
+Quando são utilizados para treinar algoritmos, esses dados podem 
+refletir desigualdades, especialmente se forem predominantes entre 
+públicos masculinos e de pele clara, como apontado por Kaufman, 
+Junquilho e Reis (2023, p. 44-45), sem a devida diversidade em 
+termos de raça, gênero, classe social ou região.
+
+Um exemplo famoso de um viés problemático é o do algoritmo do 
+Google Fotos que identificou erroneamente pessoas negras como 
+gorilas. Quando o erro foi “corrigido”, o Google resolveu remover 
+esse label da base do Google Fotos e passou a não identificar os 
+gorilas (Garcia, 2016) até hoje, o que destaca o problema de dados 
+mal higienizados, que, ao serem processados, acabam exacerbando o 
+racismo estrutural presente na sociedade.
+
+Com o avanço das IAGs, que automatizam a criação de textos e 
+imagens cada vez mais realistas, esses problemas se intensificam, 
+criando uma dissociação entre a fantasia e a realidade.
+
+Além disso, grande parte dos dados utilizados para treinar essas 
+IAs é gerada em países como os Estados Unidos e nações da União 
+Europeia, regiões mais ricas e influentes. Os países do Sul 
+Global, incluindo o Brasil, possuem menos recursos humanos e 
+tecnológicos para competir com essas potências. Ao tentar adotar 
+esses modelos sem realizar os ajustes adequados, pode resultar em 
+problemas estrangeiros e fomentar preconceitos e estereótipos 
+existentes na sociedade.

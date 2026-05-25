@@ -1,0 +1,895 @@
+                Streamlite Python
+
+Streamlit é uma biblioteca Python para criar interfaces web 
+interativas sem precisar aprender HTML/CSS/JavaScript. Você 
+escreve Python e ele transforma em app web.
+
+Pensa assim:
+
+    Python puro → Streamlit → Dashboard/App Web
+
+Exemplo mental:
+
+    Antes:
+
+        print("Temperatura:", 32)
+
+    Com Streamlit:
+
+        st.write("Temperatura:", 32)
+
+    Sai disso:
+
+        terminal feio
+
+    Pra isso:
+
+        site bonito no navegador
+
+Serve para criar:
+
+    . Dashboards
+    . Interfaces para Machine Learning
+    . Apps com upload de arquivos
+    . Chatbots
+    . Visualização de CSV
+    . CRUD web simples
+    . Sistemas internos
+    . APIs com interface
+
+INSTALAÇÃO
+
+    No Debian/Linux:
+
+        python -m venv .venv
+
+    Ativar:
+
+        source .venv/bin/activate
+
+    Instalar:
+
+        pip install streamlit
+
+    Oficialmente, o teste rápido é: streamlit hello.
+
+                        PRIMEIRO APP
+
+Crie:
+
+    app.py
+
+Código:
+
+    import streamlit as st
+
+    st.title("Meu primeiro app")
+    st.write("Olá Renato!")
+
+Rodar:
+
+    streamlit run app.py
+
+Vai abrir:
+
+    http://localhost:8501
+
+Modelo mental:
+
+    arquivo python
+           ↓
+    streamlit interpreta
+           ↓
+    renderiza navegador
+
+                COMO O STREAMLIT FUNCIONA
+
+Fluxo interno:
+
+    usuário mexe widget
+    ↓
+    script inteiro roda novamente
+    ↓
+    interface atualiza
+
+Isso é MUITO importante.
+
+Exemplo:
+
+    import streamlit as st
+
+    numero = st.slider("Escolha", 0, 100)
+
+    st.write(numero)
+
+Quando mover slider:
+
+    script reinicia
+    slider devolve novo valor
+    st.write mostra novo valor
+
+Modelo mental:
+
+    input -> rerun -> render
+
+                    COMPONENTES BÁSICOS
+
+Texto
+
+    st.title("Título")
+    st.header("Cabeçalho")
+    st.subheader("Sub")
+    st.text("Texto puro")
+    st.markdown("**negrito**")
+    st.write("genérico")
+
+Mostrar variáveis
+
+    nome = "Renato"
+    idade = 30
+
+    st.write(nome)
+    st.write(idade)
+
+JSON
+
+    dados = {
+        "nome": "Renato",
+        "idade": 30
+    }
+
+    st.json(dados)
+
+Código
+
+    st.code("""
+        print("hello")
+    """)
+
+WIDGETS
+
+    Widgets = inputs do usuário
+
+Botão
+
+    if st.button("Clique"):
+        st.write("clicou")
+
+Checkbox
+
+    ativo = st.checkbox("Ativar")
+
+Radio
+
+    opcao = st.radio(
+        "Escolha",
+        ["Python", "Java", "Go"]
+    )
+
+Selectbox
+
+    ling = st.selectbox(
+        "Linguagem",
+        ["Python", "Rust", "C++"]
+    )
+
+Multiselect
+
+    itens = st.multiselect(
+        "Escolha",
+        ["A", "B", "C"]
+    )
+
+Slider
+
+    idade = st.slider("Idade", 0, 100)
+
+Número
+    
+    valor = st.number_input("Preço")
+
+Texto
+
+    nome = st.text_input("Nome")
+
+Senha
+
+    senha = st.text_input(
+        "Senha",
+        type="password"
+    )
+
+Textarea
+
+    texto = st.text_area("Descrição")
+
+Data
+    
+    data = st.date_input("Data")
+
+Hora
+
+    hora = st.time_input("Hora")
+
+DATAFRAMES
+
+    Isso aqui é ouro pra você.
+
+        import pandas as pd
+        import streamlit as st
+
+        df = pd.read_csv("dados.csv")
+
+        st.dataframe(df)
+
+    Interativo:
+
+        scroll
+        ordenar
+        pesquisar
+
+    Tabela estática:
+
+        st.table(df)
+
+                        GRÁFICOS
+
+Line
+
+    st.line_chart(df)
+
+Bar
+
+    st.bar_chart(df)
+
+Area
+
+    st.area_chart(df)
+
+Exemplo real:
+
+    import pandas as pd
+    import streamlit as st
+
+    df = pd.DataFrame({
+        "dia": [1, 2, 3],
+        "temp": [20, 30, 25]
+    })
+
+    st.line_chart(df.set_index("dia"))
+
+                            LAYOUT
+
+Sidebar
+
+    Muito usado.
+
+        opcao = st.sidebar.selectbox(
+            "Menu",
+            ["Dashboard", "ML", "Config"]
+        )
+
+    Mental:
+
+        sidebar = menu lateral
+
+Colunas
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+        st.write("esquerda")
+
+    with col2:
+        st.write("direita")
+
+Containers
+
+    with st.container():
+        st.write("grupo")
+
+Expander
+
+    with st.expander("Ver mais"):
+        st.write("detalhes")
+
+Tabs
+
+    tab1, tab2 = st.tabs(["Dados", "Modelo"])
+
+                UPLOAD DE ARQUIVOS
+
+PERFEITO pra CSV.
+
+    arquivo = st.file_uploader("CSV")
+
+Ler:
+
+    if arquivo:
+        df = pd.read_csv(arquivo)
+        st.dataframe(df)
+
+
+IMAGENS:
+
+    st.image("foto.png")
+
+
+ÁUDIO
+
+    st.audio("som.mp3")
+
+VÍDEO
+
+    st.video("video.mp4")
+
+SESSION STATE
+
+    Aqui mora a mágica.
+
+    Problema:
+
+        Cada clique reroda tudo.
+
+    Solução:
+
+        st.session_state
+
+    Exemplo:
+
+        if "contador" not in st.session_state:
+            st.session_state.contador = 0
+
+        if st.button("somar"):
+            st.session_state.contador += 1
+
+        st.write(st.session_state.contador)
+
+    Sem isso:
+
+        contador reseta.
+
+    Com isso:
+
+        persiste.
+
+    Mental:
+
+        RAM da sessão
+
+                        CACHE
+
+Problema:
+
+    API pesada
+    modelo ML pesado
+    CSV gigante
+
+    Toda rerun recalcula.
+
+Solução:
+
+    @st.cache_data
+
+Exemplo:
+
+    @st.cache_data
+    def carregar():
+        return pd.read_csv("dados.csv")
+
+Modelo ML:
+
+    @st.cache_resource
+    def carregar_modelo():
+        return modelo
+
+Diferença:
+
+    cache_data
+    → dados
+
+    cache_resource
+    → objetos pesados
+
+                        FORMULÁRIOS
+
+Sem form:
+
+    cada campo reroda.
+
+Com form:
+
+    espera submit.
+
+EX:
+
+    with st.form("cadastro"):
+        nome = st.text_input("Nome")
+        idade = st.number_input("Idade")
+
+        enviar = st.form_submit_button("Salvar")
+
+                        ALERTAS
+
+EX:
+
+    st.success("OK")
+    st.error("Erro")
+    st.warning("Cuidado")
+    st.info("Info")
+
+                        STREAMLIT + ML
+
+Perfeito pra você.
+
+Exemplo:
+
+    idade = st.slider("Idade", 18, 80)
+    renda = st.number_input("Renda")
+
+    if st.button("Prever"):
+        pred = modelo.predict([[idade, renda]])
+        st.write(pred)
+
+Fluxo:
+
+    usuário entra dados
+    ↓
+    modelo sklearn
+    ↓
+    predição
+    ↓
+    resultado
+
+                    MULTIPAGE APP
+
+Estrutura:
+
+    app.py
+    pages/
+       dashboard.py
+       modelo.py
+       config.py
+
+Streamlit cria menu automático.
+
+                            DEPLOY
+
+Local:
+
+    streamlit run app.py
+
+Cloud:
+
+    Streamlit Community Cloud
+    Snowflake
+    Docker
+    Render
+    Railway
+
+                            DOCKER
+
+Exemplo:
+
+Dockerfile
+
+    FROM python:3.12
+
+    WORKDIR /app
+
+    COPY . .
+
+    RUN pip install -r requirements.txt
+
+    EXPOSE 8501
+
+    CMD ["streamlit", "run", "app.py", "--server.address=0.0.0.0"]
+
+                        ERROS COMUNS
+
+Arquivo não encontrado
+
+    Seu clássico:
+
+        FileNotFoundError
+
+    Resolver:
+
+        from pathlib import Path
+
+Porta ocupada
+
+    streamlit run app.py --server.port 8502
+
+Dependência faltando
+
+    pip install pandas scikit-learn plotly
+
+                BIG O / PERFORMANCE
+
+Ruim:
+
+    ler CSV gigante a cada clique
+
+Bom:
+
+    cache
+
+Ruim:
+
+    treinar modelo toda rerun
+
+Bom:
+
+    cache_resource
+
+
+Esta biblioteca possui diversas características que a tornam uma 
+boa alternativa para criação de aplicações Web em projetos de 
+Ciência de Dados e Machine Learning, tais como:
+
+    Simplicidade: não é necessário entender HTML, CSS ou JavaScript.
+    
+    Rápida prototipação: desenvolva e visualize resultados em tempo 
+    real.
+    
+    Integração fluida: compatível com bibliotecas populares como 
+    Pandas, NumPy, Matplotlib, Scikit-learn, entre outras.
+    
+    Interatividade: crie facilmente widgets como sliders, botões e 
+    caixas de seleção.
+
+Criando primeiro código:
+
+    import streamlit as st
+
+    st.title('Hello, FIAP!')
+    st.write('Let`s Rock the Future!')
+
+rodando:
+
+    streamlit run <your_name_file>.py 
+
+                        Criando um quiz
+
+Para criar o quiz, precisamos definir as perguntas, opções e 
+respostas corretas. Utilizaremos uma lista de dicionários para 
+organizar essas informações, onde cada dicionário representa uma 
+pergunta, suas opções e a resposta correta:
+
+    import streamlit as st
+
+    st.title(' Quiz Interativo de Conhecimentos Gerais')
+    st.write(' Teste seus conhecimentos')
+
+    # Lista de perguntas
+    perguntas = [
+        {
+            "pergunta": "Qual é a capital da França?",
+            "opcoes": ["Londres", "Berlim", "Paris", "Roma"],
+            "resposta": "Paris"
+        },
+        {
+            "pergunta": "Quem escreveu 'Hamlet'?",
+            "opcoes": ["Charles Dickens", "William Shakespeare", "Mark Twain", "Leo Tolstoy"],
+            "resposta": "William Shakespeare"
+        },
+        {
+            "pergunta": "Qual é o elemento químico representado pelo símbolo 'O'?",
+            "opcoes": ["Ouro", "Oxigênio", "Prata", "Ferro"],
+            "resposta": "Oxigênio"
+        },
+        # Adicione mais perguntas conforme desejar
+    ]
+
+Dica: por que usar uma lista de dicionários?
+
+    - Facilita a iteração sobre as perguntas.
+    
+    - Permite adicionar, remover ou modificar perguntas facilmente.
+    
+    - Organiza as informações de maneira estruturada.
+
+Para que nossa aplicação seja interativa e mantenha as escolhas do 
+usuário ao longo do uso, precisamos gerenciar o estado da aplicação.
+
+st.session_state: é um objeto semelhante a um dicionário que 
+permite armazenar informações persistentes entre interações do 
+usuário com a aplicação. Isso é importante porque o Streamlit 
+executa novamente todo o script a cada interação (como clicar em 
+um botão ou selecionar uma opção), e sem o gerenciamento de estado, 
+as informações seriam perdidas a cada atualização.
+
+Entre as vantagens, podemos destacar os seguintes pontos:
+
+    Persistência de dados: para armazenar dados que precisam ser 
+    mantidos durante toda a sessão do usuário.
+    
+    Gerenciamento de interações: para controlar o fluxo da aplicação 
+    com base nas ações do usuário.
+    
+    Armazenamento de variáveis: para guardar valores que não 
+    queremos que sejam redefinidos a cada execução do script.
+
+No nosso quiz, queremos armazenar as respostas que o usuário 
+selecionou para cada pergunta. Para isso, vamos inicializar um 
+dicionário dentro do st.session_state que irá armazenar essas 
+respostas. Assim, quando o usuário clicar em "Ver Resultado", 
+teremos todas as respostas armazenadas.
+
+Cód:
+
+    if 'respostas' not in st.session_state:
+        st.session_state.respostas = {}
+
+Dica: pense no st.session_state como a “memória” da sua aplicação. 
+Sem ele, toda vez que o usuário interagisse com um elemento, as 
+informações anteriores seriam perdidas. Com o st.session_state, 
+podemos manter informações importantes durante toda a sessão.
+
+Chegou o momento em que precisamos que nosso jogo mostre as 
+perguntas ao usuário e capture suas respostas. Para isso, vamos 
+utilizar widgets interativos do Streamlit.
+
+Os widgets são elementos da interface do usuário que permitem 
+interação, como botões, caixas de seleção, campos de entrada de 
+texto, entre outros. No Streamlit, esses widgets permitem que os 
+usuários interajam com a aplicação de forma dinâmica.
+
+Existem widgets para as mais diversas aplicações e necessidades. 
+Vamos conhecer alguns, dividindo-os em três principais grupos:
+
+    Entrada de dados: permite que o usuário insira informações que 
+    serão utilizadas pela aplicação, como nomes, comentários, 
+    números e arquivos. Como no trecho de código a seguir:
+
+        import streamlit as st
+
+        st.title('Hello, FIAP!')
+        st.write('Let`s Rock the Future!')
+
+        # widgets de entrada
+
+        # Entrada de Texto
+        nome = st.text_input("Digite seu nome:")
+        if nome:
+            st.write(f"Olá, {nome}!")
+
+        # Área de Texto
+        comentario = st.text_area("Deixe seu comentário:")
+        if comentario:
+            st.write(f"Comentário enviado: {comentario}")
+
+        # Entrada Numérica
+        idade = st.number_input("Informe sua idade:", min_value=0, max_value=120, value=25)
+        st.write(f"Idade informada: {idade}")
+
+        # Carregamento de Arquivos
+        arquivo = st.file_uploader("Envie um arquivo de texto:", type=["txt"])
+        if arquivo is not None:
+            conteudo = arquivo.read().decode("utf-8")
+            st.write(conteudo)
+
+    Ao executar o código, você verá uma interface que permite 
+    inserir seu nome, deixar um comentário, informar sua idade 
+    e enviar um arquivo de texto. Cada widget está disposto na 
+    ordem em que aparece no código.
+
+        st.text_input: cria uma caixa de entrada de texto que 
+        permite apenas uma linha. Ideal para nomes, endereços 
+        de e-mail ou outros dados curtos.
+        
+        st.text_area: fornece uma área de texto que permite várias 
+        linhas. Útil para comentários, descrições ou qualquer entrada 
+        de texto mais extensa.
+        
+        st.number_input: permite a entrada de números, com opções 
+        para definir valores mínimos, máximos e um valor padrão.
+        
+        st.file_uploader: permite que o usuário envie arquivos para 
+        a aplicação. Podemos especificar os tipos de arquivos aceitos 
+        no argumento type.
+
+    Interatividade: tornam a aplicação dinâmica e responsiva às 
+    ações do usuário, permitindo que a aplicação reaja em tempo 
+    real. Isso inclui botões, caixas de seleção e outros elementos 
+    que capturam ações específicas.
+
+        import streamlit as st
+
+        st.title('Hello, FIAP!')
+        st.write('Let`s Rock the Future!')
+
+        # widgets de iteração
+
+        # Botão de Ação
+        if st.button("Clique aqui"):
+            st.write("Você clicou no botão!")
+
+        # Caixa de Seleção (checkbox)
+        aceitar = st.checkbox("Eu aceito os termos e condições.")
+        if aceitar:
+            st.write("Obrigado por aceitar os termos!")
+
+        # Botões de Rádio
+        cor = st.radio("Escolha sua cor favorita:", ["Azul", "Verde", "Vermelho"])
+        st.write(f"Você escolheu: {cor}")
+
+        # Caixa de Seleção (selectbox)
+        fruta = st.selectbox("Escolha uma fruta:", ["Maçã", "Banana", "Laranja"])
+        st.write(f"Você escolheu: {fruta}")
+
+        # Controle Deslizante
+        altura = st.slider("Escolha sua altura:", min_value=1.0, max_value=2.5, value=1.75)
+        st.write(f"Sua altura: {altura} metros")
+
+        # Seleção Múltipla
+        hobbies = st.multiselect("Escolha seus hobbies favoritos:", ["Ler", "Esportes", "Música", "Viagens"])
+        st.write(f"Você escolheu: {', '.join(hobbies)}")
+
+    Ao interagir com os widgets, observe como a aplicação responde 
+    imediatamente às suas ações. Por exemplo, ao clicar no botão ou 
+    marcar a caixa de seleção, o conteúdo exibido muda de acordo com 
+    a interação.
+
+    A escolha do widget ideal para interação dependerá do objetivo 
+    da sua aplicação. Não há uma escolha certa ou errada; é 
+    recomendável testar diferentes widgets para encontrar o melhor 
+    formato que atende às necessidades do usuário:
+
+        st.button: cria um botão que, ao ser pressionado, retorna 
+        True uma única vez.
+        
+        st.checkbox: apresenta uma caixa de seleção que pode ser marcada 
+        ou desmarcada.
+        
+        st.radio: permite que o usuário escolha uma opção entre várias, 
+        apresentadas como botões de rádio.
+        
+        st.selectbox: similar ao radio, mas as opções são apresentadas 
+        em um menu suspenso.
+        
+        st.slider: fornece um controle deslizante para selecionar um 
+        valor dentro de um intervalo.
+        
+        st.multiselect: permite que o usuário selecione múltiplas 
+        opções de uma lista.
+
+    Melhoria da experiência: além dos widgets de entrada e 
+    interatividade, o Streamlit oferece elementos que melhoram a 
+    experiência do usuário, fornecendo feedback visual e mantendo 
+    o usuário informado sobre o estado da aplicação.
+
+        import streamlit as st
+
+        st.title('Hello, FIAP!')
+        st.write('Let`s Rock the Future!')
+
+        # Barra de Progresso
+        import time
+
+        progresso = st.progress(0)
+        for i in range(100):
+            time.sleep(0.02)
+            progresso.progress(i + 1)
+        st.write("Progresso completo!")
+
+        # Indicador de Carregamento
+        with st.spinner("Carregando..."):
+            time.sleep(2)
+        st.success("Carregamento concluído!")
+
+        # Mensagens de feedback visual ao usuário
+        st.success("Operação realizada com sucesso!")
+        st.error("Ocorreu um erro!")
+        st.warning("Atenção! Verifique os dados.")
+        st.info("Para mais informações, consulte a documentação.")
+
+        # Animação de Balões
+        if st.button("Mostrar balões"):
+            st.balloons()
+
+Fornecer feedback visual é importante para uma boa experiência do 
+usuário. Isso mantém o usuário informado sobre o que está 
+acontecendo e ajuda a evitar confusões ou a sensação de que a 
+aplicação está travada:
+
+    st.progress: exibe uma barra de progresso que pode ser 
+    atualizada para refletir o andamento de uma tarefa. Simulamos 
+    no código um processo que leva algum tempo, atualizando a barra 
+    de progresso a cada iteração do loop.
+    
+    st.spinner: mostra um indicador de carregamento (spinner) 
+    durante a execução de um bloco de código.
+    
+    st.info, st.success, st.warning e st.error: exibem mensagens 
+    informativas, de sucesso, de aviso e de erro, respectivamente.
+    
+    st.balloons: exibe uma animação de balões, geralmente usada 
+    para celebrar algum evento ou conclusão de tarefa.
+
+Agora que conhecemos um pouco sobre os principais widgets, vamos 
+voltar ao nosso jogo Quiz. Esta é a parte central (core) da nossa 
+aplicação. É aqui que as perguntas são apresentadas ao usuário e 
+as respostas são capturadas. Essa parte do código foi pensada para 
+ser executada de forma interativa, permitindo que o usuário 
+selecione as respostas usando widgets. Por esse motivo, é importante 
+dividir essa parte em alguns passos:
+
+    Percorrer cada pergunta na lista perguntas;
+    
+    Criar um expander para cada pergunta, de forma organizada;
+    
+    Exibir o texto da pergunta e as opções de resposta com st.radio 
+    dentro do expande;
+    
+    Armazenar a resposta do usuário no st.session_state.
+
+Primeiramente, precisamos percorrer todas as perguntas que criamos. 
+Para isso, utilizamos um “loop for” com a função enumerate que nos 
+dá acesso tanto ao `idx`, que representa o índice, quanto ao `item`, 
+que representa o dicionário de cada pergunta. O enumerate é uma 
+função importante, pois nos ajuda a criar chaves únicas para os 
+widgets, evitando conflitos.
+
+O segundo passo é organizar a nossa interface, especialmente em 
+quizzes com muitas perguntas, para isso vamos permitir que o 
+usuário expanda ou recolha cada pergunta. Desta forma, o usuário 
+consegue focar em uma questão por vez para responder. O widget 
+st.expander cria um contêiner que pode ser expandido ou recolhido.
+
+No contêiner, vamos apresentar o texto da pergunta e as opções de 
+resposta. Acessamos o texto da pergunta no dicionário `item` chave 
+“pergunta”, e para as opções de respostas utilizamos o widget 
+st.radio, que cria um conjunto de botões de seleção exclusivos 
+(botões de rádio). Vale destacar que é necessário um identificador 
+único para cada widget, sem isso, o Streamlit não é capaz de 
+distinguir entre os widgets dentro do loop, levando a comportamentos 
+indesejados, como respostas sendo sobrescritas ou estados confusos, 
+fazemos isso criando a chave única com key = f"pergunta_{idx}".
+
+Por fim, para que seja possível avaliar as respostas posteriormente, 
+precisamos salvá-las. Usamos o st.session_state, um dicionário que 
+persiste os dados durante a sessão do usuário. A opção selecionada 
+pelo usuário é armazenada na variável resposta_usuario, que é salva 
+durante essa seção do usuário.
+
+    # Exibe as perguntas
+    for idx, item in enumerate(perguntas):
+        with st.expander(f"Pergunta {idx + 1}"):
+            st.write(item["pergunta"])
+            resposta_usuario = st.radio(
+                "Escolha uma opção:",
+                item["opcoes"],
+                key=f"pergunta_{idx}"
+            )
+            st.session_state.respostas[f"pergunta_{idx}"] = resposta_usuario
+
+Dica: para entender como o st.session_state armazena os dados, 
+podemos debugar o código com: st.write(st.session_state). Não 
+esqueça de remover ou comentar este código na versão final da 
+aplicação para não expor informações desnecessárias ao usuário.
+
+Agora que o usuário respondeu às perguntas do quiz, precisamos 
+avaliar as respostas fornecidas e apresentar um feedback adequado. 
+Essa parte é simples: basta criar um botão "Ver Resultado" que, ao 
+clicar, vai varrer a chave ‘resposta’ do dicionário de perguntas e 
+comparar com o st.session_state as respostas armazenadas. Se o 
+usuário acertar todas as perguntas, será exibida uma animação de 
+balões como forma de celebração.
+
+    if st.button("Ver Resultado"):
+        acertos = 0
+        for idx, item in enumerate(perguntas):
+            resposta_correta = item["resposta"]
+            resposta_usuario = st.session_state.respostas.get(f"pergunta_{idx}")
+
+            if resposta_usuario == resposta_correta:
+                acertos += 1
+                st.success(f"✅ Pergunta {idx + 1}: Correto!")
+            else:
+                st.error(f"❌ Pergunta {idx + 1}: Incorreto! A resposta correta é '{resposta_correta}'.")
+
+        st.write(f"**Você acertou {acertos} de {len(perguntas)} perguntas.**")
+        if acertos == len(perguntas):
+            st.balloons()
