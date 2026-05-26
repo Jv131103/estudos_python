@@ -893,3 +893,579 @@ balões como forma de celebração.
         st.write(f"**Você acertou {acertos} de {len(perguntas)} perguntas.**")
         if acertos == len(perguntas):
             st.balloons()
+
+O nosso jogo Quiz já está funcional e conseguimos jogá-lo, mas 
+que tal aprimorar um pouco mais a interface para deixá-la mais 
+atrativa e bonita? Vamos estilizar o botão "Ver Resultado".
+
+Embora o Streamlit não ofereça suporte direto para estilização 
+avançada, podemos utilizar o CSS para customizar a aparência dos 
+componentes. Para isso, injetamos código CSS na nossa aplicação 
+através do método st.markdown(“””&lt;style&gt;...&lt;/style&gt;”””, 
+unsafe_allow_html=True). Vamos criar um bloco de estilo CSS para 
+alterar as propriedades do botão. Aqui está o código que vamos 
+utilizar:
+
+    Seletor utilizado: div.stButton > button:first-child
+    
+    background-color: #4CAF50; define a cor de fundo do botão (tom 
+    de verde).
+    
+    color: white; define a cor do texto como branco para contraste.
+    
+    height: 3em; define a altura do botão em unidades relativas ao 
+    tamanho da fonte.
+    
+    width: 100%; faz o botão ocupar toda a largura disponível.
+    
+    border-radius: 10px; arredonda as bordas do botão.
+    
+    border: 2px solid #4CAF50; define uma borda sólida de 2 pixels 
+    com a mesma cor do fundo.
+    
+    font-size: 17px; aumenta o tamanho da fonte para 17 pixels.
+    
+    font-weight: bold; deixa o texto em negrito.
+
+Cód:
+
+    st.markdown(
+        """
+        <style>
+        div.stButton > button:first-child {
+            background-color: #4CAF50;
+            color: white;
+            height: 3em;
+            width: 100%;
+            border-radius:10px;
+            border:2px solid #4CAF50;
+            font-size:17px;
+            font-weight: bold;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+
+O Streamlit, por padrão, não permite HTML/CSS direto por questões 
+de segurança. Ao definir unsafe_allow_html=True, estamos informando 
+ao Streamlit que confiamos no código inserido.
+
+Agora que passamos por todas as etapas de criação do nosso jogo 
+Quiz, é hora de vê-lo em ação! Vamos executar o jogo completo, que 
+ao final deve ser parecido com o código a seguir:
+
+    import streamlit as st
+
+    st.title("🧠 Quiz Interativo de Conhecimentos Gerais")
+    st.write("Teste seus conhecimentos em diferentes áreas!")
+
+    # Lista de perguntas
+    perguntas = [
+        {
+            "pergunta": "Qual é a capital da França?",
+            "opcoes": ["Londres", "Berlim", "Paris", "Roma"],
+            "resposta": "Paris"
+        },
+        {
+            "pergunta": "Quem escreveu 'Hamlet'?",
+            "opcoes": ["Charles Dickens", "William Shakespeare", "Mark Twain", "Leo Tolstoy"],
+            "resposta": "William Shakespeare"
+        },
+        {
+            "pergunta": "Qual é o elemento químico representado pelo símbolo 'O'?",
+            "opcoes": ["Ouro", "Oxigênio", "Prata", "Ferro"],
+            "resposta": "Oxigênio"
+        },
+        # Adicione mais perguntas conforme desejar
+    ]
+
+    if 'respostas' not in st.session_state:
+        st.session_state.respostas = {}
+
+    # Exibe as perguntas
+    for idx, item in enumerate(perguntas):
+        with st.expander(f"Pergunta {idx + 1}"):
+            st.write(item["pergunta"])
+            resposta_usuario = st.radio(
+                "Escolha uma opção:",
+                item["opcoes"],
+                key=f"pergunta_{idx}"
+            )
+            st.session_state.respostas[f"pergunta_{idx}"] = resposta_usuario
+
+    st.markdown(
+        """
+        <style>
+        div.stButton > button:first-child {
+            background-color: #4CAF50;
+            color: white;
+            height: 3em;
+            width: 100%;
+            border-radius:10px;
+            border:2px solid #4CAF50;
+            font-size:17px;
+            font-weight: bold;
+        }
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
+
+    if st.button("Ver Resultado"):
+        acertos = 0
+        for idx, item in enumerate(perguntas):
+            resposta_correta = item["resposta"]
+            resposta_usuario = st.session_state.respostas.get(f"pergunta_{idx}")
+
+            if resposta_usuario == resposta_correta:
+                acertos += 1
+                st.success(f"✅ Pergunta {idx + 1}: Correto!")
+            else:
+                st.error(f"❌ Pergunta {idx + 1}: Incorreto! A resposta correta é '{resposta_correta}'.")
+
+        st.write(f"**Você acertou {acertos} de {len(perguntas)} perguntas.**")
+        if acertos == len(perguntas):
+            st.balloons()
+
+        Integração Ciência de Dados e Machine Learning
+
+Vamos desenvolver um projeto que envolve Ciência de Dados e 
+Machine Learning no contexto do Agronegócio. O objetivo é criar 
+uma aplicação interativa que permita explorar dados agrícolas, 
+realizar análises exploratórias e construir um modelo de Machine 
+Learning para prever a produção agrícola com base em variáveis 
+relevantes.
+
+Para organizar projeto de forma eficiente e modular, vamos 
+utilizar o recurso de múltiplas páginas do Streamlit para 
+estruturar melhor o aplicativo e criar a seguinte estrutura 
+básica de pastas e arquivos:
+
+
+        projeto_agronegocio/
+        ├── app.py
+        ├── data_generation.py
+        └── pages/
+            ├── 1_Exploracao_de_Dados.py
+            └── outras páginas...
+
+
+    app.py: arquivo principal da nossa aplicação Streamlit. 
+    Definimos a configuração geral do aplicativo, como o título, 
+    o ícone e a página inicial.
+    
+    data_generation.py: módulo que contém a função 
+    generate_data(n_samples) responsável por gerar o dataset 
+    simulado.
+    
+    pages/: pasta que contém os arquivos para cada página da nossa 
+    aplicação. O Streamlit reconhece essa pasta e cria 
+    automaticamente um menu de navegação com base nos arquivos 
+    dentro dela.
+    
+    1_Exploracao_de_Dados.py: página para exploração de dados. 
+    Esta página contém todo o código para realizar visualizações 
+    interativas e análises descritivas do dataset.
+    
+    Outras páginas podem ser adicionadas ao projeto criando novos 
+    arquivos Python.
+
+Dica: o prefixo numérico 1_ no nome do arquivo dentro da pasta 
+pages/ determina a ordem em que a página aparece no menu de 
+navegação do Streamlit. Se adicionar mais páginas, utilize o 
+prefixo numérico 2_, 3_ e assim por diante.
+
+Após a criação da estrutura de pastas do projeto, começamos o 
+desenvolvimento da nossa aplicação pela página principal. Ela 
+será uma página simples sem informações técnicas, apenas 
+apresentando a ideia principal da nossa aplicação. O usuário irá 
+navegar em nosso sistema por meio de um menu lateral com as 
+páginas secundárias da aplicação
+
+No arquivo app.py vamos adicionar o título e descrição do projeto. 
+Note que o código é simples e inicialmente não faz relacionamento 
+com outras páginas, mas o Streamlit reconhece pasta pages e cria 
+automaticamente um menu de navegação com base nos arquivos dentro 
+dela:
+
+    # app.py
+
+    import streamlit as st
+
+    st.set_page_config(
+        page_title='Análise Agrícola',
+        page_icon='🌾',
+        layout='wide'
+    )
+
+    st.title('Análise Agrícola 🌾')
+    st.write('Bem-vindo ao aplicativo de análise de dados agrícolas.')
+
+    st.markdown("""
+    Este aplicativo permite explorar um dataset simulado de produção agrícola,
+    realizar análises exploratórias e aplicar modelos preditivos.
+    Utilize o menu à esquerda para navegar entre as páginas.
+    """)
+
+O Agronegócio desempenha um papel importante na economia global, 
+sendo responsável pela produção de alimentos. Vamos criar um 
+conjunto de dados simulado que contém informações sobre:
+
+    Características climáticas: temperatura média, precipitação, 
+    umidade.
+    
+    Práticas agrícolas: uso de fertilizantes, tipo de solo, 
+    técnicas de cultivo.
+    
+    Produção: rendimento em toneladas por hectare.
+
+O arquivo data_generation.py contém a função generate_data() que 
+cria o nosso dataset com uma quantidade padrão de 1000 dados:
+
+    # data_generation.py
+
+    import numpy as np
+    import pandas as pd
+    import streamlit as st
+
+    @st.cache_data(show_spinner=True) ## usando cache
+    def generate_data(n_samples=1000):
+        """
+        Gera um dataset simulado de produção agrícola.
+
+        Args:
+            n_samples (int): Número de amostras a serem geradas.
+
+        Returns:
+            pd.DataFrame: DataFrame contendo o dataset simulado.
+        """
+        np.random.seed(42)
+
+        # Gerando variáveis climáticas com distribuições realistas
+        temperatura = np.random.normal(loc=22, scale=3, size=n_samples)  # Temperatura média de 22°C
+        precipitacao = np.random.gamma(shape=2, scale=30, size=n_samples)  # Precipitação em mm
+        umidade = np.random.uniform(low=50, high=80, size=n_samples)  # Umidade relativa em %
+
+        # Variáveis categóricas
+        fertilizante = np.random.choice(['Orgânico', 'Sintético'], size=n_samples, p=[0.4, 0.6])
+        tipo_solo = np.random.choice(['Arenoso', 'Argiloso', 'Siltoso'], size=n_samples, p=[0.3, 0.5, 0.2])
+
+        # Mapear categorias para valores numéricos (efeitos)
+        mapa_fertilizante = {'Orgânico': 1.05, 'Sintético': 1.10}
+        mapa_solo = {'Arenoso': 0.95, 'Argiloso': 1.00, 'Siltoso': 1.02}
+
+        efeito_fertilizante = np.vectorize(mapa_fertilizante.get)(fertilizante)
+        efeito_solo = np.vectorize(mapa_solo.get)(tipo_solo)
+
+        # Calculando a produção com interações mais realistas
+        producao = (
+            (temperatura - 20) * 2 +  # Aumento de produção por temperatura acima de 20°C
+            (precipitacao - 50) * 0.5 +  # Aumento por precipitação acima de 50mm
+            (umidade - 50) * 0.3  # Aumento por umidade acima de 50%
+        ) * efeito_fertilizante * efeito_solo
+
+        # Adicionando variabilidade aleatória
+        producao += np.random.normal(loc=0, scale=5, size=n_samples)
+
+        # Garantindo que a produção não seja negativa
+        producao = np.clip(producao, a_min=0, a_max=None)
+
+        # Criando o DataFrame final
+        df = pd.DataFrame({
+            'Temperatura': temperatura,
+            'Precipitação': precipitacao,
+            'Umidade': umidade,
+            'Fertilizante': fertilizante,
+            'Tipo de Solo': tipo_solo,
+            'Produção': producao
+        })
+
+        return df
+
+Para a criação do dataset, cada atributo foi definido de acordo 
+com as seguintes premissas:
+
+    Temperatura: média de 22 °C com desvio padrão de 3 °C, 
+    refletindo condições climáticas mais típicas.
+    
+    Precipitação: usamos uma distribuição gamma para modelar a 
+    precipitação, que é sempre positiva e pode representar 
+    eventos de chuva.
+    
+    Umidade: valores entre 50% e 80%, que são comuns em áreas 
+    agrícolas.
+    
+    Fertilizante: atribuímos um aumento de 5% na produção para 
+    'Orgânico' e 10% para 'Sintético', refletindo sua eficácia.
+    
+    Tipo de solo: o solo 'Arenoso' diminui a produção em 5% devido 
+    à menor retenção de água, o 'Argiloso' é neutro, e o 'Siltoso' 
+    aumenta em 2% pela melhor fertilidade.
+    
+    Produção: consideramos que a produção aumenta linearmente com 
+    a temperatura acima de 20 °C, precipitação acima de 50 mm e 
+    umidade acima de 50%. Multiplicamos pelo efeito dos 
+    fertilizantes e do solo para incorporar suas influências. E 
+    por fim, adicionamos um termo aleatório para simular 
+    variabilidade não explicada.
+
+Os parâmetros definidos não são necessariamente rígidos, nesse 
+sentido, podem ser alterados conforme a necessidade desejada.
+
+Vamos criar visualizações interativas que permitam ao usuário 
+explorar os dados de diferentes perspectivas. A etapa de análise 
+de dados é importante para compreender os dados que estamos 
+trabalhando. No Python, diversas bibliotecas podem nos ajudar 
+como o Matplotlib, Seaborn, Pandas, Plotly entre outras, todas 
+elas possuem uma integração simples com o Streamlit, sendo 
+possível exibir tabelas e gráficos estáticos e dinâmicos.
+
+Para exibir tabelas de dados no Streamlit, utilizamos a função 
+st.dataframe(). Essa função permite mostrar um DataFrame do 
+Pandas, em que o usuário pode interagir com a tabela, ordenando 
+e explorando os dados. Ela é ideal para apresentar uma visão 
+geral dos dados ou resultados de análises.
+
+Podemos exibir gráficos de algumas formas, entre elas temos:
+
+    Utilizando a função st.pyplot() para exibir gráficos 
+    estáticos criados com Matplotlib ou Seaborn;
+    
+    Com a função st.plotly_chart() para exibir gráficos 
+    interativos criados com Plotly.
+
+Código:
+
+    # Exploracao_de_dados.py
+
+    import streamlit as st
+    import seaborn as sns
+    import numpy as np
+    import pandas as pd
+    import matplotlib.pyplot as plt
+    import plotly.express as px
+
+    from data_generation import generate_data  # Carrega o dataset
+
+    # Configurações gerais
+    st.set_page_config(page_title='Análise de Dados', layout='wide')
+
+    # Título do aplicativo
+    st.title('Exploração de Dados')
+
+    # ================================================
+    # 1. Carregar os Dados
+    # ================================================
+
+    st.header('1. Carregar os Dados')
+
+    # Carregar os dados gerados
+    df = generate_data()
+
+    # Mostrar os primeiros registros
+    st.subheader('Visualização dos Dados')
+    st.dataframe(df.head())
+
+    # ================================================
+    # 2. Visão Geral dos Dados
+    # ================================================
+
+    st.header('2. Visão Geral dos Dados')
+
+    # Informações sobre o DataFrame
+    st.subheader('Informações do DataFrame')
+    st.write('Dimensões do DataFrame:')
+    st.write(f'Linhas: {df.shape[0]}, Colunas: {df.shape[1]}')
+
+    st.subheader('Tipos de Dados')
+    # Converter os tipos de dados para string
+    df_types = pd.DataFrame({
+        'Coluna': df.columns,
+        'Tipos de Dados': df.dtypes.astype(str)
+    })
+    st.write(df_types)
+
+    # Verificar valores ausentes
+    st.subheader('Valores Ausentes')
+    st.write(df.isnull().sum())
+
+    # Estatísticas Descritivas
+    st.subheader('Estatísticas Descritivas')
+    st.write(df.describe())
+
+    # ================================================
+    # 3. Análise Univariada
+    # ================================================
+
+    st.header('3. Análise Univariada')
+
+    numeric_columns = ['Temperatura', 'Precipitação', 'Umidade', 'Produção']
+    categorical_columns = ['Fertilizante', 'Tipo de Solo']
+
+    # Histogramas das variáveis numéricas
+    st.subheader('Distribuições das Variáveis Numéricas')
+    for col in numeric_columns:
+        st.write(f'**{col}**')
+        fig = px.histogram(df, x=col, nbins=30, title=f'Distribuição de {col}')
+        st.plotly_chart(fig, use_container_width=True)
+
+    # Box plots das variáveis numéricas
+    st.subheader('Box Plots das Variáveis Numéricas')
+    for col in numeric_columns:
+        st.write(f'**{col}**')
+        fig = px.box(df, y=col, points='all', title=f'Box Plot de {col}')
+        st.plotly_chart(fig, use_container_width=True)
+
+    # Distribuição das variáveis categóricas
+    st.subheader('Distribuições das Variáveis Categóricas')
+    for col in categorical_columns:
+        st.write(f'**{col}**')
+        fig = px.histogram(df, x=col, title=f'Distribuição de {col}')
+        st.plotly_chart(fig, use_container_width=True)
+
+    # ================================================
+    # 4. Análise Bivariada
+    # ================================================
+
+    st.header('4. Análise Bivariada')
+
+    # Gráficos de dispersão entre variáveis numéricas
+    st.subheader('Gráficos de Dispersão entre Variáveis Numéricas')
+    variable_pairs = [
+        ('Temperatura', 'Produção'),
+        ('Precipitação', 'Produção'),
+        ('Umidade', 'Produção'),
+        ('Temperatura', 'Precipitação'),
+        ('Temperatura', 'Umidade')
+    ]
+
+    for x_var, y_var in variable_pairs:
+        st.write(f'**{x_var} vs {y_var}**')
+        fig = px.scatter(
+            df,
+            x=x_var,
+            y=y_var,
+            color='Fertilizante',
+            symbol='Tipo de Solo',
+            title=f'{y_var} vs {x_var}'
+        )
+        st.plotly_chart(fig, use_container_width=True)
+
+    # Distribuição de Produção por Fertilizante e Tipo de Solo
+    st.subheader('Distribuição de Produção por Fertilizante e Tipo de Solo')
+
+    # Por Fertilizante
+    st.write('**Produção por Fertilizante**')
+    fig = px.violin(
+        df,
+        x='Fertilizante',
+        y='Produção',
+        box=True,
+        points='all',
+        title='Distribuição de Produção por Fertilizante'
+    )
+    st.plotly_chart(fig, use_container_width=True)
+
+    # Por Tipo de Solo
+    st.write('**Produção por Tipo de Solo**')
+    fig = px.violin(
+        df,
+        x='Tipo de Solo',
+        y='Produção',
+        box=True,
+        points='all',
+        title='Distribuição de Produção por Tipo de Solo'
+    )
+    st.plotly_chart(fig, use_container_width=True)
+
+    # ================================================
+    # 5. Análise de Correlação
+    # ================================================
+
+    st.header('5. Análise de Correlação')
+
+    # Mapa de calor de correlação
+    st.subheader('Mapa de Calor de Correlação')
+    # Selecionar apenas colunas numéricas
+    numeric_df = df.select_dtypes(include=[np.number])
+    corr = numeric_df.corr()
+
+    fig_heatmap, ax = plt.subplots(figsize=(10, 8))
+    sns.heatmap(corr, annot=True, cmap='coolwarm', ax=ax)
+    st.pyplot(fig_heatmap)
+
+    # ================================================
+    # 6. Análise Multivariada
+    # ================================================
+
+    st.header('6. Análise Multivariada')
+
+    # Pairplot das variáveis numéricas
+    st.subheader('Pair Plot das Variáveis Numéricas')
+
+    # Converter 'Fertilizante' e 'Tipo de Solo' em códigos numéricos para coloração
+    df_encoded = df.copy()
+    df_encoded['Fertilizante'] = df_encoded['Fertilizante'].map({'Orgânico': 0, 'Sintético': 1})
+    df_encoded['Tipo de Solo'] = df_encoded['Tipo de Solo'].map({'Arenoso': 0, 'Argiloso': 1, 'Siltoso': 2})
+
+    fig = sns.pairplot(
+        df_encoded,
+        vars=numeric_columns,
+        hue='Fertilizante',
+        diag_kind='kde',
+        corner=True
+    )
+    st.pyplot(fig)
+
+    # ================================================
+    # 7. Análise Interativa
+    # ================================================
+
+    st.header('7. Análise Interativa')
+
+    # Seleção de variáveis pelo usuário
+    st.subheader('Gráfico de Dispersão Interativo')
+
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        x_var = st.selectbox('Selecione a variável X:', options=numeric_columns)
+    with col2:
+        y_var = st.selectbox('Selecione a variável Y:', options=numeric_columns)
+    with col3:
+        color_var = st.selectbox('Selecione a variável para colorir:', options=categorical_columns)
+
+    corr_temp_prod = df[x_var].corr(df[y_var])
+    st.write(f"A correlação de Pearson entre {y_var} e {x_var} é: {corr_temp_prod:.2f}")
+
+    # Gráfico de dispersão interativo
+    fig = px.scatter(
+        df,
+        x=x_var,
+        y=y_var,
+        color=color_var,
+        title=f'{y_var} vs {x_var} colorido por {color_var}'
+    )
+    st.plotly_chart(fig, use_container_width=True)
+
+Como resultado, é esperado que a página carregue o dataset e 
+apresente os dados em tabelas e gráficos para apoiar as análises 
+exploratórias de Dados.
+
+Vamos construir um modelo de regressão para prever a produção com 
+base nas variáveis disponíveis. O Streamlit consegue trabalhar 
+muito bem com bibliotecas de Machine Learning, como Scikit-learn 
+e TensorFlow.
+
+Para manter o nosso projeto organizado e modular, criaremos uma 
+nova página chamada 2_Modelagem_Preditiva.py. A nossa estrutura de
+arquivos do projeto ficará da seguinte forma:
+
+    projeto_agronegocio/
+    ├── app.py
+    ├── data_generation.py
+    └── pages/
+        ├── 1_Exploracao_de_Dados.py
+        └── 2_Modelagem_Preditiva.py
+    

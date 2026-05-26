@@ -1,7 +1,7 @@
 import streamlit as st
 
-st.title(' Quiz Interativo de Conhecimentos Gerais')
-st.write(' Teste seus conhecimentos')
+st.title("🧠 Quiz Interativo de Conhecimentos Gerais")
+st.write("Teste seus conhecimentos em diferentes áreas!")
 
 # Lista de perguntas
 perguntas = [
@@ -36,6 +36,24 @@ for idx, item in enumerate(perguntas):
             key=f"pergunta_{idx}"
         )
         st.session_state.respostas[f"pergunta_{idx}"] = resposta_usuario
+
+st.markdown(
+    """
+    <style>
+    div.stButton > button:first-child {
+        background-color: #4CAF50;
+        color: white;
+        height: 3em;
+        width: 100%;
+        border-radius:10px;
+        border:2px solid #4CAF50;
+        font-size:17px;
+        font-weight: bold;
+    }
+    </style>
+    """,
+    unsafe_allow_html=True
+)
 
 if st.button("Ver Resultado"):
     acertos = 0
