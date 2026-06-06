@@ -1,0 +1,145 @@
+                        Cibersecurity
+
+Cibersegurança (cybersecurity) ou segurança de computadores é um 
+dos assuntos mais procurados e discutidos nos últimos anos, 
+principalmente por causa do aumento dos dispositivos em rede, além 
+do processo de transformação digital nas empresas. Mas como 
+podemos conceituar o termo exatamente? O que faz parte da segurança 
+cibernética? Observamos que, independentemente do ramo de atividade 
+das empresas, investir em segurança da informação é algo que deve 
+ser feito por todas elas, caso contrário, elas podem até sofrer 
+prejuízos que acabarão por tirá-las do mercado, provenientes de um 
+processo judicial por evasão de dados ou um ransomware poderoso que 
+trave toda a sua operação.
+
+    Cybersecurity implica a salvaguarda das redes de computadores e 
+    das informações nelas contidas contra intrusão, danos ou 
+    descontinuidades (LEWIS, 2006).
+    
+    Cybersecurity envolve a redução do risco de ataques a softwares, 
+    computadores e redes. Isso inclui ferramentas usadas para 
+    detectar invasões, contenção de vírus, bloqueio de acessos 
+    maliciosos, forçar autenticação, uso de criptografia e assim por 
+    diante (AMOROSO, 2006).
+    
+    Cybersecurity é um conjunto de ferramentas, políticas, conceitos 
+    e salvaguardas de segurança, diretrizes, abordagens de 
+    gerenciamento de riscos, ações, treinamentos, melhores práticas, 
+    garantias e tecnologias que podem ser usados para proteger o 
+    ambiente cibernético, a organização e os recursos do usuário 
+    (ITU, 2009).
+
+A seguir, será apresentada uma breve descrição de alguns malweres, 
+de uma forma bem simples e direta:
+
+    Worm: semelhante a um vírus, trata-se de um programa malicioso 
+    com a capacidade de se autorreplicar e infectar outros 
+    computadores, propagando-se de forma automática pela rede. 
+    Dessa forma, se apenas um computador da empresa estiver 
+    infectado, ao conectar em rede com os demais, pode ser um grande 
+    problema.
+
+    DoS (Denial of Service): são ataques de negação de serviço, 
+    por meio do qual o atacante utiliza um computador ou um 
+    conjunto de computadores para tirar de operação um serviço, 
+    um computador ou uma rede, enviando mais requisições e 
+    pacotes de rede fraudentos, “soterrando a máquina” ou 
+    sobrecarregando o servidor, que não tem condições de atender 
+    a todos os pedidos.
+
+    Invasão: um ataque bem-sucedido, cujo resultado é o ganho de 
+    acesso não autorizado a um computador ou rede, o que pode 
+    acontecer de várias maneiras, entre elas a exploração de uma 
+    falha de segurança de um serviço de rede desatualizado 
+    (exploit).
+
+    Web: trata-se de um caso particular de ataque, que visa 
+    especificamente o comprometimento de servidores Web ou mesmo 
+    o defacement, que é a desfigurações ou pichações de páginas 
+    na Internet.
+
+    Scan: também chamado de Port Scan, trata-se de varreduras em 
+    redes de computadores com o objetivo de descobrir quais 
+    computadores estão ativos e quais serviços de rede estão sendo 
+    disponibilizados por eles, com versões de software. É 
+    largamente utilizado por atacantes e é considerado o primeiro 
+    passo de um ataque cibernético, pois por meio dele é possível 
+    “mapear o terreno” e identificar potenciais alvos, associando a 
+    eles possíveis vulnerabilidades aos serviços habilitados em um 
+    computador.
+
+    Fraude: de acordo com Houaiss, é “qualquer ato ardiloso, 
+    enganoso, de má-fé, com o objetivo de lesar ou ludibriar 
+    outrem, ou de não cumprir determinado dever; logro”. 
+    Enquadram-se aqui as tentativas de fraudes, ou seja, de 
+    incidentes em que ocorre uma tentativa de obter algum tipo 
+    de vantagem.
+
+                        Vetores de ataques
+
+Simplificando, um vetor de ataque pode ser descrito como o meio 
+utilizado pelo agente da ameaça para atacar o sistema-alvo. É 
+possível observar pelo website HACKMAGEDDON, especializado em 
+timelines e estatísticas em segurança cibernética, a publicação 
+dos seguintes números referentes às técnicas de ataque de maior 
+destaque em dezembro de 2018.
+
+Podemos observar no gráfico no site que os vetores de ataque mais 
+evidentes são os Malwares/PoS Malwares (25,5%). E essencialmente, 
+Point-of-Sale (PoS) malwares constituem uma família específica de 
+códigos maliciosos, cujo principal objetivo é a obtenção de
+informações relacionadas a transações financeiras, incluindo dados 
+de cartões de crédito.
+
+Logo em seguida, com 24,5%, aparece o Accounting Hijacking 
+(sequestro da conta), o qual consiste, em linhas gerais, as 
+ações de um atacante com o objetivo de obter as credenciais 
+de um usuário legítimo (por exemplo, usuário e senha de uma 
+conta de e-mail ou computador) para a execução de atividades 
+não autorizadas. Os propósitos podem ser os mais distintos: 
+acesso aos perfis de redes sociais da vítima, sistemas de 
+correio eletrônico (que pode ser utilizado para recuperar a 
+senha da vítima em outros serviços, ampliando o estrago), 
+sistemas bancários eletrônicos, entre vários outros.
+
+Logo, pode-se concluir que, a partir de análises estatísticas 
+adequadas a cada contexto, é possível identificar apropriadamente 
+os principais vetores de ataque utilizados contra um alvo e, dessa 
+forma, contribuir para o desenvolvimento de estratégias e 
+contramedidas de segurança, não apenas efetivas, mas também 
+aderentes às necessidades de negócio.
+
+        Intervalo de valores dos tipos inteiros
+
+Os tipos com sinal podem representar números positivos e negativos. 
+O bit mais significativo (MSB — More Significant Bit) é usado para 
+o sinal:
+
+    int8_t:
+        
+        Tamanho: 8 bits (2^8 = 256 combinações, logo, metade 
+        positiva e metade negativa).
+        
+        Intervalo: -128 a 127.
+        
+    int16_t:
+    
+        Tamanho: 16 bits (2^16 = 65.536, logo, metade positiva e 
+        metade negativa).
+        
+        Intervalo: -32.768 a 32.767.
+
+    int32_t:
+    
+        Tamanho: 32 bits (2^32 = 4.294.967.296, logo, idem).
+        
+        Intervalo: -2.147.483.648 a 2.147.483.647.
+        
+    int64_t:
+    
+        Tamanho: 64 bits (2^64 = 18.446.744.073.709.551.616, idem).
+        
+        Intervalo: -9.223.372.036.854.775.808 a 
+        9.223.372.036.854.775.807
+
+
