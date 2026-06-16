@@ -20,6 +20,16 @@ csv/
 # remover a pasta arquivos
 arquivos/
 
+# remover pasta imagens
+IMGS/
+IMG/
+IMAGES/
+IMAGE/
+imgs/
+img/
+images
+image/
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

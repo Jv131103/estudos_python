@@ -2709,3 +2709,821 @@ tecnológicos para competir com essas potências. Ao tentar adotar
 esses modelos sem realizar os ajustes adequados, pode resultar em 
 problemas estrangeiros e fomentar preconceitos e estereótipos 
 existentes na sociedade.
+
+        Modelagem de dados com regressão supervisionada
+
+Nem todo problema preditivo pode ser resolvido com respostas 
+binárias ou categóricas. Em muitos casos, precisamos prever um 
+valor contínuo, como a temperatura do dia, o preço de uma casa ou 
+a demanda futura de um produto. Considerando esses casos, os 
+modelos de classificação não são suficientes. É neste momento que 
+entra a regressão, uma abordagem que prevê valores numéricos a 
+partir das features.
+
+A intuição por trás de um modelo de regressão é encontrar uma 
+relação matemática entre as variáveis de entrada e a saída 
+contínua. Enquanto os modelos de classificação se concentram em 
+atribuir um rótulo a um conjunto de características (representada 
+por uma região do espaço das features), os modelos de regressão 
+buscam identificar padrões que permitam prever uma quantidade 
+específica. Em vez de dizer se um cliente comprará ou não um 
+produto, um modelo de regressão estima, por exemplo, quanto ele 
+gastará.
+
+Criar um modelo de regressão é, essencialmente, encontrar uma 
+tendência na dispersão dos pontos em um conjunto de dados. Imagine 
+um gráfico onde cada ponto representa uma combinação de 
+características e seu valor numérico associado, a tarefa da 
+regressão é traçar uma linha ou curva que melhor representa essa 
+tendência geral. Na figura “Exemplo de regressão”, o modelo 
+preditivo mostra a relação entre a variável independente 
+“Propaganda” (eixo X), e a variável dependente “Vendas” (eixo Y). 
+Os pontos são os exemplos que a máquina usa para aprender, e o 
+modelo, no caso, é uma reta.
+
+No entanto, um bom modelo de regressão precisa ir além de apenas se 
+ajustar aos dados que possui. Ele deve ser capaz de aprender os 
+padrões presentes, capturando as relações entre as variáveis, mas 
+também ser generalizável, ou seja, funcionar bem com novos dados 
+que não foram utilizados durante o treinamento. Encontrar esse 
+equilíbrio entre aprender com os dados e ser robusto a novas 
+situações é a chave para um modelo preditivo de sucesso em 
+regressão.
+
+Portanto, um bom modelo de regressão precisa encontrar o equilíbrio 
+entre aprender com os dados e ser capaz de generalizar. Isso 
+significa evitar dois extremos: overfitting e underfitting. O 
+overfitting ocorre quando o modelo se ajusta demais aos detalhes e 
+ruídos do conjunto de treinamento, tornando-se inflexível para 
+dados novos. Por outro lado, o underfitting acontece quando o 
+modelo é excessivamente simples, falhando em capturar as 
+tendências básicas dos dados. O objetivo é construir um modelo que 
+se ajuste bem aos dados de treinamento, mas que também mantenha a 
+capacidade de fazer previsões precisas em dados inéditos.
+
+            Relação entre regressão e classificação
+
+Embora sejam problemas distintos, a regressão e a classificação 
+guardam uma relação entre si. Um exemplo comum envolve transformar 
+um problema de regressão (contínuo) em um problema de classificação 
+(categórico) quando se deseja prever uma variável contínua, porém, 
+a interpretação final requer uma decisão categórica. Por exemplo, 
+ao prever a pontuação de crédito de um cliente, que originalmente 
+seria um valor contínuo, pode-se posteriormente categorizá-lo em 
+classes como “baixo risco”, “médio risco” ou “alto risco”. Para 
+fazer essa conversão, é necessário definir intervalos ou limites 
+que traduzam os valores previstos em categorias.
+
+Da mesma forma, é possível abordar alguns problemas de classificação 
+como se fossem de regressão. Um exemplo é a classificação binária 
+com a regressão logística, onde o modelo prevê a probabilidade de 
+um evento (um valor contínuo entre 0 e 1), e essa probabilidade é 
+então convertida em uma decisão categórica com base em um limiar, 
+como 0,5. Além disso, existem técnicas como a “regressão ordinal”, 
+que lidam com variáveis categóricas ordenadas, combinando 
+características de classificação e regressão.
+
+No entanto, a passagem entre os dois tipos de problema nem sempre 
+é trivial. A abordagem escolhida depende da natureza do dado, dos 
+objetivos do projeto e da interpretação necessária. Se um problema 
+requer previsões precisas de valores numéricos, como a quantidade 
+de vendas futuras, tratá-lo como uma classificação pode resultar em 
+perda de nuances importantes. Portanto, é essencial analisar a 
+especificidade do problema antes de optar por convertê-lo de 
+regressão para classificação ou vice-versa.
+
+Grande parte da conversão da regressão em classificação é feita 
+pela escolha de threshold (limiares), delimitando faixas que 
+caracterizam uma categoria. Não conhecer este threshold limita a 
+conversão da classificação em uma regressão. Por exemplo, após 
+84 ºF (~29 ºC) está quente, e abaixo disso está frio. Um modelo de 
+regressão pode prever a temperatura média amanhã, e a partir disso 
+você classifica se está quente ou frio. Entretanto, saber se está 
+quente ou frio não é o suficiente para afirmar a temperatura média 
+do dia seguinte.
+
+O aprendizado supervisionado de regressão é fundamental quando 
+precisamos prever valores contínuos com base em variáveis de 
+entrada. Ao contrário da classificação, onde cada exemplo é 
+associado a um rótulo categórico, na regressão, cada exemplo no 
+conjunto de dados corresponde a um valor numérico específico. Isso 
+permite abordar problemas complexos, como prever o faturamento de 
+uma empresa ou a temperatura em um dia futuro, capturando as sutis 
+relações entre as variáveis e os resultados. A habilidade de prever 
+um valor contínuo faz da regressão uma ferramenta poderosa em 
+análises preditivas e tomada de decisões estratégicas.
+
+Avaliar o desempenho de modelos preditivos de regressão é uma 
+etapa fundamental para garantir que as previsões feitas sejam 
+confiáveis e úteis na prática. Ao construir um modelo de regressão, 
+nosso objetivo é prever valores contínuos, como o preço de um 
+imóvel, a temperatura de amanhã ou o faturamento de uma empresa. No 
+entanto, as previsões só terão valor se forem precisas e se o modelo 
+for capaz de generalizar bem para dados novos e desconhecidos. Sem 
+uma avaliação adequada, não há como saber se o modelo está realmente 
+aprendendo padrões relevantes nos dados ou apenas se ajustando a 
+ruídos ou peculiaridades do conjunto de treinamento.
+
+Além disso, a avaliação de desempenho permite identificar as 
+limitações do modelo e orientar melhorias. Por exemplo, se um 
+modelo de regressão apresenta desempenho ruim, podemos investigar 
+se isso se deve a variáveis inadequadas, ao tratamento insuficiente 
+de outliers ou à necessidade de ajustes nos parâmetros do modelo. 
+Possuir uma medida clara do erro das previsões ajuda a entender se 
+o modelo é adequado para o problema em questão e se ele está pronto 
+para ser utilizado em um ambiente real. Dessa forma, a avaliação 
+não só valida a qualidade do modelo, mas também direciona esforços 
+para aprimorar a capacidade preditiva e garantir que ele possa 
+apoiar efetivamente a tomada de decisões.
+
+                    Métricas de avaliação
+
+Uma métrica de avaliação é uma ferramenta quantitativa utilizada 
+para medir a performance de um modelo preditivo, permitindo uma 
+análise objetiva de quão bem o modelo está atingindo seus objetivos. 
+No contexto do aprendizado supervisionado de regressão, as métricas 
+de avaliação têm um papel fundamental, pois nos ajudam a entender a 
+precisão das previsões feitas pelo modelo em relação aos valores 
+reais.
+
+Enquanto um modelo de classificação prevê categorias, um modelo de 
+regressão prevê valores contínuos, como preços, temperaturas ou 
+vendas. Portanto, as métricas de avaliação em regressão focam em 
+quantificar a diferença entre os valores previstos e os reais. 
+Elas nos oferecem uma visão sobre a qualidade das previsões, 
+identificando se o modelo está, por exemplo, consistentemente 
+subestimando ou superestimando os resultados. Em última análise, 
+a escolha da métrica de avaliação adequada permite ajustar e 
+aprimorar o modelo para que ele forneça previsões úteis e 
+confiáveis em situações do mundo real.
+
+Erro absoluto médio:
+
+    O Erro Absoluto Médio (MAE – Mean Absolute Error) é uma 
+    métrica que mede a média das diferenças absolutas entre os 
+    valores previstos pelo modelo e os valores reais. Ele é 
+    calculado somando as diferenças absolutas entre cada valor 
+    previsto (y) e o valor real correspondente (y^) e, em seguida, 
+    é dividido pelo número total de observações (n).
+
+    A interpretação do MAE é direta: ele indica, em média, o quão 
+    distante as previsões estão dos valores reais. Por estar em 
+    unidades da variável de saída, o MAE é fácil de entender, 
+    representando o erro médio esperado do modelo. Quanto menor o 
+    MAE, mais precisas são as previsões do modelo.
+
+Erro quadrático médio:
+
+    O Erro Quadrático Médio (MSE – Mean Squared Error) é outra 
+    métrica que mede a média dos quadrados das diferenças entre 
+    os valores previstos e os reais.
+
+    Diferentemente do MAE, o MSE dá mais peso a erros maiores 
+    devido à elevação ao quadrado. Isso significa que um modelo 
+    que comete grandes erros será penalizado mais severamente. 
+    Portanto, o MSE é útil quando se deseja enfatizar grandes 
+    desvios nas previsões. Entretanto, sua interpretação pode ser 
+    menos intuitiva, já que o resultado está em unidades quadradas 
+    da variável de saída.
+
+Raiz Quadrada do Erro Quadrático Médio:
+
+    A Raiz Quadrada do Erro Quadrático Médio (RMSE – Root Mean 
+    Squared Error) é a raiz quadrada do MSE.
+
+    O RMSE traz o erro médio de volta para as mesmas unidades da 
+    variável alvo, tornando a métrica mais interpretável. Ele 
+    ainda mantém a penalização para grandes erros, pois é baseado 
+    no MSE. Um RMSE mais baixo indica um modelo preditivo mais 
+    preciso, sendo especialmente útil quando se quer dar maior
+    atenção para desvios significativos nas previsões.
+
+R² Score:
+
+    O R² Score (Coeficiente de Determinação) mede a proporção da 
+    variabilidade dos dados que é explicada pelo modelo.
+
+    O R² varia de 0 a 1, onde 1 indica que o modelo explica 
+    perfeitamente a variabilidade dos dados, enquanto 0 indica 
+    que ele não explica nenhuma variabilidade em relação à média. 
+    Em alguns casos, o R² pode ser negativo, sugerindo que o 
+    modelo é pior do que simplesmente usar a média como previsão. 
+    Em resumo, o R² fornece uma medida da qualidade do ajuste do 
+    modelo, indicando quão bem as previsões se aproximam dos 
+    valores reais.
+
+Outras métricas:
+
+    Além das métricas discutidas, existem outras formas de avaliar 
+    a performance de um modelo de regressão, como o Erro Percentual 
+    Absoluto Médio (MAPE) e o Mean Bias Deviation (MBD). Cada 
+    métrica oferece uma perspectiva diferente sobre a qualidade 
+    das previsões, e pode ser mais adequada dependendo do contexto 
+    do problema e das características dos dados. Escolher a 
+    métrica certa é crucial para garantir uma avaliação justa e 
+    alinhada com os objetivos do projeto.
+
+Escolher a métrica de avaliação ideal para um problema de 
+regressão é uma etapa fundamental, que influencia diretamente a 
+interpretação e o sucesso do modelo preditivo. A decisão deve ser 
+baseada nas características dos dados, no contexto do problema e 
+no tipo de erro que se deseja minimizar. Não existe uma única 
+métrica que seja adequada para todos os casos, por isso é 
+importante conhecer as diferenças e os impactos de cada uma.
+
+Se o objetivo é ter uma ideia clara do erro médio esperado nas 
+mesmas unidades da variável alvo, o Erro Absoluto Médio (MAE) 
+pode ser a melhor escolha. Ele fornece uma visão direta e fácil 
+de entender do quanto as previsões, em média, estão distantes 
+dos valores reais. Além disso, o MAE é especialmente útil quando 
+todos os erros devem ser tratados com igual importância, sem dar 
+peso maior para desvios maiores.
+
+Por outro lado, se o problema em questão é sensível a grandes 
+desvios, o Erro Quadrático Médio (MSE) ou a Raiz Quadrada do Erro 
+Quadrático Médio (RMSE) são as opções mais indicadas. Ambos 
+penalizam mais fortemente os erros maiores devido ao fato de elevar 
+as diferenças ao quadrado. Isso significa que, se erros grandes 
+forem mais prejudiciais ou críticos, o MSE e o RMSE podem ser mais 
+adequados, fornecendo um ajuste do modelo que se concentra em 
+minimizar esses desvios.
+
+Além dessas métricas, existem outras, como o Erro Percentual 
+Absoluto Médio (MAPE), que é útil quando a escala dos dados varia 
+muito, ou quando se deseja expressar o erro em termos percentuais. 
+A escolha da métrica deve ser feita considerando os objetivos 
+específicos do projeto, os impactos de erros nas previsões e a 
+natureza dos dados envolvidos. Em alguns casos, a análise combinada 
+de várias métricas é a melhor abordagem, fornecendo uma visão mais 
+completa do desempenho do modelo.
+
+                Principais Algoritmos
+
+Agora que sabemos o que é Machine Learning (ML), do que se trata o 
+aprendizado supervisionado, quais são os problemas típicos modelados 
+pela regressão e como avaliar os modelos treinados, chegou o momento 
+de conhecermos os principais algoritmos que aprendem valores 
+contínuos a partir dos dados.
+
+A lista de algoritmos é vasta e nossa intenção não é passar todos 
+eles, mas dar destaques aos principais. Assim, a partir destes 
+você poderá conhecer outros e contrastar seus benefícios e 
+limitações. Vamos lá?
+
+Regressão Linear:
+
+    A regressão linear é um dos algoritmos mais simples e 
+    amplamente utilizados em aprendizado supervisionado para prever 
+    valores contínuos. Em casos básicos, podemos chamar de regressão 
+    linear simples, pois temos apenas uma variável independente (ou 
+    preditora) e uma variável dependente (ou alvo). O objetivo da 
+    regressão linear é encontrar a melhor linha reta que descreva a 
+    relação entre essas duas variáveis.
+
+    Imagine que queremos prever a altura de uma pessoa (variável 
+    dependente) com base na idade (variável independente). A 
+    regressão linear simples vai traçar uma linha reta que melhor 
+    se ajusta aos dados, representando a tendência geral de como a 
+    altura muda conforme a idade varia. A fórmula dessa linha é:
+
+        y = ꞵ0 + ꞵ1x
+
+    Aqui, y é a variável dependente (altura), x é a variável 
+    independente (idade), ꞵ0 é o intercepto (o ponto onde a 
+    linha cruza o eixo y), e ꞵ1 é o coeficiente angular, também 
+    chamado de inclinação. O coeficiente ꞵ1 indica o quanto a 
+    variável dependente muda, em média, para cada unidade de 
+    variação na variável independente. Por exemplo, se ꞵ1=2 isso 
+    significa que a altura aumenta, em média, 2 unidades para cada 
+    unidade de aumento na idade.
+
+    O algoritmo de regressão linear encontra a melhor linha 
+    ajustando os valores de ꞵ0 e ꞵ1 de forma que a soma das 
+    diferenças quadradas entre os valores reais e os valores 
+    previstos seja minimizada. Essa técnica é conhecida como 
+    “mínimos quadrados”. Em outras palavras, o modelo tenta 
+    minimizar o erro total das previsões, encontrando a linha 
+    que fica mais próxima possível de todos os pontos de dados, 
+    como ilustrado na figura “Regressão linear simples”.
+
+    Uma vez que a linha é definida, podemos usar o modelo para fazer 
+    previsões. Por exemplo, se queremos prever a altura de uma pessoa 
+    de 10 anos, substituímos x=10 na fórmula da linha. A simplicidade 
+    da regressão linear a torna uma ferramenta poderosa para capturar 
+    tendências em dados quando há uma relação linear entre as variáveis. 
+    No entanto, ela é limitada em casos nos quais a relação entre as 
+    variáveis é mais complexa e não pode ser bem representada por uma 
+    linha reta.
+
+Regressão Linear Múltipla:
+
+    A regressão linear múltipla é uma extensão da regressão linear 
+    simples. Ela é útil em situações onde temos mais de uma variável 
+    independente (ou preditora) para prever a variável dependente 
+    (ou alvo). Enquanto a regressão linear simples tenta encontrar uma 
+    linha que melhor representa a relação entre duas variáveis, a 
+    regressão linear múltipla busca um “plano” ou um “hiperplano” em um 
+    espaço multidimensional para representar as relações entre várias 
+    variáveis preditoras e a variável de interesse.
+
+    A fórmula da regressão linear múltipla é expressa da seguinte forma:
+
+        y = ꞵ0 + ꞵ1x1 + ꞵ2x2 + ꞵ3x3 + … + ꞵnxn
+
+    Neste caso, y é a variável dependente (o valor que queremos prever), 
+    x1, ..., xn são as variáveis independentes (as características ou 
+    fatores que podem influenciar y), ꞵ0 é o intercepto (o valor de y) 
+    quando todas as variáveis independentes são zero, e ꞵ1, … ꞵn
+    são os coeficientes que representam a influência de cada variável 
+    independente em y.
+
+    Cada coeficiente ꞵi indica o quanto a variável dependente y mudará, 
+    em média, para uma unidade de aumento na variável independente 
+    xi, assumindo que todas as outras variáveis independentes permaneçam 
+    constantes. Por exemplo, em um modelo que tenta prever o preço de 
+    uma casa, as variáveis independentes poderiam incluir o número de 
+    quartos, a metragem quadrada, a idade do imóvel, entre outros. O 
+    coeficiente associado à metragem quadrada indicaria o quanto o preço 
+    da casa muda para cada aumento de uma unidade na metragem, mantendo 
+    todas as outras variáveis fixas.
+
+    O objetivo da regressão linear múltipla é encontrar os valores dos 
+    coeficientes ꞵ1, … ꞵN que minimizam a soma dos quadrados das 
+    diferenças entre os valores previstos e os valores reais. Isso é 
+    feito usando a técnica de “mínimos quadrados”, que calcula a melhor 
+    combinação linear das variáveis preditoras para ajustar os dados.
+
+    Uma das grandes vantagens da regressão linear múltipla é que ela 
+    pode modelar cenários mais complexos onde a variável dependente é 
+    influenciada por múltiplos fatores. No entanto, ela também traz 
+    desafios, como a necessidade de se atentar à multicolinearidade, que 
+    ocorre quando as variáveis independentes são altamente correlacionadas 
+    entre si. Isso pode afetar a precisão das estimativas dos coeficientes 
+    e, consequentemente, a confiabilidade das previsões. Portanto, é 
+    importante analisar cuidadosamente as variáveis utilizadas no modelo 
+    e verificar a qualidade do ajuste, geralmente por meio de métricas 
+    como o R² ajustado.
+
+                    XGBOOST (caso de regressão)
+
+XGBoost (eXtreme Gradient Boosting) é um algoritmo de aprendizado 
+supervisionado baseado em técnicas de Ensemble Learning, mais 
+especificamente o “gradient boosting”. Ele é amplamente utilizado 
+tanto em problemas de classificação quanto em regressão, sendo 
+conhecido por sua eficiência e alta capacidade preditiva. No contexto 
+da regressão, o XGBoost constrói um modelo composto por uma série de 
+árvores de decisão, onde cada nova árvore é adicionada para corrigir os 
+erros das previsões das árvores anteriores, melhorando assim a precisão 
+do modelo de forma iterativa.
+
+O XGBoost começa treinando uma árvore de decisão inicial com os dados. 
+Essa primeira árvore tenta fazer previsões, mas inevitavelmente comete 
+alguns erros. Em seguida, o algoritmo calcula o gradiente (basicamente, 
+a direção dos erros) e usa essas informações para treinar uma nova 
+árvore que se concentra em corrigir os erros cometidos pela anterior. 
+Este processo é repetido para um número especificado de árvores, onde 
+cada nova árvore é ajustada aos “resíduos” das previsões anteriores. A 
+combinação dessas árvores resulta em um modelo final com maior precisão.
+
+O XGBoost introduz várias melhorias em relação ao tradicional gradient 
+boosting, como a regularização (para prevenir overfitting), a construção 
+de árvores paralelas (para acelerar o treinamento) e o uso de uma técnica 
+chamada “pruning” (poda) para reduzir o tamanho das árvores e evitar 
+modelos excessivamente complexos.
+
+Como todo algoritmo preditivo, o XGBoost possui vantagens e desvantagens, 
+como apresentadas no quadro “Vantagens e desvantagens do XGBoost”. Não há 
+como saber se o algoritmo funcionará bem ou mal no seu conjunto de dados, 
+portanto, é sempre recomendado experimentar.
+
+x==================================x=====================================x
+|         Vantagens                |            Desvantagens             |
+x==================================x=====================================x
+| Alto desempenho preditivo:       | Complexidade de parametrização:     |
+| o XGBoost costuma ter            | o XGBoost possui muitos parâmetros  |
+| excelente desempenho em          | que podem ser ajustados, tornando   |
+| problemas complexos, sendo       | a otimização do modelo uma tarefa   |
+| uma escolha comum em competições | complexa e demorada.                |
+| de Machine Learning.             |                                     |
+x----------------------------------x-------------------------------------x
+| Regularização embutida: o        | Risco de overfitting: se não for    | 
+| algoritmo inclui parâmetros de   | configurado corretamente,           |
+| regularização (L1 e L2) para     | especialmente os parâmetros de      |
+| reduzir o overfitting, o que     | regularização, o XGBoost pode       |
+| contribui para a criação de      | sofrer overfitting, ajustando-se    |
+| modelos mais generalizáveis.     | demais aos dados de treinamento.    |
+x----------------------------------x-------------------------------------x
+| Eficiência computacional: o      | Custo computacional: apesar das     |
+| XGBoost é otimizado para         | otimizações, para grandes conjuntos |
+| aproveitar ao máximo os recursos | de dados e modelos muito complexos, |
+| computacionais, com suporte a    | o treinamento pode ser intensivo em |
+| processamento paralelo,          | termos de recursos computacionais.  |
+| tornando-o muito rápido mesmo em |                                     |
+| grandes conjuntos de dados.      |                                     |
+x----------------------------------x-------------------------------------x
+| Trabalho com valores faltantes:  |                                     |
+| ele lida automaticamente com     |                                     |
+| dados missing, facilitando o     |                                     |
+| pré-processamento.               |                                     |
+x----------------------------------x-------------------------------------x
+
+            Parametrização e influencia dos resultados
+
+Em relação aos hiperparâmetros do XGBoost, ou seja, as fontes de 
+configuração do algoritmo, temos as mesmas alternativas de configuração 
+de métodos baseados em Árvores de Decisão. Para compreender melhor:
+
+    n_estimators: número de árvores que o modelo irá construir. Valores 
+    mais altos geralmente aumentam a precisão, mas também aumentam o 
+    risco de overfitting.
+    
+    learning_rate: controla a taxa de aprendizado, ou seja, o impacto de 
+    cada nova árvore no modelo final. Valores mais baixos tornam o 
+    processo de aprendizado mais lento, mas podem resultar em um modelo
+    mais robusto.
+    
+    max_depth: profundidade máxima das árvores. Profundidades maiores 
+    permitem capturar padrões complexos, mas também aumentam o risco de 
+    overfitting.
+    
+    subsample: proporção dos dados de entrada a serem usados para 
+    construir cada árvore. Valores menores que 1 podem ajudar a prevenir 
+    o overfitting, criando árvores mais diversificadas.
+    
+    colsample_bytree: proporção de características selecionadas 
+    aleatoriamente para treinar cada árvore. Assim como o subsample, 
+    ajuda a prevenir o overfitting ao criar árvores diferentes.
+    
+    gamma: controle da redução mínima necessária na função de custo para 
+    dividir um nó. Valores mais altos tornam o modelo mais conservador, 
+    reduzindo a complexidade das árvores.
+    
+    reg_alpha (L1 regularization) e reg_lambda (L2 regularization): 
+    controlam a regularização do modelo. Valores mais altos impõem uma 
+    penalização maior, evitando que o modelo se ajuste excessivamente 
+    aos dados de treinamento.
+
+Alterar qualquer configuração pode mudar significativamente os resultados 
+do modelo. Por esta razão, é essencial realizar experimentos com 
+diferentes configurações para encontrar a configuração ideal para o 
+problema em questão.
+
+                        Demais algoritmos
+
+Além do algoritmo de regressão linear e do XGBoost, outros algoritmos que normalmente associamos a problemas de classificação, como KNN, Árvore de Decisão, Floresta Aleatória e Support Vector Machine (SVM), também podem ser adaptados e utilizados para resolver problemas de regressão. Esses algoritmos, quando aplicados ao contexto de regressão, sofrem algumas alterações em seu funcionamento e nos critérios de avaliação.
+
+No caso do KNN para regressão, em vez de prever uma classe com base na 
+maioria dos vizinhos mais próximos, ele calcula a média dos valores das 
+variáveis dependentes dos K vizinhos mais próximos. Isso resulta em um 
+valor contínuo ao invés de uma categoria. A principal alteração é que, 
+ao invés de “votação” para classificar, o KNN faz uma média ou uma 
+ponderação dos valores contínuos.
+
+Para a Árvore de Decisão em regressão, a principal diferença é o 
+critério usado para dividir os nós. Em vez de buscar a pureza das 
+classes (como ocorre na classificação), a Árvore de Decisão de regressão 
+divide os nós para minimizar o erro de previsão em termos de variância 
+ou erro quadrático médio. Cada nó final (folha) da árvore passa a 
+representar uma média dos valores das amostras presentes naquele grupo, 
+fornecendo uma previsão numérica ao invés de uma categoria.
+
+A Floresta Aleatória também pode ser utilizada em regressão, com algumas 
+mudanças. Em vez de “votar” na classe mais frequente como na 
+classificação, cada árvore na floresta produz um valor de regressão 
+(normalmente a média das amostras em cada folha). A previsão final da 
+Floresta Aleatória de regressão é a média das previsões feitas por 
+todas as árvores. Assim, ela mantém sua capacidade de reduzir 
+variabilidade e melhorar a robustez do modelo, mas agora em termos de 
+valores contínuos.
+
+Já o SVM  pode ser adaptado para problemas de regressão por meio de uma 
+técnica chamada Support Vector Regression (SVR). Em vez de encontrar um 
+hiperplano que separa as classes, a SVR tenta encontrar uma linha ou 
+hiperplano que se ajuste aos dados, ao mesmo tempo que tenta manter todos os pontos de dados dentro de uma margem de erro especificada. Assim, o foco muda de maximizar a margem entre classes para minimizar o erro das previsões em um intervalo especificado.</p>
+
+Em todos esses algoritmos, a principal mudança é o critério de avaliação 
+e otimização e que, ao invés de medir a acurácia ou a pureza das classes, 
+eles buscam minimizar o erro contínuo (como erro absoluto médio, erro 
+quadrático médio, entre outros). Além disso, os parâmetros que 
+influenciam o ajuste do modelo, como a profundidade das árvores em 
+Árvores de Decisão e Florestas Aleatórias ou o valor de K no KNN, 
+continuam sendo fundamentais, mas agora precisam ser otimizados para 
+fornecer previsões numéricas precisas.
+
+        Construindo modelos preditivos mais robustos
+
+A validação cruzada e os pipelines do Scikit-learn são ferramentas 
+essenciais na construção de modelos preditivos, tanto de regressão 
+quanto de classificação. A validação cruzada permite avaliar a 
+performance do modelo de forma consistente, evitando vieses ao garantir 
+que todas as observações sejam utilizadas tanto para treinamento quanto 
+para validação, proporcionando uma estimativa confiável da capacidade de 
+generalização do modelo. Em relação aos pipelines do Scikit-learn, eles 
+facilitam o processo de modelagem ao automatizar etapas como 
+pré-processamento, seleção de características e ajuste de hiperparâmetros
+em um fluxo único. Isso não apenas reduz o risco de erros ao aplicar 
+diferentes técnicas, mas também garante que as transformações aplicadas 
+aos dados de treino sejam idênticas às usadas nos dados de validação ou 
+teste, resultando em um modelo mais robusto e eficiente.
+
+Validação cruzada:
+
+    Validação cruzada é uma técnica que consiste em dividir os dados de 
+    treinamento em várias partes (subconjuntos) para testar o modelo em 
+    diferentes segmentos dos dados. A ideia é que, ao invés de treinar o 
+    modelo em todo o conjunto de dados de uma só vez, ele é treinado 
+    múltiplas vezes, cada vez com um subconjunto ligeiramente diferente 
+    dos dados. Isso fornece uma visão mais completa do desempenho do 
+    modelo, evitando resultados excessivamente otimistas ou pessimistas 
+    que poderiam surgir caso avaliássemos o modelo utilizando um único 
+    conjunto de validação.
+
+    Assim, a validação cruzada permite avaliar o desempenho do modelo de 
+    maneira mais confiável, fornecendo uma estimativa precisa de como ele 
+    deve se comportar em dados desconhecidos. Existem diversas formas de 
+    implementar validação cruzada. Vamos conhecê-las!
+
+    Método Hold-Out:
+
+        O método hold-out é uma técnica de validação mais comum, em que 
+        o conjunto de dados é dividido em duas ou três partes: um 
+        conjunto de treinamento e um conjunto de teste (às vezes também 
+        um conjunto de validação). Normalmente, uma porcentagem maior 
+        dos dados, como 70-80%, é destinada ao treinamento do modelo, 
+        enquanto o restante, 20-30%, é reservado para teste. O modelo é 
+        treinado apenas com os dados de treinamento e, em seguida, 
+        avaliado em seu desempenho usando o conjunto de teste, que 
+        simula dados novos e desconhecidos.
+
+        A vantagem do hold-out é sua simplicidade e rapidez, mas ele pode 
+        ser influenciado pela maneira como os dados foram divididos, 
+        podendo levar a uma avaliação não tão precisa se os dados não 
+        forem representativos ou se houver uma divisão desbalanceada 
+        entre os conjuntos.
+
+    Método K-Fold:
+
+        O K-Fold Cross-Validation é o tipo mais comum de validação 
+        cruzada. Nele, o conjunto de dados é dividido em K subconjuntos 
+        ou “folds”. O modelo é treinado K vezes, cada vez usando K-1 
+        folds para treino e 1 fold diferente para validação. No final, 
+        a performance do modelo é avaliada como a média do desempenho 
+        em todos os K folds. A figura “Método K-fold” exemplifica a 
+        validação 5-fold, na qual os dados são divididos em 5 partes. O 
+        modelo é treinado 5 vezes, usando cada vez 4 partes para 
+        treinamento e 1 para validação. Esse processo garante que cada 
+        observação no conjunto de dados seja utilizada para validação 
+        exatamente uma vez, o que reduz a variabilidade e fornece uma 
+        estimativa mais estável do erro do modelo.
+
+    Método Leave-One-Out:
+
+        O Leave-One-Out Cross-Validation (LOOCV) é um caso extremo do 
+        K-Fold Cross-Validation, onde K é igual ao número total de 
+        observações no conjunto de dados. Isso significa que o modelo é 
+        treinado n vezes, cada vez deixando uma única observação de fora 
+        para validação. Embora seja uma técnica muito completa, é 
+        computacionalmente cara para grandes conjuntos de dados, pois 
+        envolve o treinamento do modelo um grande número de vezes. 
+    
+    Método K-Fold Estratificado:
+
+        O Stratified K-Fold Cross-Validation (K-fold estratificado) é 
+        uma variante do K-Fold em que os folds são criados de forma a 
+        manter a distribuição das variáveis dependentes semelhante em 
+        cada fold. A figura “Método K-fold estratificado” mostra a 
+        dinâmica de separação para K=5; em cada fold a distribuição entre 
+        as classes (M e F) é mantida.
+
+        O K-fold estratificado é especialmente útil quando se trabalha 
+        com problemas onde há desbalanceamento nas variáveis, garantindo 
+        que a proporção de valores em cada fold seja consistente com o 
+        conjunto de dados original.
+
+    Portanto, a validação cruzada é uma técnica poderosa que, ao avaliar 
+    o desempenho do modelo em múltiplos subconjuntos, fornece uma visão 
+    mais completa da robustez do modelo. Isso resulta em modelos 
+    preditivos mais confiáveis e capazes de generalizar melhor quando 
+    aplicados a novos dados, seja em problemas de regressão ou 
+    classificação.
+
+Uso da validação cruzada:
+
+    Uma abordagem comum na construção de modelos preditivos é combinar o 
+    método hold-out com a validação cruzada K-Fold, geralmente em uma 
+    configuração de 5-Fold Cross-Validation. Neste processo, o conjunto 
+    de dados original é primeiro dividido utilizando o método hold-out 
+    em dois subconjuntos: um conjunto de treinamento e um conjunto de 
+    teste. A divisão típica é 70-80% dos dados para o conjunto de 
+    treinamento e 20-30% para o conjunto de teste. O conjunto de teste 
+    é separado e só será utilizado ao final, para uma avaliação final do 
+    modelo.
+
+    Com o conjunto de treinamento em mãos, o próximo passo é aplicar a 
+    validação cruzada 5-Fold. Isso significa dividir o conjunto de 
+    treinamento em cinco partes (ou “folds”), onde em cada iteração 
+    quatro partes são usadas para treinar o modelo e a parte restante é 
+    usada para validação. Esse processo é repetido cinco vezes, 
+    garantindo que cada fold seja utilizado como conjunto de validação 
+    uma vez. A média das métricas obtidas em cada uma dessas cinco 
+    iterações fornece uma avaliação confiável do desempenho do modelo 
+    durante a fase de ajuste e seleção de hiperparâmetros, como a 
+    profundidade das árvores ou a taxa de aprendizado.
+
+    Após encontrar a melhor configuração de modelo usando a validação 
+    cruzada, o modelo final é treinado com todos os dados do conjunto 
+    de treinamento, incorporando os hiperparâmetros ajustados. Finalmente,
+    ele é testado no conjunto de teste original (mantido separado desde o 
+    início com o método hold-out) para avaliar seu desempenho em dados 
+    totalmente novos.
+
+    Essa combinação de hold-out e 5-Fold Cross-Validation oferece uma 
+    visão robusta da capacidade de generalização do modelo, minimizando 
+    riscos de overfitting e fornecendo uma avaliação precisa do seu 
+    desempenho real.
+
+                        Implementando pipelines
+
+Os pipelines do Scikit-learn são uma ferramenta poderosa para simplificar 
+e estruturar o processo de construção de modelos de aprendizado de máquina. 
+Em um projeto típico, várias etapas precisam ser realizadas, como 
+pré-processamento de dados, seleção de características, ajuste do modelo 
+e avaliação. O pipeline permite integrar todas essas etapas em um fluxo 
+de trabalho sequencial, garantindo que elas sejam executadas na ordem 
+correta e de forma consistente em todo o conjunto de dados. Isso é 
+especialmente útil quando se deseja aplicar as mesmas transformações 
+tanto aos dados de treinamento quanto aos dados de teste, garantindo 
+que os procedimentos de pré-processamento, como normalização ou 
+codificação de variáveis categóricas, sejam aplicados de forma idêntica.
+
+Um pipeline é criado combinando uma sequência de passos, onde cada passo 
+pode ser uma transformação (como “StandardScaler” para normalizar os 
+dados) ou um modelo de aprendizado (como uma regressão linear ou uma 
+árvore de decisão). Por exemplo, se estamos construindo um modelo de 
+regressão, o pipeline pode incluir uma etapa de normalização seguida 
+pelo ajuste de um modelo de regressão. Isso torna o código mais limpo, 
+reduzindo a possibilidade de erros e facilitando a manutenção do projeto.
+
+Além disso, os pipelines permitem realizar validações cruzadas e ajustes 
+de hiperparâmetros de forma mais eficiente. Durante a validação cruzada, 
+o pipeline aplica todas as transformações de pré-processamento dentro de 
+cada fold, evitando o vazamento de informações entre os conjuntos de 
+treinamento e validação. Ao utilizar técnicas como “GridSearchCV” ou 
+“RandomizedSearchCV” com pipelines, é possível ajustar os hiperparâmetros 
+das etapas do pipeline, incluindo tanto os parâmetros do pré-processamento 
+quanto do modelo, em uma única operação. Essa abordagem integrada não 
+apenas otimiza o fluxo de trabalho, mas também assegura que o modelo 
+final seja treinado de maneira correta e consistente em todas as fases 
+do processo de modelagem.
+
+A figura “Exemplo de uso de Pipelines do Sklearn” representa um pipeline 
+completo construído com Scikit-learn para processamento de dados e 
+modelagem. No pré-processamento, utiliza-se um “ColumnTransformer” 
+para aplicar diferentes transformações a variáveis numéricas e 
+categóricas. Para as variáveis numéricas, um “SimpleImputer” preenche 
+os valores ausentes com a mediana, seguido pelo “StandardScaler” que 
+padroniza os dados. Para as variáveis categóricas, os valores ausentes 
+são preenchidos com uma constante usando outro “SimpleImputer”, e o 
+“OneHotEncoder” transforma essas variáveis em formato binário, 
+ignorando categorias desconhecidas. Após o pré-processamento, a Análise 
+de Componentes Principais (PCA) é aplicada para reduzir a 
+dimensionalidade a 10 componentes. Por fim, o modelo de Regressão 
+Logística é treinado com parâmetros específicos, como `C=0.1` e 
+`solver='newton-cg'`. Esse pipeline garante que todas as etapas de 
+preparação e modelagem sejam realizadas de forma integrada e consistente.
+
+Implementando nossa análise:
+
+    O primeiro passo é a importação do código necessário, leitura e 
+    exibição dos dados (ou de uma parte deles).
+
+        # Imports
+        import pandas as pd
+        import numpy as np
+
+        from sklearn.model_selection import train_test_split
+        from sklearn.preprocessing import StandardScaler
+        from sklearn.linear_model import LinearRegression
+        from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
+
+        # Ler o dataset
+        df = pd.read_csv("galton.csv")
+        df.head(5)
+
+    Vamos obter informações gerais sobre a base:
+
+        # Infos do dataset
+        df.info()
+
+Agora podemos fazer a limpeza da base, removendo duplicados, colunas 
+inúteis, convertendo inchs para metros e tratando as variáveis que são 
+strings:
+
+    # Removendo linhas duplicadas
+    df.drop_duplicates(inplace=True)
+
+    # Tratamento de dados - REMOVENDO COLUNAS INÚTEIS PARA O PROBLEMA
+    df.drop(columns=["family", "children", "childNum"], inplace=True)
+
+    # Tratamento de dados - PASSANDO DE INCHES PARA METROS
+    def inch2m(inch):
+    return inch*2.54/100
+
+    for coluna in ["father", "mother", "midparentHeight", "childHeight"]:
+    df[coluna] = df[coluna].apply( inch2m )
+
+    # Tratamento de dados - PASSANDO "GENDER" DE STRING PARA NÚMERO
+    df["gender"] = df["gender"].apply( lambda x: 0 if x=="male" else 1 )
+
+    # Tratamento de dados - CRIAR UMA COLUNA COM A MÉDIA DA ALTURA DOS PAIS
+    df["media"] = (df["father"] + df["mother"]) / 2
+
+    # Exibe o resultado
+    df.sample(5)
+
+Podemos fazer o primeiro modelo, que será uma regressão linear simples 
+(uma variável independente), baseada apenas na média da altura dos pais:
+
+    # Dados e labels
+    X = np.array( df["media"] ).reshape(-1, 1) # Só fiz o reshape pq estou usando apenas 1 coluna do df
+    y = df["childHeight"]
+
+    # Treino e teste
+    X_train, X_test, y_train, y_test = train_test_split(
+        X,
+        y,
+        test_size=0.3,
+        random_state=42
+    )
+
+    # Treinar o modelo
+    reta = LinearRegression()
+    reta.fit(X_train, y_train)
+    y_pred = reta.predict(X_test)
+
+    # Avaliar o modelo
+    mse = mean_squared_error(y_test, y_pred)
+    mae = mean_absolute_error(y_test, y_pred)
+    r2 = r2_score(y_test, y_pred)
+
+    print(f"MSE = {mse}")
+    print(f"MAE = {mae}")
+    print(f"R² = {r2}")
+
+Por ser uma regressão simples, é possível construir o gráfico do modelo:
+
+    # Gráfico da regressão simples
+    import matplotlib.pyplot as plt
+
+    plt.scatter(X_test, y_test)
+    plt.plot(X_test, y_pred, color="red")
+    plt.title("Regressão da altura média dos pais e dos filhos")
+    plt.xlabel("Altura média dos pais (m)")
+    plt.ylabel("Altura dos filhos (m)")
+    plt.show()
+
+Será que podemos fazer melhor? Vamos ver como um modelo de regressão 
+multivariada performaria neste dataset:
+
+    # Dados e labels
+    X = df.drop(columns=["childHeight", "midparentHeight"])
+    y = df["childHeight"]
+
+    # Treino e teste
+    X_train, X_test, y_train, y_test = train_test_split(
+        X,
+        y,
+        test_size=0.3,
+        random_state=42
+    )
+
+    # Padronização dos dados
+    scaler = StandardScaler()
+    X_train_scaled = scaler.fit_transform(X_train)
+    X_test_scaled = scaler.transform(X_test)
+
+    # Treinar o modelo
+    reta2 = LinearRegression()
+    reta2.fit(X_train_scaled, y_train)
+    y_pred = reta2.predict(X_test_scaled)
+
+    # Avaliar o modelo (só copiei da célula da regressão simples)
+    mse = mean_squared_error(y_test, y_pred)
+    mae = mean_absolute_error(y_test, y_pred)
+    r2 = r2_score(y_test, y_pred)
+
+    print(f"MSE = {mse}")
+    print(f"MAE = {mae}")
+    print(f"R² = {r2}")
+
+
+Podemos perceber uma melhora nos resultados! Inclusive, podemos verificar 
+os coeficientes e o intercept deste modelo mais robusto:
+
+    # Intercept
+    display("Intercept: ", reta2.intercept_)
+
+    # Coeficientes
+    pd.DataFrame( {"features": X_train.columns,
+                "coeficientes": reta2.coef_})
+
