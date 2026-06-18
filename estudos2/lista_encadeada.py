@@ -54,7 +54,7 @@ class ListaEncadeada:
 
     def reverse(self):
         prev = None
-        current = self.head 
+        current = self.head
 
         while current:
 
@@ -76,7 +76,7 @@ class ListaEncadeada:
             current = current.next
 
         return " -> ".join(novo)
-    
+
     def is_cicle(self):
         current = self.head
 

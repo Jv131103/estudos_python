@@ -1,4 +1,4 @@
-from fila import Fila
+from estudos2.fila import Fila
 
 fila = Fila()
 
