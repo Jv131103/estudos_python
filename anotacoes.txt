@@ -9611,6 +9611,10 @@ UM POUCO SOBRE LÓGICA DE PROGRAMAÇÃO:
 
     ======================================================================
 
+    Prefixo e Sufixo de lista:
+
+    ======================================================================
+
     Listas, Arrays e Vetores circulares:
 
         LISTA / ARRAY / VETOR — ALINHANDO OS TERMOS:
