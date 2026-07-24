@@ -1,0 +1,47 @@
+[
+    {
+        "nome": "Irineu de Lion",
+        "telefone": "11 99876-5454",
+        "email": "irineuleao_servodedeus@gmail.com"
+    },
+    {
+        "nome": "Policarpo de Esmirna",
+        "telefone": "11 99670-54633",
+        "email": "poliesmirna_discipulo@gmail.com"
+    },
+    {
+        "nome": "Inácio de Antioquia",
+        "telefone": "11 99442-06637",
+        "email": "teoforo_inacaio@gmail.com"
+    },
+    {
+        "nome": "Jutino Martir",
+        "telefone": "11 99352-00628",
+        "email": "martir_filosofo_justiniano@gmail.com"
+    },
+    {
+        "nome": "João Crisóstomo",
+        "telefone": "11 997432-1109",
+        "email": "oretoricco_servodecristo@gmail.com"
+    },
+    {
+        "nome": "João Damasceno",
+        "telefone": "11 993321-1999",
+        "email": "ortodoxojoao_damasce@gmail.com"
+    },
+    {
+        "nome": "Tomás de Aquino",
+        "telefone": "11 993456-1039",
+        "email": "tomasoaristotelico12@gmail.com"
+    },
+    {
+        "nome": "Agostinho de Hipona",
+        "telefone": "11 99876-5050",
+        "email": "hiponaagostinho2209@gmail.com"
+    },
+    {
+        "nome": "Clemente de Roma",
+        "telefone": "11 99474-5152",
+        "email": "clementebispoderoma229@gmail.com"
+    }
+]

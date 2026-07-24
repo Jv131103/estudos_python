@@ -1,4 +1,9 @@
+import os
+
 import requests
+from dotenv import load_dotenv
+
+load_dotenv()
 
 
 def buscar_pais(nome: str) -> None:
@@ -10,7 +15,7 @@ def buscar_pais(nome: str) -> None:
     url = f"https://api.restcountries.com/countries/v5?q={nome}"
 
     headers = {
-        "Authorization": "Bearer rc_live_3d30a94c02ef472aa44b94fb913795c5"
+        "Authorization": os.getenv("BEARER_TK", "")
     }
 
     response = requests.get(url, headers=headers)
