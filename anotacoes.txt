@@ -20882,6 +20882,10 @@ UM POUCO SOBRE LÓGICA DE PROGRAMAÇÃO:
 
     =====================================================================
 
+    LBYL vs EAFP vs Parse, Don't Validate:
+
+    ======================================================================
+
     Assincronismo, funções e geradores assíncronos, threads e processos:
 
         PRIMEIRO: O PROBLEMA QUE TUDO ISSO RESOLVE

@@ -17,6 +17,13 @@ database/
 csvs/
 csv/
 
+# remover arquivos xlsx
+*.xlsx
+excel/
+excels/
+xlsx/
+xlsx/
+
 # remover a pasta arquivos
 arquivos/
 
