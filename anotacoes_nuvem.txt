@@ -1,0 +1,330 @@
+            Explorando o mundo da computação em nuvem
+
+O termo “nuvem” é amplamente utilizado atualmente nas empresas, 
+instituições de ensino, noticiários e até mesmo nas conversas 
+informais. No entanto, é necessário definir alguns conceitos 
+fundamentais para evitar ambiguidades, distinguindo soluções para 
+evitar ruídos de comunicação.
+
+Segundo a AWS Academy (2024), a computação em nuvem pode ser 
+definida como: “Entrega sob demanda de poder computacional, banco 
+de dados, aplicativos e outros recursos de TI pela internet com 
+uma definição de preço conforme o uso”.
+
+Portanto, podemos “alugar” o poder computacional de um grande 
+conjunto de computadores, por um tempo definido, pagando somente 
+pelo tempo ou quantidade de solicitações a um determinado serviço.
+
+Historicamente, o termo “Computação em nuvem” foi utilizado pela 
+primeira vez em uma palestra do professor Rammnath Chellappa em 
+um curso de sistemas de informação.
+
+O conceito de nuvem começou a ganhar força em 2003, quando dois 
+funcionários da Amazon, Chris Pinkham e Benjamin Black, apresentaram
+um paper interno de como a infraestrutura de máquinas da empresa 
+poderia funcionar. Eles sugeriram usar parte dessa infraestrutura 
+para venda de serviços e prepararam um case para isso.
+
+                Arquitetura de nuvem
+
+Podemos ter diferentes tipos de arquitetura de nuvem, cada uma com 
+características específicas que se adequam às necessidades de negócio 
+e consideram restrições técnicas das empresas.
+
+De maneira mais ampla, as empresas podem ter os seguintes tipos de 
+nuvem:
+
+    Nuvem pública;
+    
+    Nuvem privada;
+    
+    Nuvem híbrida.
+
+Na nuvem pública, podemos contratar diferentes serviços de provedores
+distintos (AWS, Azure, GCP etc.), incluindo serviços de computação na
+nuvem que replicam a infraestrutura de máquinas e rede de toda a 
+empresa. Portanto, neste modelo, a empresa não precisa se preocupar 
+em gerenciar um parque de máquina localmente, “alugando” servidores 
+na nuvem e realizando pagamentos sob demanda. Algumas vantagens 
+deste modelo incluem a escalabilidade, e o menor tempo de 
+configuração de máquinas, levando a um menor tempo de implantação 
+(time-to-value) de novos serviços aos clientes desta empresa. No 
+entanto, os mesmos provedores que reservam espaço para a empresa, 
+podem alugar o espaço não utilizado para outras empresas.
+
+Na nuvem privada, a infraestrutura é dedicada a uma única 
+organização, podendo ser gerida internamente, em uma infraestrutura 
+local (on-premises) ou em um datacenter exclusivo. Portanto, existe 
+um controle maior ao hardware da empresa contratante. Este modelo é 
+ideal para empresas que exigem um maior nível de segurança.
+
+No modelo de nuvem híbrida, as empresas usam a nuvem pública para 
+tarefas menos sensíveis, enquanto mantém as aplicações mais 
+restritas na nuvem privada, combinando as vantagens de cada modelo 
+de contratação.
+
+Ainda é possível combinar diferentes provedores de serviços de nuvem 
+pública, no que chamamos de ambiente multi-cloud. Nesta configuração, 
+opta-se por parte da infraestrutura em um provedor e parte em outro 
+provedor de nuvem, havendo a integração entre os ambientes de nuvem 
+por meio de APIs e demais serviços.
+
+                Modelos de serviços em nuvens
+
+Existem basicamente três principais modelos de entrega de serviços
+pela nuvem, como infraestrutura como serviço (Infrastructured as a 
+Service — IaaS), plataforma como serviços (Platform as a Service — 
+PaaS) e software como serviço (SaaS).
+
+Cabe ressaltar que existem variações destes termos que surgiram para 
+fins específicos, como banco de dados como serviço (Database as a 
+Service — DbaaS), Game as a Service (GaaS), entre muitas outras 
+variações.
+
+De acordo com o modelo de serviço em nuvem contratado, podemos ter 
+um controle maior sobre a gestão do hardware e do software, ou 
+podemos usar um modelo em que podemos focar em questões inerentes ao 
+negócio, sem nos preocupar com detalhes de configuração do hardware 
+ou do sistema operacional. Os principais modelos de negócio são:
+
+    Infraestrutura como Serviço;
+
+        No modelo de infraestrutura como serviço, há um controle 
+        maior sobre o hardware contratado. Este é o modelo mais 
+        tradicional em que podemos, por exemplo, alugar uma máquina 
+        virtual na nuvem, selecionando recursos como CPU, memória, 
+        HD, recursos de rede, assim como o sistema operacional a ser
+        instalado nestas máquinas.
+
+        No modelo IaaS, precisamos gerenciar as atualizações do 
+        sistema operacional e demais configurações necessárias para 
+        atender à nossa demanda. Por exemplo, se formos hospedar um 
+        website, teremos que cuidar de toda a parte de instalação de
+        um servidor web, até a implantação (deploy) dos arquivos do 
+        website.
+
+        Na AWS, podemos citar alguns dos serviços de computação que 
+        são inseridos no modelo IaaS, como a criação de máquinas 
+        virtuais, com o serviço conhecido como o serviço do Elastic 
+        Compute Cloud (EC2), armazenamento em bloco, arquivos ou 
+        objetos (AWS Simple Storage Service — S3) e serviços de 
+        infraestrutura de redes.
+
+        Portanto, há uma ampla gama de cenários de uso do modelo 
+        IaaC para servirem como base para a infraestrutura 
+        operacional de uma empresa. Uma empresa ou startup pode, com 
+        apenas alguns cliques, definir uma infraestrutura básica 
+        para iniciar sua operação, sem se preocupar com quesitos como
+        licenciamento de software, espaço destinado a servidores, 
+        refrigeração de máquinas, além dos custos operacionais de 
+        pessoal especializado.
+    
+    Plataforma como Serviço;
+
+        No modelo de plataforma como serviço, a ideia é ter um 
+        controle menor sob o hardware, focando em questões como 
+        implantação de aplicações, eliminando a necessidade de 
+        gerenciamento de hardware e infraestrutura subjacente, 
+        como configurações de rede. Há, portanto, uma abstração 
+        das complexidades inerentes ao processo de configuração, 
+        manutenção e escalabilidade de hardware. O serviço AWS 
+        Elastic Beanstalk é um exemplo de serviço que foi 
+        desenvolvido para facilitar o deploy de aplicações.
+    
+    Software como Serviço.
+
+        No modelo de software como serviço, busca-se acessar 
+        aplicações prontas por meio da internet. Podemos citar 
+        diversos serviços existentes, como armazenamento de dados 
+        online, como o Google Drive, uso de softwares de escritório,
+        como o Microsoft Office 365, aplicações de edição de imagem 
+        online e vários outros serviços. Neste modelo, paga-se uma 
+        assinatura para uso do software por um determinado período 
+        de tempo.
+
+        O Amazon Chime da AWS é um exemplo de SaaS, oferecendo um 
+        ambiente para agendamento e realização de videoconferências 
+        online.
+
+                    Ambiente da AWS
+
+Dado o pioneirismo do lançamento de serviços de nuvem, iremos 
+inicialmente exemplificar o ambiente da nuvem da AWS e as formas 
+de acesso a este ambiente.
+
+A AWS oferece um ambiente acadêmico (conhecido por aws academy), ao 
+qual é possível testar diversos serviços. Iremos utilizar esse 
+ambiente em nossos exemplos (https://awsacademy.instructure.com/).
+
+Após receber o e-mail que configurarmos para você, você poderá 
+acessar o ambiente, clicando em “Student Login”, conforme a figura 
+a seguir.
+
+Em seguida, você acessará o ambiente seguro de treinamento da AWS
+
+Durante o curso, nossos exemplos serão feitos neste ambiente 
+controlado, usando basicamente o navegador da internet para 
+simular os serviços da AWS. Apesar de usarmos o ambiente acadêmico 
+da AWS, iremos abordar as principais formas de acesso ao ambiente 
+real da AWS. São eles:
+
+    Console;
+
+    CLI;
+
+    SDK.
+
+                            Console
+
+O primeiro acesso à AWS normalmente é realizado pela internet por 
+meio do que chamamos de console, disponível em 
+https://console.aws.amazon.com/ mediante cadastro inicial. O 
+cadastro inicial no ambiente real da AWS é feito após informar um 
+endereço de e-mail e a inclusão de dados pessoais e de cobrança 
+(cartão de crédito). Lembrando que NÃO É NECESSÁRIO se cadastrar 
+neste ambiente, dado que usaremos o ambiente acadêmico (aws academy).
+
+Inicialmente há um período de testes de 12 meses para alguns 
+serviços básicos, chamado de free tier, contendo serviços de 
+computação (EC2, Lambda, S3 etc.), armazenamento, banco de dados 
+e até mesmo serviços de Machine Learning. No entanto, deve-se ter 
+atenção ao período de testes, pois ao término do período, os 
+serviços implantados não são automaticamente destruídos, podendo 
+haver cobranças.
+
+Após o acesso ao console da AWS, é possível escolher o serviço 
+desejado clicando no menu superior de serviços ou digitar em uma 
+caixa de busca no próprio site.
+
+Depois de criar a conta na AWS, é possível ainda baixar a interface 
+de linha de comando para acesso programático à AWS, para que acessos 
+subsequentes à AWS sejam feitos sem a necessidade de abrir um 
+navegador da internet.
+
+            Interface de linha de comando
+
+Outra forma de acesso é por meio do AWS CLI (Command Line Interface),
+que permite executar comandos em um terminal (shell) para tarefas 
+comuns, como a listagem de serviços disponíveis, configuração de 
+serviços, implantação e demais opções disponíveis. Podemos optar por 
+esta opção quando temos alguns scripts prontos para executar ou para 
+ganhar agilidade em alguns processos.
+
+A instalação é muito simples, bastando acessar a documentação da AWS
+disponível no site https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html, 
+e selecionar o instalador de acordo com seu sistema operacional. 
+Inicialmente é necessário configurar o cliente do AWS CLI, gerando 
+uma chave de acesso pelo serviço da AWS IAM (falaremos mais adiante) 
+e configurando o acesso no AWS CLI.
+
+A sintaxe para a listagem e execução de serviços é:
+
+    aws <serviço> <comando> <subcomando> [parâmetros]
+
+No exemplo a seguir, ilustramos alguns comandos executados no CLI 
+para listagem de um repositório de objetos (também chamado de bucket)
+e, em seguida, do conteúdo do repositório.
+
+    $ aws s3 ls
+    2024-09-02 13:26:24 minhascredenciais-meu-bucket
+
+    $ aws s3 ls minhascredenciais-meu-bucket
+    2024-09-02 13:27:51          5 meuarquivo.txt
+
+Há também uma versão online do CLI no próprio console da AWS chamado 
+de CloudShell.
+
+Este terminal (shell) já está pré-autenticado no ambiente da AWS, e 
+permite executar quaisquer comandos disponíveis no AWS CLI.
+
+                Acesso programático
+
+Além dos acessos via console e via CLI, é possível utilizar as 
+bibliotecas disponíveis para desenvolvedores para acesso 
+programático (SDK). Por exemplo, é possível desenvolver aplicações 
+usando o Python.
+
+Por exemplo, a biblioteca chamada boto3 permite acessar 
+programaticamente os serviços da AWS por meio de códigos 
+customizados, como um notebook em Python.
+
+Desta forma é possível customizar aplicações que consumam serviços 
+diretamente da AWS de forma transparente. É possível, por exemplo, 
+ter uma estrutura híbrida, com uma aplicação em um servidor local 
+(on-premises) e o banco de dados na nuvem (cloud) usando o SDK da 
+AWS.
+
+                        Segurança
+
+A AWS conta com diversos recursos para gerenciamento e controle de 
+segurança para garantia de acesso aos serviços da nuvem somente por 
+pessoas autorizadas. O AWS Identity and Access Management (IAM) é um 
+serviço de identificação e controle de acesso que permite definir 
+políticas de segurança, utilizando o conceito de privilégio mínimo, 
+ou seja, o usuário administrador da conta da empresa na AWS deve 
+atribuir explicitamente permissões a um usuário, grupo de usuários, 
+política IAM ou função IAM (IAM role).
+
+    IAM User: conta de uma pessoa ou aplicativo com login e senha na 
+    AWS.
+    
+    IAM Group: um grupo de usuários que compartilham as mesmas 
+    permissões e autorizações. Os grupos são utilizados para 
+    simplificar a concessão e o gerenciamento de permissões dentro 
+    de um ambiente. Exemplos de grupos comuns: desenvolvedores 
+    (devs), equipe de infraestrutura, testers e administradores 
+    (admins). Atribuir permissões a grupos, em vez de usuários 
+    individuais, reduz o risco de erros e facilita a manutenção de 
+    políticas de acesso.
+    
+    IAM Policies: documento que define quais recursos podem ser 
+    acessados e o nível de acesso a cada recurso.
+    
+    IAM Roles (Funções): os papéis podem armazenar diferentes 
+    acessos e serem temporários. Não precisam de login e senha 
+    e podem ser associados a serviços ou usuários. Por exemplo: 
+    acesso ao EC2, S3 e demais serviços da nuvem.
+
+No IAM definimos quem (usuário, grupo ou role)  pode acessar um 
+recurso, quais recursos  poderão ser acessados e como  serão 
+acessados.
+
+                Estimativas de custos
+
+Custo total de propriedade:
+
+    Antes de realizar a migração para um ambiente em nuvem, é 
+    importante realizar comparações em relação a um ambiente 
+    on-premises. Por exemplo, para utilizar um servidor de 
+    aplicações em um ambiente local, precisamos considerar os 
+    custos com servidores e licenças de software, além de custos 
+    de instalação, energia elétrica, refrigeração dos equipamentos 
+    e de até mesmo do espaço físico reservado aos equipamentos de 
+    hardware.
+
+    É preciso considerar também os custos com hardware para 
+    armazenamento dos dados (por exemplo: discos de armazenamento), 
+    rede (switches, cabeamento, firewall etc.), administração da 
+    rede e os custos operacionais para manter a estrutura 
+    funcionando, incluindo manutenções de hardware e software 
+    (por exemplo: patches de correção).
+
+    Realizado o levantamento dos custos locais e do tempo para 
+    implantar a infraestrutura local, é possível calcular os 
+    mesmos recursos alocados na nuvem, utilizando calculadoras 
+    fornecidas pelos próprios servidores de nuvem.
+
+A AWS fornece uma calculadora de preços online 
+https://calculator.aws/#/ para tal finalidade.
+
+Pode-se escolher entre uma ampla gama de serviços, definindo-se 
+a região onde serão armazenados ou processados, além de haver um 
+filtro para localização dos serviços.
+
+Existem diferentes planos para os serviços, incluindo descontos em 
+planos de longa permanência.
+
+Comparando-se os custos locais com a estimativa online, é possível 
+tomar uma decisão sobre o uso da nuvem. É preciso reforçar que a 
+questão de se ter uma máquina pronta em poucos minutos, é difícil 
+de mensurar e pode ser crucial para alguns negócios.
