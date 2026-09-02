@@ -29,3 +29,23 @@ class Pilha:
         # Só chama o peek() se a pilha NÃO estiver vazia, caso contrário exibe None
         topo = self.peek() if not self.is_empty() else None
         return f"Pilha(stack={self.pilha}, peek={topo}, empty={self.is_empty()})"
+
+
+def validar_parentesis(expressao):
+    p = Pilha()
+    mapeamento = {")": "(", "]": "[", "}": "{"}
+    for exp in expressao:
+        if exp in "([{":
+            p.push(exp)
+        elif exp in ")]}":
+            if p.is_empty():
+                return False
+
+            topo = p.pop()
+
+            if topo != mapeamento[exp]:
+                return False
+
+    if p.is_empty():
+        return True
+    return False
