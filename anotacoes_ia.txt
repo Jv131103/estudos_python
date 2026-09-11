@@ -8650,3 +8650,550 @@ Redes Neurais Multicamadas:
     a arquitetura, a parametrização e as inicializações. Assim, a 
     melhor forma de encontrar o modelo mais adequado é realizando 
     otimização de hiperparâmetros.
+
+                Do que é feito uma IA
+
+É de conhecimento geral que nos últimos anos um sistema de 
+Inteligência Artificial (IA) está frequentemente associado 
+a algoritmos e inovações tecnológicas. Contudo, na verdade, 
+um sistema de IA está profundamente dependente da extração 
+de recursos naturais e ao impacto ambiental associado. Desde 
+os minerais até a energia elétrica, a criação e a operação de 
+sistemas de IA têm um custo substancial, geralmente invisível 
+aos consumidores finais.
+
+O ouro: 
+
+    O ouro é amplamente utilizado em chips e em processadores 
+    devido às suas excelentes propriedades físicas e químicas 
+    únicas, que o tornam ideal para aplicações em eletrônicos 
+    de alto desempenho (há outros metais que vamos discutir a 
+    seguir).
+
+    A quantidade utilizada em cada componente é muito pequena, 
+    geralmente medindo alguns miligramas e, por isso, é suficiente 
+    para tornar o seu processo de uso viável economicamente, ao 
+    mesmo tempo que preserva os benefícios funcionais do material.
+
+    O ouro possui propriedades que torna o seu uso ideal no 
+    processo de construção de chips. Vejamos os principais:
+
+        Condutividade elétrica elevada: o ouro é um excelente 
+        condutor de eletricidade, garantindo que sinais elétricos 
+        sejam transmitidos com eficiência e sem perdas 
+        significativas.
+        
+        Resistência à corrosão: diferentemente de outros metais, 
+        como cobre e prata, o ouro não oxida nem enferruja, mesmo 
+        em ambientes extremos. Isso assegura durabilidade e 
+        desempenho estável dos componentes eletrônicos.
+        
+        Maleabilidade e ductilidade: o ouro pode ser facilmente 
+        moldado em fios ultrafinos ou camadas finíssimas (filmes), 
+        ideais para aplicações miniaturizadas, como chips e 
+        processadores.
+        
+        Compatibilidade química: ele é quimicamente inerte, o que 
+        significa que não reage com outros materiais no ambiente 
+        ou dentro do chip.
+
+    O ouro é aplicado da seguinte forma ao se construir um chip:
+
+        Conexões elétricas internas: o ouro é usado para criar 
+        conexões elétricas em chips, chamadas de bond wires. 
+        Esses fios extremamente finos ligam os componentes 
+        internos do chip aos terminais externos que se conectam à 
+        placa-mãe ou a outros circuitos. A confiabilidade do ouro 
+        em manter essas conexões estáveis é crucial para a 
+        funcionalidade dos dispositivos.
+        
+        Revestimento de contatos e conectores: as bordas dos 
+        chips e dos processadores, bem como os conectores das 
+        placas de circuito, frequentemente possuem uma camada 
+        de ouro. Este revestimento garante:
+        
+            Alta condutividade: reduz a resistência elétrica, 
+            melhorando a transmissão de dados.
+            
+            Durabilidade: protege os contatos contra oxidação e 
+            desgaste mecânico, aumentando a vida útil do 
+            componente.
+            
+        Camadas intermediárias em circuitos: em alguns casos, 
+        o ouro é usado como uma camada intermediária nos 
+        circuitos, especialmente em componentes que exigem 
+        alta precisão e estabilidade elétrica. Ele ajuda a 
+        criar uma interface confiável entre diferentes 
+        materiais metálicos, como cobre e alumínio, reduzindo 
+        problemas de incompatibilidade química.
+            
+        Chips de alto desempenho: processadores de ponta, como 
+        os usados em supercomputadores, em servidores e em 
+        dispositivos de alto desempenho, utilizam ouro em 
+        pequenas quantidades para otimizar o desempenho térmico 
+        e elétrico. O ouro é empregado em pontos críticos do 
+        chip onde a condutividade e a estabilidade são 
+        fundamentais.
+
+    A reciclagem do ouro usado em chips eletrônicos enfrenta 
+    vários desafios globais que tornam o processo técnico, 
+    econômico e ambientalmente complexo.
+
+    Um dos principais obstáculos é a coleta eficiente de resíduos 
+    eletrônicos. Muitos dispositivos descartados, como celulares, 
+    laptops e componentes de circuitos, acabam em aterros 
+    sanitários do município ou são enviados através de navios 
+    para outros países, os chamados “países em desenvolvimento” 
+    para serem reciclados.
+
+O lítio:
+
+    O lítio (Li) também possui um papel importante na 
+    infraestrutura da IA, aumentando as práticas extrativistas 
+    que têm impacto ambiental e social significativos.
+
+    O lítio é um metal leve, isto é, um metal de baixa densidade, 
+    o que o torna mais atraente em comparação com outros metais, 
+    onde a redução de peso é essencial na indústria aeroespacial, 
+    automotiva e eletrônica, e na fabricação de baterias 
+    recarregáveis que sustentam os sistemas de IA em smartphones, 
+    carros elétricos, data centers, entre outros.
+
+    Além disso, o Li é altamente reativo, especialmente se entrar 
+    em contato com a umidade do ar. Ele pode causar uma violenta 
+    reação que gera muito calor e, se combinado com os demais 
+    elementos da própria bateria, libera um gás inflamável, que 
+    pega fogo.
+
+    Não devemos esquecer que todos os dispositivos inteligentes 
+    produzidos no mundo, como celulares, carros e computadores 
+    possuem a obsolescência programada, isto é, de 5 a 10 anos 
+    (em média), não desempenharão suas funções na mesma velocidade
+    e qualidade originais.
+
+    Por isso, os dispositivos alimentados por baterias de lítio 
+    têm ciclos de vida limitados, gerando volumes crescentes de 
+    lixo eletrônico e uma demanda contínua por mais mineração, o 
+    que agrava a pressão sobre os recursos naturais.
+
+    Embora tecnologicamente viável, a reciclagem do lítio ainda 
+    enfrenta desafios. Assim como o ouro, o processo é caro, 
+    complexo, perigoso e consome muita energia, o que por enquanto,
+    pode limitar sua viabilidade econômica em comparação à 
+    mineração de lítio bruto na natureza. Além disso, a reciclagem 
+    inadequada pode gerar resíduos tóxicos, exigindo cuidados 
+    ambientais rigorosos dos governos locais.
+
+Trabalho Humano:
+
+    Até o final de 2024, praticamente qualquer modelo de IA 
+    público e acessível à grande população mundial exigiu que 
+    o trabalho humano fosse uma engrenagem fundamental para o 
+    seu funcionamento e sucesso, especificamente no processo 
+    de inserção e organização dos dados.
+
+    Para que os sistemas de IA sejam frequentemente apresentados 
+    como autônomos, sua eficiência e aprendizado dependem de uma 
+    vasta infraestrutura de trabalho humano, muitas vezes 
+    precarizado e invisível.
+
+    Os dados que alimentam os modelos de IA não são simplesmente 
+    coletados de maneira automática. Eles passam por um processo 
+    detalhado e exaustivo de organização, de limpeza e de rotulação.
+
+    Por exemplo, para que uma IA consiga reconhecer diferentes 
+    tipos de frutas, como “maçã” ou “banana”, é necessário que 
+    milhares de imagens dessas frutas sejam previamente analisadas 
+    e rotuladas por trabalhadores humanos. Esses trabalhadores 
+    examinam cada foto e identificam as características visuais 
+    associadas a cada fruta, atribuindo rótulos como “banana”, 
+    “maçã”, “verde”, “madura” ou “danificada”. Essas classificações
+    servem como base para o treinamento do modelo, permitindo que 
+    ele aprenda a diferenciar e categorizar corretamente novos 
+    exemplos no futuro com base na cor, no aspecto físico, entre 
+    outros fatores.
+
+    Voltando às questões sociais sensíveis desse trabalho de 
+    classificação, um exemplo é a plataforma Amazon Mechanical 
+    Turk, onde trabalhadores, muitas vezes chamados de turkers, 
+    são requisitados no mundo todo para realizar essas tarefas 
+    de forma fragmentada, repetitiva e, muitas vezes, mal 
+    remunerada.
+
+    Essas plataformas oferecem trabalho em microtarefas ou os 
+    famosos Human Intelligence Tasks (HITs). Tais microtarefas 
+    são basicamente rotular imagens, transcrever áudios ou 
+    corrigir erros em grandes conjuntos de dados.
+
+    Apesar de serem importantes para o funcionamento de grandes 
+    modelos de IA, esses trabalhadores recebem centavos por 
+    tarefa e frequentemente precisam lidar com ritmos exaustivos 
+    para alcançar um rendimento mínimo.
+
+    A reflexão é sobre como esse modelo global de trabalho reflete 
+    uma lógica colonialista moderna, onde o custo humano da 
+    infraestrutura digital é externalizado para as regiões mais 
+    vulneráveis do mundo.
+
+    Adicionalmente, temos o impacto psicológico desse tipo de 
+    trabalho. Em um primeiro momento, a rotulação de dados muitas 
+    vezes pode parecer fácil, simples ou mecânica, mas na verdade 
+    expõe os trabalhadores a conteúdos perturbadores, imagens 
+    fortes ou até enviesadas para que o trabalhador (turker) possa 
+    quebrar esse viés rotulando da forma correta. De repente, 
+    você já foi convidado para responder pesquisas uma pesquisa 
+    rápida no YouTube depois de uma série de vídeos assistidas por 
+    você. Já viu isso?
+
+    Portanto, a narrativa de inovação tecnológica e da automação 
+    mascara a dependência de sistemas de IA em uma força de 
+    trabalho invisível e desvalorizada. Devemos parar, refletir, 
+    reconhecer e valorizar o trabalho humano por trás da IA e até 
+    nos envolver como profissionais, em debates éticos em busca 
+    do que é justo sobre o futuro da tecnologia.
+
+    Cada vez mais, o departamento de recursos humanos de empresas 
+    de base tecnológica está buscando ferramentas para medir a 
+    eficiência dos trabalhos manuais de seus colaboradores 
+    enquanto estão na empresa. Entretanto, medir o resultado 
+    positivo de um trabalho manual não é o suficiente, e sim, como
+    o resultado manual foi alcançado a fim de torná-lo cada vez 
+    mais eficiente e de alto desempenho. Lógico que isso gera uma 
+    pressão ainda maior no indivíduo, na qual pode não suportar e 
+    pedir a sua própria demissão ou ser demitido.
+
+    Antigamente, a competição do trabalho manual não envolvia 
+    esse “hiperparâmetro” de um algoritmo de rede neural com 
+    relatórios analíticos sobre como o indivíduo se saiu no seu 
+    ambiente profissional, mas agora sim. Outro exemplo: muitas 
+    empresas utilizam softwares que monitoram diretamente o 
+    comportamento dos funcionários em computadores e dispositivos 
+    digitais. Esses sistemas podem registrar:
+
+        Teclados e cliques do mouse: para medir o tempo ativo em 
+        uma tarefa.
+        
+        Capturas de tela periódicas: para verificar o que os 
+        funcionários estão fazendo.
+        
+        Tempo em aplicativos ou websites: identificando se estão 
+        usando ferramentas relacionadas ao trabalho ou acessando 
+        sites pessoais.
+        
+        Rastreamento de localização em tempo real: usando 
+        etiquetas RFID, GPS ou sensores de proximidade em 
+        dispositivos ou crachás para verificar onde os 
+        trabalhadores estão no armazém ou no escritório.
+        
+        Câmeras com reconhecimento facial e de comportamento: 
+        algumas câmeras são programadas para detectar expressões 
+        faciais, posturas ou até sinais de cansaço, avaliando se 
+        o trabalhador parece estar se esforçando o suficiente ou 
+        demonstrando “engajamento”.
+        
+        Sensores biométricos: algumas empresas estão testando 
+        dispositivos que monitoram frequência cardíaca, níveis 
+        de estresse e outros indicadores físicos para avaliar o 
+        desempenho e a saúde dos trabalhadores.
+        
+        Dispositivos vestíveis, como pulseiras, relógios 
+        inteligentes ou exoesqueletos, são cada vez mais 
+        utilizados para rastrear o movimento e a saúde dos 
+        trabalhadores. Na Amazon, por exemplo, dispositivos 
+        vestíveis podem monitorar a localização de um funcionário 
+        no armazém e sugerir rotas mais eficientes para coletar 
+        itens. Alguns dispositivos também alertam os supervisores 
+        se um trabalhador estiver fazendo pausas consideradas 
+        “excessivas” ou não estiver cumprindo o ritmo esperado.
+        
+        Controle de comunicação: sistemas de IA são utilizados 
+        para monitorar e analisar e-mails, mensagens instantâneas 
+        e outras formas de comunicação dos funcionários, em busca 
+        de palavras-chave que indiquem insatisfação, comportamento 
+        inadequado ou compartilhamento de informações confidenciais.
+
+    Esse tipo de vigilância, embora seja justificado como uma 
+    medida de segurança, levanta preocupações sobre privacidade 
+    e liberdade de expressão no ambiente de trabalho. Vejamos 
+    mais detalhes sobre esse tema.
+
+    Algumas empresas automatizam o processo de avaliação de 
+    desempenho, baseando-se em dados coletados por sistemas de 
+    vigilância para tomar decisões sobre promoções, advertências 
+    ou até demissões.
+
+    Esses sistemas podem emitir alertas ou recomendações 
+    automaticamente, sem considerar o contexto humano, como 
+    doenças ou problemas pessoais que possam afetar 
+    temporariamente a produtividade.
+
+    Em outros cenários, alguns sistemas oferecem feedback 
+    instantâneo aos trabalhadores, seja por meio de notificações 
+    em dispositivos ou mensagens de supervisores, incentivando-os 
+    a acelerar o ritmo ou corrigir um comportamento.
+
+    Embora projetado para aumentar a eficiência, esse tipo de 
+    monitoramento constante pode gerar ansiedade e estresse. Por 
+    isso, essas práticas de vigilância frequentemente criam um 
+    ambiente de trabalho altamente controlado e estressante. Os 
+    trabalhadores podem sentir-se constantemente pressionados a 
+    atingir metas irreais, o que pode levar à problemas de 
+    exaustão, burnout, perda de privacidade, desumanização e a 
+    redução da moral e do engajamento.
+
+    Sem dúvida, o monitoramento tecnológico pode melhorar a 
+    eficiência do trabalho humano. Desde a 2ª Revolução Industrial 
+    (olha que já estamos passando da 4ª Revolução), o trabalho 
+    manual de qualidade sempre esteve sob regras e padrões 
+    exigentes. No entanto, agora, na Era da Sociedade Inteligente, 
+    isso também levanta sérias questões éticas sobre privacidade, 
+    dignidade e bem-estar dos trabalhadores, pois a principal 
+    diferença está em quem observa o trabalhador. Antes, um 
+    humano, agora, os algoritmos. Até para classificar o trabalho 
+    humano precisa de um trabalhador humano.
+
+    A reflexão aqui é na seguinte questão: como as empresas podem 
+    equilibrar a busca por produtividade com a criação de 
+    ambientes de trabalho saudáveis e humanos, garantindo que as 
+    tecnologias sejam usadas de forma responsável e respeitosa?
+
+                        O novo petróleo
+
+A Sociedade Inteligente está se transformando e se moldando em 
+torno da informação. Consequência disso, a cada notícia do mundo 
+BigTech, acontece um terremoto.
+
+Isso mostra que o novo petróleo não está abaixo do mar ou da 
+terra. Os dados, muitas vezes descritos como o “novo petróleo”, 
+são a base das IAs modernas, sendo extraídos, organizados e 
+utilizados em escala global para alimentar tais sistemas 
+tecnológicos.
+
+Sem dúvida, os dados são um recurso neutro e inerentemente 
+benéfico, desde que extraído sob regras nítidas. Porém, 
+infelizmente, o que se vê através dos monopólios, sua coleta e 
+uso estão enraizados em estruturas que estão perpetuando o poder, 
+a exploração e a desigualdade. Como exemplo, Mark Zuckerberg da 
+Meta anunciou em 8 de janeiro de 2025 que irá reduzir o nível de 
+checagem de notícias falsas no Facebook, no Instagram e no 
+Threads.
+
+Obviamente, os conjuntos de dados serão utilizados para treinar 
+modelos de IA, confirmando assim, a sua complexidade e problemas 
+intrínsecos cada vez maiores.
+
+Até pouco tempo atrás, esses conjuntos de dados eram 
+frequentemente construídos a partir de grandes volumes de 
+informações disponíveis publicamente na Internet, como imagens, 
+textos e vídeos. E como é notório, esses dados frequentemente 
+contêm preconceitos e desigualdades que acabam sendo incorporados 
+nos modelos de IA, perpetuando discriminações históricas.
+
+Agora, estamos avançando rumo à Sociedade Inteligente, embora os 
+problemas antigos ainda não tenham sido resolvidos. Um exemplo 
+ainda é o uso de conjuntos de dados de reconhecimento facial que 
+foram treinados majoritariamente com imagens de pessoas brancas, 
+resultando em sistemas que apresentam altas taxas de erro ao 
+identificar rostos de pessoas negras ou de outras etnias. E quando 
+tentam adicionar rostos negros, as lentes e câmeras falham pela 
+falta de iluminação adequada.
+
+Esses vieses não são meras falhas técnicas, mas reflexos das 
+desigualdades sociais e culturais que estão embutidas nos dados 
+originais e nos dispositivos. Muitas das vezes, esses problemas 
+são agravados pela falta de diversidade nas equipes que constroem 
+e treinam os modelos, o que reforça a reprodução de preconceitos 
+existentes.
+
+A ideia de que os dados são neutros ou objetivos é frágil. A 
+coleta, a organização e a análise de dados envolvem decisões 
+humanas em todas as etapas, desde a escolha do que coletar até a 
+forma como os dados são categorizados e interpretados. Esses 
+processos são influenciados por valores, interesses e preconceitos,
+tornando os dados inevitavelmente enviesados.
+
+Atualmente, ainda é possível observar um derretimento da 
+privacidade e da falta de consentimento informado na coleta de 
+dados. A verdade é que a maioria dos usuários de plataformas 
+digitais não entende o alcance da coleta de seus dados, nem como 
+essas informações serão utilizadas.
+
+                Energia e Água
+
+O impacto energético dos data centers modernos, os chamados 
+Computação em Nuvem, é fora do comum e pouco conhecido pela 
+sociedade mundial. Sabemos que os data centers são os locais 
+que sustentam toda a infraestrutura digital moderna que 
+utilizamos. Mas, quanto de energia se gasta para manter um 
+ChatGPT funcionando? Quantos litros de água são consumidos por 
+dia?
+
+Em 2024, vários noticiários no Brasil e no mundo veicularam que 
+em cada 100 palavras que o ChatGPT lhe responde, estima-se que 
+meio litro de água foi utilizado para resfriar seus circuitos. 
+Como o Chat processa algo em torno de 428 milhões de consultas 
+por dia no mundo todo, chegamos aproximadamente aos impressionantes
+222 milhões de litros de água a cada 24 horas. Essa quantidade de 
+água equivale a 89 piscinas olímpicas, equivale a 3.041 anos de 
+consumo de uma pessoa comum em sua casa e equivale ao abastecimento
+contínuo de uma cidade de 50 mil habitantes por 22 dias.
+
+Assim como o motor à combustão, é lógico que a água dos data 
+centers ou ChatGPT não são 222 milhões de litros de água 
+descartável diariamente, pois o sistema de refrigeração é fechado 
+e cíclico, onde há troca de calor com o meio externo por meio de 
+bombas d’água.
+
+Apenas para fins didáticos, vamos entender rapidamente o porquê de 
+a água ser utilizada em data centers. Trata-se do mesmo princípio 
+de funcionamento de um motor de carro quando ligado. Na parte da 
+frente do motor, existe uma peça de metal chamada radiador, cujo 
+seu interior parece uma colmeia de abelhas, isto é, repleto de 
+pequenas galerias (pequenos tubos ocos) que permitem a circulação 
+de água de forma forçada por meio da pressão de uma bomba d’água 
+conectada no sistema.
+
+Uma alternativa ao sistema tradicional de resfriamento já 
+consolidado é a iniciativa da Microsoft que está testando seus 
+data centers em baixo d’água. Assim, a troca de calor é feita 
+pelas paredes externas. O equipamento da figura a seguir ficou 
+submerso na costa de Orkney, na Escócia, para testar sua 
+eficiência energética nas profundezas do oceano; dos 855 
+servidores que funcionavam, apenas oito apresentaram defeitos.
+
+Quanto ao consumo de energia elétrica, estima-se que o ChatGPT 
+consome 0,0029 quilowatts-hora (kWh) de eletricidade. Novamente, 
+considerando que o ChatGPT processa cerca de 428 milhões de 
+consultas diariamente, o custo diário de energia totaliza 
+aproximadamente 1,2 milhão de kWh. Isso equivale a alimentar mais 
+de 212 mil casas por dia.
+
+Entretanto, a questão aqui vai além dos números apresentados. 
+Estamos desmistificando o quanto de recurso (água limpa e energia 
+elétrica) são necessários para manter os data centers de pé e 
+operacionais, de forma ininterrupta, 7 dias por semana e 365 dias 
+no ano, pois a visão de que a tecnologia digital é “imaterial” ou 
+limpa é, na verdade, ilusória.
+
+Os data centers operam em uma escala física gigantesca e demandam 
+uma quantidade crescente de recursos energéticos para armazenar, 
+processar e transmitir dados. Você sabia que somando todos os data 
+centers do mundo temos o consumo de cerca de 1% da eletricidade 
+global, valor comparável ao consumo de países de médio porte como 
+Chile, Peru, Argentina, Canadá, Espanha, Portugal. Em 2020, 
+estimava-se que o setor de TI como um todo foi responsável por 
+2 a 3% das emissões globais de CO₂, rivalizando com a aviação 
+civil. Por exemplo: um único data center da Apple em Iowa (EUA) 
+ocupa 400.000 m² e consome 1.138.800 MW/ano de energia, que 
+equivale ao consumo de 624 mil residências do Brasil por ano.
+
+Com a expansão da IA (especialmente os LLMs como GPT-3 ou 
+sistemas de visão computacional), a demanda por energia dispara. 
+Treinar um único modelo de processamento de linguagem natural 
+(NLP) pode emitir 284 toneladas de CO₂ — o equivalente a 125 voos 
+transatlânticos.
+
+                Do que é feito um data center
+
+Os data centers são instalações que abrigam milhares de servidores 
+interconectados, funcionando continuamente para processar dados de 
+plataformas de mídia social, serviços de streaming, sistemas de IA,
+banco de dados, e outras aplicações digitais que a nuvem oferece.
+
+Essas infraestruturas consomem energia não apenas para operar os 
+servidores, mas também para resfriar os equipamentos como já vimos 
+anteriormente, já que o calor gerado pelo funcionamento constante 
+dos sistemas pode comprometer sua eficiência e integridade.
+
+Dentro do data center, há vários corredores de racks, que são 
+estruturas metálicas sustentando o coração desse serviço, que são 
+os servidores (computadores de alto desempenho) empilhados e 
+organizados verticalmente. Entre esses racks, passam tubulações de 
+água resfriada para a troca de calor, passam os fios elétricos, os 
+cabos de dados, as fibras ópticas, os backbones e outros cabos para
+a automação e controle dos servidores, da segurança e da vigilância.
+
+Os corredores de racks sustentam também equipamentos de redes, como
+roteadores, switches, firewalls e patch panels para as conexões de 
+cabos e fibras ópticas. Há centenas de milhares de fontes de 
+energia elétrica conectadas entre 110 e 240V reduzindo de 12 a 48V
+às placas dos servidores.
+
+Ainda no ambiente dos corredores, os equipamentos que atuarão como 
+servidor e os que atuarão como armazenamento são divididos em 
+setores, isto é, onde rodarão os programas hospedados e onde os 
+dados ficarão gravados.
+
+Na parte superior, ficam as bandejas de cabos e as saídas do 
+ar-condicionado para manter o local frio.
+
+Do lado de fora e abaixo do galpão dos servidores, existe uma 
+casa de máquinas tão grande quanto o ambiente dos servidores. Essa 
+casa de máquinas é composta por bombas d’água, encanamentos, 
+válvulas e um reservatório gigante de água limpa.
+
+Na parte superior do galpão dos servidores, existe a torre de 
+coolers (ou torre dos resfriadores) responsável em trocar o calor 
+da água com o ambiente externo. Esses enormes ventiladores com 
+turbinas forçam a passagem do ar entre suas galerias, enquanto a 
+água quente circula por dentro delas, diminuindo assim a 
+temperatura da água que retornará para a sala dos servidores.
+
+E por fim, na lateral do data center, em um terreno à parte, fica 
+a subestação de energia, responsável em fornecer toda a demanda 
+necessária ao prédio do data center. Essa subestação está 
+conectada e integrada à rede nacional de energia daquele país, 
+garantindo assim, a disponibilidade máxima do fornecimento da 
+energia elétrica proveniente de mais de um tipo de usina (ou uma 
+combinação entre elas), como hidrelétrica, eólica, gás natural e 
+fazenda solar.
+
+Ainda dentro desse terreno da subestação, fica a sala do banco de 
+baterias que garante o fornecimento emergencial de energia caso a 
+subestação falhe. Esse sistema de energia com bateria chama-se 
+nobreak. Seu uso é para um curto intervalo de tempo (cerca de 15 
+minutos), porque a demanda é muito grande e as baterias se 
+desgastam rapidamente. Elas geram uma avalanche de corrente 
+elétrica para suportar todo o sistema.
+
+A conectividade de um data center é um dos elementos mais 
+importantes para seu desempenho. Grandes data centers possuem 
+backbones de fibra óptica, interligando servidores a velocidades 
+que podem chegar a 400 Gbps ou mais. Esses centros são 
+interconectados globalmente, formando redes de baixa latência para
+permitir a rápida troca de informações entre diferentes partes do 
+mundo.
+
+Além disso, protocolos avançados de segurança, como firewalls de 
+última geração, segmentação de rede e sistemas de detecção e 
+resposta a ameaças (XDR), protegem os dados armazenados contra os 
+ataques cibernéticos.
+
+Nem todos os data centers possuem os altos investimentos e todos 
+os recursos explicados até aqui. Por isso, eles são categorizados 
+de acordo com seu nível de confiabilidade e disponibilidade, 
+seguindo a certificação TIA-942, que define padrões de Tier I a 
+Tier IV (Tier significa “camada”).
+
+Data centers Tier I possuem infraestrutura básica e podem sofrer 
+interrupções programadas, enquanto Tier IV oferecem máxima 
+redundância, garantindo 99,995% de disponibilidade, o que equivale
+a apenas alguns minutos de inatividade por ano. Obviamente, quanto 
+maior o Tier, mais caro seus serviços de hospedagem.
+
+É importante saber que existe uma falta de transparência no 
+consumo energético dos data centers. Muitas empresas tecnológicas 
+não divulgam dados completos sobre o uso de energia de suas 
+operações, dificultando uma análise abrangente do impacto 
+ambiental.
+
+Essa falta de transparência contribui para a perpetuação da 
+“ignorância ambiental”, em que o público desconhece os 
+verdadeiros custos ecológicos da era digital e de um sistema de IA.
+
+A certeza é que o crescimento dos data centers deve aumentar nos 
+próximos anos devido à facilidade e o conforto que as IAs estão 
+oferecendo para a sociedade. Imagina você usando sua voz com um 
+assistente IA (agente IA) solicitando um IFood de sua preferência
+ou um pagamento de uma conta no aplicativo do banco ou chamando 
+um Uber. Isso deve acontecer em alguns anos.
