@@ -24,6 +24,10 @@ excels/
 xlsx/
 xlsx/
 
+# remover arquivos especiais
+*.pkl
+*.pth
+
 # remover a pasta arquivos
 arquivos/
 

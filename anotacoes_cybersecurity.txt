@@ -341,7 +341,7 @@ da Segurança da Informação:
         externos e estão na internet organizados em grupos 
         extremistas. Mas saiba que o número de ataques oriundos de
         hosts internos é grande e está crescendo. O estudo “The 
-        Ponemon Institute 2018 Cost of Insider Threats</i>” indica 
+        Ponemon Institute 2018 Cost of Insider Threats” indica 
         que os incidentes gerados em razão de um colaborador 
         desavisado – que comete um erro humano – ou de um 
         descontente com a empresa – que deseja realmente provocar 
@@ -756,7 +756,7 @@ Conceito de documento muito além de papel impresso:
     Desse modo, a gravação de uma câmera de segurança, a mensagem 
     de texto recebida em aparelho de celular ou o e-mail, assim como
     as informações trocadas por dispositivos (coisas) conectados 
-    (IoT – <i>Internet of Things</i>, Internet das Coisas) podem 
+    (IoT – Internet of Things, Internet das Coisas) podem 
     gerar evidências que comporão documentos.
 
     Diante disso, surge, como sendo de fundamental importância, a 
@@ -1171,3 +1171,857 @@ Lei Geral de Proteção de Dados (LGPD):
     pessoais torna-se cada vez mais crucial, e a LGPD serve como 
     uma base fundamental para a privacidade e segurança das 
     informações no Brasil.
+
+                        Rede Tor
+
+Assim como outros sistemas desenvolvidos com propósito de beneficiar o ser humano, o sistema conhecido como “The Onion Project”, que utiliza camadas como uma cebola (por isso o nome), foi pensado originalmente para ser descentralizado e não possibilitar controle por meio de entidades governamentais, garantindo assim o livre espaço na internet. Porém, como sabemos que tudo que é livre demais pode acarretar mau comportamento, precisamos levar em consideração que é um espaço criado com o intuito de ser, em outras palavras, “incontrolável” e de certa forma anônimo, criando brechas para o ilícito.
+
+Tor é um software livre e de código aberto que proporciona a comunicação anônima e segura ao navegar na Internet e em atividades online, protegendo contra a censura e principalmente a privacidade. O nome é derivado de um acrônimo do projeto original do software chamado "The Onion Router".
+
+Projetado para disseminar conhecimento online sem barreiras, focado na privacidade dos usuários que ali frequentam, para posteriormente não serem rastreados. Criminosos se apossaram dessa tecnologia para se esconder no meio digital e poder praticar o comércio de ilícitos por todo o mundo.
+
+Para entendermos melhor a questão das camadas, a rede Tor protege a privacidade do usuário ao enviar dados através de várias camadas de criptografia e múltiplos nós na rede, garantindo que nenhum nó individual conheça tanto a origem quanto o destino dos dados.
+
+    Cliente Tor: o usuário primeiramente se conecta à rede Tor 
+    através de um software cliente, como o Tor Browser. O cliente 
+    prepara os dados para serem enviados de forma segura e anônima.
+    
+    Nós de entrada (Guard Nodes): em seguida, o cliente escolhe 
+    um nó de entrada da rede Tor. Este nó sabe a identidade do 
+    cliente, mas não conhece o destino dos dados. Os dados são 
+    criptografados uma vez e enviados para o nó de entrada.
+    
+    Nós de retransmissão (Relay Nodes): o nó de entrada encaminha 
+    os dados para uma série de nós de retransmissão intermediários.
+    Cada nó só sabe de onde os dados vieram e para onde devem ir a 
+    seguir, mas não conhece a origem inicial ou o destino final. 
+    Cada nó descasca uma camada de criptografia, daí a analogia 
+    com uma cebola.
+    
+    Nó de saída (Exit Node): finalmente, os dados chegam ao nó de 
+    saída, que remove a última camada de criptografia e envia os 
+    dados ao destino na Internet. O nó de saída sabe somente o 
+    destino dos dados, mas não sabe a origem.
+    
+    Destino: o destino final recebe os dados como se viessem 
+    diretamente do nó de saída, sem nenhuma indicação de que 
+    passaram pela rede Tor.
+
+Atualmente, o que conhecemos como “Surface” é apenas uma pequena 
+parcela do que realmente compõe a internet. Na “Surface” é onde 
+encontramos os provedores de conteúdo, tais como Google, Yahoo, 
+Microsoft e até mesmo a Netflix e outros streamings.
+
+O termo Deepweb representa tudo que não é visto ou que está 
+“abaixo do nível da água”, ou seja, não necessariamente algo 
+ilícito, mas qualquer outro sistema que não temos acesso livre 
+como na superfície, por exemplo, se você algum dia realizou um 
+exame e entrou no site que está localizado na superfície, mas 
+ao consultar seu exame passou por algum tipo de acesso via login 
+e senha, você adentrou em uma rede interna da empresa onde apenas 
+pessoas autorizadas com algum tipo de login pode consultar as 
+informações ali contidas, ou até mesmo no seu trabalho, quando 
+você acessou informações da empresa através da intranet, são áreas 
+que não estão na superfície da rede, mas que ainda fazem parte do 
+que conhecemos como internet.
+
+Quando se trata da “Dark Web” ou como chamamos também de camadas 
+mais profundas é onde os crimes cibernéticos ocorrem.
+
+                Tipos de de Cybercriminosos
+
+Hackers: denominação genérica para alguém com grande habilidade em 
+informática e computação.
+
+Crackers: aqueles que utilizam a referida habilidade para fins 
+ilícitos.
+
+Carders: especializados na falsificação e clonagem de cartões de 
+crédito, telefônicos, magnéticos, entre outros, para utilização 
+fraudulenta.
+
+Phreakers: burlam sistemas de comunicações.
+
+Cybertalkers: fazem disseminação do terror.
+
+Haters: fazem dissiminação de ódio
+
+Cyberpunks: pichadores de páginas eletrônicas.
+
+Insiders: em razão de prévio vínculo com as vítimas, como 
+ex-empregados, conseguem ter acesso a informações sensíveis.
+
+            Modo de operação dos Criminosos
+
+A fraude eletrônica e outros crimes semelhantes decorrem de uma série de procedimentos nos quais os criminosos, por meio de técnicas de engenharia social, objetivam levar ao engano as vítimas para que acreditem em determinados fatos inexistentes (traição, negativação do nome, intimação judicial, restituição de imposto de renda etc.) visando à captura de dados sensíveis para consecução dos atos ilícitos.
+
+Outro fator preponderante, além da engenharia social, é a exploração de potenciais vulnerabilidades técnicas nos sistemas das vítimas, como a ausência de atualizações das aplicações e sistemas operacionais, a ausência de antivírus atualizado e a ausência de firewall, apenas para citar alguns exemplos.
+
+Assim, usualmente, os crackers atuam da seguinte forma: (i) desenvolvem programas de computador maliciosos conhecidos como “cavalo de troia” (Trojan horse ) para captação de dados sensíveis; (ii) obtêm dados pessoais, como nome, RG e CPF, e listas de contas de e-mails adquiridas por meio de diversas fontes, inclusive, em alguns casos, com segmentação por tipo de banco utilizado, localização geográfica, perfil do usuário, entre outros; (iii) enviam milhares de mensagens (phishing), com atrativos dos mais variados tipos para abertura, pelas vítimas, dos arquivos lesivos; (iv) no momento da abertura do arquivo (normalmente um link), instala-se o programa espião que se hospeda na máquina da vítima; (v) tais programas se apropriam das informações quando as vítimas acessam sites e dispõem de seus dados nocivos, os quais são enviados diretamente para os criminosos; (vi) acessam as contas das vítimas por meio dos dados verdadeiros dos usuários para efetivação de transferências bancárias para contas de “laranjas”, pagamento de contas, carregamento de telefones celulares pré-pagos, entre outros.
+
+Do mesmo modo, também existe a possibilidade de criação de páginas virtuais “clonadas” de instituições financeiras e comércio eletrônico, em que a vítima acredita estar navegando e expondo seus dados a seu prestador de serviço, mas, na realidade, está sendo enganada.
+
+O processo de fraude por meio de páginas clonadas envolve várias etapas bem definidas que os fraudadores executam para enganar as vítimas e obter informações sensíveis. A seguir, está descrito cada etapa com mais detalhes:
+
+    Criação da Página Clonada:
+
+        Cópia do visual de sites legítimos (bancos, e-commerce).
+
+        Pequenas alterações na URL para enganar usuários desatentos.
+
+    Hospedagem:
+
+        Uso de hospedagens pagas/gratuitas ou servidores invadidos.
+
+        Aplicação de camuflagem para dificultar a remoção do site.
+
+    Atração das Vítimas (Engenharia Social):
+
+        Disparo de links maliciosos via e-mail (phishing), SMS, 
+        mensagens instantâneas e anúncios falsos.
+
+    Coleta de Dados:
+
+        Captura imediata de senhas, cartões e dados pessoais 
+        fornecidos pela vítima.
+
+        Exibição de telas de erro ou redirecionamento ao site real 
+        para mascarar o golpe.
+
+    Uso dos Dados Capturados:
+
+        Transações fraudulentas e bloqueio da vítima.
+
+        Venda na Dark Web ou uso para aplicar novos golpes.
+
+    Medidas de Prevenção:
+
+        Verificar atentamente a URL do site.
+
+        Não clicar em links suspeitos ou não solicitados.
+
+        Ativar Autenticação de Dois Fatores (2FA).
+
+        Manter softwares de segurança atualizados e reportar 
+        fraudes.
+
+Ainda, em redes paralelas criptografadas dentro da Dark Web, 
+WhatsApp ou Telegram, fraudadores trocam ou vendem dados, 
+informações e aplicações de acordo com a sua habilidade, conforme 
+já mencionado.
+
+Em relação aos Cartões de Crédito e dos Caixas Eletrônicos 
+Automáticos ou caixas ATM (Automatic Teller Machine), usualmente 
+as técnicas fraudulentas são as seguintes:
+
+    Emprego de máquinas que copiam os dados dos cartões bancários 
+    (“chupa-cabras”), com a simples leitura deles, fazendo-se 
+    passar por verdadeiras máquinas eletrônicas de autenticação de
+    pagamentos, captando dados nocivos dos clientes para realizar 
+    práticas de fraudes e outros crimes;
+    
+    Reprodução de cartões bancários por meio de alterações, tais 
+    como: quebra, colagens, rasuras, design “fantasia”, fazendo-se 
+    passar por cartões verdadeiros, obtidos de forma fraudulenta, 
+    para realizar fraudes e outros crimes;
+    
+    Clonagem dos cartões bancários que pode ser feita com diversas 
+    modalidades de captação de dados nocivos dos clientes, até 
+    mesmo com a disseminação de banco por prepostos de instituições
+    financeiras para prática de fraudes e outros crimes.
+
+Normalmente, um código malicioso pode ter controle parcial ou total sobre o sistema da vítima, podendo não somente capturar dados, mas também executar qualquer tipo de função ou destruir arquivos e programas. A instalação deste código requer que o usuário execute algum arquivo armazenado em outro computador, abra arquivos anexados recebidos em e-mails, baixe arquivos de sites suspeitos da internet, até mesmo por meio de alguma mídia removível infectada (pen drive), conectada ao computador.
+
+É importante, neste momento, apresentar alguns conceitos referentes ao contexto de cibersegurança, por exemplo:
+
+    Códigos maliciosos (malware): são programas especificamente 
+    desenvolvidos para executar ações danosas e atividades 
+    maliciosas em um computador. Os principais motivos que levam 
+    um atacante a desenvolver e a propagar códigos maliciosos são: 
+    obtenção de vantagens financeiras, coleta de informações 
+    confidenciais, desejo de autopromoção e vandalismo. Além disso, 
+    os códigos maliciosos são, muitas vezes, utilizados como 
+    intermediários e possibilitam a prática de golpes, a realização 
+    de ataques e a disseminação de spam.
+
+    Vírus: é um programa ou parte de um programa de computador, 
+    normalmente malicioso, que se propaga inserindo cópias de si 
+    mesmo e se tornando parte de outros programas e arquivos. Ele 
+    depende da execução do programa ou arquivo hospedeiro, ou 
+    seja, para que o seu computador seja infectado, é preciso que 
+    um programa já infectado seja executado.
+
+    Worm: é um programa capaz de se propagar automaticamente pelas 
+    redes, enviando cópias de si mesmo de computador para 
+    computador. São notadamente responsáveis por consumir muitos 
+    recursos, devido à grande quantidade de cópias de si mesmo que 
+    costumam propagar e, como consequência, podem afetar o 
+    desempenho das redes e a utilização de computadores. Após 
+    identificar os alvos, o worm efetua cópias de si mesmo e tenta 
+    enviá-las para esses computadores, por uma ou mais das 
+    seguintes formas: como parte da exploração de vulnerabilidades 
+    existentes em programas instalados no computador alvo; 
+    anexadas em e-mails; através de canais de IRC (Internet Relay 
+    Chat); via programas de troca de mensagens instantâneas; e 
+    incluídas em pastas compartilhadas em redes locais ou do tipo 
+    P2P (Peer to Peer).
+
+    Bot: é um programa que dispõe de mecanismos de comunicação com 
+    o invasor que permitem que ele seja controlado remotamente. 
+    Durante a comunicação, o invasor pode enviar instruções para 
+    que ações maliciosas sejam executadas, como desferir ataques, 
+    furtar dados do computador infectado e enviar spam.
+
+    Zombie: um computador infectado por um bot costuma ser chamado 
+    de zumbi (zombie computer), pois pode ser controlado 
+    remotamente, sem o conhecimento do seu dono.
+
+    Botnet: é uma rede formada por centenas ou milhares de 
+    computadores zumbis que permite potencializar as ações 
+    danosas executadas pelos bots. Algumas das ações maliciosas 
+    que costumam ser executadas por intermédio de botnets são: 
+    ataques de negação de serviço; propagação de códigos maliciosos
+    (inclusive do próprio bot); coleta de informações de um grande 
+    número de computadores; envio de spam; e camuflagem da 
+    identidade do atacante (com o uso de proxies instalados nos 
+    zumbis).
+
+    Spyware: é um programa projetado para monitorar as atividades 
+    de um sistema e enviar as informações coletadas para terceiros.
+    Alguns tipos específicos de programas spyware são:
+    
+        Keylogger: capaz de capturar e armazenar as teclas 
+        digitadas pelo usuário no teclado do computador.
+        
+        Screenlogger: capaz de armazenar a posição do cursor e a 
+        tela apresentada no monitor, nos momentos em que o mouse 
+        é clicado, ou a região que circunda a posição onde o mouse 
+        é clicado.
+        
+        Adware: projetado especificamente para apresentar 
+        propagandas. Pode ser utilizado para fins legítimos, 
+        quando incorporado a programas e serviços, como forma 
+        de patrocínio ou retorno financeiro para quem desenvolve 
+        programas livres ou presta serviços gratuitos. Também 
+        pode ser usado para fins maliciosos, isso ocorre quando 
+        as propagandas apresentadas são direcionadas de acordo 
+        com a navegação do usuário, porém o indivíduo não sabe 
+        que tal monitoramento está sendo feito.
+
+    Backdoor: programa que permite o retorno de um invasor a um 
+    computador comprometido por meio da inclusão de serviços 
+    criados ou modificados para esse fim. Após incluído, o 
+    backdoor é utilizado para assegurar o acesso futuro ao 
+    computador comprometido, permitindo que ele seja acessado 
+    remotamente, sem que precise recorrer novamente aos métodos 
+    utilizados na realização da invasão ou infecção e, na maioria 
+    dos casos, sem que seja notado.
+
+    Cavalo de troia, trojan ou trojan-horse: é um programa que, 
+    além de executar as funções para as quais foi aparentemente 
+    projetado, também executa outras funções, normalmente 
+    maliciosas, e sem o conhecimento do usuário.
+
+    Rootkit: é um conjunto de programas e técnicas que permite 
+    esconder e assegurar a presença de um invasor ou de outro 
+    código malicioso em um computador comprometido. Pode ser 
+    usado para: remover evidências em arquivos de logs; instalar 
+    outros códigos maliciosos, como backdoors, para assegurar o 
+    acesso futuro ao computador infectado; esconder atividades e 
+    informações, como arquivos, diretórios, processos, chaves de 
+    registro, conexões de rede etc.; mapear potenciais 
+    vulnerabilidades em outros computadores, por meio de 
+    varreduras na rede; capturar informações da rede onde o 
+    computador comprometido está localizado, pela interceptação de
+    tráfego.
+
+                Ferramentas inteligentes
+
+A Inteligência Artificial (IA) está se tornando uma ferramenta 
+cada vez mais poderosa e versátil, e, infelizmente, também está 
+sendo explorada como uma arma cibernética. O uso de IA em 
+ciberataques apresenta uma nova dimensão de desafios para a 
+segurança cibernética.
+
+Além disso, é inegável que a IA tem potencial para transformar 
+positivamente muitos setores. No entanto, sua aplicação no campo 
+da segurança cibernética apresenta tanto oportunidades quanto 
+ameaças. Ataques de phishing e engenharia social, tradicionalmente 
+baseados na manipulação humana, estão se beneficiando da 
+sofisticação proporcionada pela IA.
+
+A lista a seguir traz alguns pontos que precisamos considerar 
+quando o assunto é IA como uma ferramenta para aplicação de golpes 
+no mundo cibernético, focando em phishing onde, como mencionado, 
+se trata de manipular o comportamento humano para se obter 
+vantagem, visto que utiliza de IA para criar ataques automatizados 
+e mais bem elaborados já é uma realidade.
+
+Personalização de mensagens: a IA pode analisar grandes volumes de 
+dados pessoais disponíveis online, incluindo redes sociais, blogs 
+e outros sites, para criar e-mails de phishing altamente 
+personalizados. Esses e-mails podem ser ajustados para refletir os 
+interesses, linguagem e contexto da vítima, aumentando 
+significativamente as chances de sucesso do ataque.
+
+Automação de ataques: a IA pode automatizar o envio de e-mails de 
+phishing em grande escala, ajustando dinamicamente o conteúdo para
+diferentes alvos. Isso permite que atacantes lancem campanhas de 
+phishing em massa com um alto grau de personalização.
+
+Deepfakes: são vídeos ou áudios falsificados criados utilizando IA 
+que podem imitar a aparência e a voz de pessoas reais. Eles podem 
+ser usados para enganar indivíduos ou sistemas automatizados. 
+Recentemente uma companhia sofreu um golpe ("https://www.youtube.com/watch?v=o1J9iNgVSvI") 
+milionário com o uso de deepfake. 
+
+Análise comportamental: a IA pode analisar o comportamento online 
+de indivíduos, identificando padrões que podem ser explorados em 
+ataques de engenharia social.
+
+Imitação de comunicação: a IA pode imitar a comunicação de fontes 
+confiáveis, como colegas de trabalho, chefes ou amigos, tornando 
+os ataques de engenharia social mais convincentes.
+
+A inteligência artificial está transformando as técnicas de 
+phishing  e engenharia social, tornando-as mais sofisticadas e 
+difíceis de detectar. À medida que essas ameaças evoluem, é 
+essencial que as medidas de segurança acompanhem o ritmo, 
+implementando defesas baseadas em IA e melhorando a 
+conscientização sobre essas novas formas de ataque. A colaboração 
+contínua entre pesquisadores, profissionais de segurança e 
+legisladores será essencial para mitigar os riscos associados ao 
+uso malicioso da IA.
+
+                    Engenharia Social
+
+A arte de influenciar as pessoas a divulgarem informações 
+confidenciais é conhecida como “engenharia social” e o processo 
+de fazê-lo é conhecido como “ataque de engenharia social”. Existem
+diversas definições de engenharia social e vários modelos de 
+ataque.
+
+Se os testes de engenharia social e segurança física estiverem 
+dentro do escopo de seu teste de penetração (PenTest), considere 
+a possibilidade de não iniciar uma verificação imediata dos 
+ativos de sua organização. Você pode iniciar com testes não 
+técnicos, como a engenharia social e os próprios testes de 
+segurança físicos, que podem ser usados para obter um 
+reconhecimento adicional. Portanto, você poderá iniciar e testar 
+as dimensões não técnicas de segurança da informação de uma 
+organização para verificar os fatores em que ela está vulnerável.
+
+Antes de começar a realizar testes técnicos, você pode executar 
+os testes relacionados à engenharia social, baseado em pessoas 
+em uma organização. A partir desse momento, você obterá essas 
+informações para testar o elemento humano da organização.
+
+    Componentes básicos dos ataques de engenharia social
+
+Quando o assunto é engenharia social, precisamos primeiro entender alguns pontos que podemos a princípio chamar de básicos, mas que a complexidade pode ir escalando conforme a necessidade de se chegar no objetivo da informação.
+
+O atacante precisa ser treinado na arte de persuadir o seu alvo, obviamente que quanto mais anos de experiência por parte do atacante, melhor e mais elaborado os golpes ficam, se apenas te ligarem no telefone dizendo que sua filha foi sequestrada você vai acreditar? Mesmo que você não tenha filha?
+
+Pensando nisso, quanto mais informação prévia temos do alvo, mais fácil é de se montar uma história convincente para que a vítima faça o que está sendo solicitado a ela.
+
+A maioria dos ataques de engenharia social compartilham alguns componentes básicos que lhes permitem ser bastante eficazes. Alguns desses componentes são:
+
+    Avaliação de alvos: em muitos casos, os atacantes que têm 
+    alvos específicos em mente avaliam esses alvos e determinam 
+    como eles são suscetíveis a tipos também específicos de 
+    engenharia social. Eles avaliam seu nível geral de 
+    conhecimento em tecnologia da informação e segurança 
+    cibernética.
+    
+    Pretexto: os invasores se comunicam direta ou indiretamente 
+    por uma mentira, a fim de fazer com que alguém acredite em 
+    uma farsa. Essa crença pode estimular a vítima a confirmar 
+    uma ação que não pretendia ou que contraria seus interesses.
+    
+    Manipulação psicológica: os atacantes exploram a disposição dos 
+    seres humanos de depositar confiança nos outros e apoiam suas 
+    habilidades de tomada de decisão, às vezes, errôneas. Os 
+    invasores também exploram os preconceitos cognitivos inerentes 
+    a todas as pessoas para criar ataques mais eficazes e 
+    direcionados.
+    
+    Construção de relacionamentos: quanto mais confortável e 
+    amigável uma vítima estiver com o possível invasor, 
+    provavelmente haverá mais confiança. Os atacantes poderão, 
+    portanto, tentar conhecer seu alvo em um nível pessoal.
+    
+    Motivação: os atacantes tentam motivar seu alvo a tomar 
+    alguma ação que acabe beneficiando o próprio atacante.
+
+Para alcançar seu objetivo, um engenheiro social confia o sucesso 
+de suas ações em uma ou mais técnicas de motivação diferentes.
+
+    Autoridade: as pessoas tendem a obedecer às figuras com alguma 
+    autoridade, mesmo quando sabem que a ação solicitada é 
+    eticamente dúbia ou contrária aos seus próprios interesses, 
+    inclusive quando não têm informações suficientes para avaliar 
+    com precisão uma situação. Um atacante que se apresenta como 
+    figura de autoridade, como um policial, geralmente é mais 
+    bem-sucedido em seduzir a vítima a executar alguma ação que 
+    não deveria.
+
+    Escassez: as pessoas tendem a atribuir valor indevido a 
+    objetos ou ideias incomuns ou difíceis de obter. Um item 
+    “secreto” ou “exclusivo” é mais autêntico para a vítima do 
+    que algo que ela encontra todos os dias. Por exemplo, o 
+    atacante pode reivindicar recompensar uma vítima com um item 
+    exclusivo que não pode ser adquirido em nenhum outro lugar.
+
+    Urgência: semelhante à escassez, mas com um elemento de tempo 
+    envolvido. Um invasor pode incentivar a vítima a agir 
+    rapidamente para que não perca a oportunidade de adquirir 
+    algo. Por exemplo, uma “oferta por tempo limitado” terá mais 
+    chances de despertar o interesse da vítima.
+
+    Prova social: isso é semelhante ao conceito de conformidade, 
+    no qual as pessoas tendem a refletir sobre as ações de outras 
+    pessoas porque desejam ser parecidas. Se uma vítima vê ou 
+    acredita que vê um atacante se engajando em algum 
+    comportamento, elas próprias podem se envolver nesse 
+    comportamento. Isso é mais eficaz se o comportamento for 
+    exibido por um grupo de pessoas em quem a vítima confia. Por 
+    exemplo, um grupo de atacantes trabalhando em conjunto pode 
+    instalar um programa antivírus falso em seus computadores, 
+    e a vítima pode decidir fazer o mesmo para parecer competente 
+    para seus pares.
+
+    Semelhança: é mais provável que as pessoas ouçam alguém e 
+    cumpram seus pedidos se sentirem alguma afinidade. As 
+    possíveis vítimas podem se enxergar ou ver afinidades nessa 
+    outra pessoa: ter um padrão de fala semelhante ou representar 
+    um ideal, como alguém fisicamente atraente. Os invasores 
+    podem aproveitar essa motivação para ser charmoso e persuasivo 
+    para pessoas específicas.
+
+    Medo: como o medo é capaz de uma emoção tão intensa, ele pode 
+    motivar as pessoas a agirem de maneiras que normalmente não 
+    agiriam. O medo da perda é especialmente poderoso e os 
+    atacantes costumam usar táticas de medo para convencer a 
+    vítima de que ela pode perder algo muito importante.
+
+Na literatura podemos encontrar diversas referências sobre 
+persuasão e modos ao qual podemos aplicar no dia a dia, não 
+para golpes, mas para um convívio melhor em ambientes 
+corporativos, pode ser uma boa dica para o desenvolvimento 
+pessoal e profissional, um excelente livro que fala sobre é 
+“Manual de persuasão do FBI” (Ex-agente do FBI ensina como 
+influenciar, atrair e conquistar pessoas! Como um agente especial 
+para o Programa de Análise Comportamental da Divisão de Segurança 
+Nacional do FBI, Dr. Jack Schafer desenvolveu estratégias 
+dinâmicas e inovadoras para entrevistar terroristas e detectar 
+mentiras.  Agora, Dr. Schafer evoluiu suas táticas e nos ensina 
+como aplicá-las no cotidiano para obter sucesso nas relações 
+interpessoais.   Você quer pensar e reagir como os investigadores 
+de TV do Criminal Minds, CSI ou Lie to Me? Quer influenciar 
+pessoas recém-conhecidas e planejar a imagem pessoal que 
+transmitirá no dia a dia? Quer entender através da linguagem 
+corporal o que passa pela cabeça das pessoas ao seu redor? Quer 
+descobrir se alguém está mentindo?) escrito por Jack Schafer e 
+Marvin Karlins.
+
+            Táticas de engenharia social
+
+A seguir abordaremos algumas táticas que são associadas a engenharia social. Partiremos dos conceitos mais básicos e abrangentes como a “Pescaria” e, em seguida, vamos adentrar nos tipos mais elaborados de golpes que encontramos todos os dias no meio físico e digital.
+
+                        Phishing
+
+Em seu sentido original, phishing é a tática de engenharia social 
+na qual um invasor tenta obter informações confidenciais de um 
+usuário passando-se por uma figura confiável em comunicações via 
+e-mail.
+
+Devido ao surgimento de outros meios de comunicação, além do 
+e-mail, o termo “phishing” também pode abranger uma tentativa 
+de obter informações confidenciais por meio de qualquer meio 
+de comunicação eletrônica. O phishing é uma das táticas de 
+engenharia social mais comum e eficaz porque é fácil de 
+distribuir, impessoal e pode aproveitar truques técnicos, como 
+falsificar os cabeçalhos FROM no e-mail para torná-lo mais 
+convincente.
+
+Por exemplo, um invasor pode preparar um e-mail no qual alega 
+trabalhar no banco em que a vítima tem conta. O conteúdo do 
+e-mail informa à vítima que é preciso enviar sua senha para que 
+sua conta possa ser redefinida corretamente e que, ainda, se a 
+vítima não cumprir a tarefa dentro de uma semana, o banco 
+encerrará sua conta. Isso alavanca as técnicas de motivação de 
+urgência e medo. Quando a vítima recebe o e-mail, os cabeçalhos 
+falsificados fazem parecer que ele realmente é proveniente do 
+banco. A vítima, desaconselhada à ameaça, cumpre com a solicitação
+fraudulenta. Você sabia que várias ferramentas possuem recursos 
+internos que facilitam o lançamento de uma campanha de phishing?
+
+Por se tratar de uma das táticas de engenharia social mais comuns 
+e eficazes, o phishing pode ser encontrado em termos relacionados 
+a tipos específicos:
+
+    Smishing: também chamado de phishing por SMS, é um ataque no 
+    qual o invasor atrai a vítima por meio de mensagens de texto 
+    SMS. A predominância de smartphones pode tornar o uso do SMS 
+    mais atraente para um invasor do que o e-mail, mas é mais 
+    provável que as pessoas ignorem as mensagens de texto de 
+    remetentes desconhecidos ou não confiáveis do que com o e-mail. Variações de Smishing existem nos instant messengers, como WhatsApp ou Telegram, e tendem a ser mais bem-sucedidas quando a mensagem falsa parte de remetentes conhecidos, logo, o sequestro de WhatsApp, que geralmente também acontece por meio da engenharia social, é um passo preliminar quase obrigatório para o sucesso deste ataque.
+
+    Vishing: também chamado de phishing de voz, é um ataque de 
+    phishing no qual um invasor atrai sua vítima por meio de um 
+    sistema telefônico tradicional ou de comunicações de voz 
+    baseadas em IP, como Voice over IP (VoIP). Embora seja difícil 
+    para um atacante falar com alguém diretamente a fim de 
+    atraí-lo, pode ser que essa abordagem seja mais eficaz, pois 
+    as pessoas tendem a confiar mais naqueles com quem podem 
+    conversar em tempo real.
+
+    Pharming: nesse tipo de ação, o atacante leva a vítima a 
+    navegar para uma página da web maliciosa, que foi configurada 
+    para parecer oficial. O site pode imitar um site existente, 
+    como o site bancário da vítima, ou simplesmente apresentar um 
+    ar de legitimidade. A vítima interage com este site para 
+    fornecer suas informações confidenciais ao invasor, como 
+    preencher um formulário de login falso com sua senha.
+
+Em geral é o passo seguinte do smishing, ou seja, a mensagem 
+falsa em SMS ou por e-mail redireciona o usuário para o website 
+da suposta empresa, totalmente clonado para que a vítima não note 
+a diferença, assim, ela sente que está em um ambiente familiar e 
+confortável. Um breve descuido e as credenciais estão na mão do 
+criminoso.
+
+Para evitar ser uma destas vítimas, além de um antivírus instalado 
+e atualizado no computador e smartphone, é necessário se informar 
+em fontes confiáveis que, no caso da COVID-19, é a Agência Nacional
+da Saúde (ANS) e a Organização Mundial da Saúde (OMS). Trata-se do 
+melhor antídoto, não só contra os malwares, mas também contra as 
+fakes news.
+
+    Spear phishing: trata-se de um ataque de phishing, 
+    independentemente do meio, criado para atingir pessoas 
+    ou grupos específicos. Os ataques de spear phishing 
+    exigem que o invasor realize algum reconhecimento e colete 
+    algumas informações baseadas em seus alvos antes de iniciar 
+    o ataque. O invasor usa o que aprendeu sobre os hábitos, os 
+    interesses e as responsabilidades do trabalho de seus alvos 
+    para criar uma mensagem personalizada muito mais convincente 
+    do que uma mensagem genérica enviada a todos. Por exemplo, um 
+    invasor pode saber que o aniversário de um alvo será em breve 
+    e que planeja realizar uma festa em um local específico. O 
+    atacante pode fingir que trabalha para esse local e mencionar 
+    a festa de aniversário do alvo.
+    
+    Whaling: essa é uma forma de spear phishing cujo foco são 
+    indivíduos particularmente ricos ou poderosos, como CEOs de 
+    empresas, da Fortune 500. O risco é maior para um invasor, 
+    pois esses indivíduos provavelmente estarão mais protegidos 
+    do que uma pessoa comum. No entanto, o pagamento do atacante 
+    será significativamente maior. Por exemplo, uma fatura falsa 
+    e urgente pode induzir um CEO a pedir ao departamento 
+    financeiro que transfira um pagamento “muito atrasado” para 
+    a conta do atacante.
+    
+    Boleto falso: um golpe tipicamente brasileiro pode ser 
+    classificado como um tipo de phishing, o fenômeno dos boletos 
+    falsos, que são gerados indevidamente por uma empresa se 
+    passando pela outra. Uma das maiores vítimas são os clientes 
+    da REGISTRO.BR (s.d.), criado pela Fapesp para os registros 
+    dos domínios “.br” no Brasil. Disponibilizando (no passado) 
+    todos os dados de cobrança de um determinado domínio 
+    abertamente na Internet, possibilitaram a terceiros criar 
+    boletos de cobrança convincentes. Os golpistas mais espertos 
+    (e menos gananciosos) emitiam uma cobrança com o mesmo valor 
+    cobrado anualmente pela Registro.br, tornando o golpe ainda 
+    mais eficiente.
+
+                        Impersonation
+
+Impersonation, na língua portuguesa, significa representação, que 
+é o ato de fingir ser alguém que você não é. Muitos dos ataques de 
+engenharia social mais eficazes, especialmente o phishing, 
+geralmente incluem a impersonation como componente.
+
+Nesse contexto, fingir ser alguém é um elemento de um ataque, e 
+não um ataque propriamente dito, pois geralmente depende de 
+situações em que um alvo não pode confirmar suficientemente a 
+identidade do criminoso. Um exemplo comum é quando um invasor 
+finge ser um funcionário do suporte técnico e liga para outro 
+funcionário, solicitando sua senha para que ele possa redefinir um 
+banco de dados de contas. Se a pessoa que recebeu a ligação não 
+estiver familiarizada com os funcionários do suporte técnico ou 
+com o número de telefone que eles usam, ela pode não suspeitar da 
+solicitação.
+
+Um dos grandes expoentes da engenharia social por representação é 
+o hacker Kevin Mitnick, que embora fosse tecnicamente muito 
+qualificado e capaz, confessa em seu livro, “A arte de enganar” 
+(2006), que na maioria das vezes suas invasões eram fruto da mais 
+pura engenharia social.
+
+Para ilustrar suas capacidades, Greene (2003) e Mitnick & Simon 
+(2006) contam que Mitnick, aos 12 anos de idade, reparou que todo 
+o sistema de transferência de ônibus da cidade de Los Angeles da 
+época dependia de tickets em papel, perfurados pelos motoristas em 
+um padrão determinado. Pela observação e perguntas aparentemente 
+despretensiosas a um motorista de ônibus com o qual fez amizade 
+(situação mais bem enquadrada na técnica seguinte, a elicitação), 
+Mitnick descobriu como adquirir o furador especial, teve acesso às 
+informações que precisava e obteve os tais recibos por meio de uma 
+técnica chamada de dumpster diving: ele revirou as latas de lixo 
+ao lado da garagem de ônibus, descobrindo que os motoristas jogavam
+talões e tickets parcialmente preenchidos fora.
+
+A propósito, muita informação pode ser descoberta sobre um alvo 
+revirando o lixo dele. Tome cuidado com as etiquetas de compras 
+internacionais, pois elas contêm informações valiosas de contato 
+a seu respeito. Uma sugestão é você sobrepor seus dados com 
+canetinha preta de tinta espessa que impede a leitura de seus 
+dados pessoais, mesmo contra a luz.
+
+Dumpster diving pode ser um passo preliminar ao spear phishing, 
+que depende de informações do alvo para realizar um phishing mais 
+personalizado e, assim, supostamente mais confiável.
+
+O uso do impersonation costuma ser mais eficaz em interações face 
+a face com a vítima, isso porque a maioria das pessoas evita ser 
+rude quando está falando diretamente com outra. Portanto, elas 
+talvez tenham menos probabilidade de questionar o impostor do que 
+se tivessem sido abordadas por e-mail ou telefone. Obviamente, 
+esse contato presencial só funcionará se o alvo (possível vítima) 
+não souber como essa pessoa realmente é ou se não a conhecer bem 
+o suficiente para suspeitar de sua aparência.
+
+                        Elicitation
+
+Em português significa “elicitação”. É o processo de coleta ou 
+aquisição de dados de seres humanos. É diferente das informações 
+coletadas sobre os seres humanos. No processo de obtenção de 
+informações, um engenheiro social tentará aprender ou acessar 
+informações úteis entrando em contato com pessoas que possam 
+fornecer certas informações importantes. A abordagem é utilizada 
+quando o atacante precisa de informações que só serão adquiridas 
+por meio de outras pessoas. Como Impersonation, a Elicitation não 
+é um ataque de engenharia social em si, mas uma abordagem que pode 
+ser utilizada como parte de um ataque real.
+
+Algumas técnicas específicas de elicitation incluem:
+
+    Solicitações: o engenheiro social em uma posição confiável 
+    solicita que a potencial vítima forneça algumas informações 
+    úteis. Esse é o método mais direto do que elicitation.
+    
+    Interrogatório: um engenheiro social faz perguntas diretamente 
+    às pessoas com a intenção de extrair informações úteis. Ele 
+    pode estar se passando por uma figura que tenha autoridade a 
+    fim de melhorar suas chances de obter respostas.
+    
+    Pesquisas: um engenheiro social coleta indiretamente dados de 
+    voluntários. As pesquisas são eficazes quando o interrogatório 
+    não é uma opção viável.
+    
+    Observação: um engenheiro social examina o comportamento do 
+    alvo, em um ambiente específico, sem o conhecimento deles. O 
+    comportamento de uma pessoa e a rotina diária podem fornecer 
+    ao engenheiro social uma visão de como ela pensa ou age em 
+    determinadas situações. Lembre-se do exemplo de Kevin Mitnick 
+    estudando o motorista do ônibus, relatado na seção anterior.
+
+A elicitation é útil no suporte a uma variante do phishing 
+conhecida como Business Email Compromise (BEC − Comprometimento 
+de E-mail Comercial, em português), em que um invasor geralmente 
+se passa por um executivo de alto nível ou sequestra diretamente 
+a conta de e-mail. Em seguida, ele envia um e-mail para o 
+departamento financeiro, solicitando dinheiro por meio de um 
+método como transferência. Como o pessoal do financeiro acredita 
+que a solicitação é legítima, aprovará a transferência e, por 
+consequência, o invasor obtém esse pagamento com sucesso sem 
+roubá-lo diretamente.
+
+                        Hoaxes
+
+Hoaxes é outro elemento da engenharia social em que o atacante 
+apresenta uma situação fictícia como real. Está relacionado à 
+ideia de uma farsa, embora, em uma farsa, o objetivo do atacante 
+não seja necessariamente o ganho financeiro. Observe, a seguir, 
+alguns exemplos de farsas, também conhecidos como “trotes” que 
+podem convencer usuários inocentes:
+
+    Um pop-up informando que um programa antivírus identificou a 
+    presença de malware no sistema da possível vítima e que ela 
+    deve clicar em um link para corrigir essa infecção. Na 
+    realidade, o próprio link leva ao código malicioso.
+    
+    Uma mensagem de e-mail em que se afirma ser de um cidadão de 
+    um país estrangeiro, na qual pede ao alvo que os ajude a 
+    acessar fundos em uma conta bancária. Eles solicitam que a 
+    possível vítima envie dinheiro antecipadamente e que receberá 
+    uma porcentagem da soma total da conta. Na realidade, isso 
+    não existe e o criminoso simplesmente pega o dinheiro que a 
+    vítima enviou e desaparece.
+    
+    Um e-mail que afirma ser de uma empresa muito conhecida com 
+    uma mensagem que informa que a conta do alvo foi sinalizada 
+    por atividade suspeita. A vítima deve entrar no site da 
+    empresa e confirmar que a conta não foi comprometida. Na 
+    realidade, o link de entrada é direcionado a um site 
+    pharming, que rouba as credenciais do usuário.
+    
+    Uma postagem no blog alegando que a maioria dos problemas de 
+    desempenho do computador é o resultado da RAM que não foi 
+    “limpa” com uma certa frequência. A publicação oferece etapas 
+    sobre como executar uma operação de “limpeza” na linha de 
+    comando. Na realidade, esse comando formatou a unidade de 
+    armazenamento de um usuário, limpando completamente seu 
+    conteúdo.
+
+                        Baiting
+
+Significa “isca”, que é a ação na qual um atacante de engenharia 
+social deixa algum tipo de mídia física em um determinado lugar 
+para que uma pessoa aleatória a encontre e a conecte ao seu 
+computador pessoal ou corporativo. Isso explora a tendência das 
+pessoas se interessarem por objetos e situações fora do comum ou 
+que chamam a atenção de alguma maneira. A forma mais comum de 
+baiting envolve deixar um pen driveUSB em um estacionamento ou em 
+outra área pública perto de um espaço de trabalho.
+
+Um funcionário pode perceber a unidade USB no chão, pegá-la e 
+conectá-la ao computador. Sem o conhecimento do usuário, a unidade 
+foi pré-carregada com software malicioso que compromete o 
+computador do funcionário. Esses tipos de ataques podem depender 
+do computador da vítima ter a execução automática ativada para que 
+o código malicioso seja executado imediatamente. O malware, 
+dependendo de sua natureza, pode se espalhar e começar a infectar 
+outros hosts na rede.
+
+Mesmo que a execução automática não esteja ativada, o ataque ainda 
+pode atrair um usuário para executar o código malicioso na unidade 
+USB, disfarçando-o com algo divertido, como um jogo, um programa 
+antivírus ou arquivos com nomes enigmáticos e curiosos. E-mails 
+mandados anos atrás com dizeres “sua mulher está te traindo, clique
+aqui para ver as fotos” são um exemplo clássico de baiting que 
+apela para a emoção e curiosidade humana, fazendo, assim, muitas 
+vítimas.
+
+                    URL Hijacking
+
+O sequestro de URL (URL Hijacking), também conhecido como 
+typosquatting, é um ataque de engenharia social que explora 
+os erros de digitação que os usuários podem cometer ao tentar 
+navegar em um site. Por exemplo, um usuário que deseja visitar 
+o site da FIAP pode digitar em seu navegador: fiapi.com.br.
+
+O navegador não tem como saber que isso foi um erro, por isso 
+envia a solicitação do usuário ao site. Caso um invasor já tenha 
+registrado, previamente, esse domínio e está contando com os 
+usuários desatentos para cometerem erros desse tipo. Portanto, 
+o usuário é basicamente direcionado para um site malicioso, e não 
+para o destino pretendido.
+
+O site malicioso pode ser claramente o errado, mas atacantes mais 
+inteligentes transformam o site falso em um site que imita de 
+perto o site real (tornando-se um pharming, comentado anteriormente). 
+Dessa forma, a vítima talvez nunca saiba que cometeu um erro e 
+continuará ignorando o problema. Além dos erros de ortografia, o 
+sequestro de URL também abrange casos em que o domínio de nível 
+superior errado é usado, por exemplo fiap.gov.
+
+Observe que muitas empresas investem um esforço significativo no 
+combate a domínios com erros de digitação (muitas vezes adquirindo
+os domínios com variações e redirecionando para o site certo), mas 
+sempre haverá situações a serem exploradas.
+
+                    Spam e Spin
+
+O Spam é um ataque no qual a caixa de entrada do usuário é 
+inundada com mensagens de anúncios, promoções, esquemas de 
+enriquecimento rápido e outras mensagens não solicitadas. Como 
+o phishing, o termo inicialmente incluía mensagens baseadas em 
+e-mail, mas agora pode incluir qualquer meio de comunicação. Uma 
+curiosidade em relação à origem do termo, ele foi inspirado em 
+um esquete do grupo de humor britânico Monty Python, repetindo 
+o termo dezenas de vezes das formas mais inconvenientes possíveis. 
+O grupo caçoava de uma marca real de uma espécie de presunto 
+enlatado.
+
+O spam geralmente é utilizado em conjunto com o phishing, isso 
+porque o invasor tenta sobrecarregar o maior número possível de 
+alvos com mensagens não solicitadas, esperando que pelo menos 
+alguns usuários atuem neles.
+
+Além do e-mail, o spam também pode ser transmitido por mensagens 
+instantâneas. Por exemplo, um invasor pode enviar mensagens não 
+solicitadas a membros de um grupo do Facebook prometendo muitas 
+vantagens em um determinado produto se eles seguirem um link. Isso,
+às vezes, é chamado de spim.
+
+O Spim pode ser mais difícil de executar, visto que é necessária 
+uma interação síncrona. Se a vítima espera interagir com uma pessoa 
+em tempo real, ela pode ficar mais desconfiada se o atacante não 
+responder como um humano, ou seja, acredita que o remetente é um 
+bot.
+
+Ainda assim, sabe-se que o spim funciona, especialmente quando o 
+alvo não é especialista em tecnologia. Devido ao surgimento de 
+filtros robustos em clientes de e-mail e mensagens instantâneas,
+spam espim são menos eficazes do que costumavam ser. No entanto, 
+o volume de mensagens não solicitadas é tão grande que, todos os 
+dias, um usuário suspeito é capturado com sucesso por spam ou spim.
+
+                    Shoulder Surfing
+
+Shoulder surfing é um ataque de engenharia social em que o 
+atacante observa o comportamento de um alvo sem que seja notado. 
+A possível vítima normalmente está no computador ou em outro 
+dispositivo e pode estar trabalhando com informações confidenciais 
+ou inserindo suas credenciais em um sistema de autenticação.
+
+O atacante, que está atrás do alvo, é capaz de ver o que está na 
+tela ou quais teclas o alvo está pressionando. O shoulder surfing
+não precisa ser literalmente alguém espiando por cima do ombro do 
+outro. O atacante pode fazer a mesma coisa usando a câmera de um 
+smartphone para capturar fotos ou vídeos com antecedência, com a 
+vantagem adicional de poder voltar a essa gravação mais tarde, em 
+vez de confiar apenas na memória. O invasor nem precisa estar 
+fisicamente presente durante o ataque, ele pode colocar a câmera 
+em uma mesa próxima, pressionar gravar e sair. Mais tarde, retorna 
+para descobrir imagens do alvo trabalhando no computador.
+
+                Tailgating e Piggybacking
+
+Tailgating é um ataque em que o atacante acessa uma área segura 
+enquanto segue um funcionário que tem autorização para entrar em 
+ambientes controlados. O funcionário não sabe que alguém está o 
+perseguindo. Por exemplo, um funcionário pode entrar no lobby da 
+empresa usando um cartão de acesso na entrada trancada. Na 
+sequência, esse funcionário abre a porta e a deixa fechar sozinha 
+por uma mola automática, sem conferir se há alguém atrás dele. O 
+atacante, então, se move silenciosamente para a porta enquanto 
+ela está fechando e a segura para depois entrar.
+
+A utilização não autorizada de um ambiente exige que alguns 
+fatores não sejam eficazes, tais como:
+
+    As portas não se fecharem rapidamente.
+    
+    O funcionário seguido não prestar atenção em quem está por 
+    perto.
+    
+    Não haver um guarda atento ou outro pessoal esperando do outro 
+    lado da porta.
+
+Há situações em que o alvo pode conhecer o atacante pessoalmente,
+ser cúmplice no ataque ou, ainda, pode ignorar o que o atacante 
+está fazendo, isso é conhecido como Piggybacking. Por exemplo, se 
+o invasor tiver sido dispensado recentemente pela empresa, um 
+outro funcionário (alvo) pode não saber disso e assumir que é 
+apenas mais um dia no escritório. No entanto, é mais provável que 
+o alvo não conheça o invasor, mas apenas mantenha a porta aberta 
+por educação ou cortesia.
+
+Tailgating e Piggybacking também são exemplos de como você pode 
+usar a engenharia social como parte de um ataque físico. Por 
+exemplo, uma das maneiras mais fáceis para um invasor entrar em 
+um prédio com acesso controlado seria entrar com os funcionários 
+quando eles retornam após um alarme de incêndio.
