@@ -11504,3 +11504,1189 @@ E para exibir o resultado, precisamos do seguinte código:
     show_anns(masks)
     plt.axis('off')
     plt.show()
+
+Esse código-fonte exige a imagem de entrada com uma camada 
+sobreposta indicando as segmentações resultantes. Note pela 
+figura a seguir que o método é tão poderoso que além de detectar 
+um gato ou cachorro também pode identificar orelhas, olhos, 
+patas, entre outros “objetos”.
+
+            Sistemas de recomendação
+
+Os sistemas de recomendação são ferramentas de Machine Learning 
+projetadas para sugerir itens relevantes a usuários com base em 
+seus interesses, comportamentos passados ou características 
+semelhantes a outros usuários. Eles desempenham um papel crucial 
+em ajudar os usuários a navegarem por grandes volumes de 
+informações e encontrar o que é mais relevante para eles, 
+tornando-se uma parte indispensável de plataformas digitais 
+modernas. Desde indicar o próximo filme em uma plataforma de 
+streaming até sugerir produtos em um e-commerce, esses sistemas 
+transformaram a forma como consumimos informações e tomamos 
+decisões, tanto de forma online quanto offline (se pensarmos na 
+disposição de produtos em uma loja física).
+
+No entanto, os sistemas de recomendação não são apenas sobre “o 
+que exibir”, mas também sobre “o que não exibir”. Eles filtram o 
+excesso de informações que poderia sobrecarregar o usuário, 
+ajudando-o a se concentrar em opções mais relevantes. Esse papel 
+de “curador” é especialmente valioso em tempos de abundância de 
+dados, onde a quantidade de escolhas pode gerar indecisão. Nesse 
+contexto, sistemas de recomendação atuam como facilitadores, 
+guiando os usuários em um mar de informações.
+
+Portanto, os sistemas de recomendação são mais do que algoritmos;
+eles são componentes essenciais da experiência digital moderna. 
+Eles não apenas impulsionam o sucesso comercial das empresas, mas 
+também melhoram a experiência do usuário, conectando pessoas a 
+produtos, serviços ou informações que realmente importam. Ao longo
+deste capítulo, mergulharemos nas abordagens, métricas e desafios 
+desses sistemas, entendendo por que eles são tão relevantes no 
+mundo conectado de hoje.
+
+A importância dos sistemas de recomendação se destaca em diversos 
+setores. No e-commerce, sistemas de recomendação ajudam a melhorar
+as vendas ao sugerir produtos relacionados ou personalizar a 
+vitrine de acordo com o perfil do usuário. Em plataformas de 
+streaming, como Netflix e Spotify, eles garantem que o conteúdo 
+exibido seja relevante, aumentando o engajamento e o tempo de 
+uso. Já em redes sociais, como Instagram ou TikTok, os sistemas 
+de recomendação alimentam os algoritmos que decidem o que o 
+usuário verá no feed, promovendo conteúdos que maximizam a 
+interação.
+
+Esse impacto vai além do lucro para as empresas; ele também 
+beneficia diretamente os usuários. Ao personalizar a experiência,
+os sistemas de recomendação economizam tempo e esforço dos 
+usuários, apresentando opções ajustadas às suas preferências. 
+Por exemplo, em um serviço de streaming, um usuário pode 
+rapidamente descobrir um novo filme favorito baseado em seus 
+hábitos anteriores, sem precisar navegar por milhares de opções. 
+Isso aumenta a satisfação e a fidelidade dos usuários, 
+incentivando o retorno contínuo às plataformas.
+
+A personalização proporcionada por esses sistemas também melhora 
+a qualidade da interação entre usuário e plataforma. Quando os 
+usuários percebem que suas preferências estão sendo reconhecidas 
+e valorizadas, a sensação de confiança e envolvimento cresce. 
+Além disso, a capacidade de oferecer recomendações exclusivas 
+pode criar um senso de novidade e surpresa, aumentando a 
+satisfação e a probabilidade de engajamento. Por exemplo, a 
+descoberta de um produto inesperado em uma loja online pode ser 
+vista como um “momento de encantamento”, fortalecendo o vínculo 
+com o usuário.
+
+                Avaliando desempenho
+
+A construção de sistemas de recomendação também segue o pipeline 
+tradicional de ciência de dados. Além de entender qual o 
+principal objetivo de negócio (por exemplo: vender mais, reter o 
+usuário, surpreender o usuário, entre outros), também devemos 
+coletar dados e construir features relevantes. Adiante veremos 
+as principais modelagens, mas já podemos refletir sobre sua
+avaliação.
+
+Avaliar o desempenho de sistemas de recomendação é uma etapa 
+fundamental para garantir que eles realmente entreguem valor 
+tanto para o usuário quanto para o negócio. Diferentemente de 
+modelos tradicionais de Machine Learning, onde geralmente 
+avaliamos a precisão ou o erro de previsões numéricas ou 
+categóricas, a avaliação de sistemas de recomendação é mais 
+complexa. Não basta saber se o sistema está correto ao recomendar
+um item; é necessário avaliar se as recomendações são relevantes,
+diversificadas, úteis e, principalmente, alinhadas ao objetivo da
+plataforma, seja ele aumentar a conversão de vendas, o tempo de 
+engajamento ou a satisfação do usuário.
+
+A principal diferença em relação ao aprendizado supervisionado 
+clássico reside no fato de que, em sistemas de recomendação, não 
+há necessariamente um “rótulo correto” para cada interação. Por 
+exemplo, em um sistema de e-commerce, não sabemos de antemão 
+qual produto o usuário deseja comprar ou explorar, apenas 
+inferimos isso com base em dados de interações passadas. Essa 
+característica faz com que as métricas de avaliação de 
+recomendação muitas vezes dependam de dados implícitos, como 
+cliques ou visualizações, ao invés de dados explícitos, como 
+classificações ou escolhas binárias, introduzindo um grau maior 
+de incerteza.
+
+Além disso, a avaliação de desempenho vai além do modelo em si e 
+precisa considerar a experiência do usuário de maneira holística. 
+Aspectos como diversidade e novidade das recomendações, equilíbrio
+entre personalização e exploração de novos conteúdos, e até mesmo 
+preocupações éticas, como evitar vieses ou bolhas de filtro, 
+entram em jogo. Avaliar um sistema de recomendação, portanto, não 
+é apenas uma questão de analisar acertos e erros, mas sim de 
+medir como as recomendações contribuem para o objetivo final da 
+aplicação, garantindo que atendam tanto às expectativas dos 
+usuários quanto às metas estratégicas do negócio. Essa avaliação 
+ampla permite que o sistema evolua continuamente, ajustando-se às
+demandas de um ambiente dinâmico e competitivo.
+
+Ainda assim, não podemos construir um modelo de recomendação e 
+colocá-lo em produção sem testá-lo. Em breve, iremos discutir 
+algumas formas de avaliar sistemas de recomendação.
+
+Métricas Clássicas:
+
+    As métricas de Precisão, Recall e F1-Score são amplamente 
+    utilizadas para avaliar sistemas de recomendação, 
+    especialmente em situações em que é possível medir 
+    diretamente o acerto ou relevância das recomendações. Embora 
+    essas métricas sejam originalmente associadas ao aprendizado 
+    supervisionado, elas também têm aplicações úteis em sistemas 
+    de recomendação, permitindo medir a qualidade das previsões 
+    feitas pelo modelo.
+
+Precisão:
+
+    A precisão mede a proporção de itens recomendados que são, de 
+    fato, relevantes para o usuário. Em outras palavras, avalia o 
+    quanto o sistema evita recomendar itens irrelevantes. Sua 
+    fórmula é:
+
+        precisao = itens relevantes recomendados / total de itens recomendados
+
+    No contexto de um e-commerce, imagine que o sistema 
+    recomende 10 produtos para um determinado usuário, porém, 
+    apenas quatro desses produtos sejam realmente comprados ou 
+    clicados (considerados “relevantes”). A precisão nesse caso 
+    seria 4 / 10 = 0.4 ou 40%. Uma precisão alta significa que 
+    o sistema é eficiente em recomendar itens que os usuários 
+    realmente valorizam, evitando “ruído” nas recomendações. No 
+    entanto, sozinha, a precisão não considera quantos itens 
+    relevantes não foram recomendados, o que pode ser uma 
+    limitação em certos contextos.
+
+    Ainda no exemplo de e-commerce, considere que existam oito 
+    produtos relevantes no catálogo para o usuário, mas o 
+    sistema recomendou apenas quatro desses oito itens. O recall 
+    seria 4 / 8 = 0.5 ou 50%. Uma métrica de recall alta indica 
+    que o sistema consegue capturar a maior parte dos itens 
+    relevantes para o usuário, o que é essencial em cenários 
+    onde é importante não perder oportunidades, como em 
+    plataformas que priorizam engajamento.
+
+    Contudo, um recall alto pode ser alcançado recomendando 
+    muitos itens, mesmo que vários sejam irrelevantes, o que 
+    impacta negativamente a precisão.
+
+F1-SCORE:
+
+    O F1-Score é a média harmônica entre precisão e recall, equilibrando as duas métricas. Sua fórmula é:
+
+        F1 Score = 2 * (precisao * recall) / (Precisao + recall)
+
+    Esse indicador é útil quando precisamos de um equilíbrio 
+    entre precisão e recall. Por exemplo, em um e-commerce que 
+    valoriza tanto a relevância das recomendações (precisão) 
+    quanto a abrangência de itens sugeridos (recall), o F1-Score 
+    fornece uma medida consolidada de desempenho. Se a precisão 
+    for 40% e o recall for 50%, o F1-Score seria: 
+    2 * (0.4 * 0.5) / (0.4 + 0.5) = 0.4444
+
+    Um F1-Score alto representa um equilíbrio saudável entre 
+    precisão e recall, sendo especialmente útil em e-commerces 
+    que precisam balancear relevância e abrangência para melhorar
+    a experiência do usuário.
+
+    No geral, a escolha da métrica depende do objetivo do sistema. Por exemplo, em um e-commerce focado em conversões rápidas, a precisão pode ser mais importante. Já em plataformas que valorizam a descoberta de novos itens, como streamings, o recall pode ser priorizado. O F1-Score, por sua vez, é útil em contextos em que é necessário equilibrar os dois aspectos.
+
+Métricas específicas:
+
+    Embora métricas clássicas sejam úteis para medir a precisão 
+    dos sistemas de recomendação, mensurar aspectos qualitativos 
+    das recomendações também é relevante, pois promovem 
+    experiências mais ricas e satisfatórias aos usuários.
+
+Diversidade:
+
+    A métrica de diversidade avalia o quão variado é o conjunto 
+    de itens recomendados a um usuário. Ela considera a 
+    similaridade entre os itens sugeridos, buscando reduzir 
+    redundâncias. Um sistema com alta diversidade evita 
+    recomendar produtos muito semelhantes entre si, como sugerir 
+    apenas diferentes cores de um mesmo modelo de camiseta. 
+    Diversidade é essencial em contextos como streaming musical, 
+    onde o usuário espera explorar artistas ou gêneros variados.
+
+Novidade:
+
+    A novidade mede o quanto os itens recomendados são 
+    desconhecidos para o usuário. Por exemplo, sugerir um 
+    filme que o usuário nunca assistiu ou um produto que ele 
+    não explorou antes. A novidade é importante para manter o 
+    engajamento contínuo, evitando a saturação do usuário com 
+    os mesmos itens. No e-commerce, por exemplo, isso pode 
+    ajudar a introduzir novos produtos ao mercado.
+
+Serendipidade:
+
+    A serendipidade mede o quanto uma recomendação é inesperada, 
+    mas ainda assim relevante para o usuário. Diferente da 
+    novidade, que foca no desconhecido, a serendipidade busca 
+    surpreender positivamente o usuário, sugerindo itens fora 
+    de seu comportamento habitual, mas que podem ser de seu 
+    interesse. Por exemplo, recomendar um livro de ficção 
+    científica para alguém que geralmente lê romances históricos, 
+    mas que ainda possui características que podem agradar.
+
+
+        Dificuldade da avaliação dos motores de recomendação
+
+Avaliar motores de recomendação é um desafio intrínseco, pois 
+envolve uma série de questões técnicas e práticas que vão além 
+da precisão de previsões. A dificuldade começa na separação 
+entre treino e teste, que é essencial em qualquer sistema 
+preditivo. Em sistemas de recomendação, essa divisão não é 
+trivial, já que as interações entre usuários e itens estão em 
+constante mudança, e os dados históricos podem não refletir as 
+preferências futuras dos usuários. Além disso, a avaliação 
+offline com conjuntos de treino e teste pode não capturar a 
+experiência real do usuário ao interagir com as recomendações, 
+limitando a capacidade de prever o impacto real no negócio.
+
+Outro ponto importante é que as recomendações “perfeitas” nem 
+sempre são acionáveis. Mesmo que um sistema consiga identificar 
+com precisão os itens que o usuário provavelmente escolherá, 
+isso pode não levar a uma experiência satisfatória. Por exemplo, 
+recomendar sempre itens que o usuário já conhece ou deseja pode 
+reforçar padrões previsíveis, limitando a descoberta de novos 
+itens e a exploração de outros interesses. Isso destaca a 
+importância de métricas complementares, como diversidade, 
+novidade e serendipidade, que buscam equilibrar relevância 
+com exploração. Além disso, a recomendação do produto pode 
+ser perfeita como, por exemplo, um curso, mas se o usuário não 
+tiver tempo e dinheiro para adquirir o produto, a recomendação 
+não será acionada. Isso não necessariamente é uma falha do 
+sistema de recomendação.
+
+Uma das melhores maneiras de avaliar o impacto de um sistema de 
+recomendação em um cenário real é por meio de testes A/B, como 
+ilustrado na figura a seguir. Testes A/B são essenciais porque 
+fornecem uma avaliação no mundo real, capturando as reações 
+autênticas dos usuários ao invés de se basear apenas em análises 
+offline.
+
+Um teste A/B é um experimento controlado onde dois (ou mais) 
+grupos de usuários são expostos a diferentes versões do sistema 
+para comparar os resultados. Um grupo, chamado de “grupo de 
+controle”, utiliza uma versão antiga ou um sistema base, enquanto 
+o outro, o “grupo experimental”, interage com a nova versão do 
+motor de recomendação. O desempenho dos dois grupos é então 
+comparado com base em métricas relevantes, como taxa de cliques, 
+conversão ou engajamento.
+
+Apesar de sua eficácia, testes A/B também têm desafios. Eles 
+exigem planejamento cuidadoso para garantir que os grupos sejam 
+balanceados, e que os resultados sejam estatisticamente 
+significativos. Além disso, podem ser demorados, pois precisam 
+de uma base de usuários suficientemente grande e um tempo 
+adequado para a coleta de dados. Mesmo assim, eles continuam 
+sendo uma das estratégias mais confiáveis para validar sistemas 
+de recomendação, especialmente quando se busca entender não 
+apenas a precisão, mas também o impacto real no comportamento 
+do usuário e nos objetivos do negócio.
+
+                Principais abordagens
+
+Filtragem por conteúdo:
+
+    A filtragem por conteúdo é uma abordagem de sistemas de 
+    recomendação que. A ideia central é comparar as 
+    características de itens já consumidos ou bem avaliados 
+    por um usuário com as características de outros itens 
+    ainda não consumidos, identificando aqueles que são mais 
+    similares.
+
+    O processo funciona em etapas:
+
+        1. Perfil do usuário:  um perfil é construído com base no 
+        histórico do usuário, analisando os itens com os quais 
+        ele interagiu (como livros, filmes ou produtos). Esse 
+        perfil pode ser definido por palavras-chave, categorias ou 
+        atributos específicos dos itens.
+
+        2. Extração de features: os itens são descritos por um 
+        conjunto de features, como, por exemplo: gênero de um 
+        filme, autor de um livro ou especificações técnicas de 
+        um produto.
+
+        3. Medição de similaridade: o sistema compara o perfil do 
+        usuário com as características dos itens não consumidos, 
+        usando métricas como cosine similarity ou Jaccard index, 
+        para determinar o quão similar um item é em relação ao 
+        perfil.
+
+        4. Recomendações: com base nas similaridades calculadas, 
+        o sistema recomenda os itens mais alinhados ao perfil do 
+        usuário. Por exemplo, se um usuário gosta de livros de 
+        ficção científica, o sistema recomendará outros livros 
+        com essa mesma característica, usando atributos como 
+        gênero literário, autor ou palavras-chave associadas.
+
+    Como todo método, a filtragem por conteúdo possui vantagens e 
+    limitações, não devendo ser o único motor de geração de 
+    recomendações. O quadro a seguir resume os principais pontos 
+    ao considerar para implementar a filtragem por conteúdo.
+
+    +-----------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------+
+    | Vantagens                                                                                     | Desvantagens                                                                                                          |
+    +-----------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------+
+    | Personalização: as recomendações são altamente personalizadas, baseando-se nas preferências    | Novos usuários: o sistema tem dificuldade em construir um perfil inicial para gerar recomendações a usuários         |
+    | únicas de cada usuário.                                                                       | sem histórico.                                                                                                        |
+    +-----------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------+
+    | Independência de outros usuários: não depende do comportamento de outros usuários, tornando-o | Recomendações restritas: o sistema só sugere itens similares aos já consumidos, limitando a diversidade e a           |
+    | eficaz mesmo em plataformas com poucos usuários ativos.                                        | descoberta de novos interesses.                                                                                       |
+    +-----------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------+
+    | Interpretação clara: as recomendações são explicáveis, pois se baseiam em características    | Dependência de features bem definidas: se os dados forem escassos ou mal organizados, a eficácia diminui.             |
+    | específicas dos itens.                                                                        |                                                                                                                       |
+    +-----------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------+
+    | Sem problemas para itens novos: itens novos com descrições detalhadas podem ser recomendados  | Sobrefitting ao usuário: pode ocorrer um foco excessivo nas preferências passadas do usuário, restringindo as         |
+    | imediatamente, pois a abordagem não depende de histórico de interações com outros usuários.   | possibilidades de recomendações inesperadas ou serendipidade.                                                         |
+    +-----------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------+
+    | Autossuficiência: foca apenas nos dados do próprio usuário, dispensando dependências          | Complexidade: em certos domínios, como imagens ou músicas, extrair características significativas pode ser desafiador, |
+    | complexas de redes de interação.                                                              | exigindo técnicas avançadas como Deep Learning.                                                                       |
+    +-----------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------+
+
+    A filtragem por conteúdo é uma abordagem poderosa, mas 
+    funciona melhor combinada com outras técnicas, como a 
+    filtragem colaborativa, em sistemas híbridos. Dessa forma, 
+    é possível superar as limitações de cada método individual, 
+    proporcionando recomendações mais robustas e diversificadas.
+
+Filtragem colaborativa:
+
+    A filtragem colaborativa é uma abordagem de sistemas de 
+    recomendação que se baseia nos comportamentos e preferências 
+    de múltiplos usuários para gerar sugestões. Ao invés de 
+    analisar as características dos itens diretamente, a 
+    filtragem colaborativa identifica padrões nas interações entre
+    usuários e itens para prever o que um usuário pode gostar, 
+    baseando-se no comportamento de outros usuários com gostos 
+    semelhantes.
+
+    Por exemplo, em uma plataforma de streaming, se dois usuários 
+    assistirem e gostarem de filmes de ação, o sistema pode 
+    sugerir ao usuário A um filme que o usuário B assistiu, mas 
+    que ainda não está no histórico de A.
+
+    Existem duas principais formas de filtragem colaborativa:
+
+        1. Baseada em usuários: o sistema identifica usuários 
+        com comportamentos semelhantes ao do usuário alvo. Por 
+        exemplo, pessoas que avaliaram positivamente os mesmos 
+        filmes e recomenda itens que esses usuários similares 
+        consumiram, mas que o usuário alvo ainda não experimentou.
+
+        2. Baseada em itens: o sistema encontra itens que foram 
+        avaliados ou consumidos de maneira semelhante por outros 
+        usuários. Por exemplo, se dois filmes foram avaliados 
+        positivamente pelos mesmos usuários são considerados 
+        semelhantes, a filtragem sugere itens que combinam com o 
+        histórico do usuário alvo.
+
+    A filtragem colaborativa também possui vantagens e 
+    limitações, descritos no quadro a seguir.
+
+    +-----------------------------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------+
+    | Vantagens                                                                                                             | Desvantagens                                                                                                          |
+    +-----------------------------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------+
+    | Independência das features dos itens: não exige características explícitas dos itens, apenas dados de interação,    | Início dificultoso: depende de um volume mínimo de interações para ser eficaz. Itens novos ou usuários sem histórico  |
+    | como avaliações, cliques ou compras.                                                                                  | dificultam a geração de recomendações.                                                                                |
+    +-----------------------------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------+
+    | Capacidade de capturar preferências implícitas: pode identificar padrões sutis de comportamento que não são evidentes | Esparsidade dos dados: em sistemas grandes, as matrizes de interação (usuários x itens) são frequentemente esparsas,  |
+    | apenas com base nas características dos itens.                                                                        | tornando difícil encontrar padrões significativos.                                                                    |
+    +-----------------------------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------+
+    | Recomendações dinâmicas: as sugestões evoluem à medida que os usuários interagem com novos itens, adaptando-se      | Escalabilidade: à medida que a quantidade de usuários e itens cresce, os cálculos de similaridade se tornam mais      |
+    | rapidamente ao comportamento do público.                                                                              | complexos e computacionalmente caros.                                                                                 |
+    +-----------------------------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------+
+    | Efetividade em domínios variados: funciona bem em contextos em que os itens não possuem descrições detalhadas ou     | Bolha de filtro: pode reforçar comportamentos existentes, recomendando apenas itens que se alinham aos gostos       |
+    | onde as características dos itens são difíceis de capturar, como música ou filmes.                                    | históricos, limitando a descoberta de novos interesses.                                                               |
+    +-----------------------------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------+
+    | Exploração de novos itens: a filtragem colaborativa pode surpreender o usuário com recomendações inesperadas, já que | Falta de explicabilidade: como é baseado em interações, muitas vezes é difícil explicar por que um item específico  |
+    | se baseia no comportamento coletivo e não apenas no histórico pessoal.                                                | foi recomendado, especialmente para o usuário final.                                                                  |
+    +-----------------------------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------+
+
+    A filtragem colaborativa é uma técnica amplamente utilizada 
+    em sistemas de recomendação modernos devido à sua 
+    flexibilidade e eficácia em capturar padrões de comportamento.
+    Contudo, seus desafios a tornam ideal para ser combinada com 
+    outras abordagens, como a filtragem por conteúdo, em sistemas 
+    híbridos que podem oferecer recomendações mais completas e 
+    equilibradas.
+
+Regras de associação:
+
+    As regras de associação são utilizadas para descobrir padrões 
+    de ocorrência em grandes bases de dados, especialmente em 
+    transações. A abordagem identifica relações entre itens 
+    frequentemente comprados ou utilizados juntos, ajudando a 
+    responder perguntas como: se o cliente compra X, qual é a 
+    probabilidade de também comprar Y?
+
+    Essa abordagem é amplamente aplicada em análise de cestas de 
+    mercado (market basket analysis), onde, por exemplo, é 
+    possível detectar que compradores de pão têm alta 
+    probabilidade de comprar manteiga. 
+
+    O método Apriori é uma técnica clássica para gerar regras 
+    de associação. Ele trabalha com base na ideia de que se um 
+    conjunto de itens é frequente, então todos os seus 
+    subconjuntos também são frequentes. Isso reduz o espaço de 
+    busca ao eliminar combinações de itens que não atendem a um 
+    limite mínimo de frequência, chamado de suporte mínimo.
+
+    Etapas do Algoritmo Apriori:
+
+        Cálculo de suporte para itens individuais: identifica 
+        os itens que satisfazem o suporte mínimo, ou seja, 
+        aqueles que aparecem com frequência suficiente nas 
+        transações.
+        
+        Geração de conjuntos de itens frequentes: com base nos 
+        itens que atendem ao suporte mínimo, o algoritmo gera 
+        combinações de itens (2, 3, 4... itens) e calcula o 
+        suporte de cada combinação.
+        
+        Eliminação de combinações infrequentes: descarta 
+        subconjuntos de itens que não atendem ao suporte mínimo.
+        
+        Criação de regras de associação: para cada conjunto de 
+        itens frequentes, o algoritmo gera regras da forma X → Y, 
+        onde X e Y são subconjuntos dos itens, calculando 
+        métricas de suporte, confiança e lift.
+
+    Para compreensão do método, é importante conhecermos e 
+    entendermos as principais métricas envolvidas! São elas:
+
+        Suporte (Support): mede a frequência com que um conjunto 
+        de itens aparece no dataset. Por exemplo: se “leite e pão”
+        aparecem em 40 de 200 transações, o suporte é 0,2 (20%). 
+
+            Suporte(X) = Número de transações de conteúdo X / Total de transações
+
+        Confiança (Confidence): mede a probabilidade de que o 
+        item Y seja comprado dado que X já foi comprado. 
+        Exemplo: se 30 de 40 pessoas que compraram “leite” também
+        compraram “pão”, a confiança é 0,75 (75%). 
+
+            Confiança(XàY) = Suporte (X e Y) / Suporte (X)
+
+        Lift: avalia a força da regra comparando a probabilidade 
+        de Y ocorrer dado X com a probabilidade de Y ocorrer 
+        independentemente. Um lift maior que 1 indica que X e Y 
+        têm uma associação positiva. Quanto maior, melhor!
+
+            Lift(XàY) = Confiança(XàY) / Suporte(Y)
+
+    A método Apriori possui vantagens e limitações, descritos no 
+    quadro a seguir.
+
+    +-----------------------------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------+
+    | Vantagens                                                                                                             | Desvantagens                                                                                                          |
+    +-----------------------------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------+
+    | Facilidade de interpretação: as regras geradas são simples e compreensíveis, permitindo insights claros sobre os      | Alto custo computacional: em bases de dados grandes, o algoritmo pode gerar uma explosão combinatória de              |
+    | dados.                                                                                                                | subconjuntos, tornando o processo lento.                                                                              |
+    +-----------------------------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------+
+    | Eficiência em bases pequenas: funciona bem para bases de dados com um número moderado de itens e transações.          | Sensibilidade ao suporte mínimo: valores baixos geram regras irrelevantes; valores altos podem ignorar associações    |
+    |                                                                                                                       | úteis.                                                                                                                |
+    +-----------------------------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------+
+    | Relevância prática: amplamente aplicável em comércio eletrônico, varejo e marketing para entender padrões de          | Foco exclusivo em frequência: não leva em conta outros fatores, como o valor financeiro das associações descobertas.   |
+    | comportamento.                                                                                                        |                                                                                                                       |
+    +-----------------------------------------------------------------------------------------------------------------------+-----------------------------------------------------------------------------------------------------------------------+
+
+    O método Apriori é uma abordagem poderosa e versátil para 
+    descobrir padrões em dados transacionais, mas exige cuidados 
+    na configuração para ser eficiente e relevante.
+
+    Um ponto importante de destacar é que o funcionamento do 
+    método depende de dados transacionais, requerendo uma base 
+    de dados estruturada em transações, o que limita sua 
+    aplicação em domínios com dados menos organizados, ou sem 
+    tal histórico.
+
+    Em cenários modernos, o método Apriori pode ser complementado 
+    por técnicas mais avançadas, como aprendizado profundo ou 
+    algoritmos otimizados, para lidar com desafios de 
+    escalabilidade e de complexidade.
+
+Híbridas:
+
+    Modelos híbridos combinam duas ou mais abordagens de sistemas 
+    de recomendação para superar as limitações de métodos 
+    individuais, proporcionando uma experiência mais robusta e 
+    eficiente. Eles são projetados para alavancar as forças de 
+    diferentes estratégias enquanto minimizam suas fraquezas. No 
+    contexto de um e-commerce, modelos híbridos podem aumentar a 
+    precisão das recomendações, melhorar a diversidade de itens 
+    sugeridos e atender a diferentes tipos de usuários, como 
+    novos clientes ou aqueles com histórico estabelecido. As 
+    estratégias mais comuns combinadas em sistemas híbridos 
+    incluem:
+
+        Filtragem colaborativa e baseada em conteúdo:
+
+            A filtragem colaborativa recomenda itens com base 
+            em comportamentos de usuários semelhantes, enquanto 
+            a abordagem baseada em conteúdo utiliza as 
+            características dos itens consumidos pelo usuário.
+
+            Exemplo: em um e-commerce, a combinação permite 
+            recomendar roupas similares ao estilo das peças que o
+            cliente comprou (baseado em conteúdo) e peças 
+            populares entre clientes com gostos semelhantes 
+            (filtragem colaborativa).
+    
+        Filtragem colaborativa e regras de associação:
+
+            As regras de associação detectam padrões em 
+            transações (como “clientes que compraram X também 
+            compraram Y”), complementando a filtragem 
+            colaborativa em encontrar recomendações menos óbvias.
+
+            Exemplo: quando um cliente compra um smartphone, o 
+            sistema pode recomendar não apenas os acessórios mais 
+            frequentemente comprados com o telefone (regras de 
+            associação), mas também produtos escolhidos por 
+            outros usuários com histórico de compra semelhante 
+            (filtragem colaborativa).
+
+        Baseada em conteúdo e regras de associação:
+
+            Combinar características dos itens com padrões de 
+            ocorrência nas compras aumenta a relevância das 
+            recomendações.
+
+            Exemplo: um cliente que comprou um livro de ficção 
+            científica pode receber recomendações de outros 
+            livros do mesmo gênero (baseado em conteúdo) e de 
+            outros produtos frequentemente comprados junto, 
+            como marcadores de páginas ou luminárias de leitura 
+            (regras de associação).
+
+        Deep Learning e modelos tradicionais:
+
+            Redes neurais podem ser utilizadas para extrair 
+            padrões complexos em dados de interação e, em 
+            seguida, combinar essas previsões com métodos 
+            tradicionais para maior precisão.
+
+            Exemplo: o sistema usa um modelo de rede neural 
+            para prever categorias de produtos com maior 
+            probabilidade de interesse e complementa isso com 
+            uma abordagem de filtragem colaborativa para 
+            recomendar itens específicos dentro dessas
+            categorias.
+
+    A combinação de estratégias em modelos híbridos pode ser 
+    realizada de várias maneiras, dependendo da aplicação e dos 
+    objetivos do sistema:
+
+        Ponderação simples: cada abordagem contribui para a 
+        recomendação com um peso pré-definido.
+        
+            Exemplo: as recomendações baseadas em conteúdo têm 
+            peso de 70%, enquanto as colaborativas têm peso de 
+            30%.
+        
+        Modelos sequenciais: um método é aplicado primeiro, e 
+        suas recomendações são refinadas ou filtradas por outro 
+        método.
+        
+            Exemplo: primeiro, o sistema aplica regras de 
+            associação para sugerir produtos relevantes e, em 
+            seguida, filtra esses itens com base no histórico 
+            do cliente.
+        
+        Integração em nível de feature: combina as features 
+        derivadas de diferentes métodos em um único modelo.
+        
+            Exemplo: um modelo de aprendizado supervisionado 
+            usa como entrada as similaridades calculadas por 
+            filtragem colaborativa e baseada em conteúdo.
+            
+        Meta-modelagem: um modelo de alto nível (meta-modelo) 
+        aprende a combinar as previsões de vários métodos para 
+        produzir a recomendação final.
+        
+            Exemplo: um algoritmo de stacking utiliza as saídas 
+            de filtragem colaborativa, baseada em conteúdo e 
+            regras de associação como features para treinar um 
+            modelo final.
+            
+        Seleção baseada no contexto: o sistema escolhe a 
+        abordagem mais adequada com base no perfil do usuário 
+        ou nas características do cenário.
+        
+            Exemplo: para novos usuários, utiliza-se uma 
+            abordagem baseada em conteúdo; para usuários 
+            recorrentes, aplica-se a filtragem colaborativa.
+            
+            Exemplo no contexto de e-commerce: imagine um 
+            e-commerce de moda que deseja melhorar suas 
+            recomendações. Existem várias formas de combinar 
+            estratégias de recomendação. Elas podem ser:
+            
+                Filtragem colaborativa baseada em usuários: 
+                para recomendar roupas populares entre clientes 
+                com comportamentos semelhantes.
+                
+                Baseada em conteúdo: para sugerir peças de 
+                vestuário semelhantes às compradas pelo cliente, 
+                analisando características como cor, tecido e 
+                estilo.
+                
+                Regras de associação: para identificar itens 
+                frequentemente comprados juntos, como sapatos 
+                com bolsas ou camisas com gravatas.
+                
+                Rede neural: para detectar padrões mais sutis no 
+                comportamento de navegação e compras, como 
+                combinações de categorias frequentemente vistas em
+                uma única sessão.
+                
+                O sistema pode, por exemplo, sugerir para um
+                cliente que comprou um terno, gravatas de cor 
+                complementar (baseado em conteúdo), sapatos 
+                frequentemente comprados com ternos (regras de 
+                associação) e itens populares entre usuários 
+                com perfil semelhante (filtragem colaborativa). 
+                Para garantir relevância, o sistema pode 
+                ponderar as contribuições de cada abordagem ou 
+                priorizar métodos específicos dependendo do 
+                histórico do cliente.
+                
+                A própria Netflix trabalha com múltiplos níveis 
+                de recomendação para cada usuário, de modo a 
+                diversificar a oferta de conteúdo. Cada fileira 
+                oferece um “tema” que reúne títulos naquele 
+                contexto.
+
+    É importante mencionar que a combinação de métodos pode 
+    apresentar tanto vantagens quanto desvantagens, como mostra 
+    o quadro a seguir.
+
+    +-------------------------------------------------------------+---------------------------------------------------------------------------------+
+    | Vantagens                                                   | Desvantagens                                                                    |
+    +-------------------------------------------------------------+---------------------------------------------------------------------------------+
+    | Superam as limitações individuais de cada abordagem.        | Maior complexidade na implementação e na manutenção.                            |
+    +-------------------------------------------------------------+---------------------------------------------------------------------------------+
+    | Oferecem recomendações mais precisas e diversificadas.      | Exigem maior poder computacional para integrar e processar múltiplos métodos.   |
+    +-------------------------------------------------------------+---------------------------------------------------------------------------------+
+    | Adaptam-se melhor a diferentes perfis de usuários.          | Necessitam de estratégias para equilibrar as contribuições de cada abordagem.   |
+    +-------------------------------------------------------------+---------------------------------------------------------------------------------+
+
+    Os modelos híbridos representam o estado da arte em sistemas 
+    de recomendação, unindo força técnica e flexibilidade 
+    prática para atender às demandas cada vez mais sofisticadas 
+    do mercado.
+
+Princiapis desafios:
+
+    A preparação de dados é uma das etapas mais desafiadoras 
+    na construção de sistemas de recomendação. Esses sistemas 
+    dependem de grandes volumes de informações para gerar 
+    recomendações úteis e precisas, mas o processo de 
+    transformar dados brutos em uma base pronta para análise 
+    é complexo e exige atenção a diversos aspectos.
+
+    Uma das dificuldades mais comuns é a qualidade dos dados. 
+    Sistemas de recomendação frequentemente lidam com dados 
+    provenientes de interações de usuários, como cliques, compras 
+    ou avaliações. Esses dados podem ser ruidosos, incompletos 
+    ou ambíguos. Por exemplo, em uma plataforma de e-commerce, 
+    cliques podem não significar necessariamente interesse 
+    genuíno, enquanto a ausência de cliques em um item pode não 
+    significar desinteresse, mas sim falta de visibilidade. A 
+    limpeza e o pré-processamento são essenciais para separar 
+    sinais úteis de ruídos.
+
+    É importante mencionar que a preparação de dados para 
+    sistemas de recomendação não é apenas um desafio técnico, 
+    mas também ético. Decisões sobre quais dados incluir e como 
+    tratá-los podem introduzir ou amplificar vieses, afetando 
+    negativamente a qualidade e a justiça das recomendações. 
+    Portanto, o cuidado com os dados vai além da análise técnica,
+    abrangendo também considerações éticas e sociais, fundamentais
+    para o sucesso e a confiabilidade do sistema.
+
+    Cold start:
+
+        Um dos maiores desafios do cold start é a sua 
+        dificuldade inerente aos sistemas de recomendação, que 
+        ocorre quando não há dados suficientes para gerar 
+        recomendações precisas. Esse problema pode se manifestar 
+        em três cenários principais: novos usuários, novos itens
+        ou um sistema recém-implantado sem histórico suficiente. 
+        Em todos esses casos, a falta de informações iniciais 
+        torna desafiador personalizar recomendações.
+
+        Os métodos baseados em popularidade são simples, eficazes 
+        e amplamente usados para lidar com o problema de cold 
+        start. Eles se baseiam na premissa de que itens populares 
+        entre a base de usuários têm maior probabilidade de 
+        agradar novos usuários ou atrair interesse para novos 
+        itens.
+
+        Embora eficientes no curto prazo, essas abordagens têm 
+        limitações. Elas tendem a priorizar itens convencionais 
+        e amplamente aceitos, o que pode reduzir a personalização
+        e diversidade das recomendações. Assim, conforme o 
+        sistema coleta mais dados, é importante transitar para 
+        abordagens mais sofisticadas, como filtragem colaborativa 
+        ou métodos híbridos, para oferecer recomendações mais 
+        personalizadas e impactantes.
+
+    Contornando o Cold start:
+
+        Além da aplicação de métodos baseados em popularidade, 
+        podemos explorar técnicas mais expressas e 
+        contextualizadas para cada cenário de partida a frio:
+
+            Cold start para novos usuários: quando não há 
+            histórico de interações que permita ao sistema 
+            entender suas preferências. Esse cenário é comum 
+            em e-commerces, serviços de streaming e plataformas 
+            de redes sociais. Para mitigar esse problema, 
+            algumas estratégias incluem:
+
+                Perguntas de preferência inicial: solicitar que 
+                o usuário selecione categorias, gêneros ou 
+                produtos de interesse durante o cadastro, criando 
+                um perfil inicial.
+
+                Basear-se em dados demográficos: usar informações 
+                como idade, localização ou gênero para comparar o 
+                novo usuário com perfis similares já existentes.
+
+            Cold start para novos itens: o desafio está em 
+            recomendar itens novos quando não há interações 
+            associadas. Por exemplo, um produto recém-adicionado 
+            a um catálogo não terá avaliações ou histórico de 
+            vendas. Algumas soluções incluem:
+
+                Basear-se em metadados: usar informações 
+                descritivas do item, como categoria, marca ou 
+                especificações técnicas, para compará-lo a itens 
+                já conhecidos.
+
+                Promoção inicial: destacar novos itens em seções 
+                de “novidades” ou “lançamentos” para aumentar 
+                sua visibilidade e coletar dados iniciais.
+
+            Cold start para o sistema: quando o sistema está em 
+            sua fase inicial de operação, sem interações de 
+            usuários ou dados históricos, torna-se difícil 
+            fornecer recomendações personalizadas. Nesse caso, 
+            soluções baseadas em popularidade são amplamente 
+            usadas:
+
+                Itens populares globais: recomendação de produtos 
+                ou conteúdos com base em sua popularidade geral, 
+                como os produtos mais vendidos ou os filmes mais 
+                assistidos.
+
+                Tendências atuais: explorar itens em alta ou 
+                conteúdos em destaque, que podem atrair novos 
+                usuários enquanto os dados são coletados.
+
+                Promoções e destaques: destacar ofertas, descontos
+                ou conteúdos exclusivos para aumentar a interação 
+                inicial.
+
+    Escalabilidade e Esparsidade:
+
+        A heterogeneidade das fontes de dados também aumenta a 
+        complexidade. Sistemas modernos combinam diferentes 
+        tipos de dados, como histórico de navegação, avaliações 
+        explícitas, transações e até mesmo dados demográficos ou 
+        de redes sociais. Cada tipo de dado requer um tratamento 
+        específico, incluindo padronização, normalização e 
+        combinação de diferentes formatos, para garantir que 
+        sejam integrados de forma coerente no sistema.
+
+        Outro ponto crítico é a atualização em tempo real dos 
+        dados. Em sistemas dinâmicos, como plataformas de 
+        streaming ou e-commerce, as interações dos usuários 
+        mudam constantemente, exigindo que os modelos sejam 
+        treinados e atualizados com dados mais recentes. Essa 
+        necessidade de processamento contínuo adiciona uma 
+        camada de complexidade à infraestrutura do sistema, 
+        exigindo pipelines robustos que equilibrem eficiência 
+        e qualidade.
+
+        Além disso, a esparsidade dos dados representa um desafio 
+        significativo. Em sistemas com muitos usuários e itens, a 
+        matriz de interações é frequentemente esparsa, com a 
+        maioria das células vazias. Isso significa que muitos 
+        usuários interagem com apenas uma pequena fração do 
+        catálogo disponível, dificultando a identificação de 
+        padrões confiáveis. Técnicas como preenchimento de 
+        matrizes, fatoração ou integração de dados auxiliares 
+        são frequentemente necessárias para lidar com esse 
+        problema.
+
+    Vieses e Bolhas:
+
+        Os sistemas de recomendação enfrentam desafios éticos e 
+        técnicos relacionados a vieses e bolhas de filtro, que 
+        podem impactar negativamente tanto os usuários quanto 
+        os negócios.
+
+        Os vieses surgem quando os dados usados para treinar os 
+        modelos ou as próprias estratégias algorítmicas refletem 
+        desigualdades ou padrões distorcidos. Por exemplo, um 
+        sistema de recomendação em e-commerce pode priorizar 
+        produtos mais populares ou de grandes marcas, 
+        negligenciando itens de vendedores menores. Isso cria 
+        um ciclo onde os itens recomendados continuam sendo os 
+        mais consumidos, reforçando padrões preexistentes. Esse 
+        problema pode afetar também a diversidade cultural, 
+        econômica ou de conteúdo em plataformas como redes 
+        sociais ou serviços de streaming.
+
+        As bolhas de filtro ocorrem quando os sistemas de 
+        recomendação reforçam as preferências existentes dos 
+        usuários, limitando a exposição de conteúdo ou produto 
+        fora de seu histórico. Por exemplo, em uma plataforma de 
+        streaming onde um usuário que consome apenas um gênero 
+        específico pode receber recomendações exclusivamente 
+        desse gênero, reduzindo a oportunidade de explorar 
+        novas opções. Isso pode levar à monotonia nas 
+        recomendações e à perda de serendipidade.
+
+        Para lidar com esses problemas, é essencial introduzir 
+        mecanismos que incentivem a diversidade e a exploração, 
+        como métricas de serendipidade, limites de repetição em 
+        recomendações e estratégias para incorporar itens menos 
+        populares ao ranking. Além disso, análises cuidadosas dos 
+        dados e transparência nos algoritmos ajudam a minimizar o 
+        impacto de vieses, garantindo uma experiência mais justa 
+        e equilibrada para todos os usuários.
+
+    Privacidade dos dados:
+
+        Os sistemas de recomendação, por sua natureza, dependem 
+        de grandes volumes de dados de usuários para oferecer 
+        sugestões personalizadas. Contudo, o uso desses dados 
+        levanta preocupações sobre privacidade, segurança e 
+        conformidade com legislações como a Lei Geral de Proteção 
+        de Dados (LGPD (Lei Geral de Proteção de Dadado)) no 
+        Brasil, o GDPR na Europa e outras regulamentações 
+        internacionais.
+
+        De acordo com a LGPD, o processamento de dados pessoais 
+        para fins de sistemas de recomendação deve ser justificado
+        por uma base legal, sendo o consentimento do usuário uma 
+        das justificativas mais comuns. Isso significa que as 
+        plataformas precisam informar claramente como os dados 
+        serão usados e obter aprovação explícita antes de 
+        processá-los. Por exemplo, em um e-commerce, o cliente 
+        deve estar ciente de que seu histórico de compras será 
+        utilizado para personalizar recomendações.
+
+        Os sistemas de recomendação frequentemente armazenam 
+        dados sensíveis, como histórico de compras, preferências 
+        pessoais ou localização. Vazamentos de dados podem expor 
+        essas informações, causando prejuízos financeiros, danos 
+        à reputação da empresa e perda de confiança dos usuários. 
+        Um exemplo marcante foi o vazamento de dados de usuários 
+        de plataformas de streaming, onde históricos de 
+        visualização foram expostos, comprometendo a privacidade.
+
+        Para mitigar esses riscos, é essencial implementar 
+        práticas robustas de segurança cibernética, como 
+        criptografia dos dados em trânsito e em repouso, 
+        autenticação forte e monitoramento contínuo de 
+        vulnerabilidades.
+
+        Além de atender à legislação, as empresas devem 
+        priorizar a transparência no uso de dados. Isso inclui 
+        explicar como as recomendações são geradas e garantir 
+        que os dados sejam utilizados de forma ética. Por 
+        exemplo, a coleta de dados para personalização não deve 
+        ser explorada para manipular decisões dos usuários de 
+        maneira abusiva, como induzir compras desnecessárias ou 
+        enviesar recomendações para fins comerciais não 
+        explícitos.
+
+
+        Construindo um sistema de recomendação
+
+Agora que conhecemos as principais técnicas de recomendação, 
+está na hora de implementar algumas delas. Toda nossa prática 
+será feita em ambiente local, mas se é aconselhado a rodar
+em um ambiente com Jupyter notebook ou no ambiente do Google 
+Colaboratory (Colab).
+
+Nesta prática, precisamos de um conjunto de dados que mostre a 
+relação de produtos que foram comprados em conjunto. Isso é 
+equivalente a abrir, por exemplo, o histórico de cada compra 
+realizada em uma loja, para verificar o que as pessoas tendem a 
+comprar em conjunto.
+
+Assim será possível criar regras do tipo “quem viu comprou”. 
+Neste exemplo, trabalharemos com dados hipotéticos de vendas de 
+um supermercado, da seguinte forma:
+
+    No arquivo CVS, cada linha representa uma cesta de compras.
+
+    Cada linha lista os itens adquiridos em conjunto, separados 
+    por vírgula.
+
+Ainda que seja um arquivo CSV, a leitura e interpretação não é 
+exatamente de um DataFrame clássico do Pandas.
+
+PS: Utilize o arquivo de apoio “store_data.csv” concedido pela
+faculdade Fiap
+
+O primeiro passo é instalar a biblioteca apyori, que implementa 
+o método Apriori em Python. O comando está abaixo:
+
+    pip install apyori
+
+Feito isso partimos para os imports e a leitura da base:
+
+    # Imports
+    import pandas as pd
+    import numpy as np
+    from apyori import apriori
+
+    # Ler o dataset
+    store_data = pd.read_csv("store_data.csv", header=None)
+    print(store_data)
+
+Note que não se trata de uma tabela de fato, então prepararemos 
+os dados como uma lista de listas (excluindo os “nans”), sendo 
+que cada lista interna é a sequência dos produtos. Adotamos tal 
+estrutura de dados porque o apyori espera tal formato nos dados:
+
+    records = []
+    for i in range(0, 7501):
+        records.append( [ str(store_data.values[i, j]) for j in range(20)                    if str(store_data.values[i, j]) != "nan"] )
+
+    print(records)
+
+Esta base dispensa processamentos mais robustos, então podemos 
+partir para a construção das regras de associação:
+
+    association_rules = apriori(
+        records,
+        min_support=0.0045,
+        min_confidence=0.2,
+        min_lift=3,
+        min_lenght=2
+    )
+
+    association_rules = list(association_rules)
+
+    print(len(association_rules))
+
+O código anterior mostra a criação automática de 24 regras, com 
+uma confiança mínima de 0.2 e um suporte mínimo de 0.0045. O lift 
+mínimo é 3 e o tamanho mínimo das regras é de 2.
+
+A geração de regras parte de regras simples (tamanho mínimo 2) 
+selecionando as que atendem aos requisitos mínimos, e vão sendo 
+mineradas e combinadas com novos ciclos de atualização. Ao final 
+do processo apenas 24 combinações se mostraram minimamente 
+viáveis. Parte essencial desta limitação é a pouca quantidade de 
+exemplos (linhas) no arquivo de entrada.
+
+Agora podemos começar a entender o formato de apresentação das 
+regras: 
+
+    # Puxa a primeira regra
+    association_rules[0]
+
+Se quisermos, podemos imprimir todas as regras geradas: 
+
+    # Agora, imprimindo a lista de recomendações
+    for cesta in association_rules:
+      itens = [x for x in cesta[0]]
+      print("Produtos da cesta: " + str(itens))
+      print("Suporte: " + str(cesta[1]))
+
+      # Lista as regras desta cesta
+      idRegra = 1
+      for regra in cesta[2]:
+        print(f"- Regra #{idRegra}: {regra[0]} -> {regra[1]}")
+        print("   - Confiança: " + str(regra[2]))
+        print("   - Lift: " + str(regra[3]))
+        print(regra)
+        idRegra += 1
+
+      print("=" * 15)
+
+Possuindo tais regras, o supermercado pode implementá-las em diversos canais de venda. Por exemplo:
+
+    Oferecer produtos em compras virtuais;
+
+    Oferecer promoções exclusivas no seu aplicativo para compras
+    associadas;
+
+    Deixar próximos produtos relacionados nas lojas físicas.
+
+                Filtragem Item a Item
+
+A técnica de recomendação baseada em item-item foi popularizada 
+pela Amazon em 1998. Essa abordagem surgiu para resolver problemas 
+de escalabilidade e precisão em sistemas de recomendação de grande
+escala. Em vez de encontrar usuários semelhantes ao usuário alvo 
+(como na filtragem colaborativa baseada em usuários), o método 
+foca em identificar itens similares com base nos padrões de 
+interação de todos os usuários. Por exemplo, se muitos usuários 
+compraram “Livro A” e “Livro B” juntos, esses itens serão 
+considerados semelhantes, e “Livro B” pode ser recomendado a um 
+usuário que comprou “Livro A”.
+
+As principais vantagens dessa técnica incluem maior estabilidade 
+(pois itens são menos propensos a mudar com frequência do que os 
+comportamentos dos usuários) e sua eficácia em cenários com muitos
+usuários e poucos itens. No entanto, uma desvantagem é que o 
+cálculo da similaridade entre itens pode ser computacionalmente 
+intensivo em catálogos muito grandes. Além disso, a técnica 
+depende fortemente de dados de interações, o que pode ser um 
+problema em cenários de cold start para novos itens. Mesmo assim, 
+sua robustez e simplicidade a tornam amplamente utilizada em 
+sistemas de recomendação modernos.
+
+Base de dados:
+
+    Trata-se de uma versão reduzida do conjunto de dados 
+    MovieLens, amplamente utilizado para pesquisas e 
+    desenvolvimento de sistemas de recomendação de filmes. Esta 
+    versão contém informações sobre filmes, avaliações de usuários
+    e possivelmente metadados adicionais, permitindo análises de 
+    preferências e padrões de comportamento dos usuários. Devido 
+    ao seu tamanho compacto, é ideal para experimentações iniciais
+    e desenvolvimento de protótipos em Machine Learning e Análise 
+    de Dados. Aqui não vamos usar todos os arquivos, apenas o que 
+    descreve os filmes e as avaliações.
+
+    PS: Utilize os arquivos de apoio “movies.csv” e “ratings.csv” 
+    cedidos pela Faculdade Fiap
+
+    O primeiro passo é realizar os imports necessários e ler os 
+    arquivos de dados:
+
+
+        import pandas as pd
+        import numpy as np
+
+        from scipy.sparse import csr_matrix
+        from sklearn.neighbors import NearestNeighbors
+
+        import matplotlib.pyplot as plt
+        import seaborn as sns
+
+        movies = pd.read_csv("movies.csv")
+        ratings = pd.read_csv("ratings.csv")
+
+    O conjunto de dados de filmes possui a informação de gênero, 
+    a qual não usaremos nesta análise. O que nos interessa é 
+    construir uma matriz de usuários por filmes, indicando qual 
+    usuário interagiu com qual filme, quantificando esta interação 
+    pela nota (rating). Para isso vamos construir uma pivot table 
+    da seguinte forma:
+
+        final_dataset = ratings.pivot(index='movieId',columns='userId',values='rating')
+        print(final_dataset.head())
+
+    Como temos muitos valores “nans”, devemos substituí-los por 
+    zeros. Também podemos agregar as informações tomando por 
+    base os filmes votados e os votos de cada usuário, chegando 
+    na seguinte distribuição:
+
+        final_dataset.fillna(0,inplace=True)
+
+        no_user_voted = ratings.groupby('movieId')['rating'].agg('count')
+        no_movies_voted = ratings.groupby('userId')['rating'].agg('count')
+
+        f,ax = plt.subplots(1,1,figsize=(16,4))
+        plt.scatter(no_user_voted.index,no_user_voted,color='mediumseagreen')
+        plt.axhline(y=10,color='r')
+        plt.xlabel('MovieId')
+        plt.ylabel('No. of users voted')
+        plt.show()
+
+    Feito isso, é importante focarmos as recomendações em 
+    produtos e usuários que atendem critérios mínimos, tais 
+    como: 
+
+        Para qualificar um filme, no mínimo 10 usuários devem ter 
+        votado nele.
+
+        Para qualificar um usuário, ele deve ter votado em no 
+        mínimo 50 filmes.
+
+    Cód:
+
+        final_dataset = final_dataset.loc[no_user_voted[no_user_voted > 10].index,:]
+
+        f,ax = plt.subplots(1,1,figsize=(16,4))
+        plt.scatter(no_movies_voted.index,no_movies_voted,color='mediumseagreen')
+        plt.axhline(y=50,color='r')
+        plt.xlabel('UserId')
+        plt.ylabel('No. of votes by user')
+        plt.show()
+
+        final_dataset=final_dataset.loc[:,no_movies_voted[no_movies_voted > 50].index]
+        print(final_dataset)
+
+    Nosso final_dataset tem dimensões de 2121 * 378 onde a maioria
+    dos valores são esparsos. Aqui estamos trabalhando com um 
+    pequeno subconjunto de dados, mas para o dataset completo 
+    teríamos mais de 100.000 features. Isso certamente travaria 
+    nosso código.
+
+    Para reduzir a dispersão, usamos csr_matric da scipy lib. Na 
+    sequência, vamos identificar os filmes mais parecidos (mais 
+    próximos do espaço de features), pela aplicação do KNN. O 
+    código a seguir não tem saída.
+
+        csr_data = csr_matrix(final_dataset.values)
+        final_dataset.reset_index(inplace=True)
+
+        knn = NearestNeighbors(metric='cosine', algorithm='brute', n_neighbors=20, n_jobs=-1)
+        knn.fit(csr_data)
+
+    Para interagirmos de forma mais fácil com o modelo, iremos 
+    construir um método que retorna os 10 filmes mais parecidos 
+    de acordo com o filme de entrada. O código busca o título do 
+    filme no catálogo e retorna seu ID, em seguida obtém os IDs 
+    dos filmes mais próximos deste ID selecionado, e, por fim, 
+    realiza uma engenharia reversa para dado o ID do filme 
+    retornar seu nome. Isso constrói uma lista de recomendação 
+    com a distância do filme buscado a cada filme elencado, 
+    retornando a consulta ao usuário:
+
+        def get_movie_recommendation(movie_name):
+            n_movies_to_reccomend = 10
+            movie_list = movies[movies['title'].str.contains(movie_name)]
+            if len(movie_list):
+                movie_idx= movie_list.iloc[0]['movieId']
+                movie_idx = final_dataset[final_dataset['movieId'] == movie_idx].index[0]
+
+                distances , indices = knn.kneighbors(csr_data[movie_idx],n_neighbors=n_movies_to_reccomend+1)
+                rec_movie_indices = sorted(list(zip(indices.squeeze().tolist(),distances.squeeze().tolist())),                               key=lambda x: x[1])[:0:-1]
+
+                recommend_frame = []
+
+                for val in rec_movie_indices:
+                    movie_idx = final_dataset.iloc[val[0]]['movieId']
+                    idx = movies[movies['movieId'] == movie_idx].index
+                    recommend_frame.append({'Title':movies.iloc[idx]['title'].values[0],'Distance':val[1]})
+                df = pd.DataFrame(recommend_frame,index=range(1,n_movies_to_reccomend+1))
+                return df
+
+            else:
+
+                return "No movies found. Please check your input"
+
+    Podemos interagir com o método do código-fonte por meio da 
+    seguinte chamada:
+
+        print(get_movie_recommendation(‘insira aqui o nome do filme’))
+

@@ -328,3 +328,2415 @@ Comparando-se os custos locais com a estimativa online, é possível
 tomar uma decisão sobre o uso da nuvem. É preciso reforçar que a 
 questão de se ter uma máquina pronta em poucos minutos, é difícil 
 de mensurar e pode ser crucial para alguns negócios.
+
+    Do Local a Nuvem: Replicando infraestrutura na AWS
+
+Regiões, Zonas de Disponibilidade e VPCs:
+
+    Para disponibilizar serviços de computação em nuvem, a 
+    AWS (Amazon Web Services.) mantém centenas de milhares 
+    de servidores em datacenters geograficamente distribuídos. 
+    Somente em um data center, existem aproximadamente entre 50 
+    a 80 mil servidores.
+
+    Para manter o ambiente seguro, evitando falhas e garantindo a 
+    recuperabilidade, a AWS usa no mínimo dois conjuntos de 
+    datacenters, podendo chegar até 10 datacenters. Este 
+    agrupamento de datacenters é denominado de Zona de 
+    Disponibilidade (Avaiability Zone — AZ). Estes datacenters são 
+    conectados por redes de alta performance para garantir 
+    espelhamento dos dados, por exemplo.
+
+    Ainda, para garantir a latência e disponibilidade em 
+    diferentes locais, a AWS agrupa estas AZs em regiões. Por 
+    esta razão, existem regiões em vários locais do mundo, 
+    inclusive em São Paulo (sa-east-1).
+
+    É importante ressaltar que nem todos os serviços da AWS estão 
+    disponíveis em todas as regiões. Alguns serviços são lançados 
+    em regiões de países com maior demanda e, para prova de 
+    conceito, são incorporados gradativamente nas demais regiões.
+
+    Ainda existem subdivisões desta infraestrutura, como zonas 
+    locais, AWS Outposts e zonas de Wavelenght.
+
+    Em resumo, segue a descrição de cada agrupamento:
+
+        Cada Região é uma área geográfica separada. Exemplo:
+        
+            us-east-1 (North Virginia);
+            
+            sa-east-1 (São Paulo).
+            
+        As zonas de disponibilidade (AZs) são vários locais 
+        isolados dentro de cada região. Exemplo:
+        
+            us-east-1a.
+            
+        As zonas locais fornecem a capacidade de colocar recursos, 
+        como computação e armazenamento, em vários locais mais 
+        próximos dos usuários finais.
+        
+            O código da zona local é o código da região pai, 
+            seguido do identificador da zona local. Exemplo: 
+            zona local us-west-2-lax-1 em Los Angeles e dentro 
+            da região us-west-2.
+        
+        O AWS Outposts leva serviços, infraestrutura e modelos 
+        operacionais nativos da AWS e, local do cliente. Este 
+        serviço é conhecido como colocation. A AWS gerencia a 
+        capacidade de computação como parte de uma região da AWS. 
+        Ou seja, os recursos computacionais ficam no ambiente do 
+        cliente (on-premises).
+        
+        As zonas do Wavelength permitem que os desenvolvedores 
+        criem aplicações que oferecem baixíssimas latências para 
+        dispositivos 5G e usuários finais. O Wavelength implanta 
+        os serviços de armazenamento e computação padrão da AWS 
+        até a borda das redes 5G de operadoras de telecomunicação.
+
+    Vale ressaltar que as zonas locais e as Wavelength zones não 
+    estão disponíveis em todas as regiões.
+
+    Observação: é possível consultar a disponibilidade de regiões 
+    no site: https://aws.amazon.com/pt/about-aws/global-infrastructure/, 
+    já as zonas locais e Wavelengths podem ser consultadas na 
+    página de documentação da AWS: https://docs.aws.amazon.com/
+
+    Para decidir em qual região devemos alocar nossa nuvem privada,
+    devemos considerar alguns critérios como:
+
+        Proximidade: regiões mais próximas possuem menor latência, 
+        ou seja, o tempo de acesso a um servidor mais próximo é 
+        menor.
+        
+        Compliance: verifique as normas de armazenamento de dados 
+        da empresa e se as normas de proteção de dados do país 
+        (exemplo: LGPD) são compatíveis com as normas da região a 
+        ser escolhida.
+        
+        Custo: os custos variam de acordo com região. Em alguns 
+        casos, devido a uma maior infraestrutura, regiões mais 
+        distantes têm custos menores.
+
+Nuvem privada virtual (VPC):
+
+    Uma nuvem privada virtual (Virtual Private Cloud — VPC) é 
+    uma rede virtual dedicada à sua conta na AWS. Utilizando essa 
+    rede, é possível provisionar recursos da AWS, como máquinas 
+    virtuais, instâncias de banco de dados, entre outros. É uma 
+    seção isolada logicamente de outros clientes da AWS. Ao 
+    criarmos uma conta na AWS, já temos uma VPC padrão criada 
+    para nós.
+
+    Dentro da VPC, podemos criar sub-redes públicas ou privadas. 
+    Uma VPC pode existir em apenas uma região, mas pode ter 
+    sub-redes em outras AZs na mesma região.
+
+    Para criar uma VPC, é importante lembrar que podemos escolher a 
+    quantidade de sub-redes, além da quantidade de máquinas em cada 
+    sub-rede. Para isso, vamos observar o padrão do IPv4, que 
+    utiliza o sistema binário de 32 bits para definir um endereço 
+    de IP (Internet Protocolo).
+
+    Podemos usar uma parte do bloco de IP para definir os bits 
+    usados para a rede e os bits usados para os equipamentos, 
+    utilizando uma máscara de sub-rede. Para isso, podemos usar 
+    uma notação conhecida como Class Inter-Domain Routing (CIDR), 
+    que permite definir os bits usados para a rede e os bits 
+    usados para os equipamentos.
+
+    Considere o exemplo a seguir, onde definimos um bloco CIDR 
+    IPv4 de 10.0.0.0/16. Neste caso, 16 bits são alocados para 
+    a rede (10.0). Além disso, podemos criar diferentes sub-redes, 
+    podendo alocar equipamentos de departamentos distintos, por 
+    exemplo.
+
+    Seguindo, temos 4 sub-redes. A sub-rede 1 está definida com o 
+    endereço de rede 10.0.0. O último bloco de 8 bits do IP é 
+    destinado para alocação de equipamentos, podendo chegar a 
+    251 endereços IPs, sendo que alguns IPs são reservados:
+
+        10.0.0.0 — Endereço de rede;
+        
+        10.0.0.1 — Comunicação Interna;
+        
+        10.0.0.2 — DNS;
+        
+        10.0.0.3 — Uso futuro;10.0.0.255 — Endereço de transmissão de 
+        rede (broadcast)
+
+    A AWS também suporta o conceito mais moderno de atribuição de 
+    IPs (IPv6) que define 128 bits para endereçamento. Focaremos 
+    apenas no IPv4.
+
+    Vejamos um diagrama simples em que temos um servidor web e um 
+    servidor de banco de dados, ambos implantados na nuvem.
+
+    Neste exemplo, podemos observar um diagrama para a implantação 
+    de uma VPC (10.0.0.0/16) na região de São Paulo (sa-east-1), 
+    em uma única zona de disponibilidade (sa-east-1a). Existe uma 
+    sub-rede pública (10.0.0.0/24) que contém um servidor web e 
+    uma sub-rede privada que contém uma sub-rede privada com uma 
+    instância de um banco de dados. Além disso, podemos observar 
+    uma saída para a internet da VPC, o chamado Internet Gateway.
+
+    Este é um cenário simples que pode ser implementado nas 
+    empresas. Entretanto, existem outros serviços de rede que 
+    podem ser incluídos com o intuito de garantir a disponibilidade 
+    e o balanceamento de carga, ou até mesmo para proteger o 
+    tráfego de entrada e saída da rede, por meio de um firewall.
+
+    Vejamos agora o conceito de Security Group no próximo tópico.
+
+Grupos de segurança (security groups):
+
+    Um grupo de segurança (Security Group — SG) atua como um 
+    firewall virtual que controla o tráfego de entrada e saída 
+    para os dispositivos definidos em uma VPC, como máquinas 
+    virtuais. No Security Group, podemos definir regras para 
+    permitir ou negar tráfego com base em portas e protocolos 
+    específicos.
+
+    No Security Group, é possível definir quais portas são 
+    liberadas tanto para a entrada de dados quanto para a saída 
+    de dados. Por padrão, ao criar um grupo de segurança, todos 
+    os acessos são limitados, fazendo com que seja necessário 
+    configurar explicitamente as portas que precisamos liberar.
+
+    Por exemplo, podemos liberar a porta 80 ou a porta 8080 para 
+    acesso de qualquer IP em casos nos quais expomos um servidor 
+    web para a internet. Assim, podemos “subir” um servidor web 
+    para a nuvem da AWS, permitindo que seja acessível somente 
+    pelas portas específicas. Veremos agora como gerenciar 
+    máquinas virtuais na AWS.
+
+Máquinas virtuais e tipos de armazanamento:
+
+    O Elastic Compute Cloud (EC2) é um serviço de computação em 
+    nuvem que permite criar instâncias de máquinas virtuais. 
+    Neste serviço, podemos escolher diversas configurações de 
+    máquinas e de sistemas operacionais, escolhendo imagens
+    prontas da AWS (Amazon Machine Images — AMI). Também é 
+    possível criarmos nossas próprias imagens para serem 
+    reutilizadas diversas vezes.
+
+    +-----------------------------------------------------------------------+-------------------------------------------------------------+
+    | FAMÍLIA DE INSTÂNCIAS (AWS EC2)                                       | EXEMPLO DE USO                                              |
+    +-----------------------------------------------------------------------+-------------------------------------------------------------+
+    | Propósito Geral (General purpose)                                     | Sites web de baixo tráfego;                                 |
+    | Ex: A1, T3, T3a, T2, M6g, M5                                          | Pequenas e médias bases de dados.                           |
+    +-----------------------------------------------------------------------+-------------------------------------------------------------+
+    | Otimizado para Processamento (Compute Optimized)                      | Sites web de alta performance;                              |
+    | Ex: C5, C5n, C4, C7g                                                  | Processamento de vídeo.                                     |
+    +-----------------------------------------------------------------------+-------------------------------------------------------------+
+    | Otimizado para Memória (Memory Optimized)                             | Bancos de dados na memória                                  |
+    | Ex: R5, R5n, X1e, X1, z1d                                             | (exemplo: Redis).                                           |
+    +-----------------------------------------------------------------------+-------------------------------------------------------------+
+    | Otimizado para Armazenamento (Storage Optimized)                      | Data warehousing;                                           |
+    | Ex: I3, I3en, D2, H1                                                  | Aplicações que processam dados e logs.                      |
+    +-----------------------------------------------------------------------+-------------------------------------------------------------+
+    | Computação Acelorada (Accelerated computing)                          | Machine Learning;                                           |
+    | Ex: P3, P2, Inf1, G4, G3, F1                                          | Visualizações 3D.                                           |
+    +-----------------------------------------------------------------------+-------------------------------------------------------------+
+
+    Existem instâncias para propósito geral, como pequenos 
+    websites, até instâncias otimizadas para execução de trabalhos 
+    de Machine Learning.
+
+    Ao criar uma instância, os endereços IPs são atribuídos 
+    dinamicamente, inclusive um IP público para acesso à internet 
+    e outro para comunicação na sub-rede privada. No entanto, o 
+    IP é renovado quando a instância é renovada. É possível 
+    adquirir um serviço adicional para manter sempre o mesmo IP, 
+    chamado de Elastic IP, podendo mover o IP entre as instâncias 
+    existentes.
+
+    Ao criar instâncias, definimos o espaço de armazenamento para 
+    o sistema operacional e para discos externos. Estes espaços 
+    são chamados de Elastic Block Storage.
+
+Elastic Block Storage (EBS):
+
+    O Elastic Block Storage é um tipo de HD (Hard Disk) virtual. 
+    Por padrão, há um HD destinado para o sistema operacional, 
+    como por exemplo, o disco C: em máquinas com o sistema 
+    operacional Windows, com pelo menos 10 GB e no máximo 64TB. 
+    Os dados armazenados neste volume (C:) são efêmeros e se 
+    perdem toda vez que a instância é reiniciada. É possível 
+    ainda criar outro volume do EBS que pode ser anexado a qualquer 
+    instância, criando outra partição (exemplo: disco D:) e que 
+    mantém os dados após reiniciar. Este volume adicional pode ser 
+    mantido mesmo após a exclusão da instância e anexado 
+    futuramente em outras instâncias.
+
+    Por exemplo, podemos criar um volume EBS extra (D:) para 
+    armazenar dados de um servidor web, enquanto o volume principal
+    (C:) fica sendo utilizado apenas para armazenar dados do 
+    sistema operacional.
+
+    É possível escolher, além da capacidade de armazenamento do HD, 
+    o tipo de HD, sendo Hard Disk Drives (HDD) ou Solid State Drives
+    (SSD), e variações entre estas opções (exemplo: SSD NVMe).
+
+    É possível ainda realizar backups dos HDs da AWS, criando uma 
+    fotografia (snapshot) no tempo que pode eventualmente ser 
+    restaurada quando necessário. Estes backups ficam armazenados 
+    em um repositório de dados conhecido como S3.
+
+    Portanto, podemos armazenar e alterar arquivos no volume EBS 
+    sempre que necessário. Além do EBS, existem outros tipos de 
+    armazenamento compatível apenas com sistemas Linux, que é o 
+    Elastic File System (EFS), basicamente um drive de rede que 
+    pode ser acessado simultaneamente por várias instâncias, e o 
+    Amazon Simple Storage Service (S3).
+
+Elastic File System (EFS):
+
+    O Elastic File System (EFS) é um sistema de arquivos exclusivo 
+    para instâncias EC2 com Linux. Ele funciona como um “drive” de
+    rede, podendo ser acessado tanto pelas máquinas virtuais da AWS 
+    quanto para máquinas on-premises do cliente. Algumas 
+    características são:
+
+        Usa o protocolo NFS;
+        
+        Auto-dimensionável (aumenta o tamanho conforme demanda);
+        
+        Permite editar arquivos em tempo real.
+
+    Além do NFS, é possível armazenar diferentes tipos de arquivos, 
+    sejam imagens, textos, entre outros, em outro serviço da AWS, 
+    conhecido como Amazon S3.
+
+Simple Storage Service (S3):
+
+    O Amazon Simple Storage Service (S3) foi um dos primeiros 
+    serviços lançados pela AWS e permite o armazenamento de 
+    diferentes tipos de arquivos, como imagens, textos e demais 
+    formatos. Ele utiliza o conceito de bucket, onde cada arquivo 
+    armazenado é chamado de objeto. No S3, diferentemente do EBS, 
+    não é possível alterar objetos. Ou seja, cada alteração 
+    substitui completamente o objeto.
+
+    Podemos armazenar, por exemplo, arquivos de aplicações, log, 
+    vídeos, imagens e arquivos separados por vírgula (CSV) para 
+    que sejam processados e depois incluídos em um banco de dados. 
+    O custo de armazenamento no S3 é muito mais barato, possuindo 
+    versões para uso recorrente, como o S3 Standard, e versões 
+    específicas para armazenamento de longo prazo para uso em 
+    auditorias, com o S3 Glacier. Podemos usar o S3 para a 
+    construção de um data lake, servindo como um repositório 
+    central de dados, para que depois sejam rodados algoritmos de 
+    Machine Learning e Computação Distribuída.
+
+    É possível ainda criar um site estático utilizando o serviço do
+    S3. Para isso, basta subir um arquivo HTML em um bucket S3 e 
+    expor o acesso ao bucket de forma pública pela internet, 
+    configurando a política de acesso ao bucket.
+
+    Após a criação de um bucket, é possível armazenar diferentes 
+    tipos de arquivos diretamente ao bucket ou programaticamente, 
+    por meio do SDK.
+
+    Após a criação do bucket, se torna possível adicionar arquivos 
+    ao mesmo, inclusive páginas estáticas HTML, para servir de site 
+    institucional, por exemplo.
+
+    Quando adicionamos qualquer objeto como arquivo, página html, 
+    imagem, entre outros, é criada uma URL para acesso direto ao 
+    objeto.
+
+    A partir desta URL e fornecidas as devidas permissões de acesso 
+    público (editada a política de segurança), podemos acessar de 
+    qualquer lugar do mundo nosso site estático.
+
+                    Banco de dados em Nuvem
+
+A AWS oferece diversos tipos de bancos de dados na nuvem, desde 
+instâncias de base de dados relacionais, com suporte ao MySQL, 
+SQL Server e outros, até bases de dados NoSQL, como o DynamoDB, 
+o AWS Neptune, e entre outros. Vamos explorar algumas das opções 
+disponíveis.
+
+Base de dados relacionais (RDS):
+
+    Nas bases de dados relacionais, os dados são armazenados em 
+    tabelas e usam apontamentos como chaves primárias e estrangeiras
+    em um modelo de dados relacional, de maneira a minimizar 
+    redundâncias, garantir que as operações sejam executadas 
+    integralmente, a consistência dos dados, isolamento de 
+    transações e durabilidade dos dados. Estas características são 
+    conhecidas como ACID (Atomicidade, Consistência, Isolamento e 
+    Durabilidade).
+
+        Atomicidade: as operações em um banco de dados são 
+        executadas completamente ou não são executadas.
+
+        Consistência: a execução de uma transação deve levar de um 
+        estado consistente a um outro estado consistente.
+
+        Isolamento: cada transação é executada isoladamente da 
+        outra, mesmo quando há concorrência.
+
+        Durabilidade: após as transações, os dados são 
+        persistentes, mesmo em caso de falhas.
+    
+    O Amazon Relational Database Services (RDS) oferece toda a 
+    estrutura para armazenar bases de dados relacionais. Há 
+    suporte para sistemas gerenciadores de bases de dados 
+    tradicionais (SGBDs), como o MySQL, o MariaDB, o MS SQL Server,
+    o Oracle e o PostgreSQL. Além disso, a AWS conta com um 
+    SGDB customizado chamado Aurora, facilitando a escalabilidade 
+    e disponibilidade.
+
+    Ao criar uma instância de banco de dados, você não precisa se 
+    preocupar em alocar uma máquina virtual e nem o sistema 
+    operacional por trás do banco de dados pois a AWS já cria 
+    automaticamente.
+
+    Basta selecionar o tipo da instância, o nome do usuário 
+    principal e senha, e a família de instância que irá armazenar a 
+    base de dados, assim como o tamanho alocado para armazenamento. 
+    Além das configurações básicas, precisamos definir uma VPC onde 
+    a instância será instalada e um Security Group protegendo a 
+    instância,  e, opcionalmente, o nome de uma base de dados. A 
+    partir deste setup, é possível acessar a base de dados 
+    remotamente ou direto pela AWS.
+
+    O Editor de consultas do RDS permite acessar diretamente 
+    somente as bases de dados do Amazon Aurora. Para consultar 
+    bases de dados, como do MySQL, é possível a conexão remota 
+    por meio do endereço da instância ou programaticamente, por 
+    meio de funções ou códigos em Python, por exemplo.
+
+    Ao clicar na instância, podemos obter detalhes de como acessar 
+    remotamente.
+
+Ingestão de dados:
+
+    O processo de ingestão de dados, seja em uma base de dados, 
+    seja em um repositório de objetos, como o S3, pode ser 
+    efetuado de diferentes maneiras, sendo:
+
+        ETL — Extract, Transform and Load;
+        
+        ELT — Extract, Load and Transform.
+
+    O processo tradicional, conhecido como extração, transformação 
+    e carga (Extract, Transform, Load — ETL), pode ser usado, por 
+    exemplo, para ler um arquivo CSV, realizar uma transformação 
+    simples, como exclusão de algumas colunas e seguir para uma 
+    carga em uma base de dados relacional como o Amazon RDS ou até 
+    mesmo em um DataWarehouse, como o Amazon Redshift.
+
+    Além deste processo, podemos realizar o processo de extração, 
+    carga e transformação (Extract, Transform, Load – ETL), quando 
+    lidamos com grandes volumes de dados, para garantir a carga 
+    dos dados brutos e depois transformar os dados de acordo com 
+    os cenários de análise.
+
+    Portanto, o volume dos dados impacta no processo de carga dos 
+    dados em um banco de dados e até mesmo na escolha do banco de 
+    dados a ser armazenado. O Amazon Redshift, por exemplo, é uma 
+    base de dados colunar,  otimizada para armazenar grandes 
+    volumes de dados e facilitando a consulta e agregação de dados, 
+    pois usa paralelismo para ingestão e consulta.
+
+    Em vários cenários de análises de dados, os dados podem ser 
+    armazenados em um DataLake, composto por buckets S3 e bases de 
+    dados, em que se mantém os dados brutos em um repositório S3. 
+    Após um primeiro processamento, os dados podem ser filtrados, 
+    limpos e padronizados, salvando-os em outro repositório, 
+    chamado de dados confiáveis e, em seguida, podem ser 
+    enriquecidos com novas colunas para projetos específicos, 
+    conhecidos como dados curados. Esta arquitetura é conhecida 
+    como “Arquitetura Medalhão”,  em que os dados brutos estão na 
+    camada bronze, os dados confiáveis na camada prata e os dados 
+    enriquecidos na cama ouro.
+
+Consumo de dados:
+
+    O consumo de dados por aplicações ou por analistas de dados 
+    pode ser feito também por diversos serviços. O Amazon Athena 
+    permite rodar consultas SQL diretamente em arquivos armazenados 
+    em um bucket S3 ou a partir do Amazon Redshift. Para isso, 
+    torna-se necessário catalogar as bases existentes em um data 
+    lake usando o serviço do AWS Glue, que é um crawler que busca 
+    em diferentes locais na nuvem da AWS. O crawler pode ser 
+    disparado sob demanda ou programado para ser executado em um 
+    horário específico.
+
+    O AWS Glue permite identificar o schema da base de dados, 
+    auto-inferindo as colunas e armazenando os metadados em um 
+    catálogo para consulta posterior.
+
+    Podemos agendar um crawler no AWS Glue para identificar e 
+    catalogar diferentes fontes de dados, fazer e executar o 
+    ETL para depois deixar os dados pesquisáveis por serviços, 
+    como o AWS Athena ou o Amazon Quick Sight.
+
+                    Serveless
+
+Arquitetura Serveless:
+
+    Uma arquitetura serverless é um modelo de computação em nuvem 
+    na qual podemos disponibilizar aplicações completas sem nos 
+    preocuparmos em gerenciar e configurar servidores.
+
+    A infraestrutura e a escalabilidade são totalmente gerenciadas 
+    pelo provedor de serviços de nuvem, como a AWS, permitindo que 
+    os desenvolvedores foquem no problema de negócio e no código 
+    que precisam desenvolver.
+
+    Além de não se preocupar com a gestão de servidores, a forma 
+    de cobrança é simplificada, não havendo cobrança por 
+    servidores ociosos. O pagamento é feito sob demanda de acordo 
+    com o que é solicitado.
+
+    A arquitetura serverless permite a experimentação e testes 
+    para projetos de pequeno porte, incluindo a disponibilização 
+    de websites, o processamento assíncrono ou o processamento 
+    de dados de streaming ou Internet das Coisas (IOT — Internet 
+    of Things).
+
+    Algumas vantagens são: 
+
+        Redução de custos:  não há custo com ociosidade de 
+        computadores.
+        
+        Alta disponibilidade e resiliência: a infraestrutura é 
+        projetada para tolerar falhas e garantir alta 
+        disponibilidade.
+        
+        Foco no negócio: o desenvolvedor por focar em resolver 
+        os problemas de negócio ao invés de focar na gestão de 
+        infraestrutura.
+        
+        Escalabilidade: as soluções ganham escalabilidade, sendo 
+        capazes de atender a um número variável de usuários e 
+        demandas.
+
+Projeto real:
+
+    A partir desse ponto, vamos aplicar uma solução real para um 
+    sistema Serverless. Esse exemplo é totalmente aplicável em 
+    sua vida profissional como arquiteto(a) de nuvem. Imagine que 
+    você receberá dados de sensores que medem a temperatura de 
+    hora em hora. Os dados chegarão em um bucket S3  e deverão 
+    ser alimentados automaticamente em um banco de dados. Em 
+    seguida, serão disponibilizados para consulta para os nossos 
+    clientes.
+
+    No passo 1 da solução, vamos simular a ingestão de dados e 
+    receber um arquivo CSV de um fornecedor. O conteúdo do 
+    arquivo deverá ser processado e armazenado em um bucket S3. 
+    Ao receber os dados, uma função Lambda irá ser acionada 
+    automaticamente para fazer a carga em um banco de dados, como 
+    o DynamoDB.
+
+    No passo 2 da solução, iremos preparar o consumo de dados, 
+    disponibilizando uma API de consulta e utilizando o serviço 
+    API Gateway, que permite criar APIs REST. Neste serviço, 
+    disponibilizaremos um endereço de consulta dos dados por dia 
+    aos nossos clientes.
+
+    Para implantar esta solução, iremos abordar as características 
+    dos serviços envolvidos, e como podemos acionar a automação 
+    destes serviços.
+
+            Ingestão e tranformação de dados na nuvem
+
+Considerando a primeira parte de nossa solução completa de ingestão 
+de dados, precisamos de um serviço da AWS que consiga processar um 
+arquivo de entrada, filtrando os dados necessários, para depois 
+gravar no banco de dados. Esta opção é o AWS Lambda. Inicialmente 
+veremos alguns conceitos básicos e, em seguida, iremos aplicá-los 
+ao nosso cenário.
+
+AWS Lambda:
+
+    O serviço AWS Lambda permite executar trechos de código em 
+    resposta a eventos (event-driven), sem se preocupar em 
+    gerenciar e configurar servidores (serverless).
+
+    É possível executar códigos sob demanda em diferentes 
+    linguagens de programação, como Python, nodejs, Java, go, 
+    .net, entre outros.
+
+    A cobrança é feita somente a partir de cada execução de código. 
+    Portanto, paga-se de acordo com a quantidade de chamadas 
+    realizadas, considerando o tempo de execução do código e a 
+    quantidade de memória e CPU envolvidas.
+
+    O desenvolvedor pode escrever seu código diretamente no console 
+    da AWS ou realizar o upload de um arquivo ZIP, e o Lambda 
+    automaticamente aloca os recursos necessários para executar o 
+    código.
+
+    O Lambda pode ser acionado por meio de eventos de outros 
+    serviços, como a carga de arquivos em um bucket S3. Este 
+    acionamento é chamado de gatilho (triggers)
+
+    No entanto, o Lambda tem algumas restrições como:
+
+        Alocação de memória: 128MB a 10 GB;
+
+        Execuções simultâneas: 1000;
+
+        Tempo máximo de execução: 15 minutos.
+
+    Para soluções que exigem mais recursos, como por exemplo, se 
+    o seu programa Python leva mais que 15 minutos para filtrar a 
+    entrada, o Lambda não é adequado. Da mesma forma, se o arquivo 
+    que você carregou, como um vídeo, possui mais de 10 GB para ser 
+    processado, o Lambda também não irá suportar. Ou, se o seu 
+    programa precisa manter estados entre execuções, isto é, 
+    transferir valor de variáveis internas ou continuar o 
+    processamento em outro programa Python alocado em um segundo 
+    Lambda, o primeiro Lambda nem o segundo conseguirão suportar, 
+    pois cada invocação ocorre em um ambiente efêmero.
+
+    Um ambiente efêmero é um ambiente de execução que não mantém 
+    estado entre execuções e é descartado após o uso. Isso 
+    significa que, toda vez que uma função é invocada, ela pode ser 
+    executada em um novo ambiente, sem acessar arquivos, variáveis 
+    ou configurações das execuções anteriores.
+
+    A solução será trocar o Lambda por um EC2, que permite 
+    armazenamento persistente usando EBS  (Elastic Block Store) 
+    ou discos locais.
+
+    Tendo em vista essas limitações, vamos criar nossa primeira 
+    função Lambda!
+
+    Abra o AWS Academy e acesse o Learner Lab. Inicialmente, 
+    busque por Lambda na guia de serviços.
+
+    Lembre-se de selecionar a região “Norte da Virgínia” para a criação de suas funções, para que depois seja possível encontrá-las.
+
+    Em seguida, clique no menu Lambda > Funções e selecione o botão 
+    “Criar função”
+
+    Defina o nome da função Lambda e o tempo de execução (runtime). 
+    No tempo de execução, também é importante definirmos a linguagem
+    de programação que utilizaremos ou o framework / engine 
+    necessário para rodar nosso código. Neste caso, escolheremos o 
+    Python.
+
+    Expanda a opção de “Alterar a função de execução de execução 
+    padrão” e selecione a opção “Usar uma função existente”. Como 
+    estamos utilizando o ambiente de testes (Learner Lab), é 
+    importante escolher a “LabRole” (role) para conseguir executar 
+    a função. Finalmente, clique em “Criar função”.
+
+    Ao criar a função, você visualizará um trecho de código na 
+    linguagem que selecionou (neste caso, Python) e já poderá 
+    testar a função.
+
+    A seguir, iremos implantar a função Lambda e testá-la.
+
+    Inicialmente iremos alterar o texto da função Lambda, de 
+    acordo com o seguinte trecho de código:
+
+        import json
+
+        def lambda_handler(event, context):
+            # TODO implement
+            return {
+                'statusCode': 200,
+                'body': json.dumps('Ola Estudante AWS!')
+            }
+
+    O que esse código está fazendo? O AWS Lambda recebe um evento 
+    de entrada (event) e um contexto (context) como entrada. O 
+    “event” contém os dados que acionaram a função (como uma 
+    requisição HTTP, um evento do S3, SNS, entre outros). O 
+    “contexto” contém informações do ambiente de execução do 
+    Lambda. A função retorna um dicionário com dois campos 
+    principais:
+
+        'statusCode': 200 → Indica que a requisição foi bem-sucedida.
+        
+        'body': json.dumps('Ola FIAP ON!') → Retorna a string "Ola 
+        Estudante AWS!" no formato JSON.
+
+    Isso significa que, ao ser chamada via API Gateway, por 
+    exemplo, ela responderá com um código HTTP 200 e o corpo da 
+    resposta conterá a string "Ola FIAP ON!" em JSON.
+
+    Toda alteração em uma função Lambda requer que a função seja 
+    reimplantada (deploy). Portanto, selecione a opção “Deploy” e, 
+    em seguida, clique no botão “Test”.
+
+    Você irá nomear um evento de teste, como “TesteOlaAlunos”. É 
+    possível ainda customizar um arquivo JSON de entrada para o 
+    evento. No entanto, mantenha as opções padrão.
+
+        Transformação de dados com funções lambda
+
+Iremos implementar a primeira etapa da nossa solução completa. Para 
+tanto, iremos criar funções Lambda que serão acionadas 
+automaticamente.
+
+O banco de dados DynamoDB foi escolhido por ser uma base de dados 
+serverless, ou seja, está alinhado com os requisitos da nossa 
+solução de não nos preocuparmos com as instalações. No entanto, ele 
+não suporta ingestão de arquivos por CSV, e sim, por meio de 
+arquivos JSON. Portanto, teremos que transformar os dados 
+inicialmente estruturados do CSV no formato JSON.
+
+Podemos observar uma sequência de transformações sofridas por um 
+arquivo de entrada no formato CSV. O arquivo é carregado 
+inicialmente em um bucket de entrada do S3.
+
+Em seguida, uma função Lambda denominada “ProcessarArquivosCSV” 
+irá processar o arquivo CSV e transformá-lo em um formato JSON 
+para que possa alimentar nosso banco de dados DynamoDB.
+
+Finalmente, uma outra função Lambda denominada 
+“ProcessarArquivosJSON” irá ler o arquivo JSON e inserir os dados 
+no banco de dados DynamoDB. O processo inteiro será acionado 
+automaticamente por meio de gatilhos. Vejamos a seguir como 
+configurar esses gatilhos.
+
+    Disparo automático de funções lambda (triggers)
+
+A função Lambda pode ser executada automaticamente quando ocorre algum evento na AWS, como, por exemplo, a carga de dados em um bucket S3. Essa execução é chamada de “gatilho” ou trigger.
+
+Para simular este processamento automático, iremos criar dois buckets S3 com o padrão:
+
+    fiapon-<suasiniciais>-arquivos-entrada
+    
+    fiapon-<suasiniciais>-arquivos-processados
+
+Altere o bucket de origem e destino para suas iniciais. Por 
+exemplo, considerando que meu nome é Fernando Timóteo Fernandes, 
+e também o padrão sugerido “fiapon-<suasiniciais>-arquivos-entrada”,
+temos o seguinte bucket: “fiapon-ftf-arquivos-entrada”.
+
+Após a criação dos buckets, você deverá ter os seguintes buckets, 
+lembrando que o nome dos buckets deverá refletir suas iniciais.
+
+Agora, vamos agora criar uma função Lambda chamada 
+“ProcessarArquivosCSV” para ler o arquivo a ser enviado ao bucket 
+de entrada. Adapte o seguinte código, alterando o nome dos buckets 
+de acordo com suas iniciais:
+
+    import boto3
+    import csv
+    import json
+    import os
+    from datetime import datetime
+
+    # Buckets
+    bucket_origem = 'fiapon-<suasiniciais>-arquivos-entrada'
+    bucket_destino = 'fiapon-<suasiniciais>-arquivos-processados'
+
+    # Função para processar um único arquivo do bucket de origem e retorna uma lista
+    def processar_arquivo(bucket_origem, nome_arquivo, s3_client):
+        resultados = []
+        try:
+            print(f"Processando arquivo: {nome_arquivo}")
+
+            # Ler o arquivo do S3
+            arquivo_obj = s3_client.get_object(Bucket=bucket_origem, Key=nome_arquivo)
+            arquivo_conteudo = arquivo_obj['Body'].read().decode('utf-8').splitlines()
+
+            # Processar o CSV
+            leitor_csv = csv.DictReader(arquivo_conteudo)
+
+            for linha in leitor_csv:
+                try:
+                    temperatura = int(float(linha.get("temperatura", 0)))
+                except ValueError:
+                    temperatura = 0
+
+                resultados.append({
+                    "id_estacao": linha.get("id_estacao", ""),
+                    "nome_arquivo": nome_arquivo,
+                    "data": linha.get("data", ""),
+                    "latitude": linha.get("latitude", ""),
+                    "longitude": linha.get("longitude", ""),
+                    "temperatura": temperatura
+                })
+
+            # Excluir o arquivo de origem após o processamento
+            s3_client.delete_object(Bucket=bucket_origem, Key=nome_arquivo)
+            print(f"Arquivo {nome_arquivo} excluído do bucket de origem.")
+
+        except Exception as e:
+            print(f"Erro ao processar o arquivo {nome_arquivo}: {e}")
+            resultados.append({"nome_arquivo": nome_arquivo, "erro": str(e)})
+
+        return resultados
+
+    # Função Lambda principal
+    def lambda_handler(event, context):
+        # Inicializar o cliente S3
+        s3 = boto3.client('s3')
+
+        try:
+            # Recuperar o nome do arquivo do evento
+            registro = event['Records'][0]
+            nome_arquivo = registro['s3']['object']['key']
+
+            # Processar o arquivo
+            resultados = processar_arquivo(bucket_origem, nome_arquivo, s3)
+
+            # Gerar o JSON com os resultados
+            if resultados:
+                timestamp = datetime.utcnow().strftime('%Y_%m_%d_%H_%M_%S')
+
+                nome_arquivo_base = os.path.splitext(nome_arquivo.split('/')[-1])[0]
+                nome_arquivo_json = f"{nome_arquivo_base}_processado_{timestamp}.json"
+
+                # Salvar o JSON no bucket de destino
+                json_resultados = json.dumps(resultados, indent=4)
+                s3.put_object(
+                    Bucket=bucket_destino,
+                    Key=nome_arquivo_json,
+                    Body=json_resultados,
+                    ContentType='application/json'
+                )
+                print(f"Arquivo JSON {nome_arquivo_json} gerado no bucket {bucket_destino}")
+
+            # Retornar JSON de sucesso
+            return {
+                "statusCode": 200,
+                "body": {
+                    "mensagem": "Arquivo processado com sucesso!",
+                    "arquivo_processado": nome_arquivo,
+                    "resultado_arquivo": nome_arquivo_json
+                }
+            }
+
+        except KeyError as e:
+            print(f"Erro: parâmetro ausente - {e}")
+            return {
+                "statusCode": 400,
+                "body": {
+                    "mensagem": "Erro: Nome do arquivo ausente no evento."
+                }
+            }
+        except Exception as e:
+            print(f"Erro geral ao processar o arquivo: {e}")
+            return {
+                "statusCode": 500,
+                "body": {
+                    "error": str(e)
+                }
+            }
+
+Explicando sucintamente o que esse código faz, ele implementa uma 
+função AWS Lambda para processar arquivos CSV armazenados no 
+Amazon S3. Isto é, ele automatiza a leitura, transformação e 
+movimentação de arquivos entre dois buckets S3, além de gerar um 
+relatório JSON com os dados processados. Seu fluxo possui cinco 
+etapas:
+
+    Evento de Upload no S3:
+    
+        A função é acionada automaticamente sempre que um arquivo 
+        é enviado ao bucket de entrada (fiapon-<suasiniciais>-
+        arquivos-entrada).
+        
+        O evento fornece o nome do arquivo recém-carregado.
+        
+    Processamento do Arquivo CSV:
+    
+        A função lê o arquivo CSV do S3, decodificando seu 
+        conteúdo.
+        
+        Usa a biblioteca csv.DictReader para transformar as 
+        linhas do CSV em um formato dicionário.
+        
+        Converte a temperatura para um número inteiro, garantindo 
+        que valores inválidos não causem falhas.
+        
+        Extrai dados importantes: ID da estação, data, latitude, 
+        longitude e temperatura.
+        
+    Exclusão do Arquivo Original:
+    
+        Após o processamento, o arquivo é excluído do bucket de 
+        origem, garantindo que ele não seja processado novamente.
+        
+        Geração de JSON com os Resultados:
+        
+            Um arquivo JSON contendo os dados processados é 
+            criado com um timestamp UTC no nome.
+            
+            Esse JSON é salvo no bucket de saída (fiapon-
+            <suasiniciais>-arquivos-processados).
+            
+        Retorno da Função:
+        
+            Se tudo der certo, a função retorna um status 200, 
+            indicando sucesso.
+            
+            Caso ocorra um erro (como um arquivo corrompido ou 
+            erro de permissão no S3), um código de erro 
+            apropriado (400 ou 500) é retornado, junto com a 
+            descrição do problema.
+
+Exemplo de entrada e saída:
+
+    Entrada (Evento S3)
+
+Quando um arquivo estacao_01.csv é enviado ao bucket de entrada, a 
+função Lambda é acionada automaticamente.
+
+Exemplo de CSV no S3:
+
+    id_estacao,data,latitude,longitude,temperatura
+    123,2024-02-01,-23.55,-46.63,28.5
+    456,2024-02-02,-22.90,-43.17,30.0
+
+Saída (JSON gerado no Bucket de Destino)
+
+Dando sequência, acesse a função Lambda “ProcessarArquivosCSV” e 
+crie um gatilho para o bucket de entrada, clicando no botão 
+“Adicionar gatilho”.
+
+Agora, configure o gatilho, selecionando o bucket recém-criado de 
+entrada no campo “Bucket”. 
+
+PS: Não esqueça de marcar a caixa de texto de “invocação recursiva”.
+
+Agora basta criar dois arquivos de testes e subi-los ao bucket de 
+entrada, conforme tabela a seguir.
+
+Na tabela anterior, exibimos o conteúdo dos arquivos de testes 
+para que você consiga criar arquivos CSV simulando dados dos 
+sensores. No primeiro arquivo, simulamos dados de uma estação 
+meteorológica, com informações de temperaturas na região de São 
+Paulo, das 08:00 da manhã até às 18:00. No segundo arquivo, 
+simulamos dados da mesma estação no dia posterior.
+
+Agora vamos subir os arquivos ao bucket de entrada.
+
+Acesse o bucket de entrada e clique em carregar para adicionar um 
+arquivo ao bucket.
+
+Depois de alguns minutos (espere até 5 minutos), você verá que foi 
+gerado um arquivo JSON no bucket de arquivos processados. Além 
+disso, o arquivo CSV será excluído do bucket de entrada após o 
+processamento concluído.
+
+Os arquivos serão processados automaticamente toda vez que você 
+subir um arquivo para o bucket de entrada. A seguir, exibimos parte
+do arquivo JSON gerado.
+
+Finalizamos a primeira parte da ingestão de dados, fazendo a 
+transformação de dados para que possam ser gravados no banco de 
+dados. Agora veremos como criar uma função Lambda para gravar o 
+arquivo JSON gerado no DynamoDB.
+
+Aqui segue passo a passo se quiser fazer com a CLI da AWS:
+
+    1. Primeiro escolha suas iniciais e crie os dois buckets. 
+    Vou colocar rj como exemplo; se suas iniciais forem outras, 
+    altere somente a primeira linha. O material exige os padrões 
+    fiapon-<iniciais>-arquivos-entrada e fiapon-<iniciais>-arquivos-processados.
+
+        INI="rj"
+        REGION="us-east-1"
+
+        BUCKET_IN="fiapon-${INI}-arquivos-entrada"
+        BUCKET_OUT="fiapon-${INI}-arquivos-processados"
+
+        echo "$BUCKET_IN"
+        echo "$BUCKET_OUT"
+
+    Agora crie:
+
+        aws s3 mb "s3://$BUCKET_IN" --region "$REGION"
+
+        aws s3 mb "s3://$BUCKET_OUT" --region "$REGION"
+
+    Confira:
+
+        aws s3 ls
+
+    Você deve encontrar algo parecido com:
+
+        fiapon-rj-arquivos-entrada
+        fiapon-rj-arquivos-processados
+
+    2. Agora vamos criar o código da Lambda. Copie este bloco 
+    inteiro no terminal. Ele já coloca automaticamente os nomes 
+    dos seus buckets:
+
+        cat > lambda_function.py <<EOF
+        import boto3
+        import csv
+        import json
+        import os
+        from datetime import datetime
+
+        bucket_origem = '$BUCKET_IN'
+        bucket_destino = '$BUCKET_OUT'
+
+        def processar_arquivo(bucket_origem, nome_arquivo, s3_client):
+            resultados = []
+
+            try:
+                print(f"Processando arquivo: {nome_arquivo}")
+
+                arquivo_obj = s3_client.get_object(
+                    Bucket=bucket_origem,
+                    Key=nome_arquivo
+                )
+
+                arquivo_conteudo = (
+                    arquivo_obj['Body']
+                    .read()
+                    .decode('utf-8')
+                    .splitlines()
+                )
+
+                leitor_csv = csv.DictReader(arquivo_conteudo)
+
+                for linha in leitor_csv:
+                    try:
+                        temperatura = int(
+                            float(linha.get("temperatura", 0))
+                        )
+                    except ValueError:
+                        temperatura = 0
+
+                    resultados.append({
+                        "id_estacao": linha.get("id_estacao", ""),
+                        "nome_arquivo": nome_arquivo,
+                        "data": linha.get("data", ""),
+                        "latitude": linha.get("latitude", ""),
+                        "longitude": linha.get("longitude", ""),
+                        "temperatura": temperatura
+                    })
+
+                s3_client.delete_object(
+                    Bucket=bucket_origem,
+                    Key=nome_arquivo
+                )
+
+                print(
+                    f"Arquivo {nome_arquivo} excluído "
+                    "do bucket de origem."
+                )
+
+            except Exception as e:
+                print(
+                    f"Erro ao processar o arquivo "
+                    f"{nome_arquivo}: {e}"
+                )
+
+                resultados.append({
+                    "nome_arquivo": nome_arquivo,
+                    "erro": str(e)
+                })
+
+            return resultados
+
+
+        def lambda_handler(event, context):
+            s3 = boto3.client('s3')
+
+            try:
+                registro = event['Records'][0]
+                nome_arquivo = registro['s3']['object']['key']
+
+                resultados = processar_arquivo(
+                    bucket_origem,
+                    nome_arquivo,
+                    s3
+                )
+
+                if resultados:
+                    timestamp = datetime.utcnow().strftime(
+                        '%Y_%m_%d_%H_%M_%S'
+                    )
+
+                    nome_arquivo_base = os.path.splitext(
+                        nome_arquivo.split('/')[-1]
+                    )[0]
+
+                    nome_arquivo_json = (
+                        f"{nome_arquivo_base}_"
+                        f"processado_{timestamp}.json"
+                    )
+
+                    json_resultados = json.dumps(
+                        resultados,
+                        indent=4
+                    )
+
+                    s3.put_object(
+                        Bucket=bucket_destino,
+                        Key=nome_arquivo_json,
+                        Body=json_resultados,
+                        ContentType='application/json'
+                    )
+
+                    print(
+                        f"Arquivo JSON {nome_arquivo_json} "
+                        f"gerado no bucket {bucket_destino}"
+                    )
+
+                return {
+                    "statusCode": 200,
+                    "body": {
+                        "mensagem":
+                            "Arquivo processado com sucesso!",
+                        "arquivo_processado":
+                            nome_arquivo,
+                        "resultado_arquivo":
+                            nome_arquivo_json
+                    }
+                }
+
+            except KeyError as e:
+                print(f"Erro: parâmetro ausente - {e}")
+
+                return {
+                    "statusCode": 400,
+                    "body": {
+                        "mensagem":
+                            "Erro: Nome do arquivo ausente no evento."
+                    }
+                }
+
+            except Exception as e:
+                print(
+                    f"Erro geral ao processar o arquivo: {e}"
+                )
+
+                return {
+                    "statusCode": 500,
+                    "body": {
+                        "error": str(e)
+                    }
+                }
+        EOF
+
+    Confira:
+
+        cat lambda_function.py
+
+    Esse código corresponde à função proposta no material: lê o 
+    objeto no S3, usa csv.DictReader, converte temperatura, gera 
+    os registros e cria um JSON no bucket de destino.
+
+    3. Compacte o código e crie a Lambda. No Learner Lab o 
+    material orienta usar a LabRole como função de execução.
+
+        Primeiro:
+
+            zip ProcessarArquivosCSV.zip lambda_function.py
+
+        Pegue a role:
+
+            ROLE_ARN=$(aws iam get-role \
+                --role-name LabRole \
+                --query 'Role.Arn' \
+                --output text)
+
+            echo "$ROLE_ARN"
+
+    Agora crie:
+
+        aws lambda create-function \
+            --function-name ProcessarArquivosCSV \
+            --runtime python3.12 \
+            --role "$ROLE_ARN" \
+            --handler lambda_function.lambda_handler \
+            --zip-file fileb://ProcessarArquivosCSV.zip \
+            --region "$REGION"
+
+    Se aparecer um JSON grande com algo como:
+
+        FunctionName: ProcessarArquivosCSV
+        Runtime: python3.12
+        State: Pending/Active
+
+    deu certo.
+
+    Confira:
+
+        aws lambda get-function \
+            --function-name ProcessarArquivosCSV \
+            --query 'Configuration.[FunctionName,Runtime,State]' \
+            --output table
+
+    4. Agora vem o Trigger, que é a parte que parece assustadora. 
+    Ele só significa: “quando entrar arquivo nesse bucket, 
+    execute essa Lambda”. O material faz isso pelo botão Adicionar 
+    gatilho no console. Nós faremos pelo terminal.
+
+    Primeiro pegue seu Account ID e o ARN da Lambda:
+
+        ACCOUNT_ID=$(aws sts get-caller-identity \
+            --query Account \
+            --output text)
+
+        FUNCTION_ARN=$(aws lambda get-function \
+            --function-name ProcessarArquivosCSV \
+            --query 'Configuration.FunctionArn' \
+            --output text)
+
+        echo "$ACCOUNT_ID"
+        echo "$FUNCTION_ARN"
+
+    Permita que o S3 chame a Lambda:
+
+        aws lambda add-permission \
+            --function-name ProcessarArquivosCSV \
+            --statement-id S3PodeExecutarLambda \
+            --action lambda:InvokeFunction \
+            --principal s3.amazonaws.com \
+            --source-arn "arn:aws:s3:::$BUCKET_IN" \
+            --source-account "$ACCOUNT_ID"
+
+    Agora crie a configuração do trigger:
+
+        cat > trigger.json <<EOF
+        {
+        "LambdaFunctionConfigurations": [
+            {
+            "LambdaFunctionArn": "$FUNCTION_ARN",
+            "Events": [
+                "s3:ObjectCreated:*"
+            ]
+            }
+        ]
+        }
+        EOF
+
+    Confira:
+
+        cat trigger.json
+
+    Finalmente ative:
+
+        aws s3api put-bucket-notification-configuration \
+            --bucket "$BUCKET_IN" \
+            --notification-configuration file://trigger.json
+
+    E veja se foi registrado:
+
+        aws s3api get-bucket-notification-configuration \
+            --bucket "$BUCKET_IN"
+
+    Você deverá ver LambdaFunctionConfigurations.
+
+    A caixa de “invocação recursiva” que aparece no PDF é uma 
+    confirmação da interface gráfica. Como estamos criando pela 
+    CLI, essa caixa simplesmente não aparece.
+
+    5. Crie os dois CSVs de teste. Estes são os dados mostrados 
+    na tabela do material.
+
+    Cole o primeiro:
+
+        cat > estacao_1_2024_12_20.csv <<'EOF'
+        id_estacao,data,latitude,longitude,temperatura
+        1,2024-12-20 08:00:00,-23.5505,-46.6333,22.3
+        1,2024-12-20 09:00:00,-23.5505,-46.6333,24.1
+        1,2024-12-20 10:00:00,-23.5505,-46.6333,30.2
+        1,2024-12-20 11:00:00,-23.5505,-46.6333,27.8
+        1,2024-12-20 12:00:00,-23.5505,-46.6333,29.4
+        1,2024-12-20 13:00:00,-23.5505,-46.6333,31.0
+        1,2024-12-20 14:00:00,-23.5505,-46.6333,25.7
+        1,2024-12-20 15:00:00,-23.5505,-46.6333,26.9
+        1,2024-12-20 16:00:00,-23.5505,-46.6333,27.1
+        1,2024-12-20 17:00:00,-23.5505,-46.6333,26.8
+        1,2024-12-20 18:00:00,-23.5505,-46.6333,25.4
+        EOF
+
+    E o segundo:
+
+        cat > estacao_1_2024_12_21.csv <<'EOF'
+        id_estacao,data,latitude,longitude,temperatura
+        1,2024-12-21 08:00:00,-23.5505,-46.6333,23.5
+        1,2024-12-21 09:00:00,-23.5505,-46.6333,25.2
+        1,2024-12-21 10:00:00,-23.5505,-46.6333,31.0
+        1,2024-12-21 11:00:00,-23.5505,-46.6333,28.5
+        1,2024-12-21 12:00:00,-23.5505,-46.6333,30.0
+        1,2024-12-21 13:00:00,-23.5505,-46.6333,32.1
+        1,2024-12-21 14:00:00,-23.5505,-46.6333,26.3
+        1,2024-12-21 15:00:00,-23.5505,-46.6333,22.8
+        1,2024-12-21 16:00:00,-23.5505,-46.6333,23.4
+        1,2024-12-21 17:00:00,-23.5505,-46.6333,24.5
+        1,2024-12-21 18:00:00,-23.5505,-46.6333,24.3
+        EOF
+
+    Confira:
+
+        ls -lh *.csv
+
+    6. Agora acontece a mágica: envie os CSVs para o bucket de 
+    entrada.
+
+        aws s3 cp \
+            estacao_1_2024_12_20.csv \
+            "s3://$BUCKET_IN/"
+
+    Depois:
+
+        aws s3 cp \
+            estacao_1_2024_12_21.csv \
+            "s3://$BUCKET_IN/"
+
+    A partir desse momento você não chama a Lambda manualmente. 
+    O S3 percebe o upload e dispara o trigger:
+    
+        aws s3 cp
+              ↓
+        S3 entrada
+              ↓
+        EVENTO ObjectCreated
+              ↓
+        Lambda
+              ↓
+        CSV → JSON
+              ↓
+        S3 processados
+
+    7. Espere alguns segundos e confira o resultado. O material 
+    diz que o processo pode levar até alguns minutos e que, 
+    quando concluir, os JSONs aparecem no bucket processado e os 
+    CSVs desaparecem do bucket de entrada.
+
+    Veja a entrada:
+
+        aws s3 ls "s3://$BUCKET_IN/"
+
+    Se funcionou, provavelmente estará vazia, porque a Lambda 
+    apagou os CSVs.
+
+    Veja a saída:
+
+        aws s3 ls "s3://$BUCKET_OUT/"
+
+    Você deverá encontrar algo parecido com:
+
+        estacao_1_2024_12_20_processado_2026_09_24_....json
+        estacao_1_2024_12_21_processado_2026_09_24_....json
+
+    Para visualizar o JSON sem baixar manualmente:
+
+        LATEST=$(aws s3api list-objects-v2 \
+            --bucket "$BUCKET_OUT" \
+            --query 'reverse(sort_by(Contents,&LastModified))[0].Key' \
+            --output text)
+
+        echo "$LATEST"
+
+        aws s3 cp \
+            "s3://$BUCKET_OUT/$LATEST" -
+
+    O resultado será parecido com:
+
+        [
+            {
+                "id_estacao": "1",
+                "nome_arquivo": "estacao_1_2024_12_21.csv",
+                "data": "2024-12-21 08:00:00",
+                "latitude": "-23.5505",
+                "longitude": "-46.6333",
+                "temperatura": 23
+            }
+        ]
+
+    Observe que 23.5 vira 23, porque o código faz:
+
+        int(float(...))
+
+    8. Se não funcionar, não saia alterando tudo. O primeiro lugar 
+    para olhar é o log da Lambda:
+
+        aws logs tail \
+            /aws/lambda/ProcessarArquivosCSV \
+            --since 10m \
+            --format short
+
+        Ingestão de dados com funções lambda
+
+Nesta etapa, vamos criar uma outra função Lambda que fará a 
+leitura dos arquivos JSON gerados e gravará em uma tabela do 
+DynamoDB.
+
+Para isso, crie a função “ProcessarArquivosJSON” com o seguinte 
+conteúdo. Note que a parte em destaque (bucket_json = 
+'fiapon-<suasiniciais>-arquivos-processados') é para que você 
+altere o nome do bucket com suas iniciais.
+
+    import boto3
+    import json
+    import uuid
+    import logging
+
+    # Inicialização dos clientes AWS
+    s3_client = boto3.client('s3')
+    dynamodb = boto3.resource('dynamodb')
+    table = dynamodb.Table('temperaturas')
+
+    logger = logging.getLogger()
+    logger.setLevel(logging.INFO)
+
+    bucket_json = 'fiapon-<suasiniciais>-arquivos-processados'
+
+
+    def lambda_handler(event, context):
+        try:
+            # Obtendo informações do evento do S3
+            file_key = event['Records'][0]['s3']['object']['key']
+
+            logger.info(f"Processando arquivo: {file_key} do bucket: {bucket_json}")
+
+            # Baixar o arquivo JSON do bucket
+            response = s3_client.get_object(Bucket=bucket_json, Key=file_key)
+            file_content = response['Body'].read().decode('utf-8')
+
+            # Parse do conteúdo do arquivo JSON
+            data = json.loads(file_content)
+
+            # Inserir cada item no DynamoDB
+            for item in data:
+                table.put_item(
+                    Item={
+                        'id': str(uuid.uuid4()),  # Gerar um UUID único
+                        'data': item['data'],
+                        'id_estacao': item['id_estacao'],
+                        'nome_arquivo': item['nome_arquivo'],
+                        'latitude': item['latitude'],
+                        'longitude': item['longitude'],
+                        'temperatura': item['temperatura']
+                    }
+                )
+                logger.info(f"Registro inserido no DynamoDB: {item}")
+
+            # Excluindo o arquivo do bucket após o processamento
+            s3_client.delete_object(Bucket=bucket_json, Key=file_key)
+            logger.info(f"Arquivo {file_key} excluído do bucket {bucket_json}")
+
+            return {
+                'statusCode': 200,
+                'body': json.dumps(f"Arquivo {file_key} processado com sucesso.")
+            }
+
+        except Exception as e:
+            logger.error(f"Erro ao processar arquivo: {str(e)}")
+            return {
+                'statusCode': 500,
+                'body': json.dumps(f"Erro ao processar arquivo: {str(e)}")
+            }
+
+Explicando rapidamente o objetivo do código anterior, ele 
+implementa uma função AWS Lambda que processa arquivos JSON 
+armazenados no Amazon S3 e insere seus dados em uma tabela do 
+DynamoDB. Ele é acionado automaticamente sempre que um novo 
+arquivo JSON é carregado no bucket S3 definido.
+
+Primeiramente, a função obtém o nome do arquivo a partir do 
+evento de trigger do S3. Em seguida, faz o download do JSON, 
+lê seu conteúdo e converte para um formato Python utilizando 
+json.loads(). Assim, cada registro do JSON é inserido no DynamoDB, 
+onde recebe um UUID único como identificador.
+
+Após a inserção bem-sucedida dos dados na tabela, o arquivo JSON 
+original é excluído do bucket S3 para evitar reprocessamento. Caso 
+ocorra algum erro, a função registra a falha nos logs do CloudWatch
+e retorna um código de erro HTTP 500.
+
+Dando sequência com o código anterior, preparamos a função Lambda 
+para processar o arquivo JSON e inserir os registros no DynamoDB. 
+No entanto, ainda não iremos executá-lo, pois iremos acioná-lo 
+automaticamente por meio de uma API.
+
+Finalizamos a ingestão de dados serverless utilizando as funções 
+Lambda e o DynamoDB, completando, assim, a primeira parte da nossa
+solução.
+
+Vejamos a seguir como consumir estes dados por meio de uma API 
+REST utilizando o serviço da AWS denominado AWS API Gateway.
+
+                Consumo de dados na nuvem
+
+Neste momento, iremos implementar a segunda parte de nossa 
+solução serverless, onde consumiremos os dados do DynamoDB 
+por meio de uma API, como pode ser vista na arquitetura da 
+solução, destacada em laranja na figura a seguir.
+
+Uma API (Application Programming Interface) permite a troca de 
+informações entre sistemas distintos, padronizando o formato do 
+arquivo a ser trocado.
+
+Portanto, é possível consumir dados produzidos por sistemas com 
+tecnologias distintas, desde que tais tecnologias estejam aptas 
+a consumir os dados no formato especificado.
+
+É possível utilizar diferentes tipos de formatos padronizados, 
+como XML e JSON. 
+
+A AWS oferece a possibilidade de criação de APIs REST na nuvem, 
+com o serviço denominado API Gateway. Primeiro vamos entender os 
+conceitos básicos de uma API para então criarmos nossa API de 
+consumo na AWS.
+
+                    API Gateway
+
+A AWS permite criar diferentes tipos de APIs, como:
+
+    API WebSocket
+
+    API HTTP
+
+    API REST
+
+Uma API WebSocket permite estabelecer um canal aberto para a 
+troca de mensagens entre um cliente e um servidor, como a criação 
+de um chat.
+
+Uma API REST (Representational State Transfer) é um estilo 
+arquitetural para construir serviços web que permitem a 
+comunicação entre sistemas, geralmente usando o protocolo HTTP. 
+Em uma API REST, cada operação é independente e os dados enviados 
+não são reutilizados, o que comumente é descrito como o não 
+mantenimento de estado entre as operações.
+
+A API HTTP e a API REST são ambas RESTful, ou seja, não mantêm 
+estado entre as operações. Elas diferem em relação às questões 
+de custos e recursos de implementação.
+
+Na API HTTP é possível utilizar a autenticação mais simples com 
+o uso de JWT (JSON Web Token). O JWT é uma forma de autenticação 
+que permite que um servidor verifique a identidade de um usuário 
+sem precisar armazenar informações sobre ele.
+
+A API REST não conta com autenticação por meio de JWT, mas conta 
+com diversos outros recursos, como a criação de chaves de API e 
+integração à serviços de autenticação, como o Amazon Cognito. 
+Também é possível estabelecer limites de chamadas por clientes, 
+caching e validação de requisição antes de executar uma integração 
+com o API REST.
+
+A API HTTP se destaca por ter um tempo menor de resposta desde a 
+requisição até a resposta a um recurso da API (latência) a um 
+custo reduzido em comparação com a API REST. Cada recurso é 
+identificado por uma URI (Uniform Resource Identifier) e por uma 
+rota que acessa um recurso. O endereço base da API, seguido do 
+nome de um recurso normalmente, é chamado de endpoint. Por exemplo: 
+https://api.exemplo.com/temperaturas. Nesta URL, poderíamos 
+consultar todas as temperaturas armazenadas em um banco de dados, 
+a partir da integração com uma função Lambda.
+
+É importante ressaltar que, ao criar uma API HTTP, é possível 
+criar somente endpoints públicos. Já nas API REST, é possível 
+criar tanto endpoints públicos como privados acessíveis somente 
+dentro da VPC.
+
+Métodos HTTP:
+
+    As APIs RESTful seguem um conjunto de princípios e convenções para permitir operações de criação, leitura, atualização e exclusão de itens, por exemplo: Create, Read, Update e Delete — CRUD.
+
+    Os métodos HTTP são utilizados para realizar operações em recursos:
+
+        Método GET: recuperar um recurso (exemplo: listar 
+        registros de temperaturas).
+
+        Método POST: criar um novo recurso (exemplo: adicionar 
+        um novo registro).
+
+        Método PUT: atualizar completamente um recurso existente 
+        (exemplo: editar um registro).
+
+        Método PATCH: atualizar parcialmente um recurso existente.
+
+        Método DELETE: remover um recurso (exemplo: excluir um 
+        registro).
+
+    Cada requisição HTTP pode retornar um dos seguintes status:
+
+        1XX – Informativo
+
+        2XX – Sucesso, por exemplo, HTTP 200 – OK; 
+        201 – Criação de um registro; 204 – Exclusão bem sucedida.
+
+        3XX – Redirecionamento para outra URL, por exemplo, 
+        Erro: 301 - Recurso Movido Permanentemente.
+
+        4XX – Erros na requisição do cliente, por exemplo, 
+        Erro: 404 – página não encontrada.
+
+        5XX – Erros do Servidor, por exemplo: 
+        Erro 500 – Internal Server Error.
+
+    O ideal é recebermos o retorno com o status 200, significando 
+    que a requisição foi bem-sucedida. 
+
+    Agora que sabemos as características de uma API, iremos criar 
+    uma API que permite realizar consultas em um banco de dados 
+    DynamoDB.
+
+Consumo da API:
+
+    A URL irá apontar para nossa API, tanto para realizar 
+    consultas de todas as temperaturas, ou por uma data 
+    específica. Para isso, a API acionará uma função Lambda 
+    que irá ler os dados de temperaturas do DynamoDB.
+
+    Iremos utilizar uma única API para duas operações, uma de 
+    consulta geral e outra de consulta por data. A API acionará 
+    uma função Lambda para ler os dados do DynamoDB. Portanto, 
+    crie uma função Lambda com o nome “api-http-dynamodb” para 
+    processar as chamadas da API e consultar a tabela 
+    “temperaturas” do DynamoDB.
+
+        import json
+        import boto3
+        import uuid
+        from datetime import datetime
+        from boto3.dynamodb.conditions import Attr
+
+        client = boto3.client('dynamodb')
+        dynamodb = boto3.resource("dynamodb")
+        table = dynamodb.Table('temperaturas')
+        tableName = 'temperaturas'
+
+        def lambda_handler(event, context):
+            print(event)
+            body = {}
+            statusCode = 200
+            headers = {
+                "Content-Type": "application/json"
+            }
+
+            try:
+                if event['routeKey'] == "GET /temperaturas":
+                    body = table.scan()
+                    body = body["Items"]
+                    print("Medicoes----")
+                    print(body)
+                    body = sorted(body, key=lambda x: x['data'])
+                    responseBody = []
+                    for items in body:
+                        responseItems = {
+                            'id_estacao': int(items['id_estacao']),
+                            'id': items['id'],
+                            'data': items['data'],
+                            'temperatura': int(items['temperatura']),
+                            'latitude': float(items['latitude']),
+                            'longitude': float(items['longitude']),
+                            'nome_arquivo': items['nome_arquivo']
+                        }
+                        responseBody.append(responseItems)
+                    body = responseBody
+
+                elif event['routeKey'] == "GET /temperaturas/data/{data}":
+                    data_param = event['pathParameters']['data']
+                    try:
+                        # Convert data_param to date
+                        date_filter = datetime.strptime(data_param, "%Y-%m-%d").date()
+
+                        # Filter by date ignoring timestamp
+                        response = table.scan(
+                            FilterExpression=Attr('data').begins_with(str(date_filter))
+                        )
+
+                        responseBody = []
+
+                        for items in response["Items"]:
+                            responseItems = {
+                                'id_estacao': int(items['id_estacao']),
+                                'id': items['id'],
+                                'temperatura': int(items['temperatura']),
+                                'latitude': float(items['latitude']),
+                                'longitude': float(items['longitude']),
+                                'nome_arquivo': items['nome_arquivo'],
+                                'data': items['data']
+                            }
+                            responseBody.append(responseItems)
+
+                        body = sorted(responseBody, key=lambda x: x['data'])
+
+                        print("Dados filtrados por data----")
+                        print(body)
+
+                    except ValueError:
+                        statusCode = 400
+                        body = f"Data invalida: {data_param}. Formato esperado: YYYY-MM-DD"
+
+            except KeyError:
+                statusCode = 400
+                body = 'Rota nao suportada: ' + event['routeKey']
+            body = json.dumps(body)
+            res = {
+                "statusCode": statusCode,
+                "headers": {
+                    "Content-Type": "application/json"
+                },
+                "body": body
+            }
+            return res
+
+    Esse código-fonte implementa uma outra função AWS Lambda que 
+    expõe uma API para consultar medições de temperatura 
+    armazenadas no Amazon DynamoDB. Ele responde a requisições 
+    GET, permitindo recuperar todas as medições ou filtrar por uma 
+    data específica.
+
+    Quando a requisição "GET /temperaturas" é recebida, a função 
+    escaneia a tabela "temperaturas" no DynamoDB, ordena os 
+    registros pela data e retorna um JSON contendo informações 
+    como ID da estação, data, temperatura, latitude  e longitude.
+
+    Se a requisição seguir o formato "GET /temperaturas/data/{data}", 
+    a função extrai o parâmetro {data} da URL, converte para o 
+    formato de data (YYYY-MM-DD) e busca registros que começam com 
+    essa data. Os resultados são organizados e retornados em JSON.
+
+    Caso a rota solicitada não seja suportada ou a data esteja em 
+    formato inválido, a função responde com um código de erro HTTP 
+    400 e uma mensagem apropriada. Toda a comunicação é estruturada
+    no formato JSON para facilitar a integração com serviços 
+    externos.
+
+    Caso a rota solicitada não seja suportada ou a data esteja em 
+    formato inválido, a função responde com um código de erro HTTP 
+    400 e uma mensagem apropriada. Toda a comunicação é estruturada
+    no formato JSON para facilitar a integração com serviços 
+    externos.
+
+    Agora que já temos mais uma função Lambda pronta, vamos criar a 
+    nossa API para responder às requisições em um endpoint público 
+    (um endpoint público é qualquer computador ou dispositivo que 
+    acesse o seu serviço de fora da AWS sem autenticação especial).
+    Por exemplo: 
+
+        https://abcd1234.execute-api.us-east-1.amazonaws.com/prod/temperaturas
+
+    Para isso, busque por API na tela do console da AWS.
+
+    Defina o nome da API como “api-http-temperaturas” e avance 
+    sem criar nenhuma rota, mantendo as opções padrão (default) 
+    de estágio de implantação.
+
+    Em seguida, clique em Rotas > Criar
+
+    Inicialmente, existe uma opção para selecionar entre os 
+    métodos HTTP (GET, POST, PUT, DELETE). Selecione o método 
+    desejado e insira o caminho da rota.
+
+    Você poderá escolher o tipo do método HTTP e, em seguida, 
+    definir a rota para acesso a um recurso.
+
+    Crie as seguintes rotas:
+
+        GET / temperaturas/data/{data}
+
+            Descrição: rota para consultar todas as temperaturas 
+            armazenadas no DynamoDB.
+
+        GET / temperaturas/data/{data}
+
+            Descrição: rota para consultar as temperaturas de um 
+            único dia especificado como parâmetro na chamada da 
+            API.
+
+    Selecione a primeira rota e clique no botão “Anexar 
+    integração”. 
+
+    Em seguida, clique em “Criar e anexar uma integração”. 
+    Escolha no tipo de integração a opção de “Função Lambda”, 
+    e selecione a função Lambda “api-http-dynamodb” nos detalhes 
+    da integração. Depois, clique no botão “Criar”.
+
+    Após criar a primeira integração, selecione a outra rota da 
+    API e selecione a integração previamente criada. Finalmente 
+    clique em “Anexar Integração”.
+
+    Agora iremos testar nossa API. Selecione o nome da API no menu 
+    lateral e copie a URL que consta abaixo do endpoint padrão
+
+    Com uma ferramenta de testes de API (exemplo: Postman) ou com 
+    o navegador, podemos simular consultas à nossa API.
+
+    Na figura anterior, vemos a simulação da consulta geral de 
+    registros utilizando os dados da nossa API. 
+
+    Podemos consultar os registros, filtrando pela data específica 
+    e acionando a outra rota criada pela API.
+
+    Também é possível realizar o consumo da API por meio de outros 
+    aplicativos, como o Postman, que permite acionar todos os 
+    métodos HTTP de uma API.
+
+    Finalizamos a nossa solução serverless para consumo de dados 
+    por meio de uma API. Agora, iremos aprender como excluir os 
+    recursos utilizados caso não precisemos mais desta API.
+
+                Limpeza dos recursos utilizados
+
+Após a criação e testes da API, o ideal é excluir os recursos 
+utilizados caso não sejam mais utilizados, como a tabela do 
+DynamoDB e a própria API.
+
+Para excluir a API, basta selecioná-la no menu e clicar em 
+“Excluir”.
+
+Exclua também a tabela do DynamoDB para evitar usar os recursos 
+do ambiente de testes do Learner Lab.
+
+Agora continuemos com nosso CLI da AWS:
+
+    Parte A — JSON → DynamoDB
+
+        Primeiro recupere as variáveis. Use as mesmas iniciais 
+        da etapa anterior:
+
+            INI="jvj"
+            REGION="us-east-1"
+
+            BUCKET_IN="fiapon-${INI}-arquivos-entrada"
+            BUCKET_OUT="fiapon-${INI}-arquivos-processados"
+
+            echo "$BUCKET_IN"
+            echo "$BUCKET_OUT"
+
+        Confira seus buckets:
+
+            aws s3 ls
+
+        Criar a tabela temperaturas
+
+        O código do material usa:
+
+            table = dynamodb.Table('temperaturas')
+
+        e grava cada registro com um id UUID.
+
+        O trecho fornecido não mostra a criação da tabela, então 
+        vamos criá-la pela CLI usando id como chave de partição:
+
+            aws dynamodb create-table \
+                --table-name temperaturas \
+                --attribute-definitions AttributeName=id,AttributeType=S \
+                --key-schema AttributeName=id,KeyType=HASH \
+                --billing-mode PAY_PER_REQUEST \
+                --region "$REGION"
+
+        Agora espere ficar pronta:
+
+            aws dynamodb wait table-exists \
+                --table-name temperaturas \
+                --region "$REGION"
+
+        Confira:
+
+            aws dynamodb describe-table \
+                --table-name temperaturas \
+                --query 'Table.[TableName,TableStatus]' \
+                --output table
+
+        Queremos:
+
+            temperaturas
+            ACTIVE
+
+        Se aparecer ResourceInUseException, significa que a 
+        tabela já existe; nesse caso, seguimos.
+
+        Criar a segunda Lambda:
+
+            Ela vai fazer:
+
+                JSON no S3
+                ↓
+                ler JSON
+                ↓
+                para cada registro
+                ↓
+                put_item()
+                ↓
+                DynamoDB
+                ↓
+                apagar JSON do S3
+
+        Isso corresponde exatamente ao comportamento descrito no 
+        material.
+
+        Crie o arquivo:
+
+            cat > processar_json.py <<EOF
+            import boto3
+            import json
+            import uuid
+            import logging
+
+            # Clientes AWS
+            s3_client = boto3.client('s3')
+            dynamodb = boto3.resource('dynamodb')
+
+            # Tabela DynamoDB
+            table = dynamodb.Table('temperaturas')
+
+            # Logs
+            logger = logging.getLogger()
+            logger.setLevel(logging.INFO)
+
+            # Bucket que contém os JSONs
+            bucket_json = '$BUCKET_OUT'
+
+
+            def lambda_handler(event, context):
+                try:
+                    # Pega o nome do arquivo enviado ao S3
+                    file_key = event['Records'][0]['s3']['object']['key']
+
+                    logger.info(
+                        f"Processando arquivo: {file_key} "
+                        f"do bucket: {bucket_json}"
+                    )
+
+                    # Baixar JSON
+                    response = s3_client.get_object(
+                        Bucket=bucket_json,
+                        Key=file_key
+                    )
+
+                    file_content = (
+                        response['Body']
+                        .read()
+                        .decode('utf-8')
+                    )
+
+                    # Converter JSON para Python
+                    data = json.loads(file_content)
+
+                    # Inserir cada registro no DynamoDB
+                    for item in data:
+
+                        table.put_item(
+                            Item={
+                                'id': str(uuid.uuid4()),
+                                'data': item['data'],
+                                'id_estacao': item['id_estacao'],
+                                'nome_arquivo': item['nome_arquivo'],
+                                'latitude': item['latitude'],
+                                'longitude': item['longitude'],
+                                'temperatura': item['temperatura']
+                            }
+                        )
+
+                        logger.info(
+                            f"Registro inserido no DynamoDB: {item}"
+                        )
+
+                    # Excluir o JSON após processar
+                    s3_client.delete_object(
+                        Bucket=bucket_json,
+                        Key=file_key
+                    )
+
+                    logger.info(
+                        f"Arquivo {file_key} excluído "
+                        f"do bucket {bucket_json}"
+                    )
+
+                    return {
+                        'statusCode': 200,
+                        'body': json.dumps(
+                            f"Arquivo {file_key} processado com sucesso."
+                        )
+                    }
+
+                except Exception as e:
+
+                    logger.error(
+                        f"Erro ao processar arquivo: {str(e)}"
+                    )
+
+                    return {
+                        'statusCode': 500,
+                        'body': json.dumps(
+                            f"Erro ao processar arquivo: {str(e)}"
+                        )
+                    }
+            EOF
+
+        Confira:
+
+            cat processar_json.py
+
+        Compacte:
+
+            zip ProcessarArquivosJSON.zip processar_json.py
+
+        Pegue novamente a LabRole:
+
+            ROLE_ARN=$(aws iam get-role \
+                --role-name LabRole \
+                --query 'Role.Arn' \
+                --output text)
+
+            echo "$ROLE_ARN"
+
+        Crie a função:
+
+            aws lambda create-function \
+                --function-name ProcessarArquivosJSON \
+                --runtime python3.12 \
+                --role "$ROLE_ARN" \
+                --handler processar_json.lambda_handler \
+                --zip-file fileb://ProcessarArquivosJSON.zip \
+                --region "$REGION"
+
+        Confira:
+
+            aws lambda get-function \
+                --function-name ProcessarArquivosJSON \
+                --query 'Configuration.[FunctionName,Runtime,State]' \
+                --output table
+
+        Agora o segundo trigger
+
+            É aqui que ligamos:
+
+                fiapon-...-arquivos-processados
+                            ↓
+                    chegou .json
+                            ↓
+                    ProcessarArquivosJSON
+
+            Primeiro:
+
+                ACCOUNT_ID=$(aws sts get-caller-identity \
+                    --query Account \
+                    --output text)
+
+            Pegue o ARN:
+
+                JSON_FUNCTION_ARN=$(aws lambda get-function \
+                    --function-name ProcessarArquivosJSON \
+                    --query 'Configuration.FunctionArn' \
+                    --output text)
+
+                echo "$JSON_FUNCTION_ARN"
+
+            Permita que o S3 execute essa Lambda:
+
+                aws lambda add-permission \
+                    --function-name ProcessarArquivosJSON \
+                    --statement-id S3ProcessadosPodeExecutar \
+                    --action lambda:InvokeFunction \
+                    --principal s3.amazonaws.com \
+                    --source-arn "arn:aws:s3:::$BUCKET_OUT" \
+                    --source-account "$ACCOUNT_ID"
+
+            Agora crie o trigger:
+
+                cat > trigger-json.json <<EOF
+                {
+                "LambdaFunctionConfigurations": [
+                    {
+                    "LambdaFunctionArn": "$JSON_FUNCTION_ARN",
+                    "Events": [
+                        "s3:ObjectCreated:*"
+                    ],
+                    "Filter": {
+                        "Key": {
+                        "FilterRules": [
+                            {
+                            "Name": "suffix",
+                            "Value": ".json"
+                            }
+                        ]
+                        }
+                    }
+                    }
+                ]
+                }
+                EOF
+
+            Confira:
+
+                cat trigger-json.json
+
+            Ative:
+
+                aws s3api put-bucket-notification-configuration \
+                    --bucket "$BUCKET_OUT" \
+                    --notification-configuration file://trigger-json.json
+
+            Confira:
+
+                aws s3api get-bucket-notification-configuration \
+                    --bucket "$BUCKET_OUT"
+
+            Se aparecer:
+
+                LambdaFunctionConfigurations
+
+            o trigger está configurado.
+
+        Agora teste o sistema inteiro:
+
+            Uma coisa importante: JSON que já estava no bucket 
+            antes de criar o trigger não dispara retroativamente 
+            a Lambda.
+    
+            Então envie um CSV novo para o bucket de entrada:
+
+                aws s3 cp \
+                    estacao_1_2024_12_20.csv \
+                    "s3://$BUCKET_IN/"
+
+            Agora acontece tudo sozinho:
+
+                estacao_1_2024_12_20.csv
+                        ↓
+                    S3 entrada
+                        ↓
+                ProcessarArquivosCSV
+                        ↓
+                JSON processado
+                        ↓
+                S3 processados
+                        ↓
+                ProcessarArquivosJSON
+                        ↓
+                    DynamoDB
+
+            Espere alguns segundos:
+
+                sleep 10
+
+        E veja quantos registros entraram:
+
+            aws dynamodb scan \
+                --table-name temperaturas \
+                --select COUNT \
+                --region "$REGION"
+
+        Como o CSV tem 11 medições, deverá aparecer algo próximo 
+        de:
+
+            {
+                "Count": 11,
+                "ScannedCount": 11
+            }
+
+        Veja os registros:
+
+            aws dynamodb scan \
+                --table-name temperaturas \
+                --region "$REGION"
+
+        Uma coisa que pode assustar você
+
+        Depois que tudo funcionar:
+
+            aws s3 ls "s3://$BUCKET_OUT/"
+
+        pode aparecer vazio.
+
+        Isso não significa erro.
+
+        A própria segunda Lambda faz:
+
+            s3_client.delete_object(...)
+
+        ou seja:
+
+            JSON criado
+            ↓
+            segunda Lambda lê
+            ↓
+            salva no DynamoDB
+            ↓
+            APAGA o JSON
+
+        O material explicitamente determina essa exclusão para 
+        evitar reprocessamento.
+
+    Parte B — DynamoDB → API
+
+        Depois que os dados estiverem no DynamoDB, começa a 
+        segunda metade:
+
+            DynamoDB
+            ↑
+            api-http-dynamodb
+            ↑
+            API Gateway
+            ↑
+            GET /temperaturas
+
+            ou
+
+            GET /temperaturas/data/2024-12-20
+
+        O material define essas duas consultas. O PDF confirma que 
+        as rotas corretas são GET /temperaturas e GET /
+        temperaturas/data/{data}.
+
+        Primeiro crie o arquivo:
+
+            cat > api_http_dynamodb.py <<'EOF'
+            import json
+            import boto3
+            from datetime import datetime
+            from boto3.dynamodb.conditions import Attr
+
+            dynamodb = boto3.resource("dynamodb")
+            table = dynamodb.Table('temperaturas')
+
+
+            def lambda_handler(event, context):
+
+                print(event)
+
+                body = {}
+                statusCode = 200
+
+                try:
+
+                    if event['routeKey'] == "GET /temperaturas":
+
+                        body = table.scan()
+                        body = body["Items"]
+
+                        body = sorted(
+                            body,
+                            key=lambda x: x['data']
+                        )
+
+                        responseBody = []
+
+                        for items in body:
+
+                            responseItems = {
+                                'id_estacao': int(items['id_estacao']),
+                                'id': items['id'],
+                                'data': items['data'],
+                                'temperatura': int(items['temperatura']),
+                                'latitude': float(items['latitude']),
+                                'longitude': float(items['longitude']),
+                                'nome_arquivo': items['nome_arquivo']
+                            }
+
+                            responseBody.append(responseItems)
+
+                        body = responseBody
+
+
+                    elif event['routeKey'] == \
+                            "GET /temperaturas/data/{data}":
+
+                        data_param = event['pathParameters']['data']
+
+                        try:
+
+                            date_filter = datetime.strptime(
+                                data_param,
+                                "%Y-%m-%d"
+                            ).date()
+
+                            response = table.scan(
+                                FilterExpression=Attr(
+                                    'data'
+                                ).begins_with(
+                                    str(date_filter)
+                                )
+                            )
+
+                            responseBody = []
+
+                            for items in response["Items"]:
+
+                                responseItems = {
+                                    'id_estacao':
+                                        int(items['id_estacao']),
+                                    'id':
+                                        items['id'],
+                                    'temperatura':
+                                        int(items['temperatura']),
+                                    'latitude':
+                                        float(items['latitude']),
+                                    'longitude':
+                                        float(items['longitude']),
+                                    'nome_arquivo':
+                                        items['nome_arquivo'],
+                                    'data':
+                                        items['data']
+                                }
+
+                                responseBody.append(
+                                    responseItems
+                                )
+
+                            body = sorted(
+                                responseBody,
+                                key=lambda x: x['data']
+                            )
+
+                        except ValueError:
+
+                            statusCode = 400
+
+                            body = (
+                                f"Data invalida: {data_param}. "
+                                "Formato esperado: YYYY-MM-DD"
+                            )
+
+                except KeyError:
+
+                    statusCode = 400
+                    body = 'Rota nao suportada'
+
+                return {
+                    "statusCode": statusCode,
+                    "headers": {
+                        "Content-Type": "application/json"
+                    },
+                    "body": json.dumps(body)
+                }
+            EOF
+
+        Compacte:
+
+            zip api-http-dynamodb.zip api_http_dynamodb.py
+
+        Crie a Lambda:
+
+            aws lambda create-function \
+                --function-name api-http-dynamodb \
+                --runtime python3.12 \
+                --role "$ROLE_ARN" \
+                --handler api_http_dynamodb.lambda_handler \
+                --zip-file fileb://api-http-dynamodb.zip \
+                --region "$REGION"
+
+            O material explica que essa Lambda fará um scan() da 
+            tabela para a consulta geral e poderá filtrar os 
+            registros por data.
+
+    Criando o API Gateway pelo terminal:
+
+        Isso evita um monte de telas.
+
+        Crie a API HTTP:
+
+            API_ID=$(aws apigatewayv2 create-api \
+                --name api-http-temperaturas \
+                --protocol-type HTTP \
+                --region "$REGION" \
+                --query 'ApiId' \
+                --output text)
+
+            echo "$API_ID"
+
+        Pegue o ARN da Lambda:
+
+            API_LAMBDA_ARN=$(aws lambda get-function \
+                --function-name api-http-dynamodb \
+                --query 'Configuration.FunctionArn' \
+                --output text)
+
+        Crie a integração:
+
+            INTEGRATION_ID=$(aws apigatewayv2 create-integration \
+                --api-id "$API_ID" \
+                --integration-type AWS_PROXY \
+                --integration-uri "$API_LAMBDA_ARN" \
+                --payload-format-version 2.0 \
+                --region "$REGION" \
+                --query 'IntegrationId' \
+                --output text)
+
+            echo "$INTEGRATION_ID"
+
+        Primeira rota:
+
+            aws apigatewayv2 create-route \
+                --api-id "$API_ID" \
+                --route-key 'GET /temperaturas' \
+                --target "integrations/$INTEGRATION_ID"
+
+        Segunda:
+
+            aws apigatewayv2 create-route \
+                --api-id "$API_ID" \
+                --route-key 'GET /temperaturas/data/{data}' \
+                --target "integrations/$INTEGRATION_ID"
+
+        Crie o estágio automático:
+
+            aws apigatewayv2 create-stage \
+                --api-id "$API_ID" \
+                --stage-name '$default' \
+                --auto-deploy
+
+        Permita que o API Gateway execute sua Lambda:
+
+            aws lambda add-permission \
+                --function-name api-http-dynamodb \
+                --statement-id ApiGatewayPodeExecutar \
+                --action lambda:InvokeFunction \
+                --principal apigateway.amazonaws.com \
+                --source-arn \
+                "arn:aws:execute-api:$REGION:$ACCOUNT_ID:$API_ID/*/
+                */*"
+            
+        Agora descubra o endereço:
+
+            API_URL=$(aws apigatewayv2 get-api \
+                --api-id "$API_ID" \
+                --query 'ApiEndpoint' \
+                --output text)
+
+            echo "$API_URL"
+
+        Vai parecer com:
+
+            https://abc123xyz.execute-api.us-east-1.amazonaws.com
+        
+        Teste tudo:
+
+            curl "$API_URL/temperaturas"
+
+        E por data:
+
+            curl "$API_URL/temperaturas/data/2024-12-20"
+
+Pronto. Agora você terá feito o projeto inteiro:
+
+                         ┌──────────────────────┐
+CSV ──► S3 entrada ─────►│ ProcessarArquivosCSV │
+                         └──────────┬───────────┘
+                                    │
+                                   JSON
+                                    ↓
+                         S3 processados
+                                    │
+                                    ▼
+                        ┌───────────────────────┐
+                        │ ProcessarArquivosJSON │
+                        └───────────┬───────────┘
+                                    │
+                                    ▼
+                              DynamoDB
+                           "temperaturas"
+                                    ▲
+                                    │
+                         ┌──────────┴───────────┐
+                         │  api-http-dynamodb   │
+                         └──────────▲───────────┘
+                                    │
+                              API Gateway
+                                    ▲
+                                    │
+                              🌐 Usuário
+
+
