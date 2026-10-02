@@ -12690,3 +12690,13 @@ Base de dados:
 
         print(get_movie_recommendation(‘insira aqui o nome do filme’))
 
+Métodos de Machine Learning são amplamente utilizados em 
+sistemas de recomendação para personalizar experiências dos
+usuários. Na filtragem colaborativa, algoritmos como K-Nearest 
+Neighbors (KNN) e Deep Learning identificam padrões entre 
+usuários e itens. Na abordagem baseada em conteúdo, são usados 
+TF-IDF, Cosine Similarity, e redes neurais para recomendar itens 
+similares aos preferidos pelo usuário. Já na popularidade, 
+análises estatísticas, contagens e rankings ponderados destacam 
+itens mais consumidos. Essas abordagens podem ser combinadas em 
+sistemas híbridos para maximizar a precisão das recomendações.
