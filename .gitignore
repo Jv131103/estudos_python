@@ -41,6 +41,13 @@ img/
 images
 image/
 
+# Remover arquivos de aúdio
+*.wav
+*.mp4
+*.mp3
+
+# Remover .txt específicos da pasta IA
+IA/*/*.txt
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
