@@ -2740,3 +2740,2284 @@ CSV ──► S3 entrada ─────►│ ProcessarArquivosCSV │
                               🌐 Usuário
 
 
+            AWS em tempo certo: Processos assíncronos, 
+            alertas e monitoramento inteligente
+
+A AWS permite processar trabalhos de forma assíncrona usando 
+serviços de mensageria como o Simple Queue Service (SQS), o 
+Simple Notification Service (SNS) e os códigos serverless com
+Lambda.
+
+Utilizando os serviços de mensageria, é possível:
+
+    Criar um fluxo assíncrono de mensagens;
+    
+    Garantir a entrega de mensagens pelo menos uma vez;
+    
+    Integrar aplicações em um sistema distribuído;
+    
+    Comunicar aos assinantes sobre novas mensagens.
+
+Além de criar um fluxo assíncrono, é importante monitorar a 
+execução de serviços no ambiente da AWS. Para isso, veremos 
+como trabalhar com o CloudWatch, que monitora os recursos da 
+AWS além de permitir criar alertas.
+
+Projeto real:
+
+    Temos o seguinte cenário: imagine que você atua em um 
+    e-commerce e precisa processar pedidos de forma assíncrona, 
+    sinalizando o recebimento dos pedidos e confirmando o 
+    pagamento.
+
+    A seguir, podemos visualizar o diagrama da solução assíncrona 
+    para o processamento de imagens na AWS. Note os serviços 
+    envolvidos e as “caixinhas” protegendo esses serviços.
+
+    Para este cenário, precisamos criar uma esteira de 
+    processamento assíncrono que irá receber pedidos confirmados 
+    de clientes, e que utilizaremos os serviços de mensageria da 
+    AWS para comunicação e processamento dos pedidos.
+
+    Primeiramente, criaremos uma API para receber os pedidos por 
+    meio de um endpoint público. Os pedidos serão enviados no 
+    formato JSON, contendo os dados do cliente, valores e itens 
+    pedidos. A API é um mini software que pode ser altamente 
+    customizado, portanto só vai servir para o seu projeto, 
+    automatizando uma solução para resolver um problema.
+
+    Primeiramente, criaremos uma API para receber os pedidos por 
+    meio de um endpoint público. Os pedidos serão enviados no 
+    formato JSON, contendo os dados do cliente, valores e itens 
+    pedidos. A API é um mini software que pode ser altamente 
+    customizado, portanto só vai servir para o seu projeto, 
+    automatizando uma solução para resolver um problema.
+
+    Agora será preciso criar uma assinatura para confirmar o 
+    recebimento do pedido. Em seguida, criar uma fila no Simple 
+    Queue Service (SQS) para processar o pagamento. Também 
+    devemos habilitar o envio de mensagens para o SQS a partir 
+    do SNS.
+
+    Finalmente, outra função Lambda será acionada para processar 
+    o pedido. No nosso caso, para simplificar, o processamento 
+    consistirá no envio de uma mensagem de confirmação do pedido, 
+    que poderemos monitorar utilizando o serviço CloudWatch.
+
+            Processamento assíncrono e mensageria
+
+Antes de iniciarmos com nosso projeto, iremos abordar os 
+conceitos básicos de mensageria na AWS e suas principais 
+características.
+
+Simple Queue Services (SQS):
+
+    O Amazon Simple Queue Service (SQS) foi um dos primeiros 
+    serviços lançados pela AWS. Surgiu em 2006 como parte dos 
+    primeiros serviços de computação em nuvem da empresa.
+
+    Ele foi projetado para resolver problemas de comunicação 
+    assíncrona entre sistemas distribuídos, permitindo o 
+    desacoplamento entre componentes de software.
+
+    O SQS trabalha com o conceito de filas, em que a primeira 
+    mensagem que chega é a primeira a ser consumida.
+
+    As mensagens vão se acumulando em uma fila e podem ser 
+    consumidas por outras aplicações. Vale destacar que as 
+    aplicações consumidoras precisam consultar ativamente a 
+    fila para verificar a existência de mensagens, e, assim, 
+    consumi-las. Esse processo é conhecido como mecanismo pull, 
+    em que os consumidores acessam constantemente uma fila, leem 
+    a mensagem e, em seguida, a removem da fila.
+
+    As mensagens no SQS podem conter até 256 KB de dados (incluindo texto e o formato JSON). Elas são mantidas temporariamente na fila até serem processadas por um consumidor.
+
+    O SQS pode trabalhar com os seguintes tipos de fila:
+
+        Fila padrão (Standard Queue): provê alta escalabilidade, 
+        mas sem garantia de ordem exata das mensagens.
+        
+        Fila FIFO: mantém a ordem exata das mensagens e garante 
+        que cada mensagem seja processada apenas uma vez. Ideal 
+        para processamento ordenado.
+
+    Na fila padrão, há uma taxa de transferência muito alta, 
+    porém, não há uma garantia de ordenação. Em contrapartida, 
+    na fila do tipo FIFO, há a garantia de ordenação, porém, 
+    com uma taxa de transferência ligeiramente inferior.
+
+    No tipo de fila FIFO, a ordenação é realizada utilizando o 
+    atributo “MessageGroupId” e de duplicação, por meio do 
+    atributo “MessageDeduplicationId” definido pelo próprio 
+    usuário. Caso uma mensagem com o mesmo “MessageDeduplicationId” 
+    seja enviada dentro de um período de 5 minutos, ela será 
+    ignorada.
+
+    Uma vez que uma mensagem é recebida por um consumidor, ela 
+    entra em um período de timeout (tempo de visibilidade), 
+    impedindo que outros consumidores a processem novamente até 
+    que o tempo expire. Se a mensagem não for confirmada como 
+    processada, ela retorna à fila para ser processada novamente.
+
+O SQS pode armazenar mensagens que falharam em uma fila chamada 
+de Dead Letter Queue (DLQ).
+
+É possível configurar a entrega de mensagens das seguintes formas:
+
+    Sondagem curta (Short Polling): retorna mensagens da fila 
+    imediatamente, mesmo que a fila esteja vazia. Pode gerar 
+    requisições desnecessárias.
+    
+    Sondagem longa (Long Polling): aguarda até 20 segundos antes 
+    de retornar uma resposta, reduzindo custos de requisição e 
+    melhorando a eficiência das entregas.
+
+O SQS também suporta processamento em lote (batch processing) com 
+o envio e a exclusão de até 10 mensagens por vez.
+
+Antes de iniciarmos nosso projeto, vamos abordar os conceitos 
+básicos de outro serviço de mensageria como o Simple Notification 
+Service (SNS).
+
+Simple Notification Service:
+
+    O Amazon SNS é um serviço de mensageria do tipo “pub/sub” 
+    (publicação/assinatura) gerenciado pela AWS, projetado para 
+    entrega assíncrona de mensagens.
+
+    O SNS permite que publicadores (publishers) enviem mensagens 
+    para um tópico SNS e os assinantes (subscribers) se inscrevam 
+    em tópicos específicos para serem notificados automaticamente.
+
+    Um tópico no SNS é um canal lógico de comunicação que permite 
+    o envio de mensagens para múltiplos assinantes (subscribers). 
+    Ele atua como um hub, onde os publicadores enviam mensagens e 
+    os assinantes recebem essas mensagens automaticamente.
+
+    O envio de mensagens utiliza o mecanismo de push, em que os 
+    assinantes recebem passivamente as mensagens à medida em que 
+    são publicadas nos tópicos.
+
+    Esse mecanismo é bastante utilizado em nosso dia a dia, como 
+    no caso de recebimento de notificações em um smartphone como, 
+    por exemplo, as mensagens de texto por SMS.
+
+    O SNS suporta diversos protocolos e consegue enviar mensagens 
+    para serviços da AWS ou serviços externos à AWS, como e-mail 
+    e SMS.
+
+    A partir da publicação, a mesma mensagem pode ser enviada 
+    para diversos assinantes, como e-mails cadastrados, envio 
+    de mensagens SMS, filas do SQS e até mesmo funções Lambda.
+
+    Quando uma mensagem é entregue, não há como buscá-la 
+    novamente e o SNS não oferece recursos de armazenamento 
+    de mensagens.
+
+SNS vs SQS:
+
+    Diferentemente do SQS, que utiliza o mecanismo de sondagem 
+    (pull) em que os clientes precisam consultar ativamente uma 
+    fila, o SNS envia as mensagens por seu mecanismo de push. Ou 
+    seja, o SNS consegue enviar uma mensagem para vários assinantes 
+    ao mesmo tempo, o que não é possível com o SQS. Entretanto, o 
+    SNS não oferece recursos de reprocessamento de mensagens, como 
+    o envio para uma fila morta (Dead letter Queue) como acontece 
+    no SQS.
+
+    Vejamos um resumo das características do SNS em comparação com 
+    o SQS no quadro a seguir:
+
+        x==============x========================x=======================x
+        |   Recurso    |          SNS           |          SQS          |
+        |              | (Publicador/Assinante) | (Produtor/Consumidor) |
+        x==============x========================x=======================x
+        |  Produtor/   | Publicar/Assinar       | Enviar/Receber        |
+        |  consumidor  |                        |                       |
+        x--------------x------------------------x-----------------------x
+        |  Mecanismo   | Push (passivo)         | Sondagem (ativa)      |
+        |  de entrega  |                        |                       |
+        x--------------x------------------------x-----------------------x
+        | Modelo de    | Muitos para muitos     | Um para um            |
+        | distribuição |                        |                       |
+        x--------------x------------------------x-----------------------x
+        | Persistência | Não                    | Sim                   |
+        | de mensagens |                        |                       |
+        x--------------x------------------------x-----------------------x
+
+    Conforme observado no quadro “SNS x SQS”, o SNS é um serviço 
+    do tipo pub/sub em que podemos distribuir mensagens para 
+    assinantes ao mesmo tempo.
+
+    Pode ser usado em situações como:
+
+        Notificação de múltiplos sistemas em tempo real;
+        
+        Envio de eventos para diversas filas do SQS, funções 
+        Lambda, e-mail e SMS;
+        
+        Uso em arquiteturas orientadas a eventos, como em 
+        microsserviços.
+
+    Para ilustrar melhor, poderíamos usar o SNS para notificar 
+    que um pedido foi aprovado, enviando as mensagens para 
+    filas separadas, como a de atualização de estoque e de 
+    pagamento, por exemplo. Já o SQS é uma fila de mensagens 
+    que garante que cada mensagem seja processada pelo menos uma 
+    vez e que pode reter mensagens por 1 minuto até 14 dias, 
+    diferentemente do SNS pois ele não permite armazenamento e 
+    faz entregas em tempo real.
+
+Precificação:
+
+    Ambos os serviços do SQS e do SNS são gratuitos para o 
+    primeiro milhão de solicitações (requests). Após este 
+    valor, há cobranças diferenciadas de acordo com a região 
+    da AWS.
+
+    A seguir, veremos como utilizar estes serviços de mensageria 
+    para viabilizar nosso projeto.
+
+Construindo o nosso projeto:
+
+    Criação de API:
+
+        Inicialmente, precisaremos configurar uma API que 
+        receberá mensagens de pedidos de clientes. Para isso, 
+        será necessário criar uma função Lambda para ser 
+        acionada no recebimento de novas mensagens por meio de 
+        nossa API.
+
+        Utilizaremos a seguinte função Lambda para processamento 
+        de novos pedidos: 
+
+            import json
+            import boto3
+            import os
+
+            def lambda_handler(event, context):
+                sns_client = boto3.client("sns", region_name="us-east-1")
+                SNS_TOPIC_ARN = os.getenv("SNS_TOPIC_ARN")
+
+                try:
+                    if "body" not in event or not event["body"]:
+                        return {"statusCode": 400, "body": json.dumps({"error": "Nenhum arquivo enviado"})}
+
+                    pedido = json.loads(event["body"])
+                    pedido_id = pedido.get("pedido_id")
+
+                    if not pedido_id:
+                        return {"statusCode": 400, "body": json.dumps({"error": "Campo 'pedido_id' é obrigatório"})}
+
+                    # Publica a mensagem no SNS
+                    response = sns_client.publish(
+                        TopicArn=SNS_TOPIC_ARN,
+                        Message=json.dumps(pedido),
+                        Subject="Novo Pedido"
+                    )
+
+                    return {
+                        "statusCode": 200,
+                        "body": json.dumps({
+                            "message": "Pedido recebido e enviado para processamento",
+                            "pedido_id": pedido_id
+                        })
+                    }
+                except Exception as e:
+                    return {"statusCode": 500, "body": json.dumps({"error": str(e)})}
+
+        No código anterior, criamos a função Lambda 
+        “receber-pedidos-api” que será integrada à nossa API. A 
+        função Lambda irá processar o arquivo JSON recebido e 
+        após o processamento, enviará uma mensagem a um tópico do 
+        SNS com o todo o corpo do pedido processado.
+
+        Note que para o endereço do tópico, usaremos uma variável 
+        de ambiente “SNS_TOPIC_ARN” que armazenará o endereço ARN 
+        (Amazon Resource Name) do tópico criado.
+
+        Enviaremos um pedido utilizando a ferramenta gratuita 
+        Postman para simular o envio de pedidos. O Postman 
+        permite realizar requisições via método POST do protocolo 
+        HTTP.
+
+        A estrutura das mensagens a serem enviadas está 
+        apresentada a seguir:
+
+            {
+                "pedido_id": "1010",
+                "cliente": "Joao Silva",
+                "valor": 250.00,
+                "itens": [
+                    {"produto": "Camiseta", "quantidade": 2, "preco": 50.00},
+                    {"produto": "Bermuda", "quantidade": 1, "preco": 200.00}
+                ]
+            }
+
+        Na estrutura do pedido, enviaremos os dados do cliente, o 
+        valor total do pedido e os itens adquiridos.
+
+        Agora, vamos criar a nossa API HTTP no API Gateway 
+        chamada api-recebimento-pedidos. Em seguida, criaremos 
+        uma rota do tipo POST para o recurso “/pedidos”
+
+        Após a criação da rota, vamos anexar uma integração à 
+        função Lambda “recebe-pedidos-api” que criamos 
+        anteriormente.
+
+        Já temos a nossa API e a função Lambda preparadas para 
+        recebimento do pedido. Clique na API e anote o endpoint
+        padrão que usaremos mais adiante.
+
+        Verifique a URL para a base de nosso endpoint, destacado 
+        na figura anterior. Iremos utilizar esta URL em conjunto 
+        com o recurso “/pedidos” para realizar inclusões via 
+        método POST de novos pedidos.
+
+    Criação do tópico SNS:
+
+        Nesta etapa, vamos prosseguir com a nossa solução criando 
+        um tópico SNS e uma assinatura por e-mail para confirmar 
+        o recebimento do pedido.
+
+        Acesse o console de gerenciamento da AWS e busque pelo 
+        serviço SNS. Em seguida, clique no menu “Tópicos”.
+
+        Escolha o tipo de tópico “Padrão” e nomeie o tópico para 
+        “pedido-recebido-topico”. Mantenha o mesmo nome para 
+        exibição.
+
+        Após a criação, o tópico será listado no menu tópicos. 
+        Anote o ARN do tópico para utilizarmos em nossa função 
+        Lambda da API.
+
+        Na figura anterior, podemos observar o tópico criado e o 
+        endereço do tópico na infraestrutura da Amazon (ARN). 
+        Acesse a função Lambda “recebe-pedidos-api” e localize a 
+        opção “ENVIRONMENT VARIABLES”, em seguida clique no botão 
+        de adicionar ao lado esquerdo do código da função Lambda.
+
+        Crie uma variável de ambiente que aponte para o endereço.
+
+        Agora iremos criar uma assinatura para um e-mail no tópico 
+        SNS “pedido-recebimento-topico”. Acesse o SNS e clique em 
+        “Assinaturas”.
+
+        Escolha o tópico no ARN do tópico. Depois escolha o 
+        protocolo “E-mail” e digite seu e-mail. Em seguida, 
+        clique em “Criar assinatura”.
+
+        Você receberá um e-mail de confirmação de assinatura. 
+        Confirme a criação da assinatura em seu e-mail. Em 
+        seguida, a assinatura aparecerá listada.
+
+        Pronto! Agora basta enviar uma mensagem por uma aplicação 
+        cliente para o endpoint da API para testar o recebimento 
+        de mensagens pelo SNS. Vejamos o envio de mensagem pelo 
+        aplicativo Postman.
+
+        O resultado recebido após o envio da solicitação via
+        método POST. O status “200” informa que a solicitação 
+        foi recebida com sucesso junto com a mensagem que 
+        configuramos de retorno.
+
+        Você também receberá um e-mail com o corpo do JSON 
+        enviado.
+
+        Além do conteúdo JSON, há um link para cancelamento da 
+        inscrição, caso o assinante deseje cancelar sua assinatura.
+
+        Pronto! Já temos um assinante cadastrado e a esteira 
+        concluída desde o recebimento do pedido até o recebimento 
+        do e-mail.
+
+        Agora, vamos criar a fila SQS para confirmar o pagamento 
+        dos pedidos.
+
+    Criação de Pilhas SQS:
+
+        Para dar sequência em nosso projeto, iremos criar uma 
+        pilha no SQS que será responsável por processar pagamentos
+        dos pedidos.
+
+        Acesse o serviço SQS e clique em criar pilha.
+
+        Defina o tipo de fila como padrão e o nome da fila como 
+        “fila-pagamento”.
+
+        E lembre-se de adicionar na política de acesso, a conta 
+        do SNS, para permitir envio de mensagens à fila.
+
+        A seguir, apresentamos o código do JSON completo.
+
+            {
+              "Version": "2012-10-17",
+              "Id": "__default_policy_ID",
+              "Statement": [
+                {
+                  "Sid": "__owner_statement",
+                  "Effect": "Allow",
+                  "Principal": {
+                    "AWS": "arn:aws:iam::975050243127:root"
+                  },
+                  "Action": "SQS:*",
+                  "Resource": "arn:aws:sqs:us-east-1:975050243127:fila-pagamento"
+                },
+                {
+                  "Sid": "AllowSNSPublish",
+                  "Effect": "Allow",
+                  "Principal": {
+                    "Service": "sns.amazonaws.com"
+                  },
+                  "Action": "SQS:SendMessage",
+                  "Resource": "arn:aws:sqs:us-east-1:975050243127:fila-pagamento"
+                }
+              ]
+            }
+
+        Agora que temos nossa fila criada, criaremos uma função 
+        Lambda que será disparada assim que uma mensagem entrar 
+        em nossa fila.
+
+        Acesse o serviço do Lambda para criar uma nova função 
+        chamada “processar-pagamento”.
+
+            import json
+
+            def lambda_handler(event, context):
+                for record in event['Records']:
+                    mensagem = json.loads(record['body'])
+                    pedido_id = mensagem['pedido_id']
+                    print(f"Processando pagamento para o pedido {pedido_id}")
+                    # Simular processamento de pagamento
+                    return {"status": "Pagamento processado", "pedido_id": pedido_id}
+
+        Adicione um gatilho para a nossa fila SQS de pagamento.
+
+        A seguir apresentamos como deve ficar nossa função Lambda.
+
+        Pronto! Agora que já temos um gatilho criado, vamos testar 
+        nossa esteira de serviços assíncrona.
+
+        Como visto na figura anterior, enviamos uma nova mensagem 
+        à nossa API. Você deverá receber um novo e-mail com o 
+        pedido. Nas próximas etapas, veremos como validar se o 
+        pagamento foi devidamente processado pela função Lambda.
+
+                    Amazon CloudWatch
+
+O Amazon CloudWatch é um serviço da AWS para monitoramento de 
+aplicações, infraestrutura e serviços. Ele coleta, armazena e 
+analisa métricas, logs e eventos, permitindo a criação de 
+alertas, dashboards e automação.
+
+É possível criar métricas em tempo real sobre o uso de recursos, 
+como por exemplo, o uso de CPU em uma instância do EC2 e eventos 
+do Lambda.
+
+Além disso, ele possui logs de aplicações e infraestrutura na AWS,
+podendo gerar alertas com base nestes logs.
+
+Vamos aprender como acessar o CloudWatch para avaliarmos se nossa 
+função Lambda foi criada com sucesso.
+
+Primeiramente, acesse CloudWatch na barra de pesquisas e clique em 
+“Grupos de logs” no menu lateral.
+
+Você poderá visualizar todos os grupos de logs criados.
+
+Os grupos de logs podem ser criados automaticamente quando 
+criamos algum serviço monitorável, como uma função Lambda, mas 
+também existe a opção de criarmos manualmente um grupo de log 
+específico.
+
+Clique no grupo de logs referente à nossa função Lambda 
+“/aws/lambda/processar-pagamento”.
+
+Você poderá visualizar os logs gerados de acordo com a hora de 
+ocorrência do evento. Clique no link do fluxo de logs referente 
+ao último horário para verificar se sua função Lambda foi 
+executada com sucesso para o pedido enviado.
+
+Você será direcionado para o evento gerado a partir da função 
+Lambda.
+
+É possível expandir um evento de log para visualizar detalhes do 
+evento.
+
+Enfim, podemos verificar se a função Lambda executou nosso 
+pedido com sucesso, expandindo os eventos de log.
+
+Os grupos de log são muito úteis quando trabalhamos com funções 
+Lambda, pois é possível observar se a função foi executada com 
+sucesso ou se houve alguma falha. Quando ocorrem falhas, podemos 
+expandir os eventos de log para tentar identificar a causa raiz 
+do problema e corrigir nossa função Lambda.
+
+Finalmente podemos dizer que concluímos nosso projeto de uma 
+esteira automatizada de processamento de pedidos na AWS!
+
+Agora, para garantir o bom funcionamento da função Lambda, iremos 
+abordar como monitorar as chamadas à função Lambda.
+
+            Monitoramento com CloudWatch
+
+Acesse o CloudWatch e clique no menu Métricas.
+
+O CloudWatch irá listar diversos serviços da AWS, incluindo os 
+eventos das funções Lambda. Certifique-se de que esteja na 
+região certa e clique na função Lambda em “Visualizar o painel 
+automático”.
+
+Será apresentado um dashboard com diferentes métricas, como 
+invocações totais de funções Lambda, total de erros, tempo 
+médio de duração e o número de solicitações de invocação que 
+são limitadas (Throttles).
+
+Você pode clicar em um elemento do gráfico para ser redirecionado 
+para a criação de alarmes específicos para a métrica selecionada.
+
+Na condição do alarme, configuramos o alarme para disparar caso o 
+número de solicitações seja maior do que cinco no período de cinco 
+minutos. Também poderíamos criar alarmes para uma demanda inferior,
+como a inexistência de pedidos durante 8 horas.
+
+Clique no botão próximo, vamos criar um tópico no SNS para enviar 
+um e-mail assim que o alarme for disparado.
+
+Defina o nome do alarme para “alarme-pedidos”, defina seu e-mail 
+e clique em “Criar tópico”.
+
+Clique em próximo e defina um nome para o alarme. Você poderá 
+definir também uma mensagem padronizada para o alarme.
+
+Clique em próximo, visualize os detalhes do alarme e clique em 
+criar. Simule o envio de seis pedidos pelo Postman. Aguarde alguns 
+instantes e veja o alarme disparado.
+
+Você também receberá no e-mail um aviso sobre o disparo do alarme.
+
+Agora já temos uma solução escalável e monitorável pronta para uso!
+
+A próxima etapa é criar mais um alarme para disparar em casos de 
+erros da execução da função Lambda.
+
+Acesse o menu de Alarmes e clique em “Todos os alarmes”
+
+Clique em “Criar alarme”. Em seguida, clique em “Selecionar 
+métrica”.
+
+Selecione “Função Lambda”, em seguida clique em “By Function Name”.
+
+Escolha a função “processar-pagamento” e a métrica “errors”.
+
+Escolha a opção de maior que 1, crie um novo tópico no SNS 
+“erro-processar-pagamento” e escolha o envio para o seu e-mail.
+
+Defina um nome para o alarme e crie o alarme. Pronto! Caso 
+ocorra um erro no processamento, você receberá uma mensagem 
+em seu e-mail.
+
+
+          Infraestrutura viva: microsserviços 
+        e deploys intelgentes com cloudformation
+
+Os microsserviços são uma abordagem de arquitetura de software onde
+uma aplicação é dividida em pequenos serviços independentes, cada 
+um com uma funcionalidade específica. Esses serviços podem ser 
+desenvolvidos, implantados, escalados e mantidos de forma autônoma,
+e que se comunicam entre si através de APIs bem definidas, 
+geralmente usando protocolos como HTTP, gRPC ou mensageria.
+
+Com o uso de microsserviços, é possível obter diversas vantagens 
+como: 
+
+    Autonomia: cada microsserviço é autônomo e pode ser 
+    desenvolvido, testado e implantado de forma independente.
+    
+    Descentralização: cada microsserviço gerencia seus dados, 
+    seja da aplicação ou de um banco de dados.
+    
+    Escalabilidade e Resiliência: é possível escalar serviços 
+    específicos conforme a necessidade, sem ter que escalar toda 
+    a aplicação. Além disso, se um microsserviço falhar, parte 
+    da aplicação continuará funcionando, sendo necessário 
+    realizar uma manutenção apenas no serviço com falha.
+    
+    Desenvolvido em diferentes tecnologias: cada microsserviço 
+    pode ser implementado com a tecnologia ou linguagem de 
+    programação desejada.
+    
+    Conformidade com práticas ágeis: cada equipe pode trabalhar 
+    em serviços específicos, sem a necessidade de se preocupar 
+    com o desenvolvimento de toda a aplicação.
+
+    Projeto real:
+
+        A seguir, podemos visualizar o diagrama do projeto de uma 
+        solução orientada a microsserviços para receber imagens 
+        aéreas tiradas por um drone para realizar um mapeamento 
+        agrícola. A aplicação também poderá exibir as imagens 
+        armazenadas pela web e executará dentro de um container 
+        AWS.
+
+        Iremos usar o repositório de imagens Docker Hub e 
+        implantar uma imagem de um contêiner dentro do Elastic 
+        Container Service (ECS). Inicialmente, é preciso criar 
+        um cluster no ECS para conseguir hospedar a aplicação.
+
+        Iremos implantar uma imagem de uma aplicação web para 
+        captura de fotografias tiradas por drones para a tarefa 
+        de mapeamento agrícola. A aplicação será executada no 
+        serviço AWS Fargate, que permite executar contêineres sem 
+        a necessidade de gerenciar infraestrutura de servidores 
+        diretamente. Iremos implementar a aplicação usando código 
+        reprodutível com o uso de uma pilha do CloudFormation.
+
+        Para o funcionamento da aplicação de drones, configuramos 
+        o security group para permitir acesso público à nossa 
+        aplicação, liberando a porta 5000 para a Internet.
+
+        Na figura anterior, é possível ver a aplicação em produção 
+        que permite escolher arquivos de imagens e incluir a 
+        latitude e longitude. As informações são armazenadas em um 
+        banco de dados embarcado na própria aplicação, usando o 
+        SQLite, que permite criar banco de dados em arquivo.
+
+        Para implantar esta solução, iremos abordar as 
+        características dos serviços envolvidos, e veremos como 
+        podemos acionar a automação destes serviços.
+
+    Contêineres:
+
+        Os contêineres são uma tecnologia de virtualização leve 
+        que permite empacotar, distribuir e executar aplicativos 
+        de forma isolada, garantindo que eles funcionem de maneira 
+        consistente em diferentes ambientes. Ao contrário de 
+        máquinas virtuais tradicionais, como no Elastic Compute 
+        Cloud (EC2 (Elastic Compute Cloud.)), que virtualiza o 
+        hardware, os contêineres compartilham o mesmo sistema 
+        operacional, mas isolam os aplicativos em ambientes 
+        separados.
+
+        O conceito de contêineres surgiu durante a década de 
+        1970 para isolar melhor os códigos de aplicações. No 
+        entanto, o conceito se popularizou em 2013 quando o 
+        conjunto de produtos de Plataforma como Serviço (PaaS) 
+        Docker foi lançado, tornando os contêineres mais fáceis 
+        de criar, distribuir e gerenciar, se tornando um padrão 
+        na indústria para o desenvolvimento de microsserviços e 
+        arquitetura serverless.
+
+        Podemos observar que, uma infraestrutura que utiliza 
+        máquinas virtuais (Virtual Machine — VM) em que cada 
+        máquina virtual contém seu próprio Sistema Operacional 
+        (SO), a aplicação necessária e suas dependências, tendo 
+        uma camada intermediária que permite rodar mais de uma 
+        VM em uma única máquina. Por necessitarem de um SO 
+        isolado, as máquinas virtuais ocupam vários Gigabytes 
+        (GBs) de espaço em disco e podem ter um processo de 
+        inicialização demorado.
+
+        Em relação a container, é possível observar diversas 
+        aplicações, cada uma isolada e que compartilham o kernel 
+        do sistema operacional de um hospedeiro. Os contêineres 
+        são uma abstração da camada de aplicação que empacota 
+        tanto o código quanto suas dependências, e que ocupa menos 
+        espaço que as VMs, podendo iniciar rapidamente como 
+        processos isolados na máquina do hospedeiro. Portanto, 
+        precisam de menos recursos da máquina hospedeira (host).
+
+        Os contêineres facilitam a implantação, pois empacotam 
+        todo o código e suas dependências, evitando erros como 
+        “funciona na máquina”, mas no servidor de produção, a 
+        aplicação não é executada.
+
+        Principais características de contêineres:
+
+            Isolamento: cada contêiner executa um aplicativo de 
+            forma independente, sem interferir em outros 
+            contêineres ou no sistema operacional host.
+            
+            Portabilidade: os contêineres podem ser executados 
+            em qualquer ambiente que suporte conteinerização 
+            (por exemplo: a aplicação Docker), como máquinas 
+            locais, servidores de produção ou ambientes de nuvem.
+            
+            Eficiência: como compartilham o mesmo núcleo do 
+            sistema operacional, os contêineres são mais leves e 
+            rápidos do que as máquinas virtuais, permitindo mais 
+            densidade e melhor utilização de recursos.
+            
+            Facilidade de gerenciamento: as ferramentas de 
+            gerenciamento de contêineres, como o Docker, fornecem 
+            uma plataforma para construir, testar e implantar 
+            aplicativos de forma mais ágil, facilitando a
+            automação de todo o ciclo de desenvolvimento e 
+            produção.
+            
+            Imagens e Dockerfile: os contêineres são criados a 
+            partir de imagens, que são especificações estáticas 
+            que descrevem o ambiente de execução. Essas imagens 
+            são definidas por um arquivo chamado “Dockerfile”, 
+            que contém instruções sobre como configurar o 
+            contêiner, instalar dependências e executar o 
+            aplicativo.
+
+        O uso de contêineres confere as seguintes vantagens:
+
+            Consistência: evita problemas do tipo funcionar 
+            somente na máquina, pois o ambiente de execução 
+            é o mesmo em qualquer lugar.
+
+            Escalabilidade: é possível replicar contêineres para 
+            escalar aplicativos em ambientes distribuídos.
+
+            Segurança: o isolamento ajuda a proteger aplicativos 
+            de falhas ou ataques que possam ocorrer em outros 
+            contêineres ou no sistema host.
+
+        A AWS oferece o serviço chamado Elastic Container Service 
+        (ECS) para hospedar contêineres na nuvem.
+
+    Elastic Container Service (ECS):
+
+        O AWS Elastic Container Service (ECS) é um serviço 
+        gerenciado da AWS para executar, gerenciar e escalar 
+        contêineres Docker em clusters de servidores. Ele permite 
+        que os usuários implantem aplicativos baseados em 
+        contêiner sem precisar configurar infraestrutura 
+        subjacente complexa. Isto é, o ECS permite executar 
+        contêineres Docker de forma nativa.
+
+        Podemos destacar, por exemplo, os seguintes cenários 
+        para uso de contêineres na AWS:
+
+            Aplicações web e APIs escaláveis.
+
+            Criação de microsserviços.
+
+        Dentro do ECS podemos executar contêineres das seguintes 
+        formas:
+
+            EC2: cria instâncias EC2 para executar contêineres.
+
+            Fargate: serviço gerenciado pela AWS do tipo serverless.
+
+        Embora o Fargate não exija servidores gerenciados pelo 
+        usuário (como no modo EC2), ele ainda precisa de um espaço
+        lógico para organizar e rastrear os contêineres em 
+        execução. Esse espaço lógico é chamado de cluster na AWS. 
+        O cluster permite agrupar cargas de trabalho (workloads), 
+        monitorar aplicações com geração de logs e facilitar a 
+        escalabilidade. No entanto, mesmo requerendo uma 
+        configuração inicial de um cluster, o gerenciamento do 
+        cluster é realizado pela AWS, sem a necessidade de 
+        provisionamento de recursos pelo usuário.
+
+        No AWS Fargate, o cluster é apenas um agrupador lógico, 
+        e não um conjunto de servidores. Ele existe para fins 
+        organizacionais e de gerenciamento, mas toda a 
+        infraestrutura subjacente é gerenciada automaticamente 
+        pela AWS.
+
+    Elastic Container Registry (ECR):
+
+        O Amazon Elastic Container Registry (ECR) é um serviço 
+        totalmente gerenciado da AWS para armazenar, gerenciar 
+        e distribuir imagens de contêiner. Ele funciona como 
+        um repositório de imagens compatível com Docker, 
+        permitindo que desenvolvedores e equipes implantem 
+        aplicações baseadas em contêineres de forma segura e 
+        escalável.
+
+        Seus principais recursos são:
+
+            Suporte a imagens Docker e OCI: compatibilidade com 
+            imagens de contêineres Docker e imagens do Open 
+            Container Initiative (OCI).
+
+            Suporte a CI/CD: permite integração direta com pipelines 
+            de implantação com suporte à integração contínua 
+            (Continuous Integration — CI) e entrega contínua 
+            (Continuous Development — CD).
+
+            Busca de imagens sem servidor: os demais serviços da 
+            AWS podem buscar imagens diretamente do ECR sem 
+            precisar de servidores adicionais.
+
+            Armazenamento seguro: suporte a autenticação integra 
+            via IAM e criptografia automática.
+
+            Versionamento: mantém múltiplas versões de imagens 
+            para fácil recuperação.
+
+        O ECR funciona diretamente com o ECS e com funções Lambda.
+
+        No ECR, os desenvolvedores podem criar imagens Docker 
+        localmente e enviar (push) para o ECR em repositórios 
+        públicos ou privados.
+
+        O ECR é similar ao site Docker Hub que mantém um repositório 
+        de imagens públicas e privadas na Internet 
+        (https://hub.docker.com/).
+
+        Uma vez que as imagens de contêineres são armazenadas no 
+        ECR, é possível versionar as imagens para que possam ser 
+        buscadas pelo ECS.
+
+        Na figura anterior podemos ver duas versões de imagens de 
+        um contêiner, a data de envio da imagem ao ECR e o tamanho 
+        da imagem em Megabytes (MB).
+
+        Para subir imagens Docker em um repositório ECR, é 
+        necessário criar um repositório privado ou público e, em 
+        seguida, executar uma série de procedimentos, preparando 
+        a imagem para ser enviada ao repositório. Os procedimentos
+        estão listados a seguir:
+
+            Criar um arquivo Dockerfile: arquivo de configuração 
+            usado para definir a imagem de um contêiner Docker. 
+            Contém instruções que determinam como o contêiner será 
+            configurado, incluindo sistema operacional, bibliotecas e 
+            dependências.
+
+            Compilar uma imagem Docker: a partir do comando docker 
+            build é possível criar uma imagem Docker para poder 
+            subir ao repositório ECS.
+
+            Marcar a imagem com uma tag: o etiquetamento (tag) deve 
+            ser feito com o caminho do repositório no ECR com o 
+            comando docker tag.
+
+            Autenticar-se no Amazon ECR: para enviar a imagem, é 
+            necessário realizar a autenticação no repositório ECR.
+
+            Enviar a imagem para o ECR: por meio do comando docker 
+            push é possível enviar a imagem para o ECR.
+
+        Portanto, não é possível executar uma imagem diretamente 
+        a partir do ECR. Para isso é preciso criar um agrupamento 
+        lógico (cluster) no ECS para então executar as imagens de 
+        contêineres.
+
+        Além do ECR, é possível baixar imagens diretamente para o 
+        ECS por meio de repositórios públicos na Internet, como o 
+        Docker Hub.
+
+    Docker Hub:
+
+        O Docker é um conjunto de produtos do tipo Plataforma 
+        como Serviço (PaaS). O principal registro público de 
+        contêineres do Docker é o Docker Hub.
+
+        O Docker Hub é um registro de contêineres baseado na 
+        nuvem, onde usuários podem armazenar, compartilhar e 
+        gerenciar imagens de contêineres Docker. Ele é mantido 
+        pela Docker Inc., e é um dos registros de contêiner mais 
+        utilizados no mundo.
+
+        Você pode acessar o Docker Hub através do site: https://hub.docker.com
+    
+        É possível filtrar por nomes de repositórios de parceiros 
+        ou por categorias no menu principal do site.
+
+        No docker hub, na suas categorias, selecionamos o menu 
+        “Web Servers” para visualizarmos as opções disponíveis 
+        de imagens de contêineres, assim como informações de 
+        número de downloads (pulls) de uma imagem.
+
+        Iremos usar imagens oriundas do Docker Hub para baixar 
+        no ambiente da AWS e executá-las sem nos preocuparmos em 
+        configurar servidores.
+
+        A seguir, veremos como construir nossa solução ao qual 
+        executaremos uma imagem de contêiner oriunda do Docker 
+        Hub.
+
+Dando continuidade ao nosso projeto, iremos preparar um cluster 
+no ECS para execução de contêineres.
+
+Com o cluster, será possível executar e gerenciar contêineres 
+oriundos de diferentes repositórios, seja do próprio ECR, ou, 
+no nosso caso, de imagens do Docker Hub.
+
+Criação do Cluster da Solução:
+
+    Para criar o cluster vamos usar o terminal nativo que está 
+    dentro do Console de Gerenciamento, o CloudShell.
+
+    Conforme visto na figura anterior, o comando “aws ecs 
+    create-cluster --cluster-name <nome-cluster>” permite 
+    criar um cluster dentro do ECS.
+
+    A partir da criação do cluster, podemos visualizar o cluster 
+    em execução e se há tarefas executando.
+
+    Dentro de um cluster podemos executar diversas tarefas ou 
+    serviços. As tarefas são destinadas para execução esporádica 
+    de um ou mais contêineres, enquanto um serviço permite uma 
+    execução contínua de um determinado número de tarefas como o 
+    uso em aplicações web. Um serviço também garante que sempre 
+    exista um determinado número de instâncias ativas.
+
+    Uma tarefa pode iniciar a execução de um contêiner em uma 
+    máquina virtual do EC2 ou de forma serverless, dentro do 
+    AWS Fargate na AWS.
+
+    No AWS Fargate não precisamos nos preocupar com gerenciamento 
+    de instância EC2, bastando definir quais contêineres que 
+    precisamos iniciar.
+
+Criação de definição de tarefas:
+
+    Iremos criar a nossa primeira definição de tarefa (task 
+    definition) para realizar a implantação de uma imagem Docker 
+    armazenada no repositório de imagens público, Docker Hub. 
+    Esta ação permitirá entendermos melhor a tecnologia de 
+    contêineres utilizada na AWS.
+
+    Na figura anterior, visualizamos o site do Docker Hub onde é 
+    possível buscar por diversas imagens de diferentes 
+    desenvolvedores.
+
+    Iremos implantar uma imagem de uma aplicação de exemplo que 
+    será hospedada em um servidor web leve chamado nginx. Esta 
+    imagem será utilizada no AWS Fargate dentro do ECS.
+
+    Após o nosso cluster ter sido criado, precisaremos criar uma 
+    “definição de tarefa”.
+
+    Uma definição de tarefa permite criar um modelo (template) com 
+    informações dos contêineres a serem executados no ECS, além de 
+    informar a função de execução (role) do IAM que poderá executar
+    tal tarefa.
+
+    A definição de tarefas também conta com recursos como 
+    versionamento, podendo ser atualizada com novas versões de 
+    imagens. A cada nova imagem disponibilizada, são criadas 
+    revisões (reviews) da definição de tarefas.
+
+    Digite ECS na caixa de busca no console da AWS e clique em 
+    “Definições de tarefa”.
+
+    Clique na opção “Definições de tarefa” no menu lateral 
+    esquerdo do Elastic Container Service. Ao clicar em 
+    “Definições de tarefa”, você poderá visualizar todas as 
+    definições previamente criadas ou criar novas definições. 
+    Em seguida, vá em “Criar nova definição de tarefa”.
+
+    É possível notar que não temos nenhuma definição de tarefa 
+    criada. Então, vamos criar nossa nova definição de tarefa.
+
+    Na tela a seguir, clique em “Criar nova definição de tarefa”. 
+    Defina o nome da tarefa como “td-helloworld” e mantenha a 
+    opção de AWS Fargate. Deixe selecionado o sistema operacional 
+    Linux com 1 CPU e 3 GB de memória.
+
+    Em seguida, tanto na “Função de tarefa” quanto na “Função de 
+    execução de tarefas” selecione a role “LabRole”.
+
+    Agora iremos definir os detalhes do contêiner que será 
+    implantado. Definiremos um nome, a URI da imagem e as 
+    informações.
+
+    Omitimos partes que não precisam ser configuradas, tornando 
+    necessário preencher apenas os dados do contêiner e clicar 
+    no botão “Criar”. No mapeamento de porta, podemos mapear a 
+    porta do contêiner para permitir que o contêiner acesse a 
+    porta no host. Utilizaremos a porta 80 do Host, por isso 
+    definimos a porta do contêiner como 80 e no host também. É 
+    possível, inclusive, acessar uma porta diferente no host 
+    (exemplo: 8080). Se deixar em branco o nome da porta, um 
+    padrão será atribuído.
+
+    Agora iremos subir nosso contêiner no cluster previamente 
+    criado. Clique no menu lateral em “Clusters”, e selecione 
+    o cluster criado. Em seguida, vá em Tarefas > Executar nova 
+    tarefa.
+
+    Selecione a “Família” da tarefa e a sua revisão mais recente.
+
+    Aguarde o provisionamento da tarefa. Em seguida, clique no 
+    nome da tarefa para resgatar seu endereço público (IP).
+
+    Agora, copie o IP público disponibilizado.
+
+    Antes de acessar o site <http://IPpúblico>
+
+    Vejamos a seguir como liberar a porta 80 no firewall de nossa 
+    VPC.
+
+Liberação de acesso no Firewall (Security Group):
+
+    Nesta etapa, iremos aprender como liberar o acesso em nosso 
+    security group padrão. Para isso, basta buscar por VPC na 
+    caixa de busca no console da AWS e procurar por “Grupos de 
+    segurança”.
+
+    Edite as regras de entrada e libere a porta 80 do grupo de 
+    segurança. Para isso, vá até a guia “Regras de entrada” e, 
+    em seguida, clique no botão “Editar regras de entrada”.
+
+    Agora, abra uma nova aba em seu navegador e digite 
+    <http://IPPúblico> do contêiner para visualizar a aplicação 
+    funcionando.
+
+    PS: Lembre-se de utilizar http e não https no endereço do site.
+
+    Concluímos a primeira etapa de nossa solução, em que 
+    implantamos uma aplicação demonstrativa para testar os 
+    recursos de contêineres na AWS. Agora que finalizamos, 
+    iremos interromper a tarefa em execução para encerrar a 
+    aplicação.
+
+Interrupção de tarefas:
+
+    Após testar e usar a aplicação, o ideal é excluí-la para 
+    evitar consumo desnecessário dos recursos da AWS. Ao acessar 
+    o ECS, no menu “Clusters”, é possível visualizar as tarefas 
+    em execução. Selecione a tarefa e clique em “Parar 
+    selecionado(s)”.
+
+    Na caixa de diálogo que abrir, confirme o nome da definição 
+    de tarefa e clique em “Parar”.
+
+                
+                Infraestrutura como código
+
+Vamos implementar a segunda parte de nossa solução. No entanto, 
+iremos subir nossa solução usando infraestrutura como código 
+(Infrastructure as Code — IAC).
+
+Para simplificar o processo de criação de tarefas e configuração 
+de contêineres, podemos codificar os passos realizados na tarefa 
+em um arquivo reprodutível chamado de template. Com o uso de 
+templates, é possível definir etapas como a criação de um cluster,
+a definição de tarefas e até a configuração de VPCs.
+
+Vejamos como a AWS permite criar templates para implantação de 
+serviços, com o serviço do AWS CloudFormation.
+
+Introdução ao Cloudformation:
+
+    O CloudFormation é um serviço que permite configurar a 
+    implantação de recursos na AWS a partir de um arquivo de 
+    template, que descreve quais e onde os serviços serão 
+    implantados. É possível implantar serviços como S3 (Amazon 
+    Simple Storage Service.), EC2, RDS (Relational Database 
+    Service.), VPC, Elastic Load Balancer (ELB), Lambda, 
+    DynamoDB, ECS, além de criação de usuários, roles, políticas 
+    de acesso entre outros recursos.
+
+    No arquivo de template é definido uma pilha (stack) de 
+    recursos e suas propriedades a serem implantadas.
+
+    EX de estrutura de um template do Cloudformation:
+
+        {
+            "AWSTemplateFormatVersion": "data da versão ",
+            "Description": "Exemplo de Template",
+            "Metadata": { metadados },
+            "Rules": { Regras de validação },
+            "Parameters": { conjunto de parâmetros},
+            "Mappings": {conjunto de mapeamentos },
+            "Conditions": { conjunto de condições },
+            "Transform": { conjunto de transformações },
+            "Resources": { conjunto de recursos },
+            "Outputs": { conjunto de saídas }
+        }
+
+    No código anterior, podemos visualizar a estrutura de um 
+    template do CloudFormation. É importante ressaltar que existe 
+    a obrigatoriedade de definir a versão do template e ao menos 
+    um recurso a ser implantado. Vejamos o que podemos inserir 
+    em cada item:
+
+        AWSTemplateFormatVersion (obrigatório): identifica a 
+        versão do template. A última versão é de 09 de setembro 
+        de 2010.
+        
+        Description (opcional): permite definir um texto de até 
+        1024 bytes.
+        
+        Metadata (opcional): define informações adicionais sobre 
+        o template ou os recursos a serem instalados, como 
+        descrição de uma instância ou de uma base de dados. 
+        
+        Rules (opcional): valida valores de parâmetros ou um 
+        conjunto de parâmetros durante a criação da pilha.
+        
+        Resources (obrigatório): especifica a pilha de recursos 
+        e as propriedades. Por exemplo: EC2, bucket S3 etc.
+        
+        Parameters (opcional): permite passar valores ao criar ou 
+        atualizar uma pilha. Por exemplo: tipo da instância EC2 
+        ser implantada.
+        
+        Mappings (opcional): define conjunto de pares de 
+        chave-valor para ajustar configurações. Pode-se mapear 
+        tipos de instâncias diferentes do EC2 de acordo com a 
+        região de implantação da pilha.
+        
+        Conditions (opcional): definem recursos ou propriedades 
+        com base em condições. Por exemplo, podemos implantar 
+        recursos diferentes em ambientes de produção e 
+        desenvolvimento com base no valor de um parâmetro de 
+        ambiente.
+        
+        Transform (opcional): podem definir macros simples, como 
+        encontrar e substituir textos.
+        
+        Outputs (opcional): pode definir saídas como o nome do 
+        bucket S3 criado na pilha, para facilitar sua busca.
+
+    Depois da implantação da pilha, os recursos estarão disponíveis
+    e executando, o que facilita o gerenciamento, pois evita a 
+    necessidade de configurar recursos individualmente.
+
+    Além disso, o CloudFormation permite atualizar arquivos de 
+    template, para manter um histórico de implantações.
+
+    Após o término da utilização dos recursos, para garantir a 
+    remoção de todos os recursos usados em uma pilha, basta 
+    excluir a pilha do CloudFormation, e todos os recursos 
+    vinculados são automaticamente removidos, facilitando a gestão 
+    pelas equipes.
+
+Estrutura da Pilha do CloudFormation:
+
+    É possível utilizar diferentes tipos de formatos para 
+    codificar a implantação de recursos. Podemos trabalhar 
+    tanto com arquivos JSON ou arquivos YAML. Vejamos a seguir 
+    a codificação de um arquivo JSON.
+
+    Código IAC usando JSON:
+
+        {
+          "AWSTemplateFormatVersion": "2010-09-09",
+          "Resources": {
+            "TaskDefinition": {
+              "Type": "AWS::ECS::TaskDefinition",
+              "Properties": {
+                "Family": "td-agriapp",
+                "RequiresCompatibilities": [
+                  "FARGATE"
+                ],
+                "Cpu": "256",
+                "Memory": "512",
+                "NetworkMode": "awsvpc",
+                "ExecutionRoleArn": {
+                  "Fn::Sub": "arn:aws:iam::${AWS::AccountId}:role/LabRole"
+                },
+                "TaskRoleArn": {
+                  "Fn::Sub": "arn:aws:iam::${AWS::AccountId}:role/LabRole"
+                },
+                "ContainerDefinitions": [
+                  {
+                    "Name": "agriapp-container",
+                    "Image": "proffernandotfernandes/agriscanner",
+                    "Essential": true,
+                    "PortMappings": [
+                      {
+                        "ContainerPort": 80,
+                        "Protocol": "tcp"
+                      },
+                      {
+                        "ContainerPort": 5000,
+                        "Protocol": "tcp"
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        }
+
+    Agora vamos ver o mesmo arquivo convertido para YAML.
+
+        AWSTemplateFormatVersion: '2010-09-09'
+        Resources:
+          TaskDefinition:
+            Type: AWS::ECS::TaskDefinition
+            Properties:
+              Family: td-agriapp
+              RequiresCompatibilities:
+                - FARGATE
+              Cpu: '256'
+              Memory: '512'
+              NetworkMode: awsvpc
+              ExecutionRoleArn: !Sub arn:aws:iam::${AWS::AccountId}:role/LabRole
+              TaskRoleArn: !Sub arn:aws:iam::${AWS::AccountId}:role/LabRole
+              ContainerDefinitions:
+                - Name: agriapp-container
+                  Image: proffernandotfernandes/agriscanner
+                  Essential: true
+                  PortMappings:
+                    - ContainerPort: 80
+                      Protocol: tcp
+                    - ContainerPort: 5000
+                      Protocol: tcp
+
+    Perceba que o código é ligeiramente menor, pois não utiliza 
+    chaves para agrupar ações relacionadas. Ao invés disso, é 
+    utilizada a indentação, que melhora a legibilidade do código.
+
+    Veja que no contêiner, definimos que usaremos a definição de 
+    tarefa “td-agriapp” criada anteriormente, parametrizando o 
+    “FARGATE” para execução serverless da tarefa.
+
+    Em seguida, devemos definir que iremos utilizar 1/4 de CPU e 
+    512 MB de memória. A AWS usa uma configuração em unidades de 
+    CPU em vez de GHz. Usamos a função de execução “LabRole” para 
+    a execução da tarefa.
+
+    Por último, definimos um nome para o contêiner que será 
+    executado, assim como a imagem do contêiner. Neste template, 
+    utilizaremos uma imagem pública disponibilizada no Docker 
+    Hub no repositório “proffernandotfernandes/agriscanner”.
+
+    Para que seja possível acessar o contêiner, precisamos criar 
+    o mapeamento para as portas 80 e 5000 TCP.
+
+Estrutura da aplicação de exemplo:
+
+    A aplicação de exemplo foi desenvolvida em Python, usando um 
+    framework web leve denominado flask.
+
+    A aplicação consiste em receber imagens e armazená-las na 
+    pasta “static/uploads”. 
+
+    O código da aplicação fica no arquivo “agriapp.py” e o 
+    controle de imagens gravadas é feito por meio do sqlite 
+    embarcado na aplicação, como no arquivo “database.db”.
+
+    A seguir exibimos o código da aplicação.
+
+    agriapp.py:
+
+        from flask import Flask, request, render_template, redirect, url_for # type:ignore
+        import os
+        from datetime import datetime
+        import sqlite3
+
+        app = Flask(__name__)
+        app.config['UPLOAD_FOLDER'] = 'uploads'
+        os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+
+        def init_db():
+            try:
+                # Use an absolute path to ensure it’s in the correct directory
+                db_path = os.path.join(os.getcwd(), 'database.db')
+
+                conn = sqlite3.connect(db_path)
+                cursor = conn.cursor()
+
+                # Create table if not exists
+                cursor.execute('''
+                    CREATE TABLE IF NOT EXISTS images (
+                        id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        filename TEXT NOT NULL,
+                        date TEXT NOT NULL,
+                        latitude REAL NOT NULL,
+                        longitude REAL NOT NULL
+                    )
+                ''')
+                conn.commit()
+                conn.close()
+                print("Banco de dados inicializado e tabela 'images' criada com sucesso!")
+            except Exception as e:
+                print(f"Erro ao inicializar o banco de dados: {e}")
+
+        @app.route('/')
+        def index():
+            conn = sqlite3.connect('database.db')
+            cursor = conn.cursor()
+            cursor.execute('SELECT filename, date, latitude, longitude FROM images ORDER BY date DESC')
+            images = cursor.fetchall()
+            conn.close()
+            return render_template('index.html', images=images)
+
+        @app.route('/upload', methods=['POST'])
+        def upload_file():
+            if 'image' not in request.files:
+                return redirect(request.url)
+            file = request.files['image']
+            latitude = request.form.get('latitude')
+            longitude = request.form.get('longitude')
+            if file.filename == '' or not latitude or not longitude:
+                return redirect(request.url)
+
+            filename = datetime.now().strftime('%Y%m%d%H%M%S') + '_' + file.filename
+
+            app.config['UPLOAD_FOLDER'] = 'static/uploads'
+            os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+
+            file_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+            file.save(file_path)
+
+            conn = sqlite3.connect('database.db')
+            cursor = conn.cursor()
+            cursor.execute('INSERT INTO images (filename, date, latitude, longitude) VALUES (?, ?, ?, ?)',
+                           (filename, datetime.now().isoformat(), latitude, longitude))
+            conn.commit()
+            conn.close()
+
+            return redirect(url_for('index'))
+
+        @app.before_request
+        def before_request():
+            init_db()
+
+        if __name__ == '__main__':
+
+            app.run(host='0.0.0.0', port=5000)
+
+    Conforme visto no código-fonte “agriapp.py”, a aplicação cria rotas para envio de requisições via POST. Além disso, permite a visualização das imagens a partir da renderização em um arquivo “index.html”.
+
+    A seguir exibimos o código html.
+
+        <!DOCTYPE html>
+        <html lang="pt-br">
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Galeria de Imagens</title>
+            <style>
+                * {
+                    box-sizing: border-box;
+                    margin: 0;
+                    padding: 0;
+                    font-family: Arial, sans-serif;
+                }
+
+                body {
+                    background-color: #f4f4f4;
+                    padding: 20px;
+                }
+
+                h1 {
+                    text-align: center;
+                    margin-bottom: 20px;
+                }
+
+                form {
+                    display: flex;
+                    justify-content: center;
+                    gap: 10px;
+                    margin-bottom: 20px;
+                    flex-wrap: wrap;
+                    background: #fff;
+                    padding: 15px;
+                    border-radius: 10px;
+                    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+                }
+
+                input, button {
+                    padding: 10px;
+                    border: 1px solid #ccc;
+                    border-radius: 5px;
+                    font-size: 14px;
+                }
+
+                input {
+                    width: 200px;
+                }
+
+                input[type="file"] {
+                    width: 100%;
+                    max-width: 350px;
+                }
+
+
+                button {
+                    background-color: #28a745;
+                    color: white;
+                    border: none;
+                    cursor: pointer;
+                }
+
+                button:hover {
+                    background-color: #218838;
+                }
+
+                h2 {
+                    margin-bottom: 10px;
+                    text-align: center;
+                }
+
+                .gallery {
+                    display: flex;
+                    flex-wrap: wrap;
+                    gap: 20px;
+                    justify-content: center;
+                }
+
+                .image-card {
+                    background: #fff;
+                    padding: 10px;
+                    border-radius: 8px;
+                    box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.1);
+                    text-align: center;
+                    transition: transform 0.2s;
+                }
+
+                .image-card:hover {
+                    transform: scale(1.05);
+                }
+
+                .image-card img {
+                    width: 200px;
+                    border-radius: 5px;
+                }
+
+                .image-card p {
+                    font-size: 14px;
+                    margin-top: 5px;
+                    color: #333;
+                }
+                .data{
+                    font-weight: bold;
+                }
+                .geolocation{
+                    width: 100%;
+                    font-size: 10px;
+                    text-align: left;
+                    margin-top: 5px;
+                }
+            </style>
+        </head>
+        <body>
+            <h1>Imagens de Sensoriamento</h1>
+            <form action="/upload" method="post" enctype="multipart/form-data">
+                <input type="file" name="image" required>
+                <input type="text" name="latitude" placeholder="Digite a Latitude" required>
+                <input type="text" name="longitude" placeholder="Digite a Longitude" required>
+                <button type="submit">Enviar</button>
+            </form>
+            <h2>Imagens enviadas</h2>
+            <div class="gallery">
+                {% for image in images %}
+                <div class="image-card">
+                    <p class="data">Data: {{ image[1][:19].replace('T', ' ') }} 
+                    <img src="{{ url_for('static', filename='uploads/' + image[0]) }}" alt="Imagem">
+                    <p class="geolocation">Latitude: {{ image[2] }}
+                    <p class="geolocation">Longitude: {{ image[3] }}
+                </div>
+                {% endfor %}
+            </div>
+        </body>
+        </html>
+    
+    No código anterior, podemos observar o template html que 
+    exibirá imagens juntamente com suas latitudes e longitudes.
+
+    O código completo da aplicação encontra-se no GitHub, basta 
+    acessar o site <https://github.com/proffernandotfernandes/agriscanner>. 
+    O arquivo para construção e disponibilização da imagem 
+    (Dockerfile) está disponibilizado a seguir.
+
+        # Usa a imagem oficial do Python como base
+        FROM python:3.11-slim
+
+        # Define o diretório de trabalho dentro do contêiner
+        WORKDIR /app
+
+        # Copia os arquivos da aplicação para o contêiner
+        COPY . .
+
+        # Instala as dependências do Python
+        RUN pip install --no-cache-dir -r requirements.txt
+        RUN pip install gunicorn
+
+        # Cria a pasta de uploads (caso não exista) e define as permissões
+        RUN mkdir -p static/uploads && chmod -R 777 static/uploads
+
+        # Expõe a porta 5000 para acesso à aplicação
+        EXPOSE 5000
+
+        # Usa Gunicorn para rodar o Flask em produção
+        CMD ["gunicorn", "-w", "4", "-b", "0.0.0.0:5000", "agriapp:app"]
+
+    No Dockerfile iremos utilizar uma imagem enxuta que suporte 
+    Python. Depois precisamos instalar as dependências do projeto 
+    e o servidor web gunicorn. Também será necessário expor a 
+    porta 5000 para acesso à aplicação web disponibilizada.
+
+Criação da pilha do cloudformation:
+
+    Agora vamos acessar o serviço CloudFormation na AWS para 
+    criar uma pilha que cria uma tarefa para implantação do 
+    contêiner. Acesse o CloudFormation e clique no menu “Pilhas” 
+    e, em seguida, vá em “Criar pilha”.
+
+    Selecione a opção “Fazer upload de um arquivo de modelo” e 
+    escolha o arquivo salvo agriappdemo.yml. Depois, clique em
+    avançar.
+
+    Em seguida, defina um nome para a pilha.
+
+    Clique em próximo. Escolha a função do IAM LabRole e clique 
+    em “Próximo”.
+
+    Confira os detalhes definidos e clique em enviar. Em seguida, 
+    acesse o ECS e veja se consta a pilha em definições de tarefa.
+
+    Agora basta executar a tarefa no cluster.
+
+    A aplicação utiliza a porta 5000, portanto é necessário 
+    liberar a porta 5000 no seu security group da VPC padrão, 
+    conforme visto na aplicação de demonstração.
+
+    Após a liberação da porta 5000, clique no nome da tarefa 
+    para visualizar o IP público e acesse a aplicação digitando 
+    <http://IPPublico>, substituindo o IPPublico pelo número IP 
+    que consta em seu contêiner.
+
+    Pronto! Concluímos a segunda etapa da nossa solução, 
+    utilizando uma pilha do CloudFormation para subir uma 
+    aplicação web completa.
+
+Exclusão de Pilha do Cloudformation:
+
+    Caso não precise mais acessar os recursos da pilha, você 
+    pode removê-la no CloudFormation.
+
+    Aguarde a exclusão da pilha. Em seguida, consulte as 
+    definições de tarefa. A tarefa deve ter sido excluída, 
+    da mesma forma que o contêiner deve ter sido interrompido.
+
+    Pronto! Agora não existe mais nenhuma tarefa criada.
+
+
+            Inteligencia artificial como serviço: 
+           Explorando os recursos cognitivos da AWS
+
+O Processamento de Linguagem Natural (NLP — Natural Language 
+Processing) é um campo de Inteligência Artificial que permite 
+que máquinas compreendam, interpretem e gerem linguagem humana. 
+Ele combina linguística computacional com Aprendizado de Máquina 
+para processar grandes volumes de texto ou áudio (falas).
+
+Neste capítulo, iremos abordar alguns conceitos fundamentais de 
+NLP que são utilizados pelos serviços cognitivos da AWS como o 
+Amazon Transcribe, Translate e Polly. Assim, conseguiremos propor 
+uma solução multilíngue para um serviço de conversação na AWS.
+
+Projeto:
+
+    Utilizaremos o Amazon SageMaker que permite criar experimentos 
+    de ML na AWS, além de conter um ambiente de desenvolvimento 
+    completo para desenvolver códigos em Python com Machine 
+    Learning, como o JupyterLab.
+
+    Com o SageMaker, iremos treinar um modelo de Machine Learning 
+    para classificar comentários entre positivos ou negativos de 
+    acordo com os textos dos comentários.
+
+    Apesar de criarmos nosso próprio modelo de Machine Learning, 
+    a AWS conta com diversos serviços de processamento de 
+    linguagem natural prontos para uso, como: o Amazon Transcribe, 
+    para realizar a transcrição de áudio; o Amazon Translate para 
+    realizar a tradução de um idioma em outro; e o Amazon Polly 
+    para sintetização de voz. Exploraremos também uma opção que 
+    utiliza IA Generativa como o Amazon Bedrock.
+
+    Primeiro iremos abordar os serviços disponíveis de NLP da 
+    AWS para que, em seguida, possamos criar nossa própria solução.
+
+            
+            Processamento de linguagem natural
+
+O processamento de linguagem natural é um ramo da Inteligência 
+Artificial que permite conferir às máquinas o entendimento de 
+linguagens escritas e faladas.
+
+Para isso, são implementadas técnicas de extração de significado 
+a partir de textos, reconhecendo regras gramaticais, palavras e 
+frases.
+
+Além de melhorar a compreensão de textos, também permite entender 
+como as palavras se relacionam em diferentes idiomas e auxiliar 
+na desambiguação semântica.
+
+Ao quebrar uma frase, é possível rotular cada elemento em um 
+processo conhecido como a etiquetagem (tagging), possibilitando 
+a identificação de artigos, adjetivos, substantivos (exemplos: 
+nomes, locais etc.), verbos, entre outros elementos de discurso.
+
+Desse modo, é possível identificar ações a serem executadas, como 
+verbos em uma frase, permitindo que dispositivos consigam ser 
+acionados, como nos assistentes virtuais, por exemplo Alexa e Siri.
+
+Um dos maiores desafios para os sistemas que usavam NLP era a 
+falta de precisão e o entendimento do contexto. Porém, esse cenário
+vem mudando rapidamente com o surgimento de novas técnicas que 
+conseguem entender o contexto com maior precisão.
+
+Nas últimas décadas, com a grande disponibilização de dados e com 
+o advento da era do Big Data, surgiram aplicações de NLP em larga 
+escala e uso de computação sob demanda, com as novas arquiteturas 
+que utilizam o grande poder computacional alinhado com o 
+paralelismo para processar simultaneamente grandes volumes de dados.
+
+A AWS oferece soluções que usam NLP para diversos cenários de uso. 
+Vale mencionar que as soluções adotam Redes Neurais para melhoria 
+de performance. A seguir iremos abordar alguns dos serviços 
+oferecidos e seus conceitos.
+
+                Soluções de NLP na AWS
+
+Amazon Transcribe:
+
+    O Amazon Transcribe é um serviço do tipo Speech-To-Text (STT) 
+    que permite a transcrição de áudios e vídeos em textos. Ele 
+    utiliza Machine Learning para identificar as palavras e, 
+    então, gerar os conteúdos textuais.
+
+    Suas principais características são:
+
+        Reconhecimento de fala: permite converter arquivos de 
+        áudio ou streaming em texto.
+
+        Suporte a múltiplos idiomas: transcreve áudio em vários 
+        idiomas, incluindo português, inglês, espanhol e francês.
+
+        Suporte a pontuação e formatação: pode adicionar vírgulas, 
+        pontos e formatação ao texto gerado para melhoria da 
+        legibilidade.
+
+        Identificação de diferentes narradores: permite identificar
+        múltiplas pessoas em um áudio.
+
+        Identificação de discursos tóxicos: pode identificar 
+        insultos, assédio, discursos de ódio (somente nos Estados 
+        Unidos).
+
+        Transcrição médica especializada: realiza a transcrição de 
+        falas de médicos e profissionais da saúde (somente nos 
+        Estados Unidos).
+
+    Os formatos suportados estão descritos no quadro a seguir.
+
+        x==============x===========================x================x
+        |              |  Processamento em Lote    |   Streaming    |
+        x==============x===========================x================x
+        | Formatos     | AMR, FLAC, M4A, MP3, MP4  | FLAC, Ogg Opus |
+        | suportados   | Ogg, WebM, WAV            | PCM encoding   |
+        x--------------x---------------------------x----------------x
+        | Formatos     | FLAC, WAV com codificação |                |
+        | recomendados | PCM 16-bit                |                |
+        x--------------x---------------------------x----------------x
+
+    O Amazon Transcribe suporta transcrição em tempo real, 
+    incluindo uma interface no próprio console da AWS.
+
+    Vejamos agora como criar uma tarefa de transcrição com o 
+    Transcribe.
+
+    A seguir, iremos demonstrar uma simulação de uma transcrição 
+    a partir de um áudio em inglês de um podcast da BBC.
+
+    Inicialmente, criamos um bucket S3 com o nome 
+    <suasiniciais>-entrada-audio e outro bucket com o nome
+    <suasiniciais>-saida-audio.
+
+    Conforme dito, criamos dois buckets, sendo um para receber 
+    arquivos de áudio (ftf-entrada-audio) que serão transcritos 
+    e outro para receber a transcrição (ftf-saida-audio).
+
+    Em seguida, criaremos uma tarefa de transcrição. Para isso, 
+    precisamos acessar o Amazon Transcribe e clicar em “Criar 
+    tarefa”.
+
+    Em seguida, definimos um nome para a tarefa de transcrição.
+
+    Na figura anterior, definimos um nome para nossa tarefa como 
+    “TesteTranscricaoBBC”.
+
+    É importante definirmos o idioma para “Inglês, Reino Unido 
+    (en-GB)” pois já sabemos o idioma de entrada e essa informação
+    facilita a transcrição.
+
+    Como feito, precisamos escolher o caminho para o arquivo de 
+    entrada e o bucket para conter a saída da transcrição. Após 
+    isso, é necessário concluir a tarefa. 
+
+    Após a conclusão da tarefa, acesse o bucket de saída.
+
+    Agora, podemos observar o resultado da transcrição. Temos 
+    dois arquivos gerados, sendo um no formato JSON e outro no 
+    formato SRT. O formato SRT é comumente utilizado para 
+    legendas, pois contém o horário de cada fala em um discurso.
+
+    Agora, temos o resultado da transcrição, sendo uma fala 
+    transcrita de cada vez de forma sequencial, incluindo hora, 
+    minuto e segundo a partir do início do áudio.
+
+    Assim, concluímos a demonstração do primeiro serviço de 
+    processamento de linguagem natural para transcrição de textos 
+    na AWS.
+
+Amazon Translate:
+
+    O Amazon Translate é um serviço da AWS baseado em Aprendizado 
+    de Máquina que realiza tradução em diversos idiomas. Ele 
+    permite traduzir texto em tempo real ou grandes volumes de 
+    texto em lote, sendo útil para aplicações multilíngues, 
+    suporte ao cliente, análise de conteúdo global, entre outros.
+
+    O Amazon Translate tem suporte a tradução com base em modelos 
+    estatísticos ou em modelos de redes neurais.
+
+    Agora, podemos observar uma tradução por meio de uma rede 
+    neural, em que temos como dados de entrada, um texto em inglês 
+    e como saída, um texto em espanhol.
+
+    Além disso, ainda é possível realizar tradução em tempo real 
+    ou em lote. A seguir vemos um exemplo de tradução em tempo 
+    real no próprio console da AWS.
+
+    Também é possível enviar um documento completo para tradução.
+
+    Portanto, com o Amazon Translate é possível realizar traduções 
+    de diversos idiomas, incluindo traduções mais precisas com o 
+    uso de redes neurais.
+
+Amazon Comprehend:
+
+    O Amazon Comprehend é um serviço de processamento de linguagem 
+    natural da AWS que utiliza o Aprendizado de Máquina para 
+    analisar e extrair insights de texto. Ele permite identificar 
+    sentimentos, tópicos, entidades, linguagem do texto, sem a 
+    necessidade de treinamento prévio em Machine Learning.
+
+    A seguir podemos observar como o Amazon Comprehend identifica 
+    termos e resume documentos de acordo com tópicos e categorias.
+
+    Na “Topic Modelling”, é possível notar um conjunto de 
+    documentos enviados ao Amazon Comprehend, para identificar 
+    os principais termos em cada documento e o peso de cada termo.
+
+    Em um outro recurso do Amazon Comprehend, é possível analisar 
+    um texto e extrair as principais entidades, como nomes, locais 
+    e informações pessoais.
+
+    Na figura anterior, é possível observar que o serviço do Amazon
+    Comprehend identifica pessoas, locais, telefones, valores e 
+    outras informações contidas no texto. Dessa forma, é possível 
+    classificar rapidamente documentos, além de identificar 
+    sentimentos do conteúdo do texto.
+
+    Alguns cenários de uso incluem a análise de sentimentos de 
+    redes sociais, com a identificação de discursos hostis. Outro 
+    cenário possível seria utilizar o Comprehend para analisar os 
+    comentários de clientes em relação aos produtos cadastrados 
+    em um e-commerce.
+
+Amazon Polly:
+
+    O Amazon Polly é um serviço da AWS que converte texto em fala 
+    (Text-To-Speech — TTS) usando Inteligência Artificial para 
+    gerar vozes naturais e realistas. Ele pode ser utilizado para 
+    criar aplicações interativas, como assistentes virtuais, 
+    audiobooks, além de permitir a acessibilidade para deficientes
+    visuais.
+
+    O Amazon Polly contém recursos como:
+
+        Suporte a mais de 30 idiomas: inclusive o português.
+
+        Personalização com SSML: com o uso de tags SSML (Speech 
+        Synthesis Markup Language), é possível ajustar entonação 
+        e pausas ao texto.
+
+        Diferentes motores: é possível usar geradores de fala 
+        neurais e até de IA Generativa.
+
+    Também podemos ver que está habilitada a marcação SSML, em 
+    que incluímos marcações (TAGs) no texto, como “<prosody>” 
+    para dar uma entonação diferente ao nome “Vitória”.
+
+Amazon Bedrock:
+
+    A Amazon disponibiliza o Amazon Bedrock que é um ambiente que 
+    oferece serviços de IA Generativa. Nele podemos construir 
+    diferentes modelos com bases em Modelos Fundacionais 
+    (Foundation Models) e de diversos provedores (exemplos: Llama 
+    da Meta, Claude da Anthropic, Titan da Amazon, entre outros).
+
+    Com o Amazon Bedrock, é possível desenvolver modelos para 
+    geração de texto, de imagens, chatbots e sumarização. Podemos 
+    escolher entre os seguintes playgrounds:
+
+        Playground de chat: simular uma conversa com um chat.
+        
+        Playground de imagem: cria imagens com base nas instruções
+        do prompt.
+        
+        Playground de textos: pode utilizar modelos de LLM 
+        pré-selecionados para executar tarefas de NLP.
+
+    Você pode selecionar os modelos que deseja utilizar, clicando 
+    na opção “Model access”.
+
+    Após a seleção, é possível testar os modelos usando os 
+    “playgrounds” disponíveis na interface do Bedrock.
+
+    No “Playground de Texto”, podemos observar alguns “prompts” 
+    de exemplo informados aos modelos. A partir disso, solicitamos
+    que o modelo faça um resumo de uma nova sentença (summary) e 
+    clicamos em executar. A resposta do modelo está em verde.
+
+    A seguir, vamos explorar o Amazon SageMaker para criarmos 
+    nossos próprios modelos de Machine Learning.
+
+Amazon SageMaker:
+
+    O Amazon SageMaker é um serviço da AWS que facilita o 
+    desenvolvimento, treinamento e implantação de modelos de 
+    Machine Learning e Inteligência Artificial de forma escalável 
+    e gerenciada. Ele reduz a complexidade da infraestrutura e 
+    permite que cientistas de dados e desenvolvedores foquem na 
+    construção de modelos eficientes.
+
+    O SageMaker possui diferentes recursos como:
+
+        AutoML: possibilita o treinamento de modelos 
+        automaticamente a partir de dados, apenas selecionando 
+        o tipo de problema de Machine Learning e o desfecho 
+        pretendido.
+        
+        MLOps: possui integração para implantar modelos em tempo 
+        real e monitorar os recursos utilizados.
+        
+        SageMaker JumpStart: disponibiliza modelos pré-treinados 
+        e soluções prontas para acelerar o desenvolvimento.
+
+    É possível também criar seu próprio notebook em Python no 
+    SageMaker, tanto de forma isolada quanto dentro de um ambiente 
+    de desenvolvimento como o JupyterLab.
+
+    Em “Instâncias de Notebooks”, podemos observar a tela do 
+    SageMaker AI, em que é possível visualizar “Instâncias do 
+    bloco de anotações” (notebooks em Python ou R).
+
+    Ao clicar em “Abrir o Jupyter”, você será direcionado para um 
+    ambiente de desenvolvimento, o “Jupyter”, que permite criar 
+    notebooks em Python ou R.
+
+    Selecione “conda_python3” e você será direcionado para um 
+    notebook em Python conforme exibido a seguir.
+
+    Podemos observar alguns comandos executados em Python, 
+    diretamente no notebook criado dentro do Jupyter.
+
+    Este ambiente é ideal para o desenvolvimento colaborativo, 
+    como o treinamento de modelos de Machine Learning em 
+    consultorias, podendo compartilhar os notebooks com diversos 
+    colaboradores.
+
+    O código inteiro ficará seguramente armazenado na nuvem, 
+    evitando vazamento de dados.
+
+    Inicialmente, vamos criar uma instância de um bloco de 
+    anotações, escolhendo um nome, a família de instâncias 
+    disponível e a plataforma de execução.
+
+    Com isso, podemos observar a criação de uma instância de 
+    notebooks, o tipo de instância selecionado (ml.t3.medium) 
+    e a plataforma de execução (Amazon Linux 2, JupyterLab 4).
+
+    Após a criação da instância é possível criar notebooks em 
+    Python ou em R, usando ambientes como o JupyterLab. Para isso,
+    basta selecionar a opção “Abrir o JupyterLab” ao lado da 
+    instância criada.
+
+    Nesta opção, você será direcionado para o ambiente de 
+    desenvolvimento do JupyterLab, conforme exibido a seguir.
+
+    Agora, podemos observar o ambiente do JupyterLab, em que 
+    é possível ter acessos a diversos recursos, como o Git e 
+    a exemplos e notebooks de exemplo disponibilizados pela AWS.
+
+    Nos “Recursos do JupyterLab”, podemos observar diversos 
+    recursos do JupyterLab, incluindo o acesso às pastas do 
+    projeto atual, visualização dos kernels dos notebooks em 
+    execução, acesso ao Git, acesso a comandos e ajuda, listagem 
+    de abas abertas, tópicos dos notebooks atuais e notebooks de 
+    exemplo.
+
+    Os notebooks criados isoladamente também aparecem no JupyterLab.
+
+    Agora, podemos observar um notebook que ainda não foi nomeado 
+    (Untitled), criado no Jupyter com alguns códigos em Python em 
+    execução. Ao criar notebooks, eles aparecerão um ao lado do 
+    outro, como em abas de um navegador.
+
+    A seguir colocamos o código em Python para analisarmos com o 
+    Amazon Comprehend.
+
+        # Criando um DataFrame com uma coluna "comentario"
+        data = {
+            "comentario": [
+                "Gostei muito do filme Matrix, a história e os efeitos especiais são incríveis!",
+                "Achei O Senhor dos Anéis muito longo e arrastado, não curti.",
+                "Interestelar é um dos melhores filmes de ficção científica que já vi!"
+            ]
+        }
+
+        df = pd.DataFrame(data)
+        pd.set_option('display.max_colwidth', None)
+        df.head()
+    
+    A seguir colocamos o código em Python em que usamos o Amazon 
+    Comprehend para analisar os sentimentos de cada sentença.
+
+        import boto3
+        import json
+
+        # Inicializando o cliente do Comprehend
+        comprehend = boto3.client(service_name='comprehend')
+
+        # Análise de sentimentos dos comentários
+        for n in range(len(df)):  # Percorrer todos os comentários
+            text = df.iloc[n]['comentario']
+            response = comprehend.detect_sentiment(Text=text, LanguageCode='pt')
+            sentiment = response['Sentiment']
+            print(f'{sentiment} - {text}')
+
+    Veja que o Amazon Comprehend conseguiu detectar o principal 
+    sentimento de cada sentença.
+
+    Agora iremos criar nosso próprio modelo de NLP para 
+    identificar sentimentos em comentários de usuários.
+
+             
+             Desenvolvimento da solução
+
+Neste momento iremos implementar uma solução de análise de 
+sentimentos usando o Amazon SageMaker AI.
+
+Vamos utilizar como base de dados, os comentários de usuários do 
+site IMDB. O conjunto de dados (dataset) está disponível 
+publicamente no site Kaggle: 
+
+    https://www.kaggle.com/datasets/lakshmi25npathi/imdb-dataset-of-50k-movie-reviews/data
+
+Acesse o SageMaker AI, e clique no menu “Notebooks”. Em seguida, 
+acesse o JupyterLab e crie um notebook em Python (conda_python).
+
+Anteriormente, vimos um notebook criado chamado 
+“AnaliseSentimentos.ipynb”. Também realizamos o upload de um 
+arquivo CSV para treinarmos um modelo de NLP.
+
+Em seguida, adicione o código a seguir para importar as 
+bibliotecas necessárias:
+
+    %%time
+    import pandas as pd
+    import numpy as np
+    import nltk
+    import re
+    from bs4 import BeautifulSoup
+    from nltk.tokenize.toktok import ToktokTokenizer
+    from nltk.corpus import stopwords
+    from sklearn.pipeline import Pipeline
+    from sklearn.feature_extraction.text import CountVectorizer
+    from sklearn.linear_model import LogisticRegression
+    from sklearn.base import BaseEstimator, TransformerMixin
+    from sklearn.preprocessing import LabelBinarizer
+    from sklearn.metrics import accuracy_score
+
+No código anterior, importamos as bibliotecas necessárias para 
+realizar o processamento de linguagem natural, como o “nltk”, o 
+“re” e o “bs4” para realizar a limpeza de dados. Também realizamos
+a importação de bibliotecas do Scikit-Learn, que é a biblioteca 
+do Python que permite treinar modelos de Machine Learning como a 
+Regressão Logística (Logistic Regression) e criar processos 
+reprodutíveis com o uso de pipelines, separando etapas do 
+processamento.
+
+Vamos iniciar a exploração dos dados usando a biblioteca Pandas.
+
+    #importar palavras de parada
+    nltk.download('stopwords')
+
+    #carga dos dados
+    imdb_data=pd.read_csv('IMDB Dataset.csv')
+
+    #visualização dos dados
+    print(imdb_data.shape)
+    imdb_data.head(10)
+
+No código anterior, importamos as “palavras de parada” (stop words)
+para remoção do texto. As stop words são palavras comuns que não 
+carregam significado, sendo irrelevantes para treinar nosso modelo 
+de ML. Utilizaremos estas palavras para ações de limpeza de dados, 
+evitando contabilizar palavras irrelevantes.
+
+Após a importação das stop words, exibimos parte dos dados, com o 
+uso da biblioteca Pandas que permite visualizar o formato dos 
+dados e o conjunto de dados em formato tabular, conforme a figura 
+a seguir.
+
+Também podemos observar a distribuição dos dados por meio do 
+seguinte código:
+
+    #Vejo a frequência de distribuição dos dados
+    imdb_data['sentiment'].value_counts()
+
+    #saída do resultado
+    #positive 5000
+    #negative 5000
+
+A seguir iremos dividir uma parte dos dados para treino e outra 
+parte para testes.
+
+    # Divisão do conjunto de dados
+    # Dados de Treino (80%)
+    train_reviews=imdb_data.review[:40000]
+    train_sentiments=imdb_data.sentiment[:40000]
+
+    # Dados de Testes (20%)
+    test_reviews=imdb_data.review[40000:]
+    test_sentiments=imdb_data.sentiment[40000:]
+
+No código anterior, separamos parte dos dados para treino (80%) e o restante para testes (20%).
+
+    # Transformar os labels em 0 (negativo) e 1 (positivo)
+    lb = LabelBinarizer()
+    train_sentiments_bin = lb.fit_transform(train_sentiments)
+    test_sentiments_bin = lb.transform(test_sentiments)
+
+    # Lista de stopwords
+    stopword_list = stopwords.words('english')
+    tokenizer = ToktokTokenizer()
+
+    # Transformer personalizado para pré-processamento
+    class TextCleaner(BaseEstimator, TransformerMixin):
+        def __init__(self):
+            self.ps = nltk.PorterStemmer()
+
+        def remover_html(self, text):
+            soup = BeautifulSoup(text, "html.parser")
+            return soup.get_text()
+
+        def remover_conteudo_colchetes(self, text):
+            return re.sub('\[[^]]*\]', '', text)
+
+        def remover_caracteres_especial(self, text):
+            pattern = r'[^a-zA-Z0-9\s]'
+            return re.sub(pattern, '', text)
+
+        def remover_stopwords(self, text):
+            tokens = tokenizer.tokenize(text)
+            tokens = [token.strip() for token in tokens]
+            filtered_tokens = [token for token in tokens if token.lower() not in stopword_list]
+            return ' '.join(filtered_tokens)
+
+        def stemming(self, text):
+            return ' '.join([self.ps.stem(word) for word in text.split()])
+
+        def clean_text(self, text):
+            text = self.remover_html(text)
+            text = self.remover_conteudo_colchetes(text)
+            text = self.remover_caracteres_especial(text)
+            text = self.remover_stopwords(text)
+            text = self.stemming(text)
+            return text
+
+        def fit(self, X, y=None):
+            return self
+
+        def transform(self, X, y=None):
+            return X.apply(self.clean_text)
+
+No código anterior utilizamos a classe LabelBinarizer para 
+dicotomizar o desfecho, sendo o valor 0 para sentimentos 
+negativos e 1 para sentimentos positivos.
+
+Em seguida, criamos uma classe para realizar a remoção de ruídos 
+nos dados, como caracteres especiais, pontos de parada e conteúdo 
+em html.
+
+Após a limpeza de ruídos, a classe irá transformar as palavras em 
+seus radicais, em um processo conhecido como stemming. A seguir, 
+vamos ver o que acontecerá com o dataset após o processo de 
+limpeza e stemming.
+
+Podemos observar uma mudança no dataset anterior, pois não há 
+mais palavras de ligação (exemplo: of, the, a, entre outros), 
+pois foram removidos durante o processo de limpeza de dados e 
+do processo de stemming.
+
+Agora iremos preparar um pipeline, onde automatizaremos todo o 
+processo de limpeza de dados.
+
+O pipeline irá definir etapas como limpeza de dados, vetorização 
+e treinamento do modelo. No processo de limpeza de dados, será 
+chamada a classe “TextCleaner” ao qual criamos para remover os 
+ruídos nos dados e realizar o stemming.
+
+Para a vetorização, utilizaremos a classe “CountVectorizer” que 
+transforma cada sentença em um conjunto de palavras soltas, com 
+a contagem de suas frequências, criando o que chamamos de Bag of 
+Words (BoW).
+
+Por último, usamos a classe LogisticRegression para treinar o 
+nosso modelo preditivo.
+
+    %%time
+    #Criando o pipeline completo
+    pipeline = Pipeline([
+        ('limpeza', TextCleaner()),
+        ('vetorizacao', CountVectorizer(min_df=0.0, max_df=1.0, binary=False, ngram_range=(1,3))),
+        ('classificador', LogisticRegression(max_iter=500, random_state=42))
+    ])
+
+O código anterior cria o pipeline de transformação e classificação
+dos dados para que seja utilizado para treinamento do modelo e, 
+em seguida, para realizar novas predições. Agora, precisamos 
+aplicar o pipeline em nossos dados.
+
+    %%time
+    # Treinamento do pipeline
+    pipeline.fit(train_reviews, train_sentiments_bin)
+
+    # Avaliação do pipeline
+    predictions = pipeline.predict(test_reviews)
+    acc = accuracy_score(test_sentiments_bin, predictions)
+    print("Acurácia do modelo:", acc)
+    # Acurácia do modelo: 0.8964
+
+O código anterior aplica todo o pipeline de transformação e treina
+o algoritmo de regressão logística. Após isso, o modelo é treinado 
+para realizar novas predições. Ao término do treinamento, medimos 
+a acurácia do modelo. A acurácia ficou em torno de 0.89 ou 90%, 
+mostrando boa performance preditiva do modelo. O processo pode 
+levar em torno de 5 a 10 minutos.
+
+Vejamos como utilizar o modelo treinado para realizar predições 
+em novos dados ainda não vistos.
+
+    # --- Nova review positiva para teste ---
+    new_review = ["The Lord of the Rings was awesome, I´ve never seen such an amazing movie!"]
+
+    # Previsão do sentimento da nova review
+    pred_new = pipeline.predict(pd.Series(new_review))
+
+    #Transforma a predição de 0 em negativo e 1 em positivo
+    pred_label = lb.inverse_transform(pred_new)
+    print("Sentimento da nova review:", pred_label[0])
+    # Sentimento da nova review: positive
+
+O processo aplica o pipeline de transformação no novo comentário 
+e em seguida usa o modelo treinado para predizer o sentimento do 
+comentário.
+
+Observe o código completo:
+
+    %%time
+    import pandas as pd
+    import numpy as np
+    import nltk
+    import re
+    from bs4 import BeautifulSoup
+    from nltk.tokenize.toktok import ToktokTokenizer
+    from nltk.corpus import stopwords
+    from sklearn.pipeline import Pipeline
+    from sklearn.feature_extraction.text import CountVectorizer
+    from sklearn.linear_model import LogisticRegression
+    from sklearn.base import BaseEstimator, TransformerMixin
+    from sklearn.preprocessing import LabelBinarizer
+    from sklearn.metrics import accuracy_score
+    #importação das stopwords
+    nltk.download('stopwords')
+    # Leitura dos dados
+    imdb_data = pd.read_csv('IMDB Dataset.csv')
+    print(imdb_data.shape)
+    imdb_data.head(10)
+    # Divisão do conjunto de dados
+    train_reviews = imdb_data.review[:40000]
+    train_sentiments = imdb_data.sentiment[:40000]
+
+    test_reviews = imdb_data.review[40000:]
+    test_sentiments = imdb_data.sentiment[40000:]
+
+    # Transformar os labels em 0 (negativo) e 1 (positivo)
+    lb = LabelBinarizer()
+    train_sentiments_bin = lb.fit_transform(train_sentiments)
+    test_sentiments_bin = lb.transform(test_sentiments)
+
+    # Lista de stopwords
+    stopword_list = stopwords.words('english')
+    tokenizer = ToktokTokenizer()
+
+    # Transformer personalizado para pré-processamento
+    class TextCleaner(BaseEstimator, TransformerMixin):
+        def __init__(self):
+            self.ps = nltk.PorterStemmer()
+
+        def remover_html(self, text):
+            soup = BeautifulSoup(text, "html.parser")
+            return soup.get_text()
+
+        def remover_conteudo_colchetes(self, text):
+            return re.sub('\[[^]]*\]', '', text)
+
+        def remover_caracteres_especial(self, text):
+            pattern = r'[^a-zA-Z0-9\s]'
+            return re.sub(pattern, '', text)
+
+        def remover_stopwords(self, text):
+            tokens = tokenizer.tokenize(text)
+            tokens = [token.strip() for token in tokens]
+            filtered_tokens = [token for token in tokens if token.lower() not in stopword_list]
+            return ' '.join(filtered_tokens)
+
+        def stemming(self, text):
+            return ' '.join([self.ps.stem(word) for word in text.split()])
+
+        def clean_text(self, text):
+            text = self.remover_html(text)
+            text = self.remover_conteudo_colchetes(text)
+            text = self.remover_caracteres_especial(text)
+            text = self.remover_stopwords(text)
+            text = self.stemming(text)
+            return text
+
+        def fit(self, X, y=None):
+            return self
+
+        def transform(self, X, y=None):
+            return X.apply(self.clean_text)
+
+    # Criando o pipeline completo
+    pipeline = Pipeline([
+        ('limpeza', TextCleaner()),
+        ('vetorizacao', CountVectorizer(min_df=0.0, max_df=1.0, binary=False, ngram_range=(1,3))),
+        ('classificador', LogisticRegression(max_iter=500, random_state=42))
+    ])
+
+    # Treinamento do pipeline
+    pipeline.fit(train_reviews, train_sentiments_bin)
+
+    # Avaliação do pipeline
+    predictions = pipeline.predict(test_reviews)
+    acc = accuracy_score(test_sentiments_bin, predictions)
+    print("Acurácia do modelo:", acc)
+    # --- Nova review positiva para teste ---
+    new_review = ["The Lord of the Rings was awesome, I´ve never seen such an amazing movie!"]
+
+    # Previsão do sentimento da nova review
+    pred_new = pipeline.predict(pd.Series(new_review))
+
+    #Transforma a predição de 0 em negativo e 1 em positivo
+    pred_label = lb.inverse_transform(pred_new)
+    print("Sentimento da nova review:", pred_label[0])
+    # Sentimento da nova review: positive
+
+
