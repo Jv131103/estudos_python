@@ -45,6 +45,25 @@ class Estoque:
             "quantidade": quantidade
         }
 
+    def retirar(self, codigo, quantidade):
+        if not isinstance(codigo, str):
+            raise TypeError("codigo precisa ser do tipo STR")
+
+        if not isinstance(quantidade, int) or isinstance(quantidade, bool):
+            raise TypeError("quantidade deve ser do tipo INT")
+
+        if quantidade <= 0:
+            raise ValueError("Quantidade precisa ser maior que 0")
+
+        if self.produtos.get(codigo) is None:
+            raise KeyError("Produto não existe no estoque")
+
+        if quantidade > self.produtos[codigo]["quantidade"]:
+            raise ValueError("Quantidade não pode ser maior que o valor do estoque")
+
+        self.produtos[codigo]["quantidade"] -= quantidade
+        return self.produtos[codigo]["quantidade"]
+
     def exibir(self):
         for codigo, produto in self.produtos.items():
             print(f"Código: {codigo}")
@@ -62,3 +81,14 @@ estoque = Estoque()
 estoque.cadastrar_produto(prod1, 5)
 estoque.cadastrar_produto(prod2, 10)
 estoque.exibir()
+
+estoque = Estoque()
+
+estoque.cadastrar_produto(
+    Produto("Mouse Gamer", "PRD001", 150),
+    15
+)
+
+print(estoque.retirar("PRD001", 4))
+
+print(estoque.produtos["PRD001"]["quantidade"])
